@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title> Comment And Search Are Available |  Crazy Hot Ice</title>
+    <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
+  </head>
+
+  <body>
+    <header id="page_header">
+      <h1>Crazy Hot Ice</h1>
+      <h2 id="description">Learning, Researching, Sharing</h2>
+
+      <nav id="page_nav">
+        <ul>
+          <li><a href="/">home</a></li>
+          <li><a href="/search.html">search</a></li>
+          
+          <li><a href="/categories/workspace">workspace </a></li>
+          
+        </ul>
+      </nav>
+    </header>
+
+    <section id="page_content">
+      <article id="post">
+  <header>
+    <h1>Comment And Search Are Available</h1>
+    <p id="description">
+      Posted on 20 Nov 2012, in <code>workspace</code>, tagged <code>blog, disqus, and google</code>
+    </p>
+  </header>
+  <p>As you see, my blog are able to comment and search now!</p>
+
+<h2 id='comment'>Comment</h2>
+
+<p>I always think comment is very important for a blog. You can know how helpful or is there some issues in your article. <a href='http://disqus.com'>Disqus</a> is a great tool to put comment on a website. It is neat and powerful as you can see. It may a little slow in China. But consider of my blog are mostly written in English, it is not a too bad thing.</p>
+
+<h2 id='search'>Search</h2>
+
+<p>The search engine I am using is <a href='http://www.google.com/cse'>Google custom search engine</a>. Isn&#8217;t it awesome I have google&#8217;s technology on my blog? It is easy to use, too. The badness of this choice is google may take some time to put the website&#8217;s content into its index. And google is even not available in China sometimes.</p>
+
+<h2 id='scripts_to_make_life_easy'>Scripts to Make Life Easy</h2>
+
+<p>As I put the website on <a href='http://pages.github.com/'>github page</a>, I don&#8217;t want to upload the jekyll directory. Just the static site is enough. So I must copy the site to git repository, add, commit and then push it. It is a boring work. I write two scripts to make it easy. I don&#8217;t know if there is some other way to do this, but I&#8217;m OK with it.</p>
+
+<p>update.sh: generate static site and upload to github.</p>
+
+<pre><code>#/bin/bash
+
+BASE_DIR=`pwd`
+J_DIR=&quot;./jekyll&quot;
+GIT_DIR=&quot;./wb14123.github.com&quot;
+
+cd $J_DIR
+jekyll
+cd $BASE_DIR
+rm -r $GIT_DIR/*
+cp -r $J_DIR/_site/* $GIT_DIR/
+cd $GIT_DIR
+git add -A .
+git commit -m &quot;Changed at $(date)&quot;
+git push origin master
+exit $?</code></pre>
+
+<p>newpost.sh: use vim to open a new post with current time and some meta information.</p>
+
+<pre><code>#!/bin/bash
+
+if [ $# -lt 1 ]
+then
+    echo &quot;newpost: You need to specify the post name.&quot;
+    exit 1
+fi
+
+POST_NAME=$1
+POST_DATE=`date +%Y-%m-%d`
+POST_DIR=&quot;./jekyll/_posts&quot;
+FILE_NAME=`echo &quot;$POST_DIR/$POST_DATE-$POST_NAME.md&quot; | sed &quot;s/ /-/g&quot;`
+
+echo &quot;
+---
+layout: post
+title: $POST_NAME
+categories: misc
+tags: []
+---
+&quot; &gt; $FILE_NAME
+
+vim $FILE_NAME</code></pre>
+</article>
+
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+    </section>
+
+    <footer id="page_footer">
+      Copyright @ 2012 Bin Wang
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="/static/images/cc.png" /></a><br />Licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 China Mainland License</a>.
+    </footer>
+  </body>
+</html>
