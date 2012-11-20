@@ -48,7 +48,9 @@ a:hover{
 #post_list #title{
   font-size: x-large;
 }
-
+#comment{
+  padding-top: 20px;
+}
 
 
 header#page_header{
