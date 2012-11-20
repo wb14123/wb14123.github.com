@@ -34,7 +34,7 @@ a{
   text-decoration: none;
 }
 a:hover{
-  font-weight: bold;
+  text-decoration: underline;
 } 
 
 #post_list table{
