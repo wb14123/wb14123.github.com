@@ -23,18 +23,21 @@
     </header>
 
     <section id="page_content">
-      <nav id="post_list">
-  <table>
+      <section id="search">
+  <!-- Put the following javascript before the closing </head> tag. -->
+  <script>
+    (function() {
+     var cx = '009333916160064428241:b6_2xiih_a8';
+     var gcse = document.createElement('script'); gcse.type = 'text/javascript'; gcse.async = true;
+     gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+     '//www.google.com/cse/cse.js?cx=' + cx;
+     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gcse, s);
+     })();
+  </script>
 
-<tr>
-  <td id="title"><a href="/workspace/2012/11/19/my-new-blog.html">My New Blog Website</a></td> 
-  <td id="description">19 Nov 2012</td>
-</tr>
-
-</table>
-
-
-</nav>
+ <!-- Place this tag where you want both of the search box and the search results to render -->
+ <gcse:search></gcse:search>
+</section>
 
     </section>
 

@@ -29,12 +29,26 @@ p, li{
   line-height: 20px;
 }
 
+a{
+  color: blue;
+  text-decoration: none;
+}
+a:hover{
+  font-weight: bold;
+} 
+
 #post_list table{
   border-collapse: collapse;
+  margin: auto;
 }
 #post_list th, td{
   border: none;
+  min-width: 50%;
 }
+#post_list #title{
+  font-size: x-large;
+}
+
 
 
 header#page_header{
