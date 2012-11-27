@@ -7,10 +7,8 @@ body{
 }
 
 code{
-  text-indent:0;
   background: rgb(220, 220, 220);
   color:#000;
-  font-family: monospace;
 }
 
 pre{
@@ -82,6 +80,15 @@ footer#page_footer{
   font-style: italic;
 }
 
+#post h1{
+  font-size: 28px;
+  font-family: sans-serif;
+}
 #post h2{
-  font-size: medium;
+  font-size: 22px;
+  font-weight: normal;
+}
+#post h3{
+  font-size: 20px;
+  font-weight: normal;
 }
