@@ -37,11 +37,12 @@ a:hover{
 
 #post_list table{
   border-collapse: collapse;
+  width: 90%;
   margin: auto;
 }
 #post_list th, td{
   border: none;
-  min-width: 50%;
+//  min-width: 50%;
 }
 #post_list #title{
   font-size: x-large;
