@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title> Backup My Dotfiles |  Crazy Hot Ice</title>
+    <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
+
+    <!-- for google analytic --!>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-26103883-3']);
+      _gaq.push(['_trackPageview']);
+    
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <header id="page_header">
+      <h1>Crazy Hot Ice</h1>
+      <h2 id="description">Learning, Researching, Sharing</h2>
+
+      <nav id="page_nav">
+        <ul>
+          <li><a href="/">home</a></li>
+          <li><a href="/search.html">search</a></li>
+          
+          <li><a href="/categories/workspace">workspace </a></li>
+          
+          <li><a href="/categories/notes">notes </a></li>
+          
+        </ul>
+      </nav>
+    </header>
+
+    <section id="page_content">
+      <article id="post">
+  <header>
+    <h1>Backup My Dotfiles</h1>
+    <p id="description">
+      Posted on 05 Dec 2012, in <code>workspace</code>, tagged <code>vim, zsh, config, and git</code>
+    </p>
+  </header>
+  <p>These days I re-configure my vim and zsh. Then backup them in <a href='http://github.com'>github</a>. You can see it at <a href='https://github.com/wb14123/dotfiles'>here</a>.</p>
+
+<p>Using github to backup dotfiles is really a comfortable way. In this way, you can:</p>
+
+<ul>
+<li>Feel free to change your configures, since if you don&#8217;t like the configure some day, you can roll it back.</li>
+
+<li>Update your configures anywhere. Just use git to clone your configure files from github.</li>
+
+<li>Keep different versions for different machines (Such as for desktop and for laptop). Just use branch to control them.</li>
+
+<li>If you are using some vim plugins something like <a href='https://github.com/robbyrussell/oh-my-zsh'>oh-my-zsh</a>, you could simple use git submodule to keep track of them.</li>
+</ul>
+
+<p>The simple idea of how to do this is put configure files in a directory such as <code>dotfile</code> and use git to track this directory. Then make a symbolic link to home. However, manual make symbolic links is boring. Firstly I am thinking of just use the same directory structure as <code>~/</code> and then automatic link them. But there comes some problems: for some directories such as <code>.vim</code>, we should make a symbolic for them while for some directories such as <code>.config</code>, we may only want to link <code>openbox</code> under it to <code>~/.config/openbox</code>. It seems impossible to use a total automatic way. But a little shell code could make life a little easy:</p>
+
+<pre><code>check_link() {
+	LINK=`pwd`/$1
+	TARGET=~/$2
+	if [ -h $TARGET ] ; then
+		echo -n &quot;remove symbolic link: &quot;
+		rm -v $TARGET
+	elif [ -e $TARGET ] ; then
+		echo -n &quot;move: &quot;
+		mv -v $TARGET $TARGET.old
+	fi
+	echo -n &quot;link: &quot;
+	ln -sv $LINK $TARGET
+}</code></pre>
+
+<p>Usage: <code>check_link &lt;path_in_dotfiles&gt; &lt;path_in_home&gt;</code>, such as <code>check_link vim/vimrc .vimrc</code>. See <a href='https://github.com/wb14123/dotfiles/blob/master/link.sh'>my github repo</a> for details.</p>
+</article>
+
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+    </section>
+
+    <footer id="page_footer">
+      Copyright @ 2012 Bin Wang
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="/static/images/cc.png" /></a><br />Licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 China Mainland License</a>.
+    </footer>
+  </body>
+</html>
