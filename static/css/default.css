@@ -7,20 +7,25 @@ body{
 }
 
 code{
-  background: rgb(220, 220, 220);
-  color:#000;
+  font-style: normal;
+  margin: 0 2px;
+  padding: 0px 5px;
+  border: 1px solid #EAEAEA;
+  background-color: #F8F8F8;
+  border-radius: 3px;
 }
 
+pre code{
+  border-style: none;
+}
 pre{
-  text-indent:0;
-  border-color:#000;
-  border-style:dashed;
-  border-width:1px;
-  display:block;
-  margin:10px 0 0 0;
-  padding:10px 0 10px 5px;
-  background: rgb(220, 220, 220);
-  color:#000;
+  background-color: #F8F8F8;
+  border: 1px solid #CCC;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
 }
 
 p, li{
@@ -42,7 +47,6 @@ a:hover{
 }
 #post_list th, td{
   border: none;
-//  min-width: 50%;
 }
 #post_list #title{
   font-size: x-large;
