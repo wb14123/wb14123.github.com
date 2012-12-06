@@ -59,7 +59,7 @@
 <li>If you are using vim plugins from git repo or something like <a href='https://github.com/robbyrussell/oh-my-zsh'>oh-my-zsh</a>, you could simple use git submodule to keep track of them.</li>
 </ul>
 
-<p>The simple idea of how to do this is put configure files in a directory such as <code>dotfile</code> and use git to track this directory. Then make a symbolic link to home. However, manual make symbolic links is boring. Firstly I am thinking of just use the same directory structure as <code>~/</code> and then automatic link them. But there comes some problems: for some directories such as <code>.vim</code>, we should make a symbolic for them while for some directories such as <code>.config</code>, we may only want to link <code>openbox</code> under it to <code>~/.config/openbox</code>. It seems impossible to use a total automatic way. But a little shell code could make life a little easy:</p>
+<p>The basic idea is put configure files in a directory such as <code>dotfile</code> and use git to track it. Then make a symbolic link to home. However, manual make symbolic links is boring. Firstly I am thinking of use the same directory structure as <code>~/</code> and then automatic link them. But there comes some problems: for some directories such as <code>.vim</code>, we should make a link for them while for some directories such as <code>.config</code>, we may only want to link <code>openbox</code> under it to <code>~/.config/openbox</code>. It seems impossible to use a automatic way totally. But some shell code could make life a little easy:</p>
 
 <pre><code>check_link() {
 	LINK=`pwd`/$1
