@@ -4,7 +4,7 @@
 	<title type="text" xml:lang="en"></title>
 	<link type="application/atom+xml" href="http://www.sudorm-rf.com/feed/" rel="self"/>
  	<link type="text" href="http://www.sudorm-rf.com" rel="alternate"/>
-	<updated>2012-12-10T10:56:12+08:00</updated>
+	<updated>2012-12-10T10:57:12+08:00</updated>
 	<id>http://www.sudorm-rf.com</id>
 	<author>
 		<name>Bin Wang</name>
@@ -33,7 +33,7 @@
 
 &lt;p&gt;Here is some thought about tags. I have seen lots of plugins to index by tags for jekyll, but most of them could only index by one tag. I prefer to see how many posts are under several tags. I may use Javascript to do it some day.&lt;/p&gt;
 
-&lt;p&gt;By the way, I&amp;#8217;m not good at html and css. Other open sourced jekyll site helped me a lot. Especially the &lt;a href='https://github.com/shenfeng/shenfeng.me'&gt;source code of my old colleague&amp;#8217;s blog&lt;/a&gt;. When I have some questions, just look at the source code and could let Google have a rest.&lt;/p&gt;Included file 'rss_footer.html' not found in _includes directory</content>
+&lt;p&gt;By the way, I&amp;#8217;m not good at html and css. Other open sourced jekyll site helped me a lot. Especially the &lt;a href='https://github.com/shenfeng/shenfeng.me'&gt;source code of my old colleague&amp;#8217;s blog&lt;/a&gt;. When I have some questions, just look at the source code and it well be clear.&lt;/p&gt;Included file 'rss_footer.html' not found in _includes directory</content>
 	</entry>
 	
 	<entry>
