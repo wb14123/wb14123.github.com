@@ -4,7 +4,7 @@
 	<title type="text" xml:lang="en"></title>
 	<link type="application/atom+xml" href="http://www.sudorm-rf.com/feed/" rel="self"/>
  	<link type="text" href="http://www.sudorm-rf.com" rel="alternate"/>
-	<updated>2012-12-07T17:36:17+08:00</updated>
+	<updated>2012-12-10T10:27:16+08:00</updated>
 	<id>http://www.sudorm-rf.com</id>
 	<author>
 		<name>Bin Wang</name>
@@ -14,9 +14,9 @@
 	
 	<entry>
 		<title>Backup My Dotfiles</title>
-		<link href="http://www.sudorm-rf.com/workspace/2012/12/05/Backup-My-Dotfiles.html"/>
+		<link href="http://www.sudorm-rf.com/Backup-My-Dotfiles.html"/>
 		<updated>2012-12-05T00:00:00+08:00</updated>
-		<id>http://paulstamatiou.com/workspace/2012/12/05/Backup-My-Dotfiles</id>
+		<id>http://paulstamatiou.com/Backup-My-Dotfiles</id>
 		<content type="html">&lt;p&gt;These days I re-configure my vim and zsh. Then backup them in &lt;a href='http://github.com'&gt;github&lt;/a&gt;. You can see it at &lt;a href='https://github.com/wb14123/dotfiles'&gt;here&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Using github to backup dotfiles is really a comfortable way. In this way, you can:&lt;/p&gt;
@@ -47,14 +47,14 @@
 	ln -sv $LINK $TARGET
 }&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Usage: &lt;code&gt;check_link &amp;lt;path_in_dotfiles&amp;gt; &amp;lt;path_in_home&amp;gt;&lt;/code&gt;, such as &lt;code&gt;check_link vim/vimrc .vimrc&lt;/code&gt;. See &lt;a href='https://github.com/wb14123/dotfiles/blob/master/link.sh'&gt;my github repo&lt;/a&gt; for details.&lt;/p&gt;Liquid error: No such file or directory - /home/wangbin/blog/jekyll/_includes</content>
+&lt;p&gt;Usage: &lt;code&gt;check_link &amp;lt;path_in_dotfiles&amp;gt; &amp;lt;path_in_home&amp;gt;&lt;/code&gt;, such as &lt;code&gt;check_link vim/vimrc .vimrc&lt;/code&gt;. See &lt;a href='https://github.com/wb14123/dotfiles/blob/master/link.sh'&gt;my github repo&lt;/a&gt; for details.&lt;/p&gt;Included file 'rss_footer.html' not found in _includes directory</content>
 	</entry>
 	
 	<entry>
 		<title>Compile And Install Kernel</title>
-		<link href="http://www.sudorm-rf.com/notes/2012/11/27/Compile-And-Install-Kernel.html"/>
+		<link href="http://www.sudorm-rf.com/Compile-And-Install-Kernel.html"/>
 		<updated>2012-11-27T00:00:00+08:00</updated>
-		<id>http://paulstamatiou.com/notes/2012/11/27/Compile-And-Install-Kernel</id>
+		<id>http://paulstamatiou.com/Compile-And-Install-Kernel</id>
 		<content type="html">&lt;p&gt;There are already many documents to teach one how to compile and install kernel. Here are just some key notes. Use &lt;code&gt;make help&lt;/code&gt; under source directory for details.&lt;/p&gt;
 
 &lt;h2 id='0_kernel_configure'&gt;0. Kernel configure&lt;/h2&gt;
@@ -101,14 +101,14 @@
 
 &lt;p&gt;After all, you may want to make a kernel package to install on other machines. Such as:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;make O=&amp;lt;build_dir&amp;gt; -j4 binrpm-pkg&lt;/code&gt;&lt;/pre&gt;Liquid error: No such file or directory - /home/wangbin/blog/jekyll/_includes</content>
+&lt;pre&gt;&lt;code&gt;make O=&amp;lt;build_dir&amp;gt; -j4 binrpm-pkg&lt;/code&gt;&lt;/pre&gt;Included file 'rss_footer.html' not found in _includes directory</content>
 	</entry>
 	
 	<entry>
 		<title>Comment And Search Are Available</title>
-		<link href="http://www.sudorm-rf.com/workspace/2012/11/20/Comment-And-Search-Are-Available.html"/>
+		<link href="http://www.sudorm-rf.com/Comment-And-Search-Are-Available.html"/>
 		<updated>2012-11-20T00:00:00+08:00</updated>
-		<id>http://paulstamatiou.com/workspace/2012/11/20/Comment-And-Search-Are-Available</id>
+		<id>http://paulstamatiou.com/Comment-And-Search-Are-Available</id>
 		<content type="html">&lt;p&gt;As you can see, my blog are able to comment and search now!&lt;/p&gt;
 
 &lt;h2 id='comment'&gt;Comment&lt;/h2&gt;
@@ -166,21 +166,21 @@ tags: []
 ---
 &amp;quot; &amp;gt; $FILE_NAME
 
-vim $FILE_NAME&lt;/code&gt;&lt;/pre&gt;Liquid error: No such file or directory - /home/wangbin/blog/jekyll/_includes</content>
+vim $FILE_NAME&lt;/code&gt;&lt;/pre&gt;Included file 'rss_footer.html' not found in _includes directory</content>
 	</entry>
 	
 	<entry>
 		<title>My New Blog Website</title>
-		<link href="http://www.sudorm-rf.com/workspace/2012/11/19/my-new-blog.html"/>
+		<link href="http://www.sudorm-rf.com/my-new-blog.html"/>
 		<updated>2012-11-19T00:00:00+08:00</updated>
-		<id>http://paulstamatiou.com/workspace/2012/11/19/my-new-blog</id>
+		<id>http://paulstamatiou.com/my-new-blog</id>
 		<content type="html">&lt;p&gt;This is my new blog website, just as simple and as good as my imagine. It is powered by jekyll - a ruby tool to generate a static website. I am using wordpress writing a Chinese blog, too. But its editor is not good enough to write with. On the other hand, jekyll makes it possible to write with markdown, which is really a good tool for writing. Also, a static website is efficient and awesome.&lt;/p&gt;
 
 &lt;p&gt;But this site is too simple now. There are some features I missed, such as search box, comment, archives by date, index by tags and so on. Some of them could be solved by third party, and some of them could be solved by plugins. But it makes the blog not so simple any more.&lt;/p&gt;
 
 &lt;p&gt;With so many cool techs nowadays, it is easy to write a website. But it is not so easy to generate a static website with many features. Here is something about balance. They said &amp;#8220;keep it stupid and simple&amp;#8221;, and &amp;#8220;less is more&amp;#8221;. It is really an art to find out how less is just good for a production. Even the user himself doesn&amp;#8217;t exactly know how much he wanted.&lt;/p&gt;
 
-&lt;p&gt;Anyway, here is my new blog. Have fun and enjoy it!&lt;/p&gt;Liquid error: No such file or directory - /home/wangbin/blog/jekyll/_includes</content>
+&lt;p&gt;Anyway, here is my new blog. Have fun and enjoy it!&lt;/p&gt;Included file 'rss_footer.html' not found in _includes directory</content>
 	</entry>
 	
 </feed>

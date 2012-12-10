@@ -74,15 +74,24 @@ header#page_header nav ul{
 li#selected{
   text-decoration: underline;
 }
-#page_nav table{
+
+
+#post-pagination {
+  clear: both;
   width: 100%;
-  margin: auto;
+  text-align: center;
+  padding: 20px 0 0 0;
+  font-size: 18px;
 }
-td#cat{
-  text-align: left;
+#post-pagination ul li{
+  display: inline-block;
 }
-td#page{
-  text-align: right;
+#post-pagination#current-page {
+  padding: 3px 10px;
+  font-weight: bold;
+}
+li#page-number{
+  margin-right: 20px;
 }
 
 footer#page_footer{
