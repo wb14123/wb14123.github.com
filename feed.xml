@@ -4,13 +4,51 @@
 	<title type="text" xml:lang="en"></title>
 	<link type="application/atom+xml" href="http://www.sudorm-rf.com/feed/" rel="self"/>
  	<link type="text" href="http://www.sudorm-rf.com" rel="alternate"/>
-	<updated>2012-12-10T17:50:15+08:00</updated>
+	<updated>2012-12-17T00:36:45+08:00</updated>
 	<id>http://www.sudorm-rf.com</id>
 	<author>
 		<name>Bin Wang</name>
 	</author>
 	<rights>Copyright (c) 2012, Bin Wang; all rights reserved.</rights>
 
+	
+	<entry>
+		<title>Create A Virtual Machine Network</title>
+		<link href="http://www.sudorm-rf.com/Create-A-Virtual-Machine-Network.html"/>
+		<updated>2012-12-16T00:00:00+08:00</updated>
+		<id>http://paulstamatiou.com/Create-A-Virtual-Machine-Network</id>
+		<content type="html">&lt;p&gt;Because of some problems I&amp;#8217;m working on, I need some test machines with Windows and some Linux distribution installed. It is impossible to have so many machines or install so many systems on my laptop. So I use &lt;a href='http://www.qemu.org'&gt;qemu&lt;/a&gt; to create some virtual machines and use &lt;a href='http://virt-manager.org/'&gt;virt-manager&lt;/a&gt; to manage them. Here is what I have now:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;My host: Archlinux, 64 bits, Core i3, 2G RAM, 2G swap.&lt;/li&gt;
+
+&lt;li&gt;Guest 1: Ubuntu 8.10 desktop, 64 bits, 1 core, 512M RAM.&lt;/li&gt;
+
+&lt;li&gt;Guest 2: Ubuntu 12.10 server, 64 bits, 1 core, 512M RAM.&lt;/li&gt;
+
+&lt;li&gt;Guest 3: Windows XP, x86, 1core, 512M RAM.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;There are two points I&amp;#8217;d like to say:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Qemu with &lt;a href='http://www.linux-kvm.org/'&gt;kvm&lt;/a&gt; is quite effective. I could start three guests(or more) at the same time and it works very well.&lt;/li&gt;
+
+&lt;li&gt;Virt-manager is very easy to use. Before it , I waste almost a whole day to use qemu&amp;#8217;s command line to put the three guests into a same VLAN.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I&amp;#8217;m quite happy with these now. I could&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Try whatever Linux distribution I&amp;#8217;d like.&lt;/li&gt;
+
+&lt;li&gt;Do experiments in multi-host environment.&lt;/li&gt;
+
+&lt;li&gt;Test whatever on any OS and need nothing to worry about.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;After all, I want to say something about virtaulization. I think the only useful situation of virtaulization is testing, learning or trying to do something for fun. I&amp;#8217;m not saying it is not important. When a technology could let us do some funny things, it well be really awesome and important.&lt;/p&gt;Liquid error: No such file or directory - /home/wangbin/blog/jekyll/_includes</content>
+	</entry>
 	
 	<entry>
 		<title>Remove Categories</title>
@@ -33,7 +71,7 @@
 
 &lt;p&gt;Here is some thought about tags. I have seen lots of plugins to index by tags for jekyll, but most of them could only index by one tag. I prefer to see how many posts are under several tags. I may use Javascript to do it some day.&lt;/p&gt;
 
-&lt;p&gt;By the way, I&amp;#8217;m not good at html and css. Other open sourced jekyll site helped me a lot. Especially the &lt;a href='https://github.com/shenfeng/shenfeng.me'&gt;source code of my old colleague&amp;#8217;s blog&lt;/a&gt;. When I have some questions, just look at the source code and it will be clear.&lt;/p&gt;Included file 'rss_footer.html' not found in _includes directory</content>
+&lt;p&gt;By the way, I&amp;#8217;m not good at html and css. Other open sourced jekyll site helped me a lot. Especially the &lt;a href='https://github.com/shenfeng/shenfeng.me'&gt;source code of my old colleague&amp;#8217;s blog&lt;/a&gt;. When I have some questions, just look at the source code and it will be clear.&lt;/p&gt;Liquid error: No such file or directory - /home/wangbin/blog/jekyll/_includes</content>
 	</entry>
 	
 	<entry>
@@ -71,7 +109,7 @@
 	ln -sv $LINK $TARGET
 }&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Usage: &lt;code&gt;check_link &amp;lt;path_in_dotfiles&amp;gt; &amp;lt;path_in_home&amp;gt;&lt;/code&gt;, such as &lt;code&gt;check_link vim/vimrc .vimrc&lt;/code&gt;. See &lt;a href='https://github.com/wb14123/dotfiles/blob/master/link.sh'&gt;my github repo&lt;/a&gt; for details.&lt;/p&gt;Included file 'rss_footer.html' not found in _includes directory</content>
+&lt;p&gt;Usage: &lt;code&gt;check_link &amp;lt;path_in_dotfiles&amp;gt; &amp;lt;path_in_home&amp;gt;&lt;/code&gt;, such as &lt;code&gt;check_link vim/vimrc .vimrc&lt;/code&gt;. See &lt;a href='https://github.com/wb14123/dotfiles/blob/master/link.sh'&gt;my github repo&lt;/a&gt; for details.&lt;/p&gt;Liquid error: No such file or directory - /home/wangbin/blog/jekyll/_includes</content>
 	</entry>
 	
 	<entry>
@@ -125,7 +163,7 @@
 
 &lt;p&gt;After all, you may want to make a kernel package to install on other machines. Such as:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;make O=&amp;lt;build_dir&amp;gt; -j4 binrpm-pkg&lt;/code&gt;&lt;/pre&gt;Included file 'rss_footer.html' not found in _includes directory</content>
+&lt;pre&gt;&lt;code&gt;make O=&amp;lt;build_dir&amp;gt; -j4 binrpm-pkg&lt;/code&gt;&lt;/pre&gt;Liquid error: No such file or directory - /home/wangbin/blog/jekyll/_includes</content>
 	</entry>
 	
 	<entry>
@@ -190,7 +228,7 @@ tags: []
 ---
 &amp;quot; &amp;gt; $FILE_NAME
 
-vim $FILE_NAME&lt;/code&gt;&lt;/pre&gt;Included file 'rss_footer.html' not found in _includes directory</content>
+vim $FILE_NAME&lt;/code&gt;&lt;/pre&gt;Liquid error: No such file or directory - /home/wangbin/blog/jekyll/_includes</content>
 	</entry>
 	
 	<entry>
@@ -204,7 +242,7 @@ vim $FILE_NAME&lt;/code&gt;&lt;/pre&gt;Included file 'rss_footer.html' not found
 
 &lt;p&gt;With so many cool techs nowadays, it is easy to write a website. But it is not so easy to generate a static website with many features. Here is something about balance. They said &amp;#8220;keep it stupid and simple&amp;#8221;, and &amp;#8220;less is more&amp;#8221;. It is really an art to find out how less is just good for a production. Even the user himself doesn&amp;#8217;t exactly know how much he wanted.&lt;/p&gt;
 
-&lt;p&gt;Anyway, here is my new blog. Have fun and enjoy it!&lt;/p&gt;Included file 'rss_footer.html' not found in _includes directory</content>
+&lt;p&gt;Anyway, here is my new blog. Have fun and enjoy it!&lt;/p&gt;Liquid error: No such file or directory - /home/wangbin/blog/jekyll/_includes</content>
 	</entry>
 	
 </feed>
