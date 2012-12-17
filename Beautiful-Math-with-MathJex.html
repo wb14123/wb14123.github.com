@@ -2,7 +2,7 @@
 
 <html>
   <head>
-    <title> Comment And Search Are Available |  Crazy Hot Ice</title>
+    <title> Beautiful Math with MathJex |  Crazy Hot Ice</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
 
     <!-- MathJax -->
@@ -46,69 +46,16 @@
     <section id="page_content">
       <article id="post">
   <header>
-    <h1>Comment And Search Are Available</h1>
+    <h1>Beautiful Math with MathJex</h1>
     <p id="description">
-    Posted on 20 Nov 2012, tagged <code>blog</code><code>disqus</code><code>google</code>
+    Posted on 17 Dec 2012, tagged <code>composition</code><code>MathJex</code><code>LaTex</code>
     </p>
   </header>
-  <p>As you can see, my blog are able to comment and search now!</p>
+  <p>Never ever say you are a geek if you don&#8217;t have some mathematical formula on your website! I have done so though <a href='http://www.mathjax.org'>MathJex</a><code>:)</code>. Here are some examples:</p>
+<span>$$ x = {-b \pm \sqrt{b^2-4ac} \over 2a} $$</span><span>$$ |s_n - s_m|=|\sum_{k=m+1}^n u_{k}|=|u_{m+1}+u_{m+2}+...+u_{n}| \lt \epsilon $$</span>
+<p>Now lets try some inline formulas, such as you may except <span>\(b \ne 0\)</span> in expression <span>\(a \over b\)</span> and the famous formula <span>\(E = mc^2\)</span> from Einstein.</p>
 
-<h2 id='comment'>Comment</h2>
-
-<p>I always think comment is very important for a blog. You can know how helpful or is there some issues in your article. <a href='http://disqus.com'>Disqus</a> is a great tool to put comment on a website. It is neat and powerful as you can see. It may be a little slow in China. But consider of my blog are mostly written in English, it is not a big deal.</p>
-
-<h2 id='search'>Search</h2>
-
-<p>The search engine I am using is <a href='http://www.google.com/cse'>Google custom search engine</a>. Isn&#8217;t it awesome I have google&#8217;s technology on my blog? It is easy to use, too. The badness of this choice is google may take some time to put the website&#8217;s content into its index. And google is even not available in China sometimes.</p>
-
-<h2 id='scripts_to_make_life_easy'>Scripts to Make Life Easy</h2>
-
-<p>As I put the website on <a href='http://pages.github.com/'>github page</a>, I don&#8217;t want to upload the jekyll directory. Just the static site is enough. So I must copy the site to git repository, add, commit and then push it. It is a boring work. I write two scripts to make it easy. I don&#8217;t know if there is some other way to do this, but I&#8217;m OK with it.</p>
-
-<p>update.sh: generate static site and upload to github.</p>
-
-<pre><code>#!/bin/bash
-
-BASE_DIR=`pwd`
-J_DIR=&quot;./jekyll&quot;
-GIT_DIR=&quot;./wb14123.github.com&quot;
-
-cd $J_DIR
-jekyll
-cd $BASE_DIR
-rm -r $GIT_DIR/*
-cp -r $J_DIR/_site/* $GIT_DIR/
-cd $GIT_DIR
-git add -A .
-git commit -m &quot;Changed at $(date)&quot;
-git push origin master
-exit $?</code></pre>
-
-<p>newpost.sh: use vim to open a new post with current time and some meta information.</p>
-
-<pre><code>#!/bin/bash
-
-if [ $# -lt 1 ]
-then
-    echo &quot;newpost: You need to specify the post name.&quot;
-    exit 1
-fi
-
-POST_NAME=$1
-POST_DATE=`date +%Y-%m-%d`
-POST_DIR=&quot;./jekyll/_posts&quot;
-FILE_NAME=`echo &quot;$POST_DIR/$POST_DATE-$POST_NAME.md&quot; | sed &quot;s/ /-/g&quot;`
-
-echo &quot;
----
-layout: post
-title: $POST_NAME
-categories: misc
-tags: []
----
-&quot; &gt; $FILE_NAME
-
-vim $FILE_NAME</code></pre>
+<p>However, there are some issues to use MathJex with Markdown because of the symbols in formula will be parsed by Markdown first. The easiest way to avoid this is surrounding your formula with <code>&lt;span&gt;</code> since Markdown will parse nothing in a html/xml block. Such as <code>&lt;span&gt;\(a \ne 0\)&lt;/span&gt;</code> for a inline formula <span>\(a \ne 0\)</span>.</p>
 </article>
 
 <section id="comment">
