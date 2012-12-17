@@ -4,7 +4,7 @@
 	<title type="text" xml:lang="en"></title>
 	<link type="application/atom+xml" href="http://www.sudorm-rf.com/feed/" rel="self"/>
  	<link type="text" href="http://www.sudorm-rf.com" rel="alternate"/>
-	<updated>2012-12-17T15:34:08+08:00</updated>
+	<updated>2012-12-17T16:28:59+08:00</updated>
 	<id>http://www.sudorm-rf.com</id>
 	<author>
 		<name>Bin Wang</name>
@@ -255,7 +255,7 @@ vim $FILE_NAME&lt;/code&gt;&lt;/pre&gt;Liquid error: No such file or directory -
 		<link href="http://www.sudorm-rf.com/2012-11-19-my-new-blog.html"/>
 		<updated>2012-11-19T00:00:00+08:00</updated>
 		<id>http://paulstamatiou.com/my-new-blog</id>
-		<content type="html">&lt;p&gt;This is my new blog website, just as simple and as good as my imagine. It is powered by jekyll - a ruby tool to generate a static website. I am using wordpress writing a Chinese blog, too. But its editor is not good enough to write with. On the other hand, jekyll makes it possible to write with markdown, which is really a good tool for writing. Also, a static website is efficient and awesome.&lt;/p&gt;
+		<content type="html">&lt;p&gt;This is my new blog website, just as simple and as good as my imagine. It is powered by jekyll - a ruby tool to generate a static website. I am using wordpress to write a Chinese blog, too. But its editor is not good enough to write with. On the other hand, jekyll makes it possible to write with markdown, which is really a good tool for writing. Also, a static website is efficient and awesome.&lt;/p&gt;
 
 &lt;p&gt;But this site is too simple now. There are some features I missed, such as search box, comment, archives by date, index by tags and so on. Some of them could be solved by third party, and some of them could be solved by plugins. But it makes the blog not so simple any more.&lt;/p&gt;
 
