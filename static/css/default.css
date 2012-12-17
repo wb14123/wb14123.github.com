@@ -119,3 +119,14 @@ footer#page_footer{
   font-size: 20px;
   font-weight: normal;
 }
+#post_footer table{
+  width: 100%;
+  font-size: 17px;
+  padding-top: 30px;
+}
+#post_footer td#prev{
+  text-align: left;
+}
+#post_footer td#next{
+  text-align: right;
+}
