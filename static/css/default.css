@@ -17,6 +17,8 @@ code{
 
 pre code{
   border-style: none;
+  margin: 0px;
+  padding: 0px;
 }
 pre{
   background-color: #F8F8F8;
@@ -76,10 +78,6 @@ header#page_header nav ul{
   margin: 0 20px 0 0;
   display: inline;
 }
-li#selected{
-  text-decoration: underline;
-}
-
 
 #post-pagination {
   clear: both;
@@ -123,6 +121,14 @@ footer#page_footer{
 #post h3{
   font-size: 20px;
   font-weight: normal;
+}
+#post table{
+}
+#post th{
+  text-align: left;
+}
+#post td{
+  margin-right: 20px;
 }
 #post_footer table{
   width: 100%;
