@@ -48,6 +48,11 @@ a:hover{
 #post_list th, td{
   border: none;
 }
+#post_list tr{
+  border-bottom: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: rgb(230, 230, 230);
+}
 #post_list #title{
   font-size: x-large;
 }
