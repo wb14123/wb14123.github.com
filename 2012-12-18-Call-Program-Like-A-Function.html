@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title> Call Program Like A Function |  Crazy Hot Ice</title>
+    <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
+
+    <!-- MathJax -->
+    <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+    <!-- for google analytic --!>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-26103883-3']);
+      _gaq.push(['_trackPageview']);
+    
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <header id="page_header">
+      <h1>Crazy Hot Ice</h1>
+      <h2 id="description">Learning, Researching, Sharing</h2>
+
+      <nav id="page_nav">
+        <ul>
+             <li><a href="/">Home</a></li>
+             <li><a href="/search.html">Search</a></li>
+             <li><a href="/about.html">About</a></li>
+             <li><a href="/feed.xml">Feed</a></li>
+       </ul>
+      </nav>
+
+    </header>
+
+    <section id="page_content">
+      <article id="post">
+  <header>
+    <h1>Call Program Like A Function</h1>
+    
+      <p id="description">Posted on 18 Dec 2012, tagged <code>shell</code><code>formal language</code></p>
+    
+  </header>
+
+  <p>What&#8217;s the most important application for Linux users? The answer must be shell. It comes out the ability to combine tools together to solve complex problem. It is a little like function, such as <code>A | B</code> could respect as <code>A(B(x))</code>. But it is not so powerful. For example, how do you respect the formate <code>A(B(x), C(y))</code> in a shell?</p>
+
+<p>So here comes some libraries to call command like a function in programming languages. They are interesting but you may not want use them in a real project. Let&#8217;s take a look first and then we will talk about them.</p>
+
+<h2 id='sh_python'><a href='http://amoffat.github.com/sh/'>Sh</a> (Python)</h2>
+
+<p>This library contains many advanced features and is well documented.</p>
+
+<pre><code># sort this directory by biggest file
+print(sort(du(glob(&quot;*&quot;), &quot;-sb&quot;), &quot;-rn&quot;))
+
+# print(the number of folders and files in /etc
+print(wc(ls(&quot;/etc&quot;, &quot;-1&quot;), &quot;-l&quot;)))</code></pre>
+
+<h2 id='shell_perl'><a href='http://perldoc.perl.org/Shell.html'>Shell</a> (Perl)</h2>
+
+<p>Using perl with shell command is always comfortable.</p>
+
+<pre><code>use Shell qw(cat ps cp);
+
+$passwd = cat(&#39;&lt;/etc/passwd&#39;);
+@pslines = ps(&#39;-ww&#39;),
+cp(&quot;/etc/passwd&quot;, &quot;/tmp/passwd&quot;);
+# object oriented
+my $sh = Shell-&gt;new;
+print $sh-&gt;ls(&#39;-l&#39;);</code></pre>
+
+<h2 id='scsh_scheme'><a href='http://www.scsh.net/'>Scsh</a> (Scheme)</h2>
+
+<p>Scheme is a great and purl language. But scsh seems like a dead project. You can find <a href='https://github.com/scheme/scsh'>a fork on github</a>. Howerver, I failed to compile its dependency <a href='http://s48.org/'>scheme48</a>.</p>
+
+<h2 id='shake_clojure'><a href='https://github.com/sunng87/shake.git'>Shake</a> (Clojure)</h2>
+
+<p>I&#8217;m pretty proud to say it is written by one of my old colleagues. It has <a href='http://news.ycombinator.com/item?id=4553076'>a discuss on Hacker News</a>.</p>
+
+<pre><code>(require &#39;[shake.static :as sh])
+
+;; any shell command ...
+(sh/uname -a) ;;returns a #&lt;UNIXProcess java.lang.UNIXProcess@1833160&gt;
+
+;; using clojure variables (vars, local bindings) in shake
+(let [home &quot;/home/sunng87&quot;]
+  (sh/ls -l $home))
+
+;; using clojure forms in shake
+(sh/curl $(format &quot;https://github.com/%s&quot; &quot;sunng87&quot;))</code></pre>
+
+<h2 id='conclusion'>Conclusion</h2>
+
+<p>So after all, you may ask: why not just use these language&#8217;s REPL as a shell? It provides more power! But thinking of the daily life on Linux, how many times will you use these &#8220;advance features&#8221;? Instead, if you prefer the &#8220;function style shell&#8221;, you need to type many parentheses, quotes and so on. I think the current ability of shell maybe not the most complete, but it is the most efficient way to work.</p>
+
+  <footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2012-12-17-Beautiful-Math-with-MathJex.html">Prev: Beautiful Math with MathJex</a></td>
+    
+    
+  </tr></table>
+  </footer>
+</article>
+
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+    </section>
+
+    <footer id="page_footer">
+      Copyright @ 2012 Bin Wang
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
+    </footer>
+  </body>
+</html>

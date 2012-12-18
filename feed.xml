@@ -4,13 +4,70 @@
 	<title type="text" xml:lang="en"></title>
 	<link type="application/atom+xml" href="http://www.sudorm-rf.com/feed/" rel="self"/>
  	<link type="text" href="http://www.sudorm-rf.com" rel="alternate"/>
-	<updated>2012-12-18T10:51:19+08:00</updated>
+	<updated>2012-12-18T17:54:59+08:00</updated>
 	<id>http://www.sudorm-rf.com</id>
 	<author>
 		<name>Bin Wang</name>
 	</author>
 	<rights>Copyright (c) 2012, Bin Wang; all rights reserved.</rights>
 
+	
+	<entry>
+		<title>Call Program Like A Function</title>
+		<link href="http://www.sudorm-rf.com/2012-12-18-Call-Program-Like-A-Function.html"/>
+		<updated>2012-12-18T00:00:00+08:00</updated>
+		<id>http://paulstamatiou.com/Call-Program-Like-A-Function</id>
+		<content type="html">&lt;p&gt;What&amp;#8217;s the most important application for Linux users? The answer must be shell. It comes out the ability to combine tools together to solve complex problem. It is a little like function, such as &lt;code&gt;A | B&lt;/code&gt; could respect as &lt;code&gt;A(B(x))&lt;/code&gt;. But it is not so powerful. For example, how do you respect the formate &lt;code&gt;A(B(x), C(y))&lt;/code&gt; in a shell?&lt;/p&gt;
+
+&lt;p&gt;So here comes some libraries to call command like a function in programming languages. They are interesting but you may not want use them in a real project. Let&amp;#8217;s take a look first and then we will talk about them.&lt;/p&gt;
+
+&lt;h2 id='sh_python'&gt;&lt;a href='http://amoffat.github.com/sh/'&gt;Sh&lt;/a&gt; (Python)&lt;/h2&gt;
+
+&lt;p&gt;This library contains many advanced features and is well documented.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# sort this directory by biggest file
+print(sort(du(glob(&amp;quot;*&amp;quot;), &amp;quot;-sb&amp;quot;), &amp;quot;-rn&amp;quot;))
+
+# print(the number of folders and files in /etc
+print(wc(ls(&amp;quot;/etc&amp;quot;, &amp;quot;-1&amp;quot;), &amp;quot;-l&amp;quot;)))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id='shell_perl'&gt;&lt;a href='http://perldoc.perl.org/Shell.html'&gt;Shell&lt;/a&gt; (Perl)&lt;/h2&gt;
+
+&lt;p&gt;Using perl with shell command is always comfortable.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;use Shell qw(cat ps cp);
+
+$passwd = cat(&amp;#39;&amp;lt;/etc/passwd&amp;#39;);
+@pslines = ps(&amp;#39;-ww&amp;#39;),
+cp(&amp;quot;/etc/passwd&amp;quot;, &amp;quot;/tmp/passwd&amp;quot;);
+# object oriented
+my $sh = Shell-&amp;gt;new;
+print $sh-&amp;gt;ls(&amp;#39;-l&amp;#39;);&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id='scsh_scheme'&gt;&lt;a href='http://www.scsh.net/'&gt;Scsh&lt;/a&gt; (Scheme)&lt;/h2&gt;
+
+&lt;p&gt;Scheme is a great and purl language. But scsh seems like a dead project. You can find &lt;a href='https://github.com/scheme/scsh'&gt;a fork on github&lt;/a&gt;. Howerver, I failed to compile its dependency &lt;a href='http://s48.org/'&gt;scheme48&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id='shake_clojure'&gt;&lt;a href='https://github.com/sunng87/shake.git'&gt;Shake&lt;/a&gt; (Clojure)&lt;/h2&gt;
+
+&lt;p&gt;I&amp;#8217;m pretty proud to say it is written by one of my old colleagues. It has &lt;a href='http://news.ycombinator.com/item?id=4553076'&gt;a discuss on Hacker News&lt;/a&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(require &amp;#39;[shake.static :as sh])
+
+;; any shell command ...
+(sh/uname -a) ;;returns a #&amp;lt;UNIXProcess java.lang.UNIXProcess@1833160&amp;gt;
+
+;; using clojure variables (vars, local bindings) in shake
+(let [home &amp;quot;/home/sunng87&amp;quot;]
+  (sh/ls -l $home))
+
+;; using clojure forms in shake
+(sh/curl $(format &amp;quot;https://github.com/%s&amp;quot; &amp;quot;sunng87&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id='conclusion'&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;So after all, you may ask: why not just use these language&amp;#8217;s REPL as a shell? It provides more power! But thinking of the daily life on Linux, how many times will you use these &amp;#8220;advance features&amp;#8221;? Instead, if you prefer the &amp;#8220;function style shell&amp;#8221;, you need to type many parentheses, quotes and so on. I think the current ability of shell maybe not the most complete, but it is the most efficient way to work.&lt;/p&gt;Liquid error: No such file or directory - /home/wangbin/blog/jekyll/_includes</content>
+	</entry>
 	
 	<entry>
 		<title>Beautiful Math with MathJex</title>
