@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title> Change Root File System from Ext4 to Xfs on Archlinux |  Crazy Hot Ice</title>
+    <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
+
+    <!-- MathJax -->
+    <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+    <!-- for google analytic --!>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-26103883-3']);
+      _gaq.push(['_trackPageview']);
+    
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <header id="page_header">
+      <h1>Crazy Hot Ice</h1>
+      <h2 id="description">Learning, Researching, Sharing</h2>
+
+      <nav id="page_nav">
+        <ul>
+             <li><a href="/">Home</a></li>
+             <li><a href="/search.html">Search</a></li>
+             <li><a href="/about.html">About</a></li>
+       </ul>
+      </nav>
+
+    </header>
+
+    <section id="page_content">
+      <article id="post">
+  <header>
+    <h1>Change Root File System from Ext4 to Xfs on Archlinux</h1>
+    
+      <p id="description">Posted on 10 Jan 2013, tagged <code>ext4</code><code>xfs</code><code>initramfs</code><code>backup</code></p>
+    
+  </header>
+
+  <p><a href='http://xfs.org/'>Xfs</a> is said a high performance file system. So I changed my root file system from ext4 to xfs today. There are some tricky things. This article is a simple HOWTO.</p>
+
+<h2 id='1_make_a_partation_of_xfs_and_mount_it'>1. Make a partation of xfs and mount it</h2>
+
+<p>Note: A xfs partation cannot be shrunk</p>
+
+<h2 id='2_copy_files_with_tar'>2. Copy files with tar</h2>
+
+<p>Copy the files from origin ext4 root file system to the new xfs file system with <code>tar</code>. Be careful, <em>never</em> use <code>cp</code> to backup a file system since <code>cp</code> will change the setuid bit and follow hard links. Use <code>tar</code> instead, for example:</p>
+
+<pre><code>tar --exclude=proc/ --exclude=sys/ -cf - / | ( cd /mnt ; tar -xpvf - )</code></pre>
+
+<p>I just exclude two directories for an example. You should exclude all mounted file systems (except root of cause). It is recommended to use a bootable CD or USB disk to boot your system, mount the origin ext4 root partation and the new xfs partation then use <code>tar</code> to copy files.</p>
+
+<h2 id='3_modify_initramfs_to_include_xfs_support'>3. Modify initramfs to include xfs support</h2>
+
+<p>In the boot process, kernel use initramfs as root the file system at first and then mount the real root file system. My initramfs only include support for ext2/3/4. So I need to modify it. In archlinux, you can do it with <a href='https://wiki.archlinux.org/index.php/mkinitcpio'>mkinitcpio</a>.</p>
+
+<p>Just add xfs for kernel modules and binary files in file <code>/etc/mkinitcpio.conf</code>:</p>
+
+<pre><code>MODULES=&quot;xfs&quot;
+BINARIES=&quot;fsck.xfs&quot;</code></pre>
+
+<p>And then make a initramfs:</p>
+
+<pre><code>mkinitcpio -p linux</code></pre>
+
+<h2 id='4_modify_grub_config_and_fstab'>4. Modify grub config and fstab</h2>
+
+<p>There is nothing special here. Just modify your <a href='https://wiki.archlinux.org/index.php/GRUB'>grub config</a> and <a href='https://wiki.archlinux.org/index.php/fstab'>fstab</a> to adapt the new partation.</p>
+
+  <footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2012-12-28-Comparison-Between-Linux-Desktop-Environments.html">Prev: Comparison Between Linux Desktop Environments</a></td>
+    
+    
+  </tr></table>
+  </footer>
+</article>
+
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+    </section>
+
+    <footer id="page_footer">
+      Copyright @ 2012 Bin Wang
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
+    </footer>
+  </body>
+</html>
