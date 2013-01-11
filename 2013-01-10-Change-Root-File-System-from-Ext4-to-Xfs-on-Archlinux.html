@@ -50,34 +50,41 @@
 
   <p><a href='http://xfs.org/'>Xfs</a> is said a high performance file system. So I changed my root file system from ext4 to xfs today. There are some tricky things. This article is a simple HOWTO.</p>
 
-<h2 id='1_make_a_partation_of_xfs_and_mount_it'>1. Make a partation of xfs and mount it</h2>
+<h2 id='1_make_a_xfs_partation'>1. Make a xfs partation</h2>
 
 <p>Note: A xfs partation cannot be shrunk</p>
 
 <h2 id='2_copy_files_with_tar'>2. Copy files with tar</h2>
 
-<p>Copy the files from origin ext4 root file system to the new xfs file system with <code>tar</code>. Be careful, <em>never</em> use <code>cp</code> to backup a file system since <code>cp</code> will change the setuid bit and follow hard links. Use <code>tar</code> instead, for example:</p>
+<p>Copy files from origin ext4 partation to the new xfs partation with <code>tar</code>. Be careful, <em>never</em> use <code>cp</code> to backup a file system since <code>cp</code> will change the setuid bit and follow hard links. Use <code>tar</code> instead, for example:</p>
 
-<pre><code>tar --exclude=proc/ --exclude=sys/ -cf - / | ( cd /mnt ; tar -xpvf - )</code></pre>
+<pre><code>tar --exclude=proc/ --exclude=sys/ -cf - / | ( cd &lt;xfs_mount_path&gt; ; tar -xpvf - )</code></pre>
 
-<p>I just exclude two directories for an example. You should exclude all mounted file systems (except root of cause). It is recommended to use a bootable CD or USB disk to boot your system, mount the origin ext4 root partation and the new xfs partation then use <code>tar</code> to copy files.</p>
+<p>I just exclude two directories for an example. You should exclude all mounted file systems (except root of cause). It is recommended to use a bootable CD or USB disk to boot your system, mount both ext4 and xfs partations, then use <code>tar</code> to copy files. In this way, you need not exclude any directory:</p>
 
-<h2 id='3_modify_initramfs_to_include_xfs_support'>3. Modify initramfs to include xfs support</h2>
+<pre><code>tar  -cf - &lt;ext4_mount_path&gt; | ( cd &lt;xfs_mount_path&gt; ; tar -xpvf - )</code></pre>
 
-<p>In the boot process, kernel use initramfs as root the file system at first and then mount the real root file system. My initramfs only include support for ext2/3/4. So I need to modify it. In archlinux, you can do it with <a href='https://wiki.archlinux.org/index.php/mkinitcpio'>mkinitcpio</a>.</p>
+<h2 id='3_modify_grub_config_and_fstab'>3. Modify grub config and fstab</h2>
 
-<p>Just add xfs for kernel modules and binary files in file <code>/etc/mkinitcpio.conf</code>:</p>
+<p>There is nothing special here. Just modify your <a href='https://wiki.archlinux.org/index.php/GRUB'>grub config</a> and <a href='https://wiki.archlinux.org/index.php/fstab'>fstab</a> in your xfs partation to adapt the new partation. Remember to make an entry for your old root file system while config the grub. Then you could try to reboot. If the system could not mount xfs partation, you may want to boot with the old ext4 root partation and modify initramfs for xfs support as bellow.</p>
+
+<h2 id='4_modify_initramfs_to_include_xfs_support'>4. Modify initramfs to include xfs support</h2>
+
+<p>In the boot process, kernel use initramfs as root first, then mount the real root file system. If your initramfs don&#8217;t include support for xfs, you may see these errors during booting:</p>
+
+<pre><code>fsck.xfs: file not found
+mount: unknown filesystem type &quot;xfs&quot;</code></pre>
+
+<p>In this case, you need to modify initramfs. In archlinux, you can do it with <a href='https://wiki.archlinux.org/index.php/mkinitcpio'>mkinitcpio</a>.</p>
+
+<p>Just add <code>xfs</code> to kernel modules and <code>fsck.xfs</code> to binary files in <code>/etc/mkinitcpio.conf</code>:</p>
 
 <pre><code>MODULES=&quot;xfs&quot;
 BINARIES=&quot;fsck.xfs&quot;</code></pre>
 
-<p>And then make a initramfs:</p>
+<p>Then make a initramfs:</p>
 
 <pre><code>mkinitcpio -p linux</code></pre>
-
-<h2 id='4_modify_grub_config_and_fstab'>4. Modify grub config and fstab</h2>
-
-<p>There is nothing special here. Just modify your <a href='https://wiki.archlinux.org/index.php/GRUB'>grub config</a> and <a href='https://wiki.archlinux.org/index.php/fstab'>fstab</a> to adapt the new partation.</p>
 
   <footer id="post_footer">
   <table><tr>
