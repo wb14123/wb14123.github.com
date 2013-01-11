@@ -75,7 +75,7 @@
 <pre><code>fsck.xfs: file not found
 mount: unknown filesystem type &quot;xfs&quot;</code></pre>
 
-<p>In this case, you need to modify initramfs. In archlinux, you can do it with <a href='https://wiki.archlinux.org/index.php/mkinitcpio'>mkinitcpio</a>.</p>
+<p>In this case, you need boot into your old ext4 root partation and modify initramfs. In archlinux, you can do it with <a href='https://wiki.archlinux.org/index.php/mkinitcpio'>mkinitcpio</a>.</p>
 
 <p>Just add <code>xfs</code> to kernel modules and <code>fsck.xfs</code> to binary files in <code>/etc/mkinitcpio.conf</code>:</p>
 
