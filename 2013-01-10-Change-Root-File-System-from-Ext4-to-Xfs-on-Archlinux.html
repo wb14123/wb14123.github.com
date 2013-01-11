@@ -64,7 +64,7 @@
 
 <pre><code>tar  -cf - &lt;ext4_mount_path&gt; | ( cd &lt;xfs_mount_path&gt; ; tar -xpvf - )</code></pre>
 
-<h2 id='3_modify_grub_config_and_fstab'>3. Modify grub config and fstab</h2>
+<h2 id='3_config_grub_and_modify_fstab'>3. Config grub and modify fstab</h2>
 
 <p>There is nothing special here. Just modify your <a href='https://wiki.archlinux.org/index.php/GRUB'>grub config</a> and <a href='https://wiki.archlinux.org/index.php/fstab'>fstab</a> in your xfs partation to adapt the new partation. Remember to make an entry for your old root file system while config the grub. Then you could try to reboot. If the system could not mount xfs partation, you may want to boot with the old ext4 root partation and modify initramfs for xfs support as bellow.</p>
 
