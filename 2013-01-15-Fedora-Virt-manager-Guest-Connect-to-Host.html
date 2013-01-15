@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title> Fedora Virt-manager Guest Connect to Host |  Crazy Hot Ice</title>
+    <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
+
+    <!-- MathJax -->
+    <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+    <!-- for google analytic --!>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-26103883-3']);
+      _gaq.push(['_trackPageview']);
+    
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <header id="page_header">
+      <h1>Crazy Hot Ice</h1>
+      <h2 id="description">Learning, Researching, Sharing</h2>
+
+      <nav id="page_nav">
+        <ul>
+             <li><a href="/">Home</a></li>
+             <li><a href="/search.html">Search</a></li>
+             <li><a href="/about.html">About</a></li>
+       </ul>
+      </nav>
+
+    </header>
+
+    <section id="page_content">
+      <article id="post">
+  <header>
+    <h1>Fedora Virt-manager Guest Connect to Host</h1>
+    
+      <p id="description">Posted on 15 Jan 2013, tagged <code>kvm</code><code>fedora</code><code>virt-manager</code><code>newwork</code></p>
+    
+  </header>
+
+  <p>These days I&#8217;m confused with the virt-manager&#8217;s network. While I use the Fedora guest to connect to 192.168.122.1, it always connect to itself. I searched on the internet but there are little information. I mean, though the information, it should work.</p>
+
+<p>I finally solved it today. It turns out the fedora guest also start <code>libvirtd</code>. Which will create another virt network and use itself as the host. If you run <code>ifconfig</code> on the guest, you will see it has a device <code>vnet0</code> with IP 192.168.122.1.</p>
+
+<p>So just disable <code>libvirtd</code> on the guest, then restart <code>libvirtd</code> and virt-manager on the host. After all, you could connect to the host through 192.168.122.1 with the default configuration.</p>
+
+  <footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Prev: Change Root File System from Ext4 to Xfs on Archlinux</a></td>
+    
+    
+  </tr></table>
+  </footer>
+</article>
+
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+    </section>
+
+    <footer id="page_footer">
+      Copyright @ 2012 Bin Wang
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
+    </footer>
+  </body>
+</html>
