@@ -2,7 +2,7 @@
 
 <html>
   <head>
-    <title> Fedora Virt-manager Guest Connect to Host |  Crazy Hot Ice</title>
+    <title> How Kernel's Makefile Specify Output Directory |  Crazy Hot Ice</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
 
     <!-- MathJax -->
@@ -42,25 +42,65 @@
     <section id="page_content">
       <article id="post">
   <header>
-    <h1>Fedora Virt-manager Guest Connect to Host</h1>
+    <h1>How Kernel's Makefile Specify Output Directory</h1>
     
-      <p id="description">Posted on 15 Jan 2013, tagged <code>kvm</code><code>fedora</code><code>virt-manager</code><code>newwork</code></p>
+      <p id="description">Posted on 21 Jan 2013, tagged <code>kernel</code><code>make</code></p>
     
   </header>
 
-  <p>These days I&#8217;m confused with the virt-manager&#8217;s network. While I use the Fedora guest to connect to 192.168.122.1, it always connect to itself. I searched on the internet but there are little information. I mean, though the information, it should work.</p>
+  <p>When compile Linux kernel, we could output files to a split directory with &#8220;make O=&#8221;. The kernel&#8217;s way to do it is a little tricky. Since kernel&#8217;s Makefile is very big, we could have a simpler version to analyse:</p>
 
-<p>I finally solved it today. It turns out the fedora guest also start <code>libvirtd</code>. Which will create another virt network and use itself as the host. If you run <code>ifconfig</code> on the guest, you will see it has a device <code>vnet0</code> with IP 192.168.122.1.</p>
+<pre><code>ifeq ($(KBUILD_SRC),)
+ifeq (&quot;$(origin O)&quot;, &quot;command line&quot;)
+	KBUILD_OUTPUT := $(O)
+endif
 
-<p>So just disable <code>libvirtd</code> on the guest, then restart <code>libvirtd</code> and virt-manager on the host. After all, you could connect to the host through 192.168.122.1 with the default configuration.</p>
+ifneq ($(KBUILD_OUTPUT),)
+$(filter-out submake $(CURDIR)/Makefile, $(MAKECMDGOALS)): sub-make
+	@:
+
+sub-make:
+	make -C $(KBUILD_OUTPUT) -f /home/wangbin/maketest/Makefile \
+		KBUILD_SRC=$(PWD) \
+		$(MAKECMDGOALS)
+	@echo &quot; sub-make KBUILD_OUTPUT: $(KBUILD_OUTPUT)&quot;
+skip-makefile := 1
+endif #end KBUILD_OUTPUT
+endif #end KBUILD_SRC
+
+ifeq ($(skip-makefile),)
+
+target1:
+	touch target1
+	@echo &quot;target KBUILD_OUTPUT: $(KBUILD_OUTPUT)&quot;
+
+target2:
+	touch target2
+	@echo &quot;target KBUILD_OUTPUT: $(KBUILD_OUTPUT)&quot;
+endif</code></pre>
+
+<p>You could try to execute <code>make O=../build target1</code>, it will output files to <code>../build</code>. Let&#8217;s see how it works.</p>
+
+<p>When you execute make, <code>KBUILD_SRC</code> is not defined at first, so it will make <code>sub-make</code> as a dependency of any target you input(except some <code>filter-out</code> target such as <code>sub-make</code>). Change the directory to <code>KBUILD_OUTPUT</code>(<code>-C</code> option), set <code>KBUILD_SRC</code> and then invoke itself again(<code>-f</code> option).</p>
+
+<p>At the second time, <code>KBUILD_SRC</code> is defined so it will make the real targets.</p>
+
+<p>The thing to notice is, while you make the real <code>target1</code>, <strong>variables between <code>ifeq ($(KBUILD_SRC),)</code> is not defined</strong>. You could see the output:</p>
+
+<pre><code>make -C ../build -f /home/wangbin/maketest/Makefile \
+                KBUILD_SRC=/home/wangbin/maketest \
+                target1
+make[1]: Entering directory `/home/wangbin/build&#39;
+touch target1
+target KBUILD_OUTPUT: 
+make[1]: Leaving directory `/home/wangbin/build&#39;
+sub-make KBUILD_OUTPUT: ../build</code></pre>
 
   <footer id="post_footer">
   <table><tr>
     
-      <td id="prev"><a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Prev: Change Root File System from Ext4 to Xfs on Archlinux</a></td>
+      <td id="prev"><a href="/2013-01-15-Fedora-Virt-manager-Guest-Connect-to-Host.html">Prev: Fedora Virt-manager Guest Connect to Host</a></td>
     
-    
-      <td id="next"><a href="/2013-01-21-How-Kernel%27s-Makefile-Specify-Output-Directory.html" id="next">Next: How Kernel's Makefile Specify Output Directory</a></td>
     
   </tr></table>
   </footer>

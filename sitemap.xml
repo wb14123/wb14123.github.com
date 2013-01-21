@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>/2013-01-21-How-Kernel%27s-Makefile-Specify-Output-Directory.html</loc>
+    <lastmod>2013-01-21</lastmod>
+
+  </url>
+  <url>
     <loc>/2013-01-15-Fedora-Virt-manager-Guest-Connect-to-Host.html</loc>
     <lastmod>2013-01-15</lastmod>
 
