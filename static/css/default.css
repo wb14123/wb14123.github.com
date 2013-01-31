@@ -19,7 +19,11 @@ pre code{
   margin: 0px;
   padding: 0px;
 }
+pre,code{
+  font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
+}
 pre{
+  font-size:1em;
   background-color: #F8F8F8;
   border: 1px solid #CCC;
   font-size: 13px;
@@ -27,6 +31,10 @@ pre{
   overflow: auto;
   padding: 6px 10px;
   border-radius: 3px;
+}
+pre#char{
+  background-color: white;
+  border-style: none;
 }
 
 p, li{
