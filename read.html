@@ -59,16 +59,20 @@
 
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 <script>
+function getLink(item) {
+  return '<a href="http://book.douban.com/subject/' + item.book.id + '" target="_blank"></a>';
+}
+
 var url = 'http://api.douban.com/v2/book/user/42177876/collections?count=100&alt=xd&callback=?';
 $.getJSON(url, function(data){
   var col = data.collections;
   $.each(data.collections, function (i, item) {
     if (item.status === 'read')
-      $("<img/>").attr("src", item.book.images.medium).appendTo("#read");
+      $("<img/>").attr("src", item.book.images.medium).appendTo("#read").wrap(getLink(item));
     else if (item.status === 'reading')
-      $("<img/>").attr("src", item.book.images.medium).appendTo("#reading");
+      $("<img/>").attr("src", item.book.images.medium).appendTo("#reading").wrap(getLink(item));
     else if (item.status === 'wish')
-      $("<img/>").attr("src", item.book.images.medium).appendTo("#wish");
+      $("<img/>").attr("src", item.book.images.medium).appendTo("#wish").wrap(getLink(item));
   });
 });
 </script>
