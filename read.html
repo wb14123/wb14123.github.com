@@ -63,7 +63,7 @@ function getLink(item) {
   return '<a href="http://book.douban.com/subject/' + item.book.id + '" target="_blank"></a>';
 }
 
-var url = 'http://api.douban.com/v2/book/user/42177876/collections?count=100&alt=xd&callback=?';
+var url = 'http://api.douban.com/v2/book/user/42177876/collections?count=200&alt=xd&callback=?';
 $.getJSON(url, function(data){
   var col = data.collections;
   $.each(data.collections, function (i, item) {
