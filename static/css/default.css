@@ -4,6 +4,7 @@ body{
   margin:15px auto;
   padding: 0% 5% 5% 5%;
   font-family: Ubuntu, Arial, 'libra sans', sans-serif;
+  font-size: 17px;
 }
 
 code{
@@ -22,6 +23,7 @@ pre code{
 }
 pre,code{
   font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
+  font-size: 12px;
 }
 pre{
   font-size:1em;
