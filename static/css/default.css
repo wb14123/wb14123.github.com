@@ -64,6 +64,7 @@ em{
 }
 #post_list th, td{
   border: none;
+  height: 40px;
 }
 #post_list tr{
   border-bottom: 1px;
@@ -71,7 +72,7 @@ em{
   border-bottom-color: rgb(230, 230, 230);
 }
 #post_list #title{
-  font-size: x-large;
+  font-size: 24px;
 }
 #comment{
   padding-top: 20px;
