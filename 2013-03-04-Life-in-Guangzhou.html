@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title> How Kernel's Makefile Specify Output Directory |  Crazy Hot Ice</title>
+    <title> Life in Guangzhou |  Crazy Hot Ice</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
 
     <!-- MathJax -->
@@ -53,68 +53,24 @@
     <section id="page_content">
       <article id="post">
   <header>
-    <h1>How Kernel's Makefile Specify Output Directory</h1>
+    <h1>Life in Guangzhou</h1>
     
-      <p id="description">Posted on 21 Jan 2013, tagged <code>kernel</code><code>make</code></p>
+      <p id="description">Posted on 04 Mar 2013, tagged <code>life</code></p>
     
   </header>
 
-  <p>When compile Linux kernel, we could output files to a split directory with &#8220;make O=&#8221;. The kernel&#8217;s way to do it is a little tricky. Since kernel&#8217;s Makefile is very big, we could have a simpler version to analyse:</p>
+  <p>I realize there have been a lot of time since my last blog. These days I&#8217;m a little busy. I moved out from Beijing and I&#8217;m in Guangzhou now. There happens a lot in Beijing. I always want to write a blog about it, but I need some time to sum them up. The simple way to say it is: I had an intern on both a start up (AVOS) and a big company (Redhat), and really learned a lot. I also have learned about how to make a life: rent an apartment, make contact with all kinds of people and so on.</p>
 
-<pre><code>ifeq ($(KBUILD_SRC),)
-ifeq (&quot;$(origin O)&quot;, &quot;command line&quot;)
-	KBUILD_OUTPUT := $(O)
-endif
+<p>Now I&#8217;m in Guangzhou. Mainly because of my girlfriend and the desire of learn more. And I&#8217;d like to find if the environment (both IT industry environment and live environment) is better here. The days in Guangzhou is good. But the climate is a little changeable here. I just rent a good apartment and furnished it. So there are only one thing left: Find a job. I hope to find a job related to Linux kernel (or device driver) and embed device. But if the job is really good, website backends is OK, too.</p>
 
-ifneq ($(KBUILD_OUTPUT),)
-$(filter-out submake $(CURDIR)/Makefile, $(MAKECMDGOALS)): sub-make
-	@:
-
-sub-make:
-	make -C $(KBUILD_OUTPUT) -f /home/wangbin/maketest/Makefile \
-		KBUILD_SRC=$(PWD) \
-		$(MAKECMDGOALS)
-	@echo &quot; sub-make KBUILD_OUTPUT: $(KBUILD_OUTPUT)&quot;
-skip-makefile := 1
-endif #end KBUILD_OUTPUT
-endif #end KBUILD_SRC
-
-ifeq ($(skip-makefile),)
-
-target1:
-	touch target1
-	@echo &quot;target KBUILD_OUTPUT: $(KBUILD_OUTPUT)&quot;
-
-target2:
-	touch target2
-	@echo &quot;target KBUILD_OUTPUT: $(KBUILD_OUTPUT)&quot;
-endif</code></pre>
-
-<p>You could try to execute <code>make O=../build target1</code>, it will output files to <code>../build</code>. Let&#8217;s see how it works.</p>
-
-<p>When you execute make, <code>KBUILD_SRC</code> is not defined at first, so it will make <code>sub-make</code> as a dependency of any target you input(except some <code>filter-out</code> target such as <code>sub-make</code>). Change the directory to <code>KBUILD_OUTPUT</code>(<code>-C</code> option), set <code>KBUILD_SRC</code> and then invoke itself again(<code>-f</code> option).</p>
-
-<p>At the second time, <code>KBUILD_SRC</code> is defined so it will make the real targets.</p>
-
-<p>The thing to notice is, while you make the real <code>target1</code>, <strong>variables between <code>ifeq ($(KBUILD_SRC),)</code> is not defined</strong>. You could see the output:</p>
-
-<pre><code>make -C ../build -f /home/wangbin/maketest/Makefile \
-                KBUILD_SRC=/home/wangbin/maketest \
-                target1
-make[1]: Entering directory `/home/wangbin/build&#39;
-touch target1
-target KBUILD_OUTPUT: 
-make[1]: Leaving directory `/home/wangbin/build&#39;
-sub-make KBUILD_OUTPUT: ../build</code></pre>
+<p>About programming of these days. I&#8217;m doing two things: Submit patches to Linux kernel while I read the source code and find something should be fix. And write a web app with Node.js and a binding chrome extension. These two things are really fun.</p>
 </article>
 
 <footer id="post_footer">
   <table><tr>
     
-      <td id="prev"><a href="/2013-01-15-Fedora-Virt-manager-Guest-Connect-to-Host.html">Prev: Fedora Virt-manager Guest Connect to Host</a></td>
+      <td id="prev"><a href="/2013-01-21-How-Kernel%27s-Makefile-Specify-Output-Directory.html">Prev: How Kernel's Makefile Specify Output Directory</a></td>
     
-    
-      <td id="next"><a href="/2013-03-04-Life-in-Guangzhou.html" id="next">Next: Life in Guangzhou</a></td>
     
   </tr></table>
 </footer>
