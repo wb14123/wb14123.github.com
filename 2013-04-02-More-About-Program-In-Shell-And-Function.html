@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title> More About Program In Shell And Function |  Crazy Hot Ice</title>
+    <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
+
+    <!-- MathJax -->
+    <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+    <!-- for google analytic
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-26103883-3']);
+
+      _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    --!>
+
+  </head>
+
+  <body>
+    <header id="page_header">
+      <pre id="char">
+  ____                       _   _       _     ___         
+ / ___|_ __ __ _ _____   _  | | | | ___ | |_  |_ _|___ ___ 
+| |   | '__/ _` |_  / | | | | |_| |/ _ \| __|  | |/ __/ _ \
+| |___| | | (_| |/ /| |_| | |  _  | (_) | |_   | | (_|  __/
+ \____|_|  \__,_/___|\__, | |_| |_|\___/ \__| |___\___\___|
+                      |___/                                
+    </pre>
+
+      <nav id="page_nav">
+        <ul>
+             <li><a href="/">Home</a></li>
+             <li><a href="/read.html">Read</a></li>
+             <li><a href="/travel.html">Travel</a></li>
+             <li><a href="/search.html">Search</a></li>
+             <li><a href="/about.html">About</a></li>
+       </ul>
+      </nav>
+
+    </header>
+
+    <section id="page_content">
+      <article id="post">
+  <header>
+    <h1>More About Program In Shell And Function</h1>
+    
+      <p id="description">Posted on 02 Apr 2013, tagged <code>shell</code><code>formal language</code></p>
+    
+  </header>
+
+  <p>Some months ago, I wrote a blog named &#8221;<a href='http://www.crazyhotice.com/2012-12-18-Call-Program-Like-A-Function.html'>Call Program Like A Function</a>&#8221;. In this blog, I said using pipe in shell is like calling function: <code>A | B</code> is like <code>A(B())</code>. And I also said it&#8217;s difficult to write in shell like <code>A(B(), C())</code>. Read this blog again today, I realize this thought is not totally right.</p>
+
+<p>The thought above is based on this suppose: If we see program in shell like the function in programming, then the arguments of this &#8220;function&#8221; is standard input, the result of the &#8220;function&#8221; is standard output. There could only be one standard input, so the &#8220;function&#8221; must have one argument. In this way, there is no way to call program like <code>A(B(), C())</code>. But we could discuss these two points.</p>
+
+<h2 id='standard_input_as_arguments'>Standard input as arguments</h2>
+
+<p>But think about the program could receive arguments from shell, we need not treat standard input as its argument. In C programming, it&#8217;s like:</p>
+
+<pre><code>int main(int argc, char *argv[])
+{
+	return 0;
+}</code></pre>
+
+<p><code>argc</code> is the number of arguments, and <code>argv</code> is what they are. So there is no need to see standard input as the program&#8217;s arguments.</p>
+
+<h2 id='standard_output_as_return_value'>Standard output as return value</h2>
+
+<p>Now let&#8217;s think about why we treat program&#8217;s standard output as function&#8217;s return value. In the example above, you could return other type as you want, such as <code>void</code>, <code>char</code> and so on. But there will be a warning while compiling and the result will be transformed to <code>int</code> at last. You can try to modify the code like this:</p>
+
+<pre><code>char main(int argc, char *argv[])
+{
+	return &#39;a&#39;;
+}</code></pre>
+
+<p>Then compile and see the return value:</p>
+
+<pre><code>~/testing » gcc -Wall a.c
+a.c:4:11: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+------------------------------------------------------------
+~/testing » ./a.out
+------------------------------------------------------------
+~/testing » echo $?
+46</code></pre>
+
+<p>So if we want to get more information from program, we should get its output. Luckily, it&#8217;s easy to do it in shell. Using <code>`</code> or <code>$()</code> you could get the output of program and using them in the shell. For example:</p>
+
+<pre><code>echo `ls`</code></pre>
+
+<h2 id='and_then'>And then?</h2>
+
+<p>So if we treat arguments of program as function&#8217;s argument, standard output value as function&#8217;s return value, then <code>A(B(), C())</code> could be written as <code>A `B` `C`</code> in shell.</p>
+
+<p>And there is a note. In C programming, the type you could return is almost the same with what you can return in program. But when you want to get a string&#8217;s value in a function, you can use a string&#8217;s pointer as its argument and assignment to it. But you can not do it in shell.</p>
+</article>
+
+<footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2013-03-29-Comment-Everywhere.html">Prev: Comment Everywhere</a></td>
+    
+    
+  </tr></table>
+</footer>
+
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+    </section>
+
+    <footer id="page_footer">
+      Copyright @ 2012 Bin Wang
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
+    </footer>
+  </body>
+</html>
