@@ -52,11 +52,6 @@ a:hover{
   text-decoration: underline;
 }
 
-em{
-  font-style: normal;
-  font-weight: bold;
-}
-
 #post_list table{
   border-collapse: collapse;
   width: 100%;
