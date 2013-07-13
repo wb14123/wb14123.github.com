@@ -126,11 +126,11 @@ footer#page_footer{
 }
 
 #post h1{
-  font-size: 28px;
+  font-size: 30px;
 }
 #post h2{
   font-size: 22px;
-  font-weight: normal;
+  font-weight: bold;
 }
 #post h3{
   font-size: 20px;
