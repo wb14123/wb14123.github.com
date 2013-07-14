@@ -73,6 +73,14 @@ a:hover{
 #post_list #title{
   font-size: 24px;
 }
+#post_list #title a{
+  color:rgb(80, 80, 80);
+}
+#post_list #title a:hover{
+  color:black;
+  // font-weight: bold;
+  text-decoration: none;
+}
 #comment{
   padding-top: 20px;
 }
