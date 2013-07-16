@@ -52,7 +52,7 @@
 
   <p>These days I start learning erlang, and building a poker robot system. While I am learning it, I found the most difficult part is not the function style programming, nor the OTP system. The most difficult part is how to build and run erlang. Surely you can write an erlang module and run the functions from the erlang shell when you do exercises, but it is a little disturbing. And you surely don&#8217;t want to do that in the production environment. The erlang way and reltool is a little difficult for the newbies. Thanks to rebar, we can do it much easier now.</p>
 
-<p><a href='https://github.com/basho/rebar'>Rebar</a> is a very good tool to build and run erlang applications. It could automatic get dependencies, run it as a daemon, attach it and hot load code. I&#8217;m wonder why there is no book about erlang introduced it. Even the book <em>Learn You Some Erlang for Great Good</em>, which is published this year. The rebar offical wiki is a little simple. I will record how am I using rebar to build erlang applications.</p>
+<p><a href='https://github.com/basho/rebar'>Rebar</a> is a very good tool to build and run erlang applications. It could automatic get dependencies, run it as a daemon, attach it and hot load code. I&#8217;m wonder why there is no book about erlang introduced it. Even the book <em>Learn You Some Erlang for Great Good</em>, which is published this year. The rebar official wiki is a little simple. I will record how am I using rebar to build erlang applications.</p>
 
 <h2 id='basic'>Basic</h2>
 
@@ -118,15 +118,15 @@
 
 <h2 id='run_the_application'>Run the Application</h2>
 
-<p>Here comes the most important part. We will build and run our application. The rebar offical wiki has an airticle about how to handle release, but it doesn&#8217;t menstion how to handle release with dependencies. I will introduce how I do it.</p>
+<p>Here comes the most important part. We will build and run our application. The rebar official wiki has an article about how to handle release, but it doesn&#8217;t mention how to handle release with dependencies. I will introduce how I do it.</p>
 
-<p>We already know we could use <code>rebar compile</code> to compile the codes. But it only put objecct files in <code>ebin/</code>, we also need to run them in the shell manually if we want:</p>
+<p>We already know we could use <code>rebar compile</code> to compile the codes. But it only put object files in <code>ebin/</code>, we also need to run them in the shell manually if we want:</p>
 
 <pre><code>erl -pa ./ebin ./deps/*/ebin</code></pre>
 
 <p>This command will start the shell with compiled files, and you can run them in the shell.</p>
 
-<p>But it is absolutely not we want. We want a excuteable file, just run it to start. Even better, run as a daemon. Even more better, attach it when we want.</p>
+<p>But it is absolutely not we want. We want a executable file, just run it to start. Even better, run as a daemon. Even more better, attach it when we want.</p>
 
 <p>Rebar allows us to do all test things. It is a little complex, but much simpler than the origin way with erlang.</p>
 
@@ -146,7 +146,7 @@ rebar create-node nodeid=myapp</code></pre>
 <li>Add <code>{sub_dirs, [&quot;rel&quot;]}.</code> in <code>rebar.config</code>.</li>
 </ol>
 
-<p>Now, we could generate the excuteable files:</p>
+<p>Now, we could generate the executable files:</p>
 
 <pre><code>rebar compile generate</code></pre>
 
@@ -156,7 +156,7 @@ rebar create-node nodeid=myapp</code></pre>
 
 <p>Use <code>start</code> argument will start as a daemon, and using <code>attach</code> could come back to the erlang shell. You can see the usage with <code>help</code> argument.</p>
 
-<p>Ok, enjoy your self!</p>
+<p>OK, enjoy your self!</p>
 
 <h2 id='reference'>Reference</h2>
 
@@ -165,7 +165,7 @@ rebar create-node nodeid=myapp</code></pre>
 
 <li><a href='http://www.erlang.org/doc/design_principles/users_guide.html'>OTP design principles</a>.</li>
 
-<li><a href='https://github.com/basho/rebar/wiki'>Rebar officatl wiki</a>.</li>
+<li><a href='https://github.com/basho/rebar/wiki'>Rebar official wiki</a>.</li>
 </ul>
 </article>
 
