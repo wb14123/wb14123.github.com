@@ -46,22 +46,34 @@
 
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 <script>
-function getLink(item) {
-  return '<a href="http://book.douban.com/subject/' + item.book.id + '" target="_blank"></a>';
+
+function link(item) {
+  return $('<a>').attr('href', 'http://book.douban.com/subject/' + item.book.id)
+    .attr('title', item.book.title);
 }
 
-var url = 'http://api.douban.com/v2/book/user/42177876/collections?count=200&alt=xd&callback=?';
-$.getJSON(url, function(data){
-  var col = data.collections;
-  $.each(data.collections, function (i, item) {
-    if (item.status === 'read')
-      $("<img/>").attr("src", item.book.images.medium).appendTo("#read").wrap(getLink(item));
-    else if (item.status === 'reading')
-      $("<img/>").attr("src", item.book.images.medium).appendTo("#reading").wrap(getLink(item));
-    else if (item.status === 'wish')
-      $("<img/>").attr("src", item.book.images.medium).appendTo("#wish").wrap(getLink(item));
+function getBook(to, cb) {
+  var url = 'http://api.douban.com/v2/book/user/42177876/collections?to=' + to + '&count=200&alt=xd&callback=?';
+  $.getJSON(url, function(data){
+    $.each(data.collections, function (i, item) {
+      if (i === (data.collections.length - 1) && data.count < data.total) {
+        cb(item.updated);
+      }
+      $("<img/>")
+        .attr("src", item.book.images.medium)
+        .appendTo('#' + item.status)
+        .wrap(link(item));
+    });
   });
-});
+}
+
+function bookCallback(d) {
+  console.log(d);
+  getBook((new Date(d)).toISOString(), bookCallback);
+}
+
+getBook('', bookCallback);
+
 </script>
 
 <h2>I'm reading</h2>
