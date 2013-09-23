@@ -71,6 +71,7 @@ a:hover{
 }
 #post_list #title{
   font-size: 24px;
+  white-space: nowrap;
 }
 #post_list #title a{
 }
