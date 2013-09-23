@@ -57,7 +57,6 @@ a:hover{
 }
 
 #post_list table{
-  border-collapse: collapse;
   width: 100%;
   margin-top: 20px;
 }
@@ -74,7 +73,6 @@ a:hover{
   font-size: 24px;
 }
 #post_list #title a{
-  color:rgb(80, 80, 80);
 }
 #post_list #title a:hover{
   color:black;
@@ -162,4 +160,18 @@ footer#page_footer{
 }
 #post_footer td#next{
   text-align: right;
+}
+
+@media screen and (min-width:900px){
+  #post_list #description{
+    display: inline;
+  }
+}
+@media screen and (min-width:1060px){
+  #post{
+    width: 960px;
+  }
+  #post_list #tag {
+    display: inline;
+  }
 }
