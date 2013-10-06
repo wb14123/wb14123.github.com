@@ -169,7 +169,7 @@ footer#page_footer{
   }
 }
 @media screen and (min-width:1060px){
-  #post{
+  #article_content{
     width: 960px;
   }
   #post_list #tag {
