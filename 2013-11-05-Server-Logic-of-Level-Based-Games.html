@@ -103,7 +103,7 @@
 
 <h3 id='server_simplicity'>Server Simplicity</h3>
 
-<p>Almost all of the developers use a game engine to develop a game. Most of them don&#8217;t own these game engines, and lots of these engines are closed source. So they cannot know the low-level implementation of the game engine, which are also useful for the server if you want to validate the data more exactly. But as we have seen, the client side already has all of the logic, should we rewrite a game engine and this engine must have the same behaviour as the client&#8217;s? No. That is a lot of work!</p>
+<p>Almost all of the developers use a game engine to develop a game. Most of them don&#8217;t own these game engines, and lots of these engines are closed source. So they cannot know the low-level implementation of the game engine, which are also useful for the server if you want to validate the data more exactly. But as we have seen, the client side already has all of the logic, should we rewrite a game engine that has the same behaviour as the client&#8217;s? No. That is a lot of work!</p>
 
 <p>So which parts are <strong>not</strong> going to be validated?</p>
 
@@ -200,11 +200,11 @@
 <ol>
 <li>Get a package labeled as type 3.</li>
 
-<li>If no package labeled as type 3, get a package labeled type 4.</li>
+<li>If no package is labeled as type 3, get a package labeled as type 4.</li>
 
 <li>Use a offline worker to validate if the user is cheating.</li>
 
-<li><strong>Punish the user</strong> if the user is cheating. Labele the package as type 5.</li>
+<li><strong>Punish the user</strong> if the user is cheating. Label the package as type 5.</li>
 
 <li>Label the package as type 6 otherwise.</li>
 </ol>
