@@ -86,8 +86,8 @@ a:hover{
 
 
 header#page_header{
-  width:100%;
   text-align: right;
+  width: 100%;
 }
 
 header#page_header nav ul{
@@ -163,6 +163,10 @@ footer#page_footer{
   text-align: right;
 }
 
+#content_table {
+  visibility: hide;
+}
+
 @media screen and (min-width:900px){
   #post_list #description{
     display: inline;
@@ -174,5 +178,9 @@ footer#page_footer{
   }
   #post_list #tag {
     display: inline;
+  }
+  #content_table {
+    float: right;
+    visibility: show;
   }
 }
