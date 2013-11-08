@@ -164,7 +164,7 @@ footer#page_footer{
 }
 
 #content_table {
-  visibility: hide;
+  display: none;
 }
 
 @media screen and (min-width:900px){
@@ -179,8 +179,10 @@ footer#page_footer{
   #post_list #tag {
     display: inline;
   }
+}
+@media screen and (min-width:1300px) {
   #content_table {
     float: right;
-    visibility: show;
+    display: block;
   }
 }
