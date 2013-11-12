@@ -155,16 +155,14 @@
 <li>Database.</li>
 </ul>
 
-<p>The database will store the packages of players&#8217; actions. They can be stored as 6 types:</p>
+<p>The database will store the packages of players&#8217; actions. They can be stored as 5 types:</p>
 
 <ol>
 <li>Online validate failed.</li>
 
 <li>Online validate success.</li>
 
-<li>Unusual.</li>
-
-<li>Usual.</li>
+<li>Classified, with a probability if the player is cheating.</li>
 
 <li>Offline validate failed.</li>
 
@@ -189,28 +187,26 @@
 
 <h3 id='classify_part'>Classify Part</h3>
 
-<p>Classify algorithms use data in database (type 1, 5 as cheating package, and type 6 as not cheating package) to train itself.</p>
+<p>Classify algorithms use data in database (type 1, 4 as cheating package, and type 5 as not cheating package) to train itself.</p>
 
 <p>Let&#8217;s see how classify workers label the data in database:</p>
 
 <ol>
 <li>Get a package labeled as type 2.</li>
 
-<li>Use classify algorithms to validate if it is usual. And label it as type 3 or 4.</li>
+<li>Use classify algorithms to count its probability of cheating, label it as type 3.</li>
 </ol>
 
 <h3 id='offline_part'>Offline Part</h3>
 
 <ol>
-<li>Get a package labeled as type 3.</li>
-
-<li>If no package is labeled as type 3, get a package labeled as type 4.</li>
+<li>Get a package labeled as type 3, with the max probability of cheating.</li>
 
 <li>Use a offline worker to validate if the user is cheating.</li>
 
-<li><strong>Punish the user</strong> if the user is cheating. Label the package as type 5.</li>
+<li><strong>Punish the user</strong> if the user is cheating. Label the package as type 4.</li>
 
-<li>Label the package as type 6 otherwise.</li>
+<li>Label the package as type 5 otherwise.</li>
 </ol>
 
 <h2 id='reference'>Reference</h2>
@@ -222,6 +218,8 @@
 
 <li><a href='http://www.smartfoxserver.com/'>SmartFoxServer</a></li>
 </ul>
+
+<p><em>Updated at Nov 23, 2013. Use probability of classify algorithm.</em></p>
 </article>
 
 <footer id="post_footer">
