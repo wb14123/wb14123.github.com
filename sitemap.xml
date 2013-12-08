@@ -2,6 +2,15 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.binwang.me/2013-12-08-Languages-Should-Have-Database-Built-In.html</loc>
+    
+    <lastmod>2013-12-08T00:00:00+08:00</lastmod>
+    
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <url>
     <loc>http://www.binwang.me/2013-11-16-Fetch-Popular-Erlang-Modules-by-Coffee-Script.html</loc>
     
     <lastmod>2013-11-16T00:00:00+08:00</lastmod>
