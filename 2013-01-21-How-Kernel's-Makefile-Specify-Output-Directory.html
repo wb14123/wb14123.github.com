@@ -51,7 +51,7 @@
     
   </header>
 
-  <p>When compile Linux kernel, we could output files to a split directory with &#8220;make O=&#8221;. The kernel&#8217;s way to do it is a little tricky. Since kernel&#8217;s Makefile is very big, we could have a simpler version to analyse:</p>
+  <p>When compile Linux kernel, we could output files to a split directory with “make O=”. The kernel’s way to do it is a little tricky. Since kernel’s Makefile is very big, we could have a simpler version to analyse:</p>
 
 <pre><code>ifeq ($(KBUILD_SRC),)
 ifeq (&quot;$(origin O)&quot;, &quot;command line&quot;)
@@ -82,7 +82,7 @@ target2:
 	@echo &quot;target KBUILD_OUTPUT: $(KBUILD_OUTPUT)&quot;
 endif</code></pre>
 
-<p>You could try to execute <code>make O=../build target1</code>, it will output files to <code>../build</code>. Let&#8217;s see how it works.</p>
+<p>You could try to execute <code>make O=../build target1</code>, it will output files to <code>../build</code>. Let’s see how it works.</p>
 
 <p>When you execute make, <code>KBUILD_SRC</code> is not defined at first, so it will make <code>sub-make</code> as a dependency of any target you input(except some <code>filter-out</code> target such as <code>sub-make</code>). Change the directory to <code>KBUILD_OUTPUT</code>(<code>-C</code> option), set <code>KBUILD_SRC</code> and then invoke itself again(<code>-f</code> option).</p>
 

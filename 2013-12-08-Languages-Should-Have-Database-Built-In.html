@@ -51,7 +51,7 @@
     
   </header>
 
-  <p>When we are programming, we are programming with data. When the data is too big, we could not put them all in the Ram. So we need some place to store these data, and then read them when we need them. The place we store our data is called &#8220;database&#8221;.</p>
+  <p>When we are programming, we are programming with data. When the data is too big, we could not put them all in the Ram. So we need some place to store these data, and then read them when we need them. The place we store our data is called “database”.</p>
 
 <p>The steps to use a database are very annoying. We need to write much code to do operations on it. We need to consider many details so that we could read and write more quickly with less problems. But why we should not care about it? The only thing we care about is that we could be able to get, store and compute the data. We do not care about how the data is stored.</p>
 
@@ -63,21 +63,21 @@
 
 <p>There are two ways:</p>
 
-<h2 id='database_as_a_module_of_the_language'>Database as a Module of the Language</h2>
+<h2 id="database_as_a_module_of_the_language">Database as a Module of the Language</h2>
 
 <p>This way is implemented as the standalone databases in nowadays. Though we have a standalone database that many different languages could be able to use, none of the language could be able to use it easily. That is the biggest problem.</p>
 
 <p>There is no need to build the database in the core language in this way. But the database library should be a standard one and the API should be easy to use.</p>
 
-<p>The good part of this way is the structure of different languages&#8217; database could be the same, or could be able to transform to each other. So that many languages could be collaborated together.</p>
+<p>The good part of this way is the structure of different languages’ database could be the same, or could be able to transform to each other. So that many languages could be collaborated together.</p>
 
 <p>The bad part is we still realize the exists of the database.</p>
 
-<h2 id='database_totally_built_in_the_language'>Database Totally Built In the Language</h2>
+<h2 id="database_totally_built_in_the_language">Database Totally Built In the Language</h2>
 
 <p>The other way is to totally build the database in the language. In this way, the data uses the Ram first, just as the normal languages. When the Ram is not enough, it moves the cold data to the hark disk. So that we could just write code normally, avoiding the annoying part to do operations on the database.</p>
 
-<p>The operations on the databases could be difficult. If the language don&#8217;t resolve it, it just leave these difficult things to the programmers.</p>
+<p>The operations on the databases could be difficult. If the language don’t resolve it, it just leave these difficult things to the programmers.</p>
 
 <p>Mongodb is a good start point. It use as many Ram as it can. And when the Ram is not enough, it will put the data in the hard disk. It also uses Javascript as its query language.</p>
 </article>

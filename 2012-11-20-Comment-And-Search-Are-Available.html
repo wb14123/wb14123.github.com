@@ -53,17 +53,17 @@
 
   <p>As you can see, my blog are able to comment and search now!</p>
 
-<h2 id='comment'>Comment</h2>
+<h2 id="comment">Comment</h2>
 
-<p>I always think comment is very important for a blog. You can know how helpful or is there some issues in your article. <a href='http://disqus.com'>Disqus</a> is a great tool to put comment on a website. It is neat and powerful as you can see. It may be a little slow in China. But consider of my blog are mostly written in English, it is not a big deal.</p>
+<p>I always think comment is very important for a blog. You can know how helpful or is there some issues in your article. <a href="http://disqus.com">Disqus</a> is a great tool to put comment on a website. It is neat and powerful as you can see. It may be a little slow in China. But consider of my blog are mostly written in English, it is not a big deal.</p>
 
-<h2 id='search'>Search</h2>
+<h2 id="search">Search</h2>
 
-<p>The search engine I am using is <a href='http://www.google.com/cse'>Google custom search engine</a>. Isn&#8217;t it awesome I have google&#8217;s technology on my blog? It is easy to use, too. The badness of this choice is google may take some time to put the website&#8217;s content into its index. And google is even not available in China sometimes.</p>
+<p>The search engine I am using is <a href="http://www.google.com/cse">Google custom search engine</a>. Isn’t it awesome I have google’s technology on my blog? It is easy to use, too. The badness of this choice is google may take some time to put the website’s content into its index. And google is even not available in China sometimes.</p>
 
-<h2 id='scripts_to_make_life_easy'>Scripts to Make Life Easy</h2>
+<h2 id="scripts_to_make_life_easy">Scripts to Make Life Easy</h2>
 
-<p>As I put the website on <a href='http://pages.github.com/'>github page</a>, I don&#8217;t want to upload the jekyll directory. Just the static site is enough. So I must copy the site to git repository, add, commit and then push it. It is a boring work. I write two scripts to make it easy. I don&#8217;t know if there is some other way to do this, but I&#8217;m OK with it.</p>
+<p>As I put the website on <a href="http://pages.github.com/">github page</a>, I don’t want to upload the jekyll directory. Just the static site is enough. So I must copy the site to git repository, add, commit and then push it. It is a boring work. I write two scripts to make it easy. I don’t know if there is some other way to do this, but I’m OK with it.</p>
 
 <p>update.sh: generate static site and upload to github.</p>
 
@@ -99,14 +99,14 @@ POST_DATE=`date +%Y-%m-%d`
 POST_DIR=&quot;./jekyll/_posts&quot;
 FILE_NAME=`echo &quot;$POST_DIR/$POST_DATE-$POST_NAME.md&quot; | sed &quot;s/ /-/g&quot;`
 
-echo &quot;
----
-layout: post
+echo &quot;</code></pre>
+<hr />
+<pre><code>layout: post
 title: $POST_NAME
 categories: misc
-tags: []
----
-&quot; &gt; $FILE_NAME
+tags: []</code></pre>
+<hr />
+<pre><code>&quot; &gt; $FILE_NAME
 
 vim $FILE_NAME</code></pre>
 </article>

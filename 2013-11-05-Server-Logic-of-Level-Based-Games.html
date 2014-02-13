@@ -39,7 +39,7 @@
 
     <section id="page_content">
       <div id="content_table">
-  <h3>Table of Contents</h3><ol class="toc"><li><a href="#what_is_level_based_game">What is &#8220;Level Based Game&#8221;?</a></li><li><a href="#what_should_a_server_do">What Should A Server Do?</a></li><li><a href="#online_validation">Online Validation</a></li><li><a href="#offline_validation">Offline Validation</a></li><li><a href="#machine_learning_algorithms">Machine Learning Algorithms</a></li><li><a href="#multiplayer_implementation">Multi-Player Implementation</a></li><li><a href="#conclusion">Conclusion</a></li><li><a href="#reference">Reference</a></li></ol>
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#what_is_level_based_game">What is “Level Based Game”?</a></li><li><a href="#what_should_a_server_do">What Should A Server Do?</a></li><li><a href="#online_validation">Online Validation</a></li><li><a href="#offline_validation">Offline Validation</a></li><li><a href="#machine_learning_algorithms">Machine Learning Algorithms</a></li><li><a href="#multiplayer_implementation">Multi-Player Implementation</a></li><li><a href="#conclusion">Conclusion</a></li><li><a href="#reference">Reference</a></li></ol>
 </div>
 
 <div id="article_content">
@@ -51,13 +51,13 @@
     
   </header>
 
-  <p>These days, I&#8217;m working on the server side of an ARPG mobile game. The client of this game is written with Unity3d. I&#8217;ve never done such a thing before. After thinking and researching many days, I found out how to implement the server logic in such a &#8220;level based game&#8221;.</p>
+  <p>These days, I’m working on the server side of an ARPG mobile game. The client of this game is written with Unity3d. I’ve never done such a thing before. After thinking and researching many days, I found out how to implement the server logic in such a “level based game”.</p>
 
-<h2 id='what_is_level_based_game'>What is &#8220;Level Based Game&#8221;?</h2>
+<h2 id="what_is_level_based_game">What is “Level Based Game”?</h2>
 
-<p>Level based game means it is not a typical client-server game. In a level based game, player (or with his friends) could play the game in a level, isolated from other players. So most of mobile games are level based games, such as Angry Birds, Doodle Jump and so on. The more suitable examples are WarCraft3, StarCraft and Dota2. A &#8220;level based game&#8221; will have all the logic on the client, so that the player could play in a level without the Internet available.</p>
+<p>Level based game means it is not a typical client-server game. In a level based game, player (or with his friends) could play the game in a level, isolated from other players. So most of mobile games are level based games, such as Angry Birds, Doodle Jump and so on. The more suitable examples are WarCraft3, StarCraft and Dota2. A “level based game” will have all the logic on the client, so that the player could play in a level without the Internet available.</p>
 
-<p>A &#8220;level based game&#8221; could do these things:</p>
+<p>A “level based game” could do these things:</p>
 
 <ul>
 <li>User could play in a level without any network available.</li>
@@ -69,9 +69,9 @@
 <li>User could not be able to cheat.</li>
 </ul>
 
-<h2 id='what_should_a_server_do'>What Should A Server Do?</h2>
+<h2 id="what_should_a_server_do">What Should A Server Do?</h2>
 
-<p>A game such as Angry Birds or Doodle Jump need no server. But some RPG games such as <a href='https://www.youtube.com/watch?v=QRvD5Om6w3c'>Eternity Warriors</a> need a server to validate if the player was cheating. The validation is not as same as the traditional MMO-RPG games on PC. Client has all the logic of the game in order to play without any network available. So the server don&#8217;t need to implement the logic things about the game. Things the server need to do are:</p>
+<p>A game such as Angry Birds or Doodle Jump need no server. But some RPG games such as <a href="https://www.youtube.com/watch?v=QRvD5Om6w3c">Eternity Warriors</a> need a server to validate if the player was cheating. The validation is not as same as the traditional MMO-RPG games on PC. Client has all the logic of the game in order to play without any network available. So the server don’t need to implement the logic things about the game. Things the server need to do are:</p>
 
 <ol>
 <li>Validate if a player was cheating.</li>
@@ -79,7 +79,7 @@
 <li>Broadcast messages if a user plays with his friends.</li>
 </ol>
 
-<p>I will not talk about broadcast messages in this article. People do researches on it since &#8220;server&#8221; has born. I just want to talk about how to validate if the user was cheating on the logic. &#8220;On the logic&#8221; means the validate methods in this article will be useless if the player use a robot to play.</p>
+<p>I will not talk about broadcast messages in this article. People do researches on it since “server” has born. I just want to talk about how to validate if the user was cheating on the logic. “On the logic” means the validate methods in this article will be useless if the player use a robot to play.</p>
 
 <p>The goals of the validation are:</p>
 
@@ -91,23 +91,23 @@
 <li>Easy to implement.</li>
 </ul>
 
-<h2 id='online_validation'>Online Validation</h2>
+<h2 id="online_validation">Online Validation</h2>
 
 <p>A user need not to connect to the server when he plays alone. But his data need to be validated. So we store his actions in the level. Pack and send them to the server after the level completed. Server will validate the package, and send a response. If the time to response is reasonable for the user, then it can be thought as an online validation.</p>
 
-<p>If the player&#8217;s data did not pass the online validation, he can not get the prize of this level.</p>
+<p>If the player’s data did not pass the online validation, he can not get the prize of this level.</p>
 
 <p>Online validation just validate parts of the logic. We consider efficiency and simplicity, then decide which parts are going to be validated.</p>
 
-<h3 id='server_efficiency'>Server Efficiency</h3>
+<h3 id="server_efficiency">Server Efficiency</h3>
 
-<p>Server will be efficiency if it is event based. But most of ARPG games are in a main loop, it use lots of CPU resources. And almost all of RPG games have collision detection, which will also waste the server resource. So the server will just validate the steps which don&#8217;t wast resources.</p>
+<p>Server will be efficiency if it is event based. But most of ARPG games are in a main loop, it use lots of CPU resources. And almost all of RPG games have collision detection, which will also waste the server resource. So the server will just validate the steps which don’t wast resources.</p>
 
-<p>The advantage of the server don&#8217;t have a main loop is, it could run really fast. It just compute real things, never waste the resources in a loop and wait for something.</p>
+<p>The advantage of the server don’t have a main loop is, it could run really fast. It just compute real things, never waste the resources in a loop and wait for something.</p>
 
-<h3 id='server_simplicity'>Server Simplicity</h3>
+<h3 id="server_simplicity">Server Simplicity</h3>
 
-<p>Almost all of the developers use a game engine to develop a game. Most of them don&#8217;t own these game engines, and lots of these engines are closed source. So they cannot know the low-level implementation of the game engine, which are also useful for the server if you want to validate the data more exactly. But as we have seen, the client side already has all of the logic, should we rewrite a game engine that has the same behaviour as the client&#8217;s? No. That is a lot of work!</p>
+<p>Almost all of the developers use a game engine to develop a game. Most of them don’t own these game engines, and lots of these engines are closed source. So they cannot know the low-level implementation of the game engine, which are also useful for the server if you want to validate the data more exactly. But as we have seen, the client side already has all of the logic, should we rewrite a game engine that has the same behaviour as the client’s? No. That is a lot of work!</p>
 
 <p>So which parts are <strong>not</strong> going to be validated?</p>
 
@@ -119,32 +119,32 @@
 
 <p>So the parts are not going to be validated are collision detection, path finding, AI and so on.</p>
 
-<h2 id='offline_validation'>Offline Validation</h2>
+<h2 id="offline_validation">Offline Validation</h2>
 
 <p>Online validation is not enough for the clever cheaters. So we need a more powerful way to validate.</p>
 
-<p>The most powerful way is validate all the logic: replay the player&#8217;s actions, and see if the result is the same. It will be difficult to implement the same logic as the client&#8217;s if the client use a game engine. So the idea is, we just use the client application to do it. As far as I know, the Unity3d standalone could be able to run on a Linux server without GPU.</p>
+<p>The most powerful way is validate all the logic: replay the player’s actions, and see if the result is the same. It will be difficult to implement the same logic as the client’s if the client use a game engine. So the idea is, we just use the client application to do it. As far as I know, the Unity3d standalone could be able to run on a Linux server without GPU.</p>
 
-<p>The replay mechanism is very useful in many other ways. It could help debug, review user&#8217;s data manually and so on.</p>
+<p>The replay mechanism is very useful in many other ways. It could help debug, review user’s data manually and so on.</p>
 
 <p>This method will use lots of server resources. So the validation is offline. Which means the prizes of the level are given. And we only do offline validation when the server has enough resource. And when we found a player is cheating, he will be punished.</p>
 
-<h2 id='machine_learning_algorithms'>Machine Learning Algorithms</h2>
+<h2 id="machine_learning_algorithms">Machine Learning Algorithms</h2>
 
 <p>Offline validation will use lots of resources. When there are many players, it may not be able to validate all the packages. So we need to use machine learning algorithms to recognize which packages may unusual, then use offline validation. There are many machine learning algorithms could be used, such as classify algorithms.</p>
 
 <p>When an algorithms have a high accurate rate and it is fast enough, we could use it as a part of online validation.</p>
 
-<h2 id='multiplayer_implementation'>Multi-Player Implementation</h2>
+<h2 id="multiplayer_implementation">Multi-Player Implementation</h2>
 
 <p>The implement of multi-player is easy. Since many players are playing, the messages are send to the server as a stream instead of a package. So we just run the online validation at the same time when the users are playing. When we found one of these players is cheating, just break off this level. Other parts will still be the same.</p>
 
-<h2 id='conclusion'>Conclusion</h2>
+<h2 id="conclusion">Conclusion</h2>
 
 <p>So the server architectural include:</p>
 
 <ul>
-<li>A server: receive players&#8217; action.</li>
+<li>A server: receive players’ action.</li>
 
 <li>Online validation workers: fast/simple validation.</li>
 
@@ -155,7 +155,7 @@
 <li>Database.</li>
 </ul>
 
-<p>The database will store the packages of players&#8217; actions. They can be stored as 5 types:</p>
+<p>The database will store the packages of players’ actions. They can be stored as 5 types:</p>
 
 <ol>
 <li>Online validate failed.</li>
@@ -169,27 +169,27 @@
 <li>Offline validate success.</li>
 </ol>
 
-<p>Here are how the server works. It will include online part(server, online validation worker, database), offline part(offline worker, database) and classify part(classify worker, database). The input is the packages of the players&#8217; actions. And the bold font is the output.</p>
+<p>Here are how the server works. It will include online part(server, online validation worker, database), offline part(offline worker, database) and classify part(classify worker, database). The input is the packages of the players’ actions. And the bold font is the output.</p>
 
-<h3 id='online_part'>Online Part</h3>
+<h3 id="online_part">Online Part</h3>
 
 <ol>
-<li>Server receive the players&#8217; actions data from client.</li>
+<li>Server receive the players’ actions data from client.</li>
 
 <li>Use an online worker to validate if the user is cheating.</li>
 
-<li><strong>Don&#8217;t give the prize</strong> if the user is cheating. Label the package as type 1.</li>
+<li><strong>Don’t give the prize</strong> if the user is cheating. Label the package as type 1.</li>
 
 <li><strong>Give the prize</strong> otherwise. Label the package as type 2.</li>
 
 <li><strong>Respons the result to client</strong>. Put the package in the database.</li>
 </ol>
 
-<h3 id='classify_part'>Classify Part</h3>
+<h3 id="classify_part">Classify Part</h3>
 
 <p>Classify algorithms use data in database (type 1, 4 as cheating package, and type 5 as not cheating package) to train itself.</p>
 
-<p>Let&#8217;s see how classify workers label the data in database:</p>
+<p>Let’s see how classify workers label the data in database:</p>
 
 <ol>
 <li>Get a package labeled as type 2.</li>
@@ -197,7 +197,7 @@
 <li>Use classify algorithms to count its probability of cheating, label it as type 3.</li>
 </ol>
 
-<h3 id='offline_part'>Offline Part</h3>
+<h3 id="offline_part">Offline Part</h3>
 
 <ol>
 <li>Get a package labeled as type 3, with the max probability of cheating.</li>
@@ -209,14 +209,14 @@
 <li>Label the package as type 5 otherwise.</li>
 </ol>
 
-<h2 id='reference'>Reference</h2>
+<h2 id="reference">Reference</h2>
 
 <p>Game servers for Unity3d:</p>
 
 <ul>
-<li><a href='http://cloud.exitgames.com/'>Photon</a></li>
+<li><a href="http://cloud.exitgames.com/">Photon</a></li>
 
-<li><a href='http://www.smartfoxserver.com/'>SmartFoxServer</a></li>
+<li><a href="http://www.smartfoxserver.com/">SmartFoxServer</a></li>
 </ul>
 
 <p><em>Updated at Nov 23, 2013. Use probability of classify algorithm.</em></p>

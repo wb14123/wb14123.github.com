@@ -51,11 +51,11 @@
     
   </header>
 
-  <p>What&#8217;s the most important application for Linux users? The answer must be shell. It comes out the ability to combine tools together to solve complex problem. It is a little like function, such as <code>A | B</code> could be represented as <code>A(B(x))</code>. But how do you respresent the format <code>A(B(x), C(y))</code> in a shell?</p>
+  <p>What’s the most important application for Linux users? The answer must be shell. It comes out the ability to combine tools together to solve complex problem. It is a little like function, such as <code>A | B</code> could be represented as <code>A(B(x))</code>. But how do you respresent the format <code>A(B(x), C(y))</code> in a shell?</p>
 
-<p>So here comes some libraries to call command like a function in programming languages. They are interesting, but you may not want to use them in a real project. Let&#8217;s take a look first and then we will talk about them.</p>
+<p>So here comes some libraries to call command like a function in programming languages. They are interesting, but you may not want to use them in a real project. Let’s take a look first and then we will talk about them.</p>
 
-<h2 id='sh_python'><a href='http://amoffat.github.com/sh/'>Sh</a> (Python)</h2>
+<h2 id="sh_python"><a href="http://amoffat.github.com/sh/">Sh</a> (Python)</h2>
 
 <p>This library contains many advanced features and is well documented.</p>
 
@@ -65,7 +65,7 @@ print(sort(du(glob(&quot;*&quot;), &quot;-sb&quot;), &quot;-rn&quot;))
 # print(the number of folders and files in /etc
 print(wc(ls(&quot;/etc&quot;, &quot;-1&quot;), &quot;-l&quot;)))</code></pre>
 
-<h2 id='shell_perl'><a href='http://perldoc.perl.org/Shell.html'>Shell</a> (Perl)</h2>
+<h2 id="shell_perl"><a href="http://perldoc.perl.org/Shell.html">Shell</a> (Perl)</h2>
 
 <p>Using perl with shell command is always comfortable.</p>
 
@@ -78,13 +78,13 @@ cp(&quot;/etc/passwd&quot;, &quot;/tmp/passwd&quot;);
 my $sh = Shell-&gt;new;
 print $sh-&gt;ls(&#39;-l&#39;);</code></pre>
 
-<h2 id='scsh_scheme'><a href='http://www.scsh.net/'>Scsh</a> (Scheme)</h2>
+<h2 id="scsh_scheme"><a href="http://www.scsh.net/">Scsh</a> (Scheme)</h2>
 
-<p>Scheme is a great and purl language. But scsh seems like a dead project. You can find <a href='https://github.com/scheme/scsh'>a fork on github</a>. Howerver, I failed to compile its dependency <a href='http://s48.org/'>scheme48</a>.</p>
+<p>Scheme is a great and purl language. But scsh seems like a dead project. You can find <a href="https://github.com/scheme/scsh">a fork on github</a>. Howerver, I failed to compile its dependency <a href="http://s48.org/">scheme48</a>.</p>
 
-<h2 id='shake_clojure'><a href='https://github.com/sunng87/shake.git'>Shake</a> (Clojure)</h2>
+<h2 id="shake_clojure"><a href="https://github.com/sunng87/shake.git">Shake</a> (Clojure)</h2>
 
-<p>It is written by one of my old colleagues. It has <a href='http://news.ycombinator.com/item?id=4553076'>a discuss on Hacker News</a>.</p>
+<p>It is written by one of my old colleagues. It has <a href="http://news.ycombinator.com/item?id=4553076">a discuss on Hacker News</a>.</p>
 
 <pre><code>(require &#39;[shake.static :as sh])
 
@@ -98,9 +98,9 @@ print $sh-&gt;ls(&#39;-l&#39;);</code></pre>
 ;; using clojure forms in shake
 (sh/curl $(format &quot;https://github.com/%s&quot; &quot;sunng87&quot;))</code></pre>
 
-<h2 id='conclusion'>Conclusion</h2>
+<h2 id="conclusion">Conclusion</h2>
 
-<p>So after all, you may ask: why not just use these language&#8217;s REPL as a shell? It provides more power! But thinking of the daily life on Linux, how many times will you use these &#8220;advance features&#8221;? Instead, if you prefer the &#8220;function style shell&#8221;, you need to type many parentheses, quotes and so on. I think the current shell may not provides the most complete ability, but it provides the most efficient way to work.</p>
+<p>So after all, you may ask: why not just use these language’s REPL as a shell? It provides more power! But thinking of the daily life on Linux, how many times will you use these “advance features”? Instead, if you prefer the “function style shell”, you need to type many parentheses, quotes and so on. I think the current shell may not provides the most complete ability, but it provides the most efficient way to work.</p>
 </article>
 
 <footer id="post_footer">

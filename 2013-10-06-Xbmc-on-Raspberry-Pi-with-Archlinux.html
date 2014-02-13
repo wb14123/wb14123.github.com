@@ -39,7 +39,7 @@
 
     <section id="page_content">
       <div id="content_table">
-  <h3>Table of Contents</h3><ol class="toc"><li><a href="#id1">硬件</a></li><li><a href="#id2">软件</a></li><li><a href="#id3">中文化</a></li><li><a href="#trouble_shooting">Trouble Shooting</a></li></ol>
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#">硬件</a></li><li><a href="#_2">软件</a></li><li><a href="#_3">中文化</a></li><li><a href="#trouble_shooting">Trouble Shooting</a></li></ol>
 </div>
 
 <div id="article_content">
@@ -53,7 +53,7 @@
 
   <p>前段时间买了Raspberry Pi。一开始安装的系统是raspbian，但是感觉安装软件太不方便了，于是安装了Archlinux Arm。在Archlinux上安装xbmc上很简单。这里简单介绍一下。</p>
 
-<h2 id='id1'>硬件</h2>
+<h2 id="">硬件</h2>
 
 <p>我使用的是很老的电视，没有HDMI接口的。用到的硬件主要有：</p>
 
@@ -64,16 +64,16 @@
 
 <li>Audio，音频转莲花头线</li>
 
-<li>电源。最好使用5V/1A的。我使用的是有源usb hub提供的电源，<a href='http://item.jd.com/648176.html'>力特（Z－TEK）ZK033A</a></li>
+<li>电源。最好使用5V/1A的。我使用的是有源usb hub提供的电源，<a href="http://item.jd.com/648176.html">力特（Z－TEK）ZK033A</a></li>
 </ul>
 
 <p>我还使用了无线网卡。主要是我住的地方只能使用无线。我用的无线网卡是</p>
 
 <ul>
-<li><a href='http://www.amazon.cn/gp/product/B007FN9D80/ref=oh_details_o00_s00_i00?ie=UTF8&amp;psc=1'>EDUP EP-N8508GS黄金版</a>。</li>
+<li><a href="http://www.amazon.cn/gp/product/B007FN9D80/ref=oh_details_o00_s00_i00?ie=UTF8&psc=1">EDUP EP-N8508GS黄金版</a>。</li>
 </ul>
 
-<h2 id='id2'>软件</h2>
+<h2 id="_2">软件</h2>
 
 <p>使用<code>wifi-menu</code>可以在命令行中方便的连接无线网络。这个软件是默认安装的。</p>
 
@@ -86,7 +86,7 @@
 
 <li><code>yaourt</code>，用以安装aur源</li>
 
-<li>解码器，详见<a href='https://wiki.archlinux.org/index.php/codecs'>wiki</a></li>
+<li>解码器，详见<a href="https://wiki.archlinux.org/index.php/codecs">wiki</a></li>
 </ul>
 
 <p>一些xbmc的插件，使用aur源安装。</p>
@@ -101,23 +101,21 @@
 
 <p>不需要安装图形环境就可以使用xbmc，只需要执行<code>xbmc-standalone</code></p>
 
-<h2 id='id3'>中文化</h2>
+<h2 id="_3">中文化</h2>
 
 <p>设置语言为中文，字体为Arial即可。</p>
 
-<h2 id='trouble_shooting'>Trouble Shooting</h2>
+<h2 id="trouble_shooting">Trouble Shooting</h2>
 
-<h3 id='1_'>1. 在电视中显示为黑白</h3>
+<h3 id="1_">1. 在电视中显示为黑白</h3>
 
 <p>试着在<code>/boot/config.txt</code>中设定<code>sdtv_mode</code>的值为2或3。</p>
 
-<h3 id='2_xbmc'>2. 在启动xbmc时提示<code>failed to open vchiq instance</code></h3>
+<h3 id="2_xbmc">2. 在启动xbmc时提示<code>failed to open vchiq instance</code></h3>
 
-<p><code>
-chmod a+wr /dev/vchiq
-</code></p>
+<pre><code>chmod a+wr /dev/vchiq</code></pre>
 
-<h3 id='3_cpu'>3. 在空闲时cpu占用率过高</h3>
+<h3 id="3_cpu">3. 在空闲时cpu占用率过高</h3>
 
 <p>在xbmc中关闭rss feed。</p>
 </article>

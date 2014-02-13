@@ -51,13 +51,13 @@
     
   </header>
 
-  <p><a href='http://xfs.org/'>Xfs</a> is said a high performance file system. So I changed my root file system from ext4 to xfs today. There are some tricky things. This article is a simple HOWTO.</p>
+  <p><a href="http://xfs.org/">Xfs</a> is said a high performance file system. So I changed my root file system from ext4 to xfs today. There are some tricky things. This article is a simple HOWTO.</p>
 
-<h2 id='1_make_a_xfs_partation'>1. Make a xfs partation</h2>
+<h2 id="1_make_a_xfs_partation">1. Make a xfs partation</h2>
 
-<p>Note: a xfs partation cannot be shrunk. And if you don&#8217;t have a splite boot partation, you should make one with <code>ext2</code> since grub don&#8217;t support xfs well.</p>
+<p>Note: a xfs partation cannot be shrunk. And if you don’t have a splite boot partation, you should make one with <code>ext2</code> since grub don’t support xfs well.</p>
 
-<h2 id='2_copy_files_with_tar'>2. Copy files with tar</h2>
+<h2 id="2_copy_files_with_tar">2. Copy files with tar</h2>
 
 <p>Copy files from origin ext4 partation to the new xfs partation with <code>tar</code>. Be careful, <em>never</em> use <code>cp</code> to backup a file system since <code>cp</code> will change the setuid bit and follow hard links. Use <code>tar</code> instead, for example:</p>
 
@@ -67,18 +67,18 @@
 
 <pre><code>tar  -cf - &lt;ext4_mount_path&gt; | ( cd &lt;xfs_mount_path&gt; ; tar -xpvf - )</code></pre>
 
-<h2 id='3_config_grub_and_modify_fstab'>3. Config grub and modify fstab</h2>
+<h2 id="3_config_grub_and_modify_fstab">3. Config grub and modify fstab</h2>
 
-<p>There is nothing special here. Just modify your <a href='https://wiki.archlinux.org/index.php/GRUB'>grub config</a> and <a href='https://wiki.archlinux.org/index.php/fstab'>fstab</a> in your xfs partation. Remember to make an entry for your old root file system while config the grub. Then you could try to reboot. If the system could not mount xfs partation, you may want to boot with the old ext4 root partation and modify initramfs for xfs support as bellow.</p>
+<p>There is nothing special here. Just modify your <a href="https://wiki.archlinux.org/index.php/GRUB">grub config</a> and <a href="https://wiki.archlinux.org/index.php/fstab">fstab</a> in your xfs partation. Remember to make an entry for your old root file system while config the grub. Then you could try to reboot. If the system could not mount xfs partation, you may want to boot with the old ext4 root partation and modify initramfs for xfs support as bellow.</p>
 
-<h2 id='4_modify_initramfs_to_include_xfs_support'>4. Modify initramfs to include xfs support</h2>
+<h2 id="4_modify_initramfs_to_include_xfs_support">4. Modify initramfs to include xfs support</h2>
 
-<p>In the boot process, kernel use initramfs as root first, then mount the real root file system. If your initramfs don&#8217;t include support for xfs, you may see these errors during booting:</p>
+<p>In the boot process, kernel use initramfs as root first, then mount the real root file system. If your initramfs don’t include support for xfs, you may see these errors during booting:</p>
 
 <pre><code>fsck.xfs: file not found
 mount: unknown filesystem type &quot;xfs&quot;</code></pre>
 
-<p>In this case, you need boot into your old ext4 root partation and modify initramfs. In archlinux, you can do it with <a href='https://wiki.archlinux.org/index.php/mkinitcpio'>mkinitcpio</a>.</p>
+<p>In this case, you need boot into your old ext4 root partation and modify initramfs. In archlinux, you can do it with <a href="https://wiki.archlinux.org/index.php/mkinitcpio">mkinitcpio</a>.</p>
 
 <p>Just add <code>xfs</code> to kernel modules and <code>fsck.xfs</code> to binary files in <code>/etc/mkinitcpio.conf</code>:</p>
 

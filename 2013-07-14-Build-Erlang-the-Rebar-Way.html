@@ -51,11 +51,11 @@
     
   </header>
 
-  <p>These days I start learning erlang, and building a poker robot system. While I am learning it, I found the most difficult part is not the function style programming, nor the OTP system. The most difficult part is how to build and run erlang. Surely you can write an erlang module and run the functions from the erlang shell when you do exercises, but it is a little disturbing. And you surely don&#8217;t want to do that in the production environment. The erlang way and reltool is a little difficult for the newbies. Thanks to rebar, we can do it much easier now.</p>
+  <p>These days I start learning erlang, and building a poker robot system. While I am learning it, I found the most difficult part is not the function style programming, nor the OTP system. The most difficult part is how to build and run erlang. Surely you can write an erlang module and run the functions from the erlang shell when you do exercises, but it is a little disturbing. And you surely don’t want to do that in the production environment. The erlang way and reltool is a little difficult for the newbies. Thanks to rebar, we can do it much easier now.</p>
 
-<p><a href='https://github.com/basho/rebar'>Rebar</a> is a very good tool to build and run erlang applications. It could automatic get dependencies, run it as a daemon, attach it and hot load code. I&#8217;m wonder why there is no book about erlang introduced it. Even the book <em>Learn You Some Erlang for Great Good</em>, which is published this year. The rebar official wiki is a little simple. I will record how am I using rebar to build erlang applications.</p>
+<p><a href="https://github.com/basho/rebar">Rebar</a> is a very good tool to build and run erlang applications. It could automatic get dependencies, run it as a daemon, attach it and hot load code. I’m wonder why there is no book about erlang introduced it. Even the book <em>Learn You Some Erlang for Great Good</em>, which is published this year. The rebar official wiki is a little simple. I will record how am I using rebar to build erlang applications.</p>
 
-<h2 id='basic'>Basic</h2>
+<h2 id="basic">Basic</h2>
 
 <p>A typical erlang directory structure is like this:</p>
 
@@ -87,7 +87,7 @@
 
 <pre><code>rebar compile</code></pre>
 
-<h2 id='dependency'>Dependency</h2>
+<h2 id="dependency">Dependency</h2>
 
 <p>Lots of languages could manage dependencies easily now. For example, gem in ruby, npm in node.js, pip in python, maven in java and so on. Erlang is an old language, but with rebar, you could manage dependencies easily.</p>
 
@@ -108,7 +108,7 @@
 
 <pre><code>rebar get-deps</code></pre>
 
-<h2 id='test_with_eunit'>Test with Eunit</h2>
+<h2 id="test_with_eunit">Test with Eunit</h2>
 
 <p>Rebar could also compile with test. I am just using eunit for now. I add these code in <code>rebar.config</code>:</p>
 
@@ -117,9 +117,9 @@
 
 <p>You can put test codes in subdirectory <code>test</code>. While run <code>rebar test</code>, rebar compile test code, put the object files in <code>.eunit</code>. It will also show test coverage in a web page.</p>
 
-<h2 id='run_the_application'>Run the Application</h2>
+<h2 id="run_the_application">Run the Application</h2>
 
-<p>Here comes the most important part. We will build and run our application. The rebar official wiki has an article about how to handle release, but it doesn&#8217;t mention how to handle release with dependencies. I will introduce how I do it.</p>
+<p>Here comes the most important part. We will build and run our application. The rebar official wiki has an article about how to handle release, but it doesn’t mention how to handle release with dependencies. I will introduce how I do it.</p>
 
 <p>We already know we could use <code>rebar compile</code> to compile the codes. But it only put object files in <code>ebin/</code>, we also need to run them in the shell manually if we want:</p>
 
@@ -137,7 +137,7 @@
 cd rel
 rebar create-node nodeid=myapp</code></pre>
 
-<p>These command will create a subdirectory named <code>files</code> and a file named <code>reltool.config</code>. We need not to touch anything in the <code>files</code> directory. But we will modify something in <code>reltool.config</code>. I&#8217;m using erlang R16B01, and I do these things:</p>
+<p>These command will create a subdirectory named <code>files</code> and a file named <code>reltool.config</code>. We need not to touch anything in the <code>files</code> directory. But we will modify something in <code>reltool.config</code>. I’m using erlang R16B01, and I do these things:</p>
 
 <ol>
 <li>Add <code>{lib_dirs, [&quot;../deps&quot;]},</code> in the <code>sys</code> config. This will include our dependencies.</li>
@@ -159,14 +159,14 @@ rebar create-node nodeid=myapp</code></pre>
 
 <p>OK, enjoy your self!</p>
 
-<h2 id='reference'>Reference</h2>
+<h2 id="reference">Reference</h2>
 
 <ul>
 <li>Erlang application manual: just run <code>erl -man application</code>.</li>
 
-<li><a href='http://www.erlang.org/doc/design_principles/users_guide.html'>OTP design principles</a>.</li>
+<li><a href="http://www.erlang.org/doc/design_principles/users_guide.html">OTP design principles</a>.</li>
 
-<li><a href='https://github.com/basho/rebar/wiki'>Rebar official wiki</a>.</li>
+<li><a href="https://github.com/basho/rebar/wiki">Rebar official wiki</a>.</li>
 </ul>
 </article>
 

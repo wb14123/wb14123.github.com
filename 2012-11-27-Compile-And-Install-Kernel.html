@@ -53,19 +53,19 @@
 
   <p>There are already many documents to teach one how to compile and install kernel. Here are just some key notes. Use <code>make help</code> under source directory for details.</p>
 
-<h2 id='0_kernel_configure'>0. Kernel configure</h2>
+<h2 id="0_kernel_configure">0. Kernel configure</h2>
 
 <p>It is happy to have a kernel git repo. Using <code>git tag</code> to see the kernel versions and use <code>git checkout &lt;tag&gt;</code> to checkout the specified version, such as:</p>
 
 <pre><code>git checkout v3.7-rc6</code></pre>
 
-<p>It is recommended to use the distribution&#8217;s kernel configure file as a basic configure when you compile the kernel for the first time. Copy it from <code>/boot</code> to <code>&lt;build_dir&gt;/.config</code>. Use this command to modify it:</p>
+<p>It is recommended to use the distribution’s kernel configure file as a basic configure when you compile the kernel for the first time. Copy it from <code>/boot</code> to <code>&lt;build_dir&gt;/.config</code>. Use this command to modify it:</p>
 
 <pre><code>make O=&lt;build_dir&gt; menuconfig</code></pre>
 
 <p>It will save the new configure and rename the old configure with <code>.config.old</code>.</p>
 
-<h2 id='1_kernel_image'>1. Kernel image</h2>
+<h2 id="1_kernel_image">1. Kernel image</h2>
 
 <p>Kernel image is the most important part. Use this command to compile kernel in <code>&lt;build_dir&gt;</code>:</p>
 
@@ -73,7 +73,7 @@
 
 <p>After that, Copy <code>vmlinux</code> and <code>System.map</code> to <code>/boot</code>. And then configure the boot loader. Or use the command <code>installkernel</code> if you have it.</p>
 
-<h2 id='2_kernel_modules'>2. Kernel modules</h2>
+<h2 id="2_kernel_modules">2. Kernel modules</h2>
 
 <p>Some code are compiled to kernel modules. It need to be installed to the system. Use this command to install kernel modules and firmwares:</p>
 
@@ -85,7 +85,7 @@
 
 <p>The <code>INSTALL_MOD_PATH</code> is <code>/</code> by default.</p>
 
-<h2 id='3_linux_headers'>3. Linux headers</h2>
+<h2 id="3_linux_headers">3. Linux headers</h2>
 
 <p>Linux headers are some header files to invoked by user space programs. Using this command to output it:</p>
 
@@ -93,7 +93,7 @@
 
 <p>It installs headers to <code>&lt;headers_dir&gt;</code>. You should copy them into <code>/usr/include</code>.</p>
 
-<h2 id='another_way'>Another way</h2>
+<h2 id="another_way">Another way</h2>
 
 <p>After all, you may want to make a kernel package to install on other machines. Such as:</p>
 

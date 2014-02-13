@@ -51,35 +51,35 @@
     
   </header>
 
-  <p>These days I write <a href='https://github.com/wb14123/erlang_module'>a small app</a> which fetches the popular erlang modules. It is inspired by <a href='http://nodejsmodules.org'>nodejsmodules.org</a>. But it is simpler. Only fetch the dependencies of a repo.</p>
+  <p>These days I write <a href="https://github.com/wb14123/erlang_module">a small app</a> which fetches the popular erlang modules. It is inspired by <a href="http://nodejsmodules.org">nodejsmodules.org</a>. But it is simpler. Only fetch the dependencies of a repo.</p>
 
-<h2 id='how_it_works'>How It Works?</h2>
+<h2 id="how_it_works">How It Works?</h2>
 
 <ol>
-<li>Fetch top 1000 stared Erlang repos form Github&#8217;s search API.</li>
+<li>Fetch top 1000 stared Erlang repos form Github’s search API.</li>
 
 <li>Fetch <code>rebar.config</code> of the repo from <code>https://raw.github.com/&lt;repo&#39;s full name&gt;</code>.</li>
 
-<li>Use regex to get the repo&#8217;s dependencies.</li>
+<li>Use regex to get the repo’s dependencies.</li>
 
 <li>Sort the repos by how many repos are depend on it.</li>
 </ol>
 
-<h2 id='keep_it_simple_and_stupid'>Keep It Simple and Stupid</h2>
+<h2 id="keep_it_simple_and_stupid">Keep It Simple and Stupid</h2>
 
 <p>As its function is simple, so I keep the code simple.</p>
 
 <ul>
-<li>The app is written by coffeescript, which is perfect to parse Github&#8217;s restful API and JSON.</li>
+<li>The app is written by coffeescript, which is perfect to parse Github’s restful API and JSON.</li>
 
 <li>No database is required. Just use some arrays and objects to store informations.</li>
 
 <li>It generates static html files with Jade. So it is faster to visit and easier to deploy.</li>
 </ul>
 
-<h2 id='develop_bitbucket_vs_github'>Develop: Bitbucket VS Github</h2>
+<h2 id="develop_bitbucket_vs_github">Develop: Bitbucket VS Github</h2>
 
-<p>I think <a href='http://bitbucket.org'>Bitbucket</a> is wonderful to use:</p>
+<p>I think <a href="http://bitbucket.org">Bitbucket</a> is wonderful to use:</p>
 
 <ul>
 <li>Support private repositories for free.</li>
@@ -87,13 +87,13 @@
 <li>Good diff with side-by-side support.</li>
 </ul>
 
-<p>As a developer. I prefer bitbucket. But if I want to share my code with others, I&#8217;d rather to use Github. So I mainly use Bitbucket and its issue tracker. And then sync it to Github.</p>
+<p>As a developer. I prefer bitbucket. But if I want to share my code with others, I’d rather to use Github. So I mainly use Bitbucket and its issue tracker. And then sync it to Github.</p>
 
-<h2 id='deploy_from_appfog_to_heroku'>Deploy: From Appfog to Heroku</h2>
+<h2 id="deploy_from_appfog_to_heroku">Deploy: From Appfog to Heroku</h2>
 
-<p>There are many free node.js hosters. <a href='http://heroku.com'>Heroku</a> is a very famous one. <a href='http://appfog.com'>Appfog</a> is a good one to use, too. It supports some services for free without credit cards. I used it to deploy some node.js apps. But it does not support custom domain names for free, so I use Heroku at last.</p>
+<p>There are many free node.js hosters. <a href="http://heroku.com">Heroku</a> is a very famous one. <a href="http://appfog.com">Appfog</a> is a good one to use, too. It supports some services for free without credit cards. I used it to deploy some node.js apps. But it does not support custom domain names for free, so I use Heroku at last.</p>
 
-<p>Heroku is very easy to use. If you want to deploy new version, just push to the Heroku remote. If you want to roll back to some version, just click in the web page. I use the Heroku CLI which is installed from Archlinux AUR&#8217;s <code>heroku-toolbelt</code> package.</p>
+<p>Heroku is very easy to use. If you want to deploy new version, just push to the Heroku remote. If you want to roll back to some version, just click in the web page. I use the Heroku CLI which is installed from Archlinux AUR’s <code>heroku-toolbelt</code> package.</p>
 
 <p>There are some tricks:</p>
 
