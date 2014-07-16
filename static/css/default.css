@@ -9,8 +9,6 @@ body{
   padding: 0% 5% 5% 5%;
   font-family: AdobeGaramondPro,Georgia,serif;
   font-size: 18px;
-  line-height: 1.4;
-  color:  #111111;
 }
 
 code{
@@ -51,28 +49,33 @@ p, li{
 }
 
 a{
-  color:  #0074D9;
+  color: blue;
   text-decoration: none;
 }
 a:hover{
   text-decoration: underline;
 }
 
-#post_list {
+#post_list table{
   width: 100%;
   margin-top: 20px;
 }
-.per_post {
-  border-bottom: thin solid rgb(200, 200, 200);
+#post_list th, td{
+  border: none;
+  height: 40px;
 }
-#post_list .title{
-  font-size: 30px;
+#post_list tr{
+  border-bottom: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: rgb(230, 230, 230);
+}
+#post_list #title{
+  font-size: 24px;
   white-space: nowrap;
 }
-#post_list .title a{
-  color:  rgb(60, 60, 60);
+#post_list #title a{
 }
-#post_list .title a:hover{
+#post_list #title a:hover{
   color:black;
   // font-weight: bold;
   text-decoration: none;
@@ -125,10 +128,8 @@ footer#page_footer{
   font-size: small; 
 }
 
-.description {
+#description {
   font-style: italic;
-  color:  rgb(120, 120, 120);
-  margin-bottom: 20px;
 }
 
 #post h1{
@@ -172,13 +173,16 @@ footer#page_footer{
   }
 }
 @media screen and (min-width:1060px){
-  #post_list {
-    width: 960px;
-    margin: auto;
-  }
-
   #article_content{
     width: 960px;
-    margin: auto;
+  }
+  #post_list #tag {
+    display: inline;
+  }
+}
+@media screen and (min-width:1300px) {
+  #content_table {
+    float: right;
+    display: block;
   }
 }
