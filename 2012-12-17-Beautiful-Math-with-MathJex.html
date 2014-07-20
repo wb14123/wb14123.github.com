@@ -6,20 +6,14 @@
     <title> Beautiful Math with MathJex |  Bin Wang</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
 
-
-    <!-- for google analytic
-    <script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-26103883-3']);
-
-      _gaq.push(['_trackPageview']);
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-52904500-1', 'auto');
+      ga('send', 'pageview');
     </script>
-    --!>
 
   </head>
 
@@ -47,7 +41,7 @@
   <header>
     <h1>Beautiful Math with MathJex</h1>
     
-      <p id="description">Posted on 17 Dec 2012, tagged <code>composition</code><code>MathJex</code><code>LaTex</code></p>
+      <p class="description">Posted on 17 Dec 2012, tagged <code>composition</code><code>MathJex</code><code>LaTex</code></p>
     
   </header>
 
@@ -56,17 +50,19 @@
 <p>Code:</p>
 
 <pre><code>$$ x = {-b \pm \sqrt{b^2-4ac} \over 2a} $$
-$$ |s_n - s_m|=|\sum_{k=m+1}^n u_{k}|=|u_{m+1}+u_{m+2}+...+u_{n}| \lt \epsilon $$</code></pre>
+$$ |s_n - s_m|=|\sum_{k=m+1}^n u_{k}|=|u_{m+1}+u_{m+2}+...+u_{n}| \lt \epsilon $$
+</code></pre>
 
 <p>Result:</p>
 
-<p><span>$$ x = {-b \pm \sqrt{b^2-4ac} \over 2a} $$</span></p>
+<p><span><script type="math/tex"> x = {-b \pm \sqrt{b^2-4ac} \over 2a} </script></span></p>
 
-<p><span>$$ |s_n - s_m|=|\sum_{k=m+1}^n u_{k}|=|u_{m+1}+u_{m+2}+…+u_{n}| \lt \epsilon $$</span></p>
+<p><span><script type="math/tex"> |s_n - s_m|=|\sum_{k=m+1}^n u_{k}|=|u_{m+1}+u_{m+2}+...+u_{n}| \lt \epsilon </script></span></p>
 
 <p>Now let’s try some inline formulas, such as you may except <span>(b \ne 0)</span> in expression <span>(a \over b)</span> and the famous formula <span>(E = mc^2)</span> from Einstein.</p>
 
 <p>However, there are some issues to use MathJex with Markdown because symbols in formula will be parsed by Markdown first. The easiest way to avoid this is surrounding your formula with <code>&lt;span&gt;</code> since Markdown will parse nothing in a html/xml block. Such as <code>&lt;span&gt;\(a \ne 0\)&lt;/span&gt;</code> for a inline formula <span>(a \ne 0)</span>.</p>
+
 </article>
 
 <footer id="post_footer">
@@ -100,7 +96,7 @@ $$ |s_n - s_m|=|\sum_{k=m+1}^n u_{k}|=|u_{m+1}+u_{m+2}+...+u_{n}| \lt \epsilon $
     </section>
 
     <footer id="page_footer">
-      Copyright @ 2012 Bin Wang
+      Copyright @ 2012 - 2014 Bin Wang
       <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
     </footer>
     

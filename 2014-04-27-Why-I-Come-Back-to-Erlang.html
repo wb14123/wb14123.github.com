@@ -6,20 +6,14 @@
     <title> Why I Come Back to Erlang |  Bin Wang</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
 
-
-    <!-- for google analytic
-    <script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-26103883-3']);
-
-      _gaq.push(['_trackPageview']);
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-52904500-1', 'auto');
+      ga('send', 'pageview');
     </script>
-    --!>
 
   </head>
 
@@ -39,7 +33,7 @@
 
     <section id="page_content">
       <div id="content_table">
-  <h3>Table of Contents</h3><ol class="toc"><li><a href="#coffeescript_is_not_easy_to_maintain">Coffee-script Is Not Easy to Maintain</a></li><li><a href="#nodejs_runs_the_computation_in_a_single_thread">Node.js Runs the Computation In A Single Thread</a></li><li><a href="#if_there_are_some_errors_everything_fails_in_nodejs">If There Are Some Errors, Everything Fails In Node.js</a></li><li><a href="#it_is_not_easy_to_profiling_and_monitoring_nodejs_applications">It Is Not Easy To Profiling And Monitoring Node.js Applications</a></li><li><a href="#the_killer_feature_of_erlang_hot_code_deployment">The Killer Feature Of Erlang: Hot Code Deployment</a></li><li><a href="#conclusion">Conclusion</a></li></ol>
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#coffee-script-is-not-easy-to-maintain">Coffee-script Is Not Easy to Maintain</a></li><li><a href="#nodejs-runs-the-computation-in-a-single-thread">Node.js Runs the Computation In A Single Thread</a></li><li><a href="#if-there-are-some-errors-everything-fails-in-nodejs">If There Are Some Errors, Everything Fails In Node.js</a></li><li><a href="#it-is-not-easy-to-profiling-and-monitoring-nodejs-applications">It Is Not Easy To Profiling And Monitoring Node.js Applications</a></li><li><a href="#the-killer-feature-of-erlang-hot-code-deployment">The Killer Feature Of Erlang: Hot Code Deployment</a></li><li><a href="#conclusion">Conclusion</a></li></ol>
 </div>
 
 <div id="article_content">
@@ -47,13 +41,13 @@
   <header>
     <h1>Why I Come Back to Erlang</h1>
     
-      <p id="description">Posted on 27 Apr 2014, tagged <code>erlang</code><code>node.js</code></p>
+      <p class="description">Posted on 27 Apr 2014, tagged <code>erlang</code><code>node.js</code></p>
     
   </header>
 
   <p>Some months ago, I learned Erlang and wrote a poker game with it. While I’m using it, its strange syntax drives me to crazy. The most sweet syntax I’ve ever seen is in coffee script. So in the next game I wrote (also a poker game), I tried to use Node.js with coffee script. But after the basic features are implemented, I came back to Erlang. Here is why.</p>
 
-<h2 id="coffeescript_is_not_easy_to_maintain">Coffee-script Is Not Easy to Maintain</h2>
+<h2 id="coffee-script-is-not-easy-to-maintain">Coffee-script Is Not Easy to Maintain</h2>
 
 <p>While the coffee project comes big, it is very difficult to maintain. You don’t know what’s in an object because the members in it could be changed in any time. There is no declarations in the code, so you must write many comments if you want things to be clear.</p>
 
@@ -61,29 +55,30 @@
 
 <p>Erlang is a dynamic type language, too. But it comes with a very flexible type system and the code could be checked with dialyzer. (Though I prefer to write type informations in the code instead of in the optional <code>-spec</code>.)</p>
 
-<h2 id="nodejs_runs_the_computation_in_a_single_thread">Node.js Runs the Computation In A Single Thread</h2>
+<h2 id="nodejs-runs-the-computation-in-a-single-thread">Node.js Runs the Computation In A Single Thread</h2>
 
 <p>Yes, Node.js will fork some threads to do IO. But while you are computing things with CPU, it only do things in one single thread. It is not a big deal if you are writing a web server since it doesn’t use CPU often. But it is not true in a game server. A game server has lots things to compute so it will be very helpful if the computation could be run on multi-core. Erlang is known as scalable. It just do these things automatically.</p>
 
-<h2 id="if_there_are_some_errors_everything_fails_in_nodejs">If There Are Some Errors, Everything Fails In Node.js</h2>
+<h2 id="if-there-are-some-errors-everything-fails-in-nodejs">If There Are Some Errors, Everything Fails In Node.js</h2>
 
 <p>If something is error in the Node.js application, the whole application will fail. If you are using pm2 or something like that, it will restart the application for you if fails. Again, it is fine in a web application since it is stateless. But the game has a state and many things will be lost after restart.</p>
 
 <p>If an Erlang process fails, it won’t affect other processes. It will lost something, too. But it only affect few players if the bug is not easy to trigger(If it is easy to trigger then we’ve fixed it in the development).</p>
 
-<h2 id="it_is_not_easy_to_profiling_and_monitoring_nodejs_applications">It Is Not Easy To Profiling And Monitoring Node.js Applications</h2>
+<h2 id="it-is-not-easy-to-profiling-and-monitoring-nodejs-applications">It Is Not Easy To Profiling And Monitoring Node.js Applications</h2>
 
 <p>I’ve reviewed many Node.js monitor tools and found none of them is easy to use. Almost all of them use a third-part website to monitor or profile your application. I’m very confused with it. These things really sucks.</p>
 
 <p>In the other side, Erlang have built in profiling and monitor tools. You can monitor each node, each process and so on.</p>
 
-<h2 id="the_killer_feature_of_erlang_hot_code_deployment">The Killer Feature Of Erlang: Hot Code Deployment</h2>
+<h2 id="the-killer-feature-of-erlang-hot-code-deployment">The Killer Feature Of Erlang: Hot Code Deployment</h2>
 
 <p>If all of my reasons are listed until now, then there are many other choices such as Scala, Go and so on. But they are leak of the killer feature of Erlang: the ability of hot code deployment. We don’t want to stop the game server at any time. It will affect a lot.</p>
 
 <h2 id="conclusion">Conclusion</h2>
 
 <p>After all, I’m not saying Node.js or Coffee-script is such a bad platform or language that you should never use. But in this case, Erlang is more suitable. Erlang is a platform that provides many tools. I can be fine with its syntax with such a benefit.</p>
+
 </article>
 
 <footer id="post_footer">
@@ -92,7 +87,7 @@
       <td id="prev"><a href="/2014-02-14-What-is-Wrong-about-HTML.html">Prev: What is Wrong about HTML and CSS</a></td>
     
     
-      <td id="next"><a href="/2014-05-16-Experiment-On-Combining-OOP-With-Erlang%27s-Actor-Model.html" id="next">Next: Experiment On Combining OOP With Erlang's Actor Model</a></td>
+      <td id="next"><a href="/2014-05-16-Experiment-On-Combining-OOP-With-Erlang's-Actor-Model.html" id="next">Next: Experiment On Combining OOP With Erlang's Actor Model</a></td>
     
   </tr></table>
 </footer>
@@ -117,7 +112,7 @@
     </section>
 
     <footer id="page_footer">
-      Copyright @ 2012 Bin Wang
+      Copyright @ 2012 - 2014 Bin Wang
       <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
     </footer>
     

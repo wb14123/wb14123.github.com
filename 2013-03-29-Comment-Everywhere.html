@@ -6,20 +6,14 @@
     <title> Comment Everywhere |  Bin Wang</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
 
-
-    <!-- for google analytic
-    <script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-26103883-3']);
-
-      _gaq.push(['_trackPageview']);
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-52904500-1', 'auto');
+      ga('send', 'pageview');
     </script>
-    --!>
 
   </head>
 
@@ -47,20 +41,17 @@
   <header>
     <h1>Comment Everywhere</h1>
     
-      <p id="description">Posted on 29 Mar 2013, tagged <code>programming</code><code>life</code><code>chrome</code><code>javascript</code></p>
+      <p class="description">Posted on 29 Mar 2013, tagged <code>programming</code><code>life</code><code>chrome</code><code>javascript</code></p>
     
   </header>
 
   <p>These days I’m working on a new chrome extension: <a href="http://www.crazyhotice.com/comment_everywhere">comment everywhere</a>. It is an extension to allow you to comment on any web pages. It will have these features:</p>
 
 <ul>
-<li>Of cause, comment on any web pages.</li>
-
-<li>Show the web pages you have comment.</li>
-
-<li>Show some web pages that have most comments.</li>
-
-<li>Get comments from SNS.</li>
+  <li>Of cause, comment on any web pages.</li>
+  <li>Show the web pages you have comment.</li>
+  <li>Show some web pages that have most comments.</li>
+  <li>Get comments from SNS.</li>
 </ul>
 
 <p>The first three features have been implied. I’m working on fetching comments from <a href="http://weibo.com">Weibo.com</a> now.</p>
@@ -68,13 +59,10 @@
 <p>I have learned a lot while I write this extension. Both technology part and the non-technology part. The technology part is I’m using these techniques:</p>
 
 <ul>
-<li>Node.js as backend.</li>
-
-<li>MongoDB as database.</li>
-
-<li>Javascript for extension develop.</li>
-
-<li>CSS and HTML for UI and homepage design.</li>
+  <li>Node.js as backend.</li>
+  <li>MongoDB as database.</li>
+  <li>Javascript for extension develop.</li>
+  <li>CSS and HTML for UI and homepage design.</li>
 </ul>
 
 <p>I’d like to say json is awesome.</p>
@@ -82,6 +70,8 @@
 <p>The non-technology part is I really learned you always spend more time to write a product than you thought. I spend almost a month to write such a extension (though I have less time to code this month). It makes me more modest.</p>
 
 <p>Though the basic features have been complete, it takes more to make it looks like a real product. But I believe I’m on the road.</p>
+
+
 </article>
 
 <footer id="post_footer">
@@ -115,7 +105,7 @@
     </section>
 
     <footer id="page_footer">
-      Copyright @ 2012 Bin Wang
+      Copyright @ 2012 - 2014 Bin Wang
       <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
     </footer>
     

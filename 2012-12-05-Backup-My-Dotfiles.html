@@ -6,20 +6,14 @@
     <title> Backup My Dotfiles |  Bin Wang</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
 
-
-    <!-- for google analytic
-    <script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-26103883-3']);
-
-      _gaq.push(['_trackPageview']);
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-52904500-1', 'auto');
+      ga('send', 'pageview');
     </script>
-    --!>
 
   </head>
 
@@ -47,7 +41,7 @@
   <header>
     <h1>Backup My Dotfiles</h1>
     
-      <p id="description">Posted on 05 Dec 2012, tagged <code>vim</code><code>zsh</code><code>config</code><code>git</code></p>
+      <p class="description">Posted on 05 Dec 2012, tagged <code>vim</code><code>zsh</code><code>config</code><code>git</code></p>
     
   </header>
 
@@ -56,13 +50,10 @@
 <p>Using github to backup dotfiles is really a comfortable way. In this way, you can:</p>
 
 <ul>
-<li>Feel free to change your configures, since if you don’t like the configure some day, you can roll it back.</li>
-
-<li>Update your configures anywhere. Just use git to clone your configure files from github.</li>
-
-<li>Keep different versions for different machines (Such as for desktop and laptop). Just use branch to control them.</li>
-
-<li>If you are using vim plugins from git repo or something like <a href="https://github.com/robbyrussell/oh-my-zsh">oh-my-zsh</a>, you could simple use git submodule to keep track of them.</li>
+  <li>Feel free to change your configures, since if you don’t like the configure some day, you can roll it back.</li>
+  <li>Update your configures anywhere. Just use git to clone your configure files from github.</li>
+  <li>Keep different versions for different machines (Such as for desktop and laptop). Just use branch to control them.</li>
+  <li>If you are using vim plugins from git repo or something like <a href="https://github.com/robbyrussell/oh-my-zsh">oh-my-zsh</a>, you could simple use git submodule to keep track of them.</li>
 </ul>
 
 <p>The basic idea is put configure files in a directory such as <code>dotfile</code> and use git to track it. Then make a symbolic link to home. However, manual make symbolic links is boring. Firstly I am thinking of use the same directory structure as <code>~/</code> and then automatic link them. But there comes some problems: for some directories such as <code>.vim</code>, we should make a link for them while for some directories such as <code>.config</code>, we may only want to link <code>openbox</code> under it to <code>~/.config/openbox</code>. It seems impossible to use an automatic way totally. But some shell code could make life a little easy:</p>
@@ -71,17 +62,19 @@
 	LINK=`pwd`/$1
 	TARGET=~/$2
 	if [ -h $TARGET ] ; then
-		echo -n &quot;remove symbolic link: &quot;
+		echo -n "remove symbolic link: "
 		rm -v $TARGET
 	elif [ -e $TARGET ] ; then
-		echo -n &quot;move: &quot;
+		echo -n "move: "
 		mv -v $TARGET $TARGET.old
 	fi
-	echo -n &quot;link: &quot;
+	echo -n "link: "
 	ln -sv $LINK $TARGET
-}</code></pre>
+}
+</code></pre>
 
 <p>Usage: <code>check_link &lt;path_in_dotfiles&gt; &lt;path_in_home&gt;</code>, such as <code>check_link vim/vimrc .vimrc</code>. See <a href="https://github.com/wb14123/dotfiles/blob/master/link.sh">my github repo</a> for details.</p>
+
 </article>
 
 <footer id="post_footer">
@@ -115,7 +108,7 @@
     </section>
 
     <footer id="page_footer">
-      Copyright @ 2012 Bin Wang
+      Copyright @ 2012 - 2014 Bin Wang
       <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
     </footer>
     

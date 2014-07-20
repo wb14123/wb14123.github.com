@@ -6,20 +6,14 @@
     <title> Call Program Like A Function |  Bin Wang</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
 
-
-    <!-- for google analytic
-    <script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-26103883-3']);
-
-      _gaq.push(['_trackPageview']);
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-52904500-1', 'auto');
+      ga('send', 'pageview');
     </script>
-    --!>
 
   </head>
 
@@ -47,7 +41,7 @@
   <header>
     <h1>Call Program Like A Function</h1>
     
-      <p id="description">Posted on 18 Dec 2012, tagged <code>shell</code><code>formal language</code></p>
+      <p class="description">Posted on 18 Dec 2012, tagged <code>shell</code><code>formal language</code></p>
     
   </header>
 
@@ -55,52 +49,56 @@
 
 <p>So here comes some libraries to call command like a function in programming languages. They are interesting, but you may not want to use them in a real project. Let’s take a look first and then we will talk about them.</p>
 
-<h2 id="sh_python"><a href="http://amoffat.github.com/sh/">Sh</a> (Python)</h2>
+<h2 id="shhttpamoffatgithubcomsh-python"><a href="http://amoffat.github.com/sh/">Sh</a> (Python)</h2>
 
 <p>This library contains many advanced features and is well documented.</p>
 
 <pre><code># sort this directory by biggest file
-print(sort(du(glob(&quot;*&quot;), &quot;-sb&quot;), &quot;-rn&quot;))
+print(sort(du(glob("*"), "-sb"), "-rn"))
 
 # print(the number of folders and files in /etc
-print(wc(ls(&quot;/etc&quot;, &quot;-1&quot;), &quot;-l&quot;)))</code></pre>
+print(wc(ls("/etc", "-1"), "-l")))
+</code></pre>
 
-<h2 id="shell_perl"><a href="http://perldoc.perl.org/Shell.html">Shell</a> (Perl)</h2>
+<h2 id="shellhttpperldocperlorgshellhtml-perl"><a href="http://perldoc.perl.org/Shell.html">Shell</a> (Perl)</h2>
 
 <p>Using perl with shell command is always comfortable.</p>
 
 <pre><code>use Shell qw(cat ps cp);
 
-$passwd = cat(&#39;&lt;/etc/passwd&#39;);
-@pslines = ps(&#39;-ww&#39;),
-cp(&quot;/etc/passwd&quot;, &quot;/tmp/passwd&quot;);
+$passwd = cat('&lt;/etc/passwd');
+@pslines = ps('-ww'),
+cp("/etc/passwd", "/tmp/passwd");
 # object oriented
 my $sh = Shell-&gt;new;
-print $sh-&gt;ls(&#39;-l&#39;);</code></pre>
+print $sh-&gt;ls('-l');
+</code></pre>
 
-<h2 id="scsh_scheme"><a href="http://www.scsh.net/">Scsh</a> (Scheme)</h2>
+<h2 id="scshhttpwwwscshnet-scheme"><a href="http://www.scsh.net/">Scsh</a> (Scheme)</h2>
 
 <p>Scheme is a great and purl language. But scsh seems like a dead project. You can find <a href="https://github.com/scheme/scsh">a fork on github</a>. Howerver, I failed to compile its dependency <a href="http://s48.org/">scheme48</a>.</p>
 
-<h2 id="shake_clojure"><a href="https://github.com/sunng87/shake.git">Shake</a> (Clojure)</h2>
+<h2 id="shakehttpsgithubcomsunng87shakegit-clojure"><a href="https://github.com/sunng87/shake.git">Shake</a> (Clojure)</h2>
 
 <p>It is written by one of my old colleagues. It has <a href="http://news.ycombinator.com/item?id=4553076">a discuss on Hacker News</a>.</p>
 
-<pre><code>(require &#39;[shake.static :as sh])
+<pre><code>(require '[shake.static :as sh])
 
 ;; any shell command ...
 (sh/uname -a) ;;returns a #&lt;UNIXProcess java.lang.UNIXProcess@1833160&gt;
 
 ;; using clojure variables (vars, local bindings) in shake
-(let [home &quot;/home/sunng87&quot;]
+(let [home "/home/sunng87"]
   (sh/ls -l $home))
 
 ;; using clojure forms in shake
-(sh/curl $(format &quot;https://github.com/%s&quot; &quot;sunng87&quot;))</code></pre>
+(sh/curl $(format "https://github.com/%s" "sunng87"))
+</code></pre>
 
 <h2 id="conclusion">Conclusion</h2>
 
 <p>So after all, you may ask: why not just use these language’s REPL as a shell? It provides more power! But thinking of the daily life on Linux, how many times will you use these “advance features”? Instead, if you prefer the “function style shell”, you need to type many parentheses, quotes and so on. I think the current shell may not provides the most complete ability, but it provides the most efficient way to work.</p>
+
 </article>
 
 <footer id="post_footer">
@@ -134,7 +132,7 @@ print $sh-&gt;ls(&#39;-l&#39;);</code></pre>
     </section>
 
     <footer id="page_footer">
-      Copyright @ 2012 Bin Wang
+      Copyright @ 2012 - 2014 Bin Wang
       <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
     </footer>
     

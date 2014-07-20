@@ -6,20 +6,14 @@
     <title> Fetch Popular Erlang Modules by Coffee Script |  Bin Wang</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
 
-
-    <!-- for google analytic
-    <script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-26103883-3']);
-
-      _gaq.push(['_trackPageview']);
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-52904500-1', 'auto');
+      ga('send', 'pageview');
     </script>
-    --!>
 
   </head>
 
@@ -39,7 +33,7 @@
 
     <section id="page_content">
       <div id="content_table">
-  <h3>Table of Contents</h3><ol class="toc"><li><a href="#how_it_works">How It Works?</a></li><li><a href="#keep_it_simple_and_stupid">Keep It Simple and Stupid</a></li><li><a href="#develop_bitbucket_vs_github">Develop: Bitbucket VS Github</a></li><li><a href="#deploy_from_appfog_to_heroku">Deploy: From Appfog to Heroku</a></li></ol>
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#how-it-works">How It Works?</a></li><li><a href="#keep-it-simple-and-stupid">Keep It Simple and Stupid</a></li><li><a href="#develop-bitbucket-vs-github">Develop: Bitbucket VS Github</a></li><li><a href="#deploy-from-appfog-to-heroku">Deploy: From Appfog to Heroku</a></li></ol>
 </div>
 
 <div id="article_content">
@@ -47,49 +41,43 @@
   <header>
     <h1>Fetch Popular Erlang Modules by Coffee Script</h1>
     
-      <p id="description">Posted on 16 Nov 2013, tagged <code>erlang</code><code>coffeescript</code><code>node.js</code></p>
+      <p class="description">Posted on 16 Nov 2013, tagged <code>erlang</code><code>coffeescript</code><code>node.js</code></p>
     
   </header>
 
   <p>These days I write <a href="https://github.com/wb14123/erlang_module">a small app</a> which fetches the popular erlang modules. It is inspired by <a href="http://nodejsmodules.org">nodejsmodules.org</a>. But it is simpler. Only fetch the dependencies of a repo.</p>
 
-<h2 id="how_it_works">How It Works?</h2>
+<h2 id="how-it-works">How It Works?</h2>
 
 <ol>
-<li>Fetch top 1000 stared Erlang repos form Github’s search API.</li>
-
-<li>Fetch <code>rebar.config</code> of the repo from <code>https://raw.github.com/&lt;repo&#39;s full name&gt;</code>.</li>
-
-<li>Use regex to get the repo’s dependencies.</li>
-
-<li>Sort the repos by how many repos are depend on it.</li>
+  <li>Fetch top 1000 stared Erlang repos form Github’s search API.</li>
+  <li>Fetch <code>rebar.config</code> of the repo from <code>https://raw.github.com/&lt;repo's full name&gt;</code>.</li>
+  <li>Use regex to get the repo’s dependencies.</li>
+  <li>Sort the repos by how many repos are depend on it.</li>
 </ol>
 
-<h2 id="keep_it_simple_and_stupid">Keep It Simple and Stupid</h2>
+<h2 id="keep-it-simple-and-stupid">Keep It Simple and Stupid</h2>
 
 <p>As its function is simple, so I keep the code simple.</p>
 
 <ul>
-<li>The app is written by coffeescript, which is perfect to parse Github’s restful API and JSON.</li>
-
-<li>No database is required. Just use some arrays and objects to store informations.</li>
-
-<li>It generates static html files with Jade. So it is faster to visit and easier to deploy.</li>
+  <li>The app is written by coffeescript, which is perfect to parse Github’s restful API and JSON.</li>
+  <li>No database is required. Just use some arrays and objects to store informations.</li>
+  <li>It generates static html files with Jade. So it is faster to visit and easier to deploy.</li>
 </ul>
 
-<h2 id="develop_bitbucket_vs_github">Develop: Bitbucket VS Github</h2>
+<h2 id="develop-bitbucket-vs-github">Develop: Bitbucket VS Github</h2>
 
 <p>I think <a href="http://bitbucket.org">Bitbucket</a> is wonderful to use:</p>
 
 <ul>
-<li>Support private repositories for free.</li>
-
-<li>Good diff with side-by-side support.</li>
+  <li>Support private repositories for free.</li>
+  <li>Good diff with side-by-side support.</li>
 </ul>
 
 <p>As a developer. I prefer bitbucket. But if I want to share my code with others, I’d rather to use Github. So I mainly use Bitbucket and its issue tracker. And then sync it to Github.</p>
 
-<h2 id="deploy_from_appfog_to_heroku">Deploy: From Appfog to Heroku</h2>
+<h2 id="deploy-from-appfog-to-heroku">Deploy: From Appfog to Heroku</h2>
 
 <p>There are many free node.js hosters. <a href="http://heroku.com">Heroku</a> is a very famous one. <a href="http://appfog.com">Appfog</a> is a good one to use, too. It supports some services for free without credit cards. I used it to deploy some node.js apps. But it does not support custom domain names for free, so I use Heroku at last.</p>
 
@@ -98,14 +86,12 @@
 <p>There are some tricks:</p>
 
 <ul>
-<li>Use environment variables to config secret things such as database password, OAuth client secret and so on.</li>
-
-<li>Use Express as the static file server.</li>
-
-<li>Set timeout to update every day.</li>
-
-<li>Use redirect to force the user to visit through my custom domain name.</li>
+  <li>Use environment variables to config secret things such as database password, OAuth client secret and so on.</li>
+  <li>Use Express as the static file server.</li>
+  <li>Set timeout to update every day.</li>
+  <li>Use redirect to force the user to visit through my custom domain name.</li>
 </ul>
+
 </article>
 
 <footer id="post_footer">
@@ -139,7 +125,7 @@
     </section>
 
     <footer id="page_footer">
-      Copyright @ 2012 Bin Wang
+      Copyright @ 2012 - 2014 Bin Wang
       <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
     </footer>
     

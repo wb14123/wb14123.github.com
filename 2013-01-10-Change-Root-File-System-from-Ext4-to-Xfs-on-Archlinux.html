@@ -6,20 +6,14 @@
     <title> Change Root File System from Ext4 to Xfs on Archlinux |  Bin Wang</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
 
-
-    <!-- for google analytic
-    <script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-26103883-3']);
-
-      _gaq.push(['_trackPageview']);
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-52904500-1', 'auto');
+      ga('send', 'pageview');
     </script>
-    --!>
 
   </head>
 
@@ -39,7 +33,7 @@
 
     <section id="page_content">
       <div id="content_table">
-  <h3>Table of Contents</h3><ol class="toc"><li><a href="#1_make_a_xfs_partation">1. Make a xfs partation</a></li><li><a href="#2_copy_files_with_tar">2. Copy files with tar</a></li><li><a href="#3_config_grub_and_modify_fstab">3. Config grub and modify fstab</a></li><li><a href="#4_modify_initramfs_to_include_xfs_support">4. Modify initramfs to include xfs support</a></li></ol>
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#make-a-xfs-partation">1. Make a xfs partation</a></li><li><a href="#copy-files-with-tar">2. Copy files with tar</a></li><li><a href="#config-grub-and-modify-fstab">3. Config grub and modify fstab</a></li><li><a href="#modify-initramfs-to-include-xfs-support">4. Modify initramfs to include xfs support</a></li></ol>
 </div>
 
 <div id="article_content">
@@ -47,49 +41,56 @@
   <header>
     <h1>Change Root File System from Ext4 to Xfs on Archlinux</h1>
     
-      <p id="description">Posted on 10 Jan 2013, tagged <code>ext4</code><code>xfs</code><code>initramfs</code><code>backup</code></p>
+      <p class="description">Posted on 10 Jan 2013, tagged <code>ext4</code><code>xfs</code><code>initramfs</code><code>backup</code></p>
     
   </header>
 
   <p><a href="http://xfs.org/">Xfs</a> is said a high performance file system. So I changed my root file system from ext4 to xfs today. There are some tricky things. This article is a simple HOWTO.</p>
 
-<h2 id="1_make_a_xfs_partation">1. Make a xfs partation</h2>
+<h2 id="make-a-xfs-partation">1. Make a xfs partation</h2>
 
 <p>Note: a xfs partation cannot be shrunk. And if you don’t have a splite boot partation, you should make one with <code>ext2</code> since grub don’t support xfs well.</p>
 
-<h2 id="2_copy_files_with_tar">2. Copy files with tar</h2>
+<h2 id="copy-files-with-tar">2. Copy files with tar</h2>
 
 <p>Copy files from origin ext4 partation to the new xfs partation with <code>tar</code>. Be careful, <em>never</em> use <code>cp</code> to backup a file system since <code>cp</code> will change the setuid bit and follow hard links. Use <code>tar</code> instead, for example:</p>
 
-<pre><code>tar --exclude=proc/ --exclude=sys/ -cf - / | ( cd &lt;xfs_mount_path&gt; ; tar -xpvf - )</code></pre>
+<pre><code>tar --exclude=proc/ --exclude=sys/ -cf - / | ( cd &lt;xfs_mount_path&gt; ; tar -xpvf - )
+</code></pre>
 
 <p>I just exclude two directories for an example. You should exclude all mounted file systems (except root of cause). It is recommended to use a bootable CD or USB disk to boot your system, mount both ext4 and xfs partations, then use <code>tar</code> to copy files. In this way, you need not exclude any directory:</p>
 
-<pre><code>tar  -cf - &lt;ext4_mount_path&gt; | ( cd &lt;xfs_mount_path&gt; ; tar -xpvf - )</code></pre>
+<pre><code>tar  -cf - &lt;ext4_mount_path&gt; | ( cd &lt;xfs_mount_path&gt; ; tar -xpvf - )
+</code></pre>
 
-<h2 id="3_config_grub_and_modify_fstab">3. Config grub and modify fstab</h2>
+<h2 id="config-grub-and-modify-fstab">3. Config grub and modify fstab</h2>
 
 <p>There is nothing special here. Just modify your <a href="https://wiki.archlinux.org/index.php/GRUB">grub config</a> and <a href="https://wiki.archlinux.org/index.php/fstab">fstab</a> in your xfs partation. Remember to make an entry for your old root file system while config the grub. Then you could try to reboot. If the system could not mount xfs partation, you may want to boot with the old ext4 root partation and modify initramfs for xfs support as bellow.</p>
 
-<h2 id="4_modify_initramfs_to_include_xfs_support">4. Modify initramfs to include xfs support</h2>
+<h2 id="modify-initramfs-to-include-xfs-support">4. Modify initramfs to include xfs support</h2>
 
 <p>In the boot process, kernel use initramfs as root first, then mount the real root file system. If your initramfs don’t include support for xfs, you may see these errors during booting:</p>
 
 <pre><code>fsck.xfs: file not found
-mount: unknown filesystem type &quot;xfs&quot;</code></pre>
+mount: unknown filesystem type "xfs"
+</code></pre>
 
-<p>In this case, you need boot into your old ext4 root partation and modify initramfs. In archlinux, you can do it with <a href="https://wiki.archlinux.org/index.php/mkinitcpio">mkinitcpio</a>.</p>
+<p>In this case,  you need boot into your old ext4 root partation and modify initramfs. In archlinux, you can do it with <a href="https://wiki.archlinux.org/index.php/mkinitcpio">mkinitcpio</a>.</p>
 
-<p>Just add <code>xfs</code> to kernel modules and <code>fsck.xfs</code> to binary files in <code>/etc/mkinitcpio.conf</code>:</p>
+<p>Just add <code>xfs</code> to kernel modules and <code>fsck.xfs</code> to binary files in <code>/etc/mkinitcpio.conf</code>: </p>
 
-<pre><code>MODULES=&quot;xfs&quot;
-BINARIES=&quot;fsck.xfs&quot;</code></pre>
+<pre><code>MODULES="xfs"
+BINARIES="fsck.xfs"
+</code></pre>
 
 <p>Remember to copy it to your xfs partation, too.</p>
 
 <p>Then make a initramfs:</p>
 
-<pre><code>mkinitcpio -p linux</code></pre>
+<pre><code>mkinitcpio -p linux
+</code></pre>
+
+
 </article>
 
 <footer id="post_footer">
@@ -123,7 +124,7 @@ BINARIES=&quot;fsck.xfs&quot;</code></pre>
     </section>
 
     <footer id="page_footer">
-      Copyright @ 2012 Bin Wang
+      Copyright @ 2012 - 2014 Bin Wang
       <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
     </footer>
     
