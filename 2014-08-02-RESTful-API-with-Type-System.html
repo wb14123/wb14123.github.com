@@ -47,7 +47,7 @@
 
   <p>Long long ago, some programming languages already have type system. They can find some bugs while compiling the code, instead of let the program run and fail. Though there are many popular languages that do not have static type system, type system has its advantage and has been accepted widely.</p>
 
-<p>Sometimes ago, RESTful API becomes popular. It is a very good way to communication between programs and systems that distributed around the world. It usually uses HTTP because of its simplicity. But HTTP cannot encoding type information in it. For example, in a GET request: <code>http://www.google.com/?query=1&amp;page=2</code>, <code>2</code> should be an integer, but we can not ensure the client always pass a validate integer, so we must check it. It is annoying and DRY (Do Repeat Yourself).</p>
+<p>Sometimes ago, RESTful API becomes popular. It is a very good way to communication between programs and systems that distributed around the world. It usually uses HTTP because of its simplicity. But HTTP cannot encode type information into it. For example, in a GET request: <code>http://www.google.com/?query=1&amp;page=2</code>, <code>2</code> should be an integer, but we can not ensure the client always pass a validate integer, so we must check it. It is annoying and DRY (Do Repeat Yourself).</p>
 
 <p>The type system becomes more important here. In programming, we write the code by ourself. So if we are clever and careful enough, we could ensure not pass the invalidate values to the functions. But while we are dealing with the outside world, we must set a guard for it. If we can do it automatic, that would be a type system for the RESTful API.</p>
 
