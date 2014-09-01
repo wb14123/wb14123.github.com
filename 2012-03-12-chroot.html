@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title> Chroot 简介 |  Bin Wang</title>
+    <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-52904500-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+  </head>
+
+  <body>
+    <header id="page_header">
+      <nav id="page_nav">
+        <ul>
+             <li><a href="/">Home</a></li>
+             <li><a href="/read.html">Read</a></li>
+             <li><a href="/travel.html">Travel</a></li>
+             <li><a href="/search.html">Search</a></li>
+             <li><a href="/about.html">About</a></li>
+       </ul>
+      </nav>
+
+    </header>
+
+    <section id="page_content">
+      <div id="content_table">
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#chroot">Chroot命令</a></li><li><a href="#chroot-1">chroot函数</a></li><li><a href="#chroot-2">跳出chroot</a></li><li><a href="#section">安全原则</a></li><li><a href="#section-1">使用中可能遇到的问题</a></li><li><a href="#section-2">参考资料</a></li></ol>
+</div>
+
+<div id="article_content">
+<article id="post">
+  <header>
+    <h1>Chroot 简介</h1>
+    
+      <p class="description">Posted on 12 Mar 2012, tagged <code>linux</code><code>chroot</code></p>
+    
+  </header>
+
+  <p>chroot，既是Linux的一条命令，也是它的一个系统调用。它的作用就是就是改变当前环境的根目录到一个文件夹，这个文件夹之外的东西，对于当前环境都是不可见的。因此若是运行不信任的代码或程序，使用chroot作为一个安全沙箱是个很好的选择。这里我们简单介绍一下使用chroot的方法和需要注意的问题，并提供一些跳出chroot环境的方法。</p>
+
+<h2 id="chroot">Chroot命令</h2>
+
+<p>chroot(1)这条命令在大多数Unix/Linux系统中都能找到。它的作用是将根目录改变到一个新文件夹下并且运行一个shell。因此它要求这个新文件夹下至少有一个可运行的shell。其实大多数情况下，chroot后的文件夹结构都类似于一个小型的Linux系统，例如下面有lib、usr、bin等文件夹。这里我们介绍怎样创建一个最小的环境来使用chroot命令。</p>
+
+<p>首先，我们希望这个文件夹的结构是类似于Linux基本的系统结构，这样chroot后的环境可以作为一个基本的Linux环境来使用。所以用下面的命令先创建一些新文件夹：</p>
+
+<pre><code>mkdir newroot
+cd newroot
+mkdir bin
+mkdir lib
+mkdir usr
+mkdir usr/bin
+mkdir usr/lib
+</code></pre>
+
+<p>这样就建立了一些必须的文件夹。其中bin和usr/bin是放二进制文件的，而lib和usr/lib是存放链接库文件。</p>
+
+<p>前面说过了，chroot后的环境至少需要一个可以运行的shell，我们可以直接将自己系统中的bash拷贝过去。一般bash都在/bin文件夹下，如果不能确定，可以使用下面的命令来查找：</p>
+
+<pre><code>whereis bash
+</code></pre>
+
+<p>然后将bash拷贝到新目录中的相应位置:</p>
+
+<pre><code>cp /bin/bash bin
+</code></pre>
+
+<p>只拷贝这一个文件是不够的，因为一般来说，bash这个程序是通过动态链接来编译的，所以我们要将所包含的库文件也拷贝过去。使用ldd(1)命令可以查看bash所需要的库文件：</p>
+
+<pre><code>ldd /bin/bash
+</code></pre>
+
+<p>在我的系统中这条命令的输出是:</p>
+
+<pre><code>    linux-vdso.so.1 =&gt;  (0x00007fff46bff000)
+    libreadline.so.6 =&gt; /lib/libreadline.so.6 (0x00007fca39fa9000)
+    libncursesw.so.5 =&gt; /usr/lib/libncursesw.so.5 (0x00007fca39d4c000)
+    libdl.so.2 =&gt; /lib/libdl.so.2 (0x00007fca39b48000)
+    libc.so.6 =&gt; /lib/libc.so.6 (0x00007fca397a7000)
+    /lib/ld-linux-x86-64.so.2 (0x00007fca3a1ef000)
+</code></pre>
+
+<p>然后根据输出来拷贝库文件到相应的文件夹：</p>
+
+<pre><code>cp /lib/libreadline.so.6 lib
+cp /usr/lib/libncursesw.so.5 usr/lib
+cp /lib/libdl.so.2 lib
+cp /lib/libc.so.6 lib
+cp /lib/ld-linux-x86-64.so.2 lib
+</code></pre>
+
+<p>这样就可以使用chroot命令来chroot到新目录了（需要root权限）：</p>
+
+<pre><code>chroot . /bin/bash
+</code></pre>
+
+<p>chroot参数的详细作用可以使用<code>man chroot</code>命令来查看。在chroot之后，我们可以随便输入一些命令，可以发现很多在新环境中是没有的。而一直执行<code>cd ..</code>的命令，也只能在newroot这个文件夹中。然而在新环境中来开，newroot就是根目录。</p>
+
+<p>显然单纯这样的一个环境是没有多大用途的。在新环境中需要什么软件和工具，可以仿照上面移植bash的方法，来配置到新环境中。如果需要一个比较全面的shell环境，可以考虑使用busybox。</p>
+
+<p>使用这种方法来chroot除了可以运行不受信任的代码之外，还可以作为一个编译环境来免受外部环境的污染，例如LFS(Linux From Scrach)中的用法。</p>
+
+<h2 id="chroot-1">chroot函数</h2>
+
+<p>很多语言都提供chroot这个函数，以在程序中使用chroot环境。我们主要介绍C语言当中的。其实chroot(1)这条命令，就用到了chroot这个函数。</p>
+
+<p>chroot的使用方法很简单，函数原型是<code>int chroot(const char *path)</code>。需要root权限来使用。详细信息可以使用<code>man 2 chroot</code>命令查看。</p>
+
+<p>下面是一个很简单的chroot程序示例:</p>
+
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main(int argc, char *argv[])
+{
+    chroot(".");
+    chdir("/");
+    execvp("/bin/bash", NULL);
+    return 0;
+}
+</code></pre>
+
+<p>这段代码的功能就是chroot到当前目录下并且打开bash这个shell。需要注意的是，上面这段代码除了没有错误提示之外，还是很危险的！因为运行它就必须给用户root权限，而在以root权限chroot之后，并没有收回权限就打开了一个shell让用户操作。我们后面可以看到，用一段很简单的代码就可以轻易的跳出这个chroot环境。正确的做法是，在chroot之后使用setuid，使当前用户变成一个权限较低的用户，比如在chroot后添加如下代码：</p>
+
+<pre><code>setuid(1000);
+</code></pre>
+
+<p>在程序中使用chroot的好处就是不一定非要打开一个shell，需要在chroot环境中使用什么程序，直接用exec函数族来执行就行了。这样有两个好处：（1）只需要在新环境中配置需要运行的程序。如果要执行的程序是静态编译的，那么连链接库文件都不用要了。（2）由于一直是程序在控制运行过程，没有提供shell让用户交互操作，所以安全性相对高一些。</p>
+
+<h2 id="chroot-2">跳出chroot</h2>
+
+<p>如果有root权限，可以用很多种方法跳出chroot环境。</p>
+
+<h3 id="chroot-3">在新环境中使用chroot</h3>
+
+<p>最简单最通用的方法是在新环境中再使用一下chroot。写一个程序可以轻易的跳出chroot环境。方法如下：</p>
+
+<ol>
+  <li>在当前环境中新建一个文件夹，并chroot到它。</li>
+  <li>一直执行“cd ..”，就会回到系统真正的根目录。</li>
+  <li>chroot到这个真正的根目录。</li>
+</ol>
+
+<p>下面是一个简单的C语言代码示例，我们将它保存为jumpout.c：</p>
+
+<pre><code>//jumpout.c
+
+#include &lt;stdio.h&gt;  
+#include &lt;unistd.h&gt;  
+   
+#define TEMP_DIR "temp"  
+   
+int main()
+{  
+    int x;
+    chroot(TEMP_DIR);
+    for(x=0;x&lt;1024;x++)   
+        chdir("..");  
+    chroot(".");  
+    execl("/bin/sh", "-i", NULL);
+    
+    return 0; 
+}
+</code></pre>
+
+<p>现在来体验一下这段代码。首先静态编译（这样编译后的可执行文件就不需要动态链接库的支持了）:</p>
+
+<pre><code>gcc --static jumpout.c -o jumpout
+</code></pre>
+
+<p>然后在newroot下面新建一个名为temp的文件夹：</p>
+
+<pre><code>mkdir temp
+</code></pre>
+
+<p>这样准备工作就做好了。现在chroot到newroot，然后执行jumpout：</p>
+
+<pre><code>chroot . /bin/bash
+./jumpout
+</code></pre>
+
+<p>可以看到我们现在已经跳出chroot环境了。各种命令都可以使用，并且文件夹也都是真正的根文件夹下的结构。</p>
+
+<p>使用perl等其它语言也可以达到同样的效果。很多服务器都支持CGI脚本，这种攻击不是没有可能。因此在chroot之后处理好权限是非常重要的。</p>
+
+<h3 id="mknod2">使用mknod(2)</h3>
+
+<p>mknod(2)系统调用可以按照自己的需求来新建文件。所以它有可能在硬盘上新建一块有特定目的的代码，来破坏chroot环境。或者新建/dev/mem来改写内核的内存。</p>
+
+<h3 id="hard-linkchroot">找到hard link到chroot环境外的文件</h3>
+
+<h3 id="ptrace2">使用ptrace(2)</h3>
+
+<p>ptrace(2)是用于跟踪和调试程序系统调用的一个函数，它可以跟踪并且改写程序的信号和系统调用。如果在chroot中有某个程序使用到了chroot之外的一些资源，那么就可以使用ptrace来更改这个程序的系统调用来做一些事情。</p>
+
+<h2 id="section">安全原则</h2>
+
+<p>看到了这么多跳出chroot的方法后，就会发现，如果配置不恰当，chroot环境也不是安全的。因此这里给出一些安全的原则。</p>
+
+<ol>
+  <li>几乎所有的跳出chroot环境的方法都需要root权限。因此再chroot后如果没有特殊需求，一定要放弃root权限。</li>
+  <li>如果可能，chroot中的文件和文件夹的所有者最好都是root，并控制好读写权限。</li>
+  <li>chroot后一定要chdir到新的根目录。</li>
+  <li>如果没有必要，不要在chroot环境中使用/etc/passwd文件。</li>
+  <li>最好不要链接到chroot环境外的文件。</li>
+</ol>
+
+<h2 id="section-1">使用中可能遇到的问题</h2>
+
+<p>上面已经把容易出现的问题给说到了。这些问题虽然不大，并且懂了之后也没什么，但是却是很容易困惑新手的一些地方，所以这里突出的提一下：</p>
+
+<ol>
+  <li>无论是chroot命令，还是chroot这个函数，都需要root权限。</li>
+  <li>chroot这个命令需要在新环境中至少有一个shell程序，包括它用到的库文件。使用ldd可以看到相应的库文件。</li>
+  <li>chroot后不管运行什么命令和软件，都要保证有相应的库文件。gcc默认是动态编译的，因此如果想在chroot环境中不需要库文件就可以执行编译过的二进制文件，则需要静态编译，即加上“–static”选项。</li>
+</ol>
+
+<h2 id="section-2">参考资料</h2>
+
+<p>系统自带的手册页是很好的参考资料。详见</p>
+
+<pre><code>man 1 chroot
+man 2 chroot
+</code></pre>
+
+<p>这篇文章中有跳出chroot环境的详细讲解和C语言代码：http://www.bpfh.net/simes/computing/chroot-break.html</p>
+
+<p>这里有一篇非常详尽的讲解:http://www.unixwiz.net/techtips/chroot-practices.html</p>
+
+</article>
+
+<footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2012-03-10-xinlixue.html">Prev: 耶鲁大学心理学导论</a></td>
+    
+    
+      <td id="next"><a href="/2012-03-14-sicp35.html" id="next">Next: SICP第三章总结（下）——流编程</a></td>
+    
+  </tr></table>
+</footer>
+
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+</div>
+
+    </section>
+
+    <footer id="page_footer">
+      Copyright @ 2012 - 2014 Bin Wang
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
+    </footer>
+    
+    <!-- MathJax -->
+    <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+  </body>
+</html>

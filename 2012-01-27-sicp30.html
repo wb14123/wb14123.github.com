@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title> SICP第三章总结（上）——可变量与环境 |  Bin Wang</title>
+    <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-52904500-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+  </head>
+
+  <body>
+    <header id="page_header">
+      <nav id="page_nav">
+        <ul>
+             <li><a href="/">Home</a></li>
+             <li><a href="/read.html">Read</a></li>
+             <li><a href="/travel.html">Travel</a></li>
+             <li><a href="/search.html">Search</a></li>
+             <li><a href="/about.html">About</a></li>
+       </ul>
+      </nav>
+
+    </header>
+
+    <section id="page_content">
+      <div id="content_table">
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#section">一、变量的赋值</a></li><li><a href="#section-1">二、环境</a></li><li><a href="#section-2">三、面向对象编程</a></li></ol>
+</div>
+
+<div id="article_content">
+<article id="post">
+  <header>
+    <h1>SICP第三章总结（上）——可变量与环境</h1>
+    
+      <p class="description">Posted on 27 Jan 2012, tagged <code>sicp</code><code>programming</code></p>
+    
+  </header>
+
+  <p>因为各种事情，中间隔了很长时间没有更新有关SICP的总结了。因为第三章涉及到的东西实在太多，一篇文章来总结完似乎不太现实，因此将第三章的总结分为两个部分，上半部分是有关可变的变量和环境，下半部分是流编程。我刚开始看SICP的时候，是为了学lisp，但是看到第三章才真正意识到SICP的重点是什么，看它的书名就知道，这不是一本讲解一门语言的书，而是讲有关程序构造和解释的书，对语言的构造了解多一些，不管用什么语言，都很容易用上其中的思想。在第三章，作者深入讨论了在命令式语言中我们习以为常的事情——赋值所带来的影响。虽然这不是一本讲解编程语言的书，但是由于前几篇博客都是介绍了语法，我们还是遵守这种习惯吧，继续讲解Scheme的语法吧。这本书讲的不是语言，但是语言在这本书中还是一个很重要的工具的。其实所谓Scheme的语法，只是一些保留字，方便我以后查询。</p>
+
+<h2 id="section">一、变量的赋值</h2>
+
+<p>在SICP前面的学习中很多人肯定发现了，在Scheme中，基本上所有的操作都是不改变变量原有的值。比如一个函数的作用是将一个列表中的值反转，那么它只是返回这个列表反转后的值，而不是改变这个列表。因为在数学的世界里，一个函数也好，变量也好，它所代表的值不应该总是改变的。但是在现实世界中，一些状态却总是随时间改变，如果语言支持赋值，也许在写有关真实世界的模型时就会方便一些。但是我们将会看到，这种方便所带来的一些麻烦。</p>
+
+<p>首先还是先介绍一下有关变量赋值的语法：</p>
+
+<h3 id="set">1.set!</h3>
+
+<p>给一个变量赋值，语法为<code>(set! &lt;arg1&gt; &lt;arg2&gt;)</code>，就是将arg1赋值为arg2。在Scheme中，与赋值有关的函数，基本后面都是跟一个感叹号的。</p>
+
+<h3 id="set-car">2.set-car!</h3>
+
+<p>给一个列表的头赋值。语法和set!类似。</p>
+
+<h3 id="set-cdr">3.set-cdr!</h3>
+
+<p>给一个列表的cdr赋值。类似于set-car。</p>
+
+<p>随意乱用set-car!和set-cdr!有可能使列表的关系变得很乱，如果学过数据结构中的链表和C语言中的指针，对这个的理解应该会比较深一些。</p>
+
+<p>根据SICP的一贯思想，只要有基础的功能，那么别的功能也都能实现。set!就是以前所没有的一个基础功能，而set-car!和set-cdr!都可以通过set!来实现。SICP中有具体的实现过程，这里就不再多说了。</p>
+
+<p>可以改变变量的值，使得一个变量只是某段代码的替代，变成了代表指向某个存储地址。在很多情况下，并不需要对元素进行赋值，而对元素赋值，有可能使代码的实现不甚优雅，程序的效率变低，更有可能给程序造成一些隐患，这个在书中也有一些例子。那能给变量赋值的好处在哪里呢？就是我们可以用时间来思考程序中的数据了，像在真实世界中一样，一些值可以随着时间的改变而改变，这样可以更好的模拟真实世界。为了可以使变量的改变更好的被解释器所处理，引入了“环境”的概念。</p>
+
+<h2 id="section-1">二、环境</h2>
+
+<p>环境是一个比较关键的解释模型。前面所介绍的解释模型是直接替换函数的代码和参数，但是由于变量变成了可以改变的，所以以前的模型已经不适用了。环境的模型可以解释很多东西，包括类似于我们在其它语言中学过的局部变量。通过环境，我们可以实现面向对象编程，声明一个类，用这个类来声明很多互不关联的实体。所谓环境，可以把它的结构想象成一个序列，这在书中讲的都很详细了，我曾经写了好几次，想解释一下环境模型，但是写简单了不可能解释得清楚，写复杂了又远远不如原书中所讲的好，所以就只好作罢。</p>
+
+<p>虽然由于我水平有限不能总结太多关于环境的东西，但这个真的是一个很重要的模型，也是Scheme解释器工作的真实原理，多看原书就会有比较深的理解。</p>
+
+<h2 id="section-2">三、面向对象编程</h2>
+
+<p>不知道SICP成书的时候有没有“面向对象”这个词语。而书中的英文我也不知道怎么翻译好，但是根据它的思想，我索性就写做面向对象编程好了。说到这里也稍微闲聊一下关于面向对象编程吧。很多语言号称是支持面向对象编程，Java更是强制把所有的东西都封装成类。但是我觉得，如果一个好的程序员，用什么语言，都会有模块化的思想的，而让编程语言强制规定这些，反而限制了程序员的自由。也许是因为Scheme的面向对象更透明更神奇的原因，让我突然想到了柏拉图世界中的观点，即每种物体在理想世界中都有一个标准，真实世界中的物体都是依靠这个标准而来的。而类的声明就像是这个“元物体”，而通过类新建的对象就像是真实世界中的物体。</p>
+
+<p>好了，废话少说，这里我们看一下Scheme是怎样实现面向对象的模块化设计的。其实这篇文章所介绍的新东西只有上面两节，这里只是一种思想。</p>
+
+<p>不要认为一个类很神奇，其实它们也都是用代码来实现的。通过那些只有逻辑功能的代码，我们就可以创造一个类。比如用下面的代码，我们可以创造一个银行账户的类:</p>
+
+<pre><code>(define (make-account balance)
+    (define (withdraw amount)
+        (if (&gt;= balance amount)
+            (begin (set! balance (- balance amount))
+                balance)
+            "Insufficient funds"))
+    (define (deposit amount)
+        (set! balance (+ balance amount))
+            balance)
+    (define (dispatch m)
+        (cond ((eq? m 'withdraw) withdraw)
+            ((eq? m 'deposit) deposit)
+            (else (error "Unknown request -- MAKE-ACCOUNT"
+                m))))
+    dispatch)
+(define A1 (make-account 100))
+</code></pre>
+
+<p>即可生成一个初始有100元、名为A1的银行账户，</p>
+
+<pre><code>((A1 'dispath) 100)
+</code></pre>
+
+<p>即可向其中存入100元。</p>
+
+<p>不需要额外的知识，我们只要仔细的研读上面的代码，就可以知道这种面向对象的方法是怎样实现的。从此我们可以看出，除了我们的思想，不需要额外的东西，即可实现面向对象的编程。</p>
+
+</article>
+
+<footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2011-12-20-life-game.html">Prev: 好玩的生命游戏</a></td>
+    
+    
+      <td id="next"><a href="/2012-02-11-cplusplus.html" id="next">Next: 也谈C++</a></td>
+    
+  </tr></table>
+</footer>
+
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+</div>
+
+    </section>
+
+    <footer id="page_footer">
+      Copyright @ 2012 - 2014 Bin Wang
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
+    </footer>
+    
+    <!-- MathJax -->
+    <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+  </body>
+</html>
