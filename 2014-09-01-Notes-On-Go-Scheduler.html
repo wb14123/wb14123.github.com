@@ -59,7 +59,7 @@
 
 <p>The number of <code>P</code> is setted by <code>GOMAXPROCS</code>.</p>
 
-<p>Each <code>M</code> has a <code>G</code> called <code>g0</code> to do schedule jobs.</p>
+<p>Each <code>M</code> has a <code>G</code> called <code>g0</code> to do schedule jobs. (<code>mcall</code> will use <code>g0</code> to execute functions).</p>
 
 <h2 id="the-beginning">The Beginning</h2>
 
@@ -151,7 +151,7 @@ TEXT runtime·gogo(SB), NOSPLIT, $0-4
 
 <h2 id="the-start-of-the-other-goroutines">The Start of the Other Goroutines</h2>
 
-<p>When the program use the keyword <code>go</code>, it will start a new Goroutine. <code>runtime·proc</code> could start a <code>G</code> given the function. It put this new <code>G</code> in the current <code>P</code>’s run queue, then call <code>wakeup</code> to wake up all the <code>P</code>s to find a <code>G</code> to run.</p>
+<p>When the program use the keyword <code>go</code>, it will start a new Goroutine. <code>runtime·proc</code> could start a <code>G</code> given the function. It put this new <code>G</code> in the current <code>P</code>’s run queue, then call <code>wakep</code> in order to call <code>startm</code>, which will get an idle <code>P</code> and run a <code>G</code> on it. If the <code>P</code> don’t have an <code>M</code> for now, it will call <code>newm</code> which will alloc an <code>M</code> using <code>startm</code> as its executing function. As we already known, <code>startm</code> will start this <code>M</code>, call scheduler to find a <code>G</code> to run.</p>
 
 <p>How the <code>P</code> finds the executable <code>G</code> will be explained in the next section.</p>
 
@@ -159,9 +159,9 @@ TEXT runtime·gogo(SB), NOSPLIT, $0-4
 
 <h3 id="when-to-change">When to Change</h3>
 
-<p>When the current Goroutine call a system call, it is the chance to call the scheduler and change a Goroutine to run.</p>
+<p>We know when the <code>G</code> is executing, the code will never return. It means that the scheduler of Go is non-preemptive. So when to change the current running <code>G</code>?</p>
 
-<p>It means that the scheduler of Go is non-preemptive.</p>
+<p>When the current Goroutine call a system call, it is the chance. It will call <code>handoffp</code>, which will release the current <code>P</code> (and set it’s state to idle), start a new <code>M</code> to run the system call <code>G</code>, and then call <code>startm</code>, which will find an idle <code>P</code> and run it.</p>
 
 <p>From Go 1.2, it increases the chance to run the scheduler. For example, when the goroutine call a function, it will check the memory and deside whether to do a scheduling.</p>
 
@@ -234,6 +234,8 @@ func main() {
 <h3 id="which-one-to-change">Which One to Change</h3>
 
 <p>In the last section, we know that the new started <code>G</code> is just put under the <code>P</code> that calls the <code>go</code> keyword. So the queue don’t ensure fairness. However, while the <code>P</code> is able to run a new <code>G</code> but could not find any <code>G</code> in its queue, it will look up other <code>P</code>s and steal half of their <code>G</code>s if there are any. This is more effective that ensure the fairness while put <code>G</code> in the run queue since it need not lock all the scheduler to check all the <code>P</code>s run queue to ensure the fairness.</p>
+
+<p>The code could be found in <code>findrunnable</code>.</p>
 
 </article>
 
