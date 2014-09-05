@@ -33,7 +33,7 @@
 
     <section id="page_content">
       <div id="content_table">
-  <h3>Table of Contents</h3><ol class="toc"><li><a href="#basic-structures">Basic Structures</a></li><li><a href="#the-beginning">The Beginning</a></li><li><a href="#the-start-of-the-other-goroutines">The Start of the Other Goroutines</a></li><li><a href="#change-the-current-executing-goroutine">Change the Current Executing Goroutine</a></li></ol>
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#basic-structures">Basic Structures</a></li><li><a href="#the-beginning">The Beginning</a></li><li><a href="#the-start-of-the-other-goroutines">The Start of the Other Goroutines</a></li><li><a href="#change-the-current-executing-goroutine">Change the Current Executing Goroutine</a></li><li><a href="#a-slide">A Slide</a></li></ol>
 </div>
 
 <div id="article_content">
@@ -236,6 +236,13 @@ func main() {
 <p>In the last section, we know that the new started <code>G</code> is just put under the <code>P</code> that calls the <code>go</code> keyword. So the queue don’t ensure fairness. However, while the <code>P</code> is able to run a new <code>G</code> but could not find any <code>G</code> in its queue, it will look up other <code>P</code>s and steal half of their <code>G</code>s if there are any. This is more effective that ensure the fairness while put <code>G</code> in the run queue since it need not lock all the scheduler to check all the <code>P</code>s run queue to ensure the fairness.</p>
 
 <p>The code could be found in <code>findrunnable</code>.</p>
+
+<h2 id="a-slide">A Slide</h2>
+
+<p>A slide could be more suitable to show the point:</p>
+
+<iframe src="//www.slideshare.net/slideshow/embed_code/38726402" width="476" height="400" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+<p>iframe&gt;</p>
 
 </article>
 
