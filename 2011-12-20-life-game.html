@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title> Read |  Bin Wang</title>
+    <title> 好玩的生命游戏 |  Bin Wang</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
 
     <script>
@@ -33,78 +33,43 @@
 
     <section id="page_content">
       <div id="content_table">
-  <h3>Table of Contents</h3><ol class="toc"><li>I'm reading</li><li>I have read</li><li>I wish to read</li></ol>
+  
 </div>
 
 <div id="article_content">
 <article id="post">
   <header>
-    <h1>Read</h1>
+    <h1>好玩的生命游戏</h1>
+    
+      <p class="description">Posted on 20 Dec 2011, tagged <code>thougts</code></p>
     
   </header>
 
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-<script>
+  <p>今天看完了《大设计》，作者在最后一章提到了生命游戏。生命游戏我以前也看到过，这次再次看见，就和更多人分享一下我的想法吧。生命游戏的世界，是一个由很多小格子组成的二维矩形世界，每个格子或者是空着的，或者存活着一个细胞，而游戏每进行一步，这个世界都会进化，一般进化的规则如下：</p>
 
-function getAuthor(author) {
-  var authors = "";
-  if (author.length > 0) {
-    authors = " -- "
-  }
-  for (var i = 0; i < author.length; i++) {
-    authors += author[i];
-    if (i < author.length - 1) {
-      authors += ", "
-    }
-  }
-  return authors;
-}
+<ol>
+  <li>当一个细胞周围有两个或三个细胞时，它会继续存活。</li>
+  <li>当一个空着的格子周围恰好有三个细胞时，这个格子会诞生一个细胞。</li>
+  <li>如果不满足以上两点，这个格子将变成（或依旧是）空的。</li>
+</ol>
 
-function renderBook(item) {
-  var dom = $('<li>');
-  $('<a>')
-    .attr('href', item.book.alt)
-    .attr('target', '_blank')
-    .text(item.book.title + getAuthor(item.book.author))
-    .appendTo(dom);
-  return dom;
-}
+<p>详细的资料和更多有趣的图片，可以参看维基百科的有关条目。</p>
 
-function getBook(to, cb) {
-  var url = 'http://api.douban.com/v2/book/user/42177876/collections?to=' + to + '&count=200&alt=xd&callback=?';
-  $.getJSON(url, function(data){
-    $.each(data.collections, function (i, item) {
-      if (i === (data.collections.length - 1) && data.count < data.total) {
-        cb(item.updated);
-      }
-      renderBook(item).appendTo('#' + item.status)
-    });
-  });
-}
+<p>就这样几个简单的规则，加上一个初始的条件，就可演化出令人惊奇的世界。这个世界中会演化出很多或不变、或循环、或移动的结构。其中最经典的莫过于以上的场景了，其中上面的两个东西大家将它叫做“机枪”，而一堆正在向右下角移动的东西，大家叫它“滑翔机”。当看到这个场景时，是不是有种这两个“机枪”在制造生命的感觉？这还是如此简单的规则下所产生的，若是我们多加上一些更完善的规则，会演化出更多的结构，其中一些结构看起来甚至是“智能的”，它们会吃掉一些结构，产生另一些结构，甚至会通过一些方法复制自己，这难道不是生命吗？将这种二维世界和我们的世界做对比，除了我们的世界规则更多些、所含的结构更复杂一些之外，还有什么本质的区别吗？而生命、包括人类，是不是也是这些复杂结构之一呢？</p>
 
-function bookCallback(d) {
-  getBook((new Date(d)).toISOString(), bookCallback);
-}
+<p>这和我之前的一些思想，真是有异曲同工之妙，但是这个游戏，更直观的给了我们这些启示。如果以前没有这种想法，现在不妨想一下，人是否就是由一堆原子分子组成的机器呢？人在宇宙中，似乎也不是什么特殊的存在吧？尤其现在人工智能日益兴起，这些东西，真是值得我们深思。</p>
 
-getBook('', bookCallback);
-
-</script>
-
-<h2>I'm reading</h2>
-<div id="reading"></div>
-<h2>I have read</h2>
-<div id="read"></div>
-<h2>I wish to read</h2>
-<div id="wish"></div>
-
-<br/>
-Powered by <a href="http://www.douban.com">Douban</a> API.
+<p>最后，这里有个<a href="http://web.archive.org/web/20120529021401/http://www.bitstorm.org/gameoflife/">链接</a>，可以让你亲自体验一下生命游戏。</p>
 
 </article>
 
 <footer id="post_footer">
   <table><tr>
     
+      <td id="prev"><a href="/2011-07-12-port666.html">Prev: 端口666：毁灭！</a></td>
+    
+    
+      <td id="next"><a href="/2012-01-27-sicp30.html" id="next">Next: SICP第三章总结（上）——可变量与环境</a></td>
     
   </tr></table>
 </footer>
