@@ -60,12 +60,19 @@ function getAuthor(author) {
   return authors;
 }
 
+function getSubtitle(subtitle) {
+  if (subtitle != "" && subtitle != null && subtitle != undefined) {
+    return " (" + subtitle + ") ";
+  }
+  return "";
+}
+
 function renderBook(item) {
   var dom = $('<li>');
   $('<a>')
     .attr('href', item.book.alt)
     .attr('target', '_blank')
-    .text(item.book.title + getAuthor(item.book.author))
+    .text(item.book.title + getSubtitle(item.book.subtitle) + getAuthor(item.book.author))
     .appendTo(dom);
   return dom;
 }
