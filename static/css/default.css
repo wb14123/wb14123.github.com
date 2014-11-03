@@ -166,6 +166,13 @@ footer#page_footer{
   display: none;
 }
 
+blockquote {
+  padding: 30px 30px 30px 30px;
+  border: 1px solid #EAEAEA;
+  margin-left: 0px;
+  font-family: cursive;
+}
+
 @media screen and (min-width:900px){
   #post_list #description{
     display: inline;
