@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Bin Wang</title>
+		<description>This is my personal blog about computer since and technology, and my life.</description>		
+		<link>http://www.binwang.me</link>
+		<atom:link href="http://www.binwang.me/feed.xml" rel="self" type="application/rss+xml" />
+		
+			<item>
+				<title>The Thoughts Behind Bard Framework</title>
+				
+					<description>&lt;p&gt;These days I’m working on a really exciting project: a web framework. My job is to write web services, and there is no framework I thought is doing things right. So I just write one myself. It is really an interesting thing. I will talk about some thoughts behind it in this article.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Tue, 16 Dec 2014 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2014-12-16-The-Thoughts-Behind-Bard-Framework.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2014-12-16-The-Thoughts-Behind-Bard-Framework.html</guid>
+			</item>
+		
+			<item>
+				<title>Docker Is the One Scaffolding to Rule Them All</title>
+				
+					<description>&lt;blockquote&gt;
+  &lt;p&gt;One Ring to rule them all, One Ring to find them,&lt;/p&gt;
+
+  &lt;p&gt;One Ring to bring them all and in the darkness bind them&lt;/p&gt;
+
+  &lt;p&gt;– &lt;em&gt;The Load of the Rings&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+</description>
+				
+                        	<pubDate>Mon, 03 Nov 2014 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2014-11-03-Docker-Is-the-One-Scaffolding-to-Rule-Them-All.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2014-11-03-Docker-Is-the-One-Scaffolding-to-Rule-Them-All.html</guid>
+			</item>
+		
+			<item>
+				<title>Notes On Go Scheduler</title>
+				
+					<description>&lt;p&gt;I read the Go source code about scheduler these days. They are under &lt;code&gt;src/pkg/runtime&lt;/code&gt;, mainly in &lt;code&gt;runtime.h&lt;/code&gt;, &lt;code&gt;proc.c&lt;/code&gt; and some Assembly files. The scheduler’s policy is easy to understand, because there are already many articles on this. I’m more interesting in the details. I learned how to switch the current running goroutine, which is a little mystery for me before.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Mon, 01 Sep 2014 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2014-09-01-Notes-On-Go-Scheduler.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2014-09-01-Notes-On-Go-Scheduler.html</guid>
+			</item>
+		
+			<item>
+				<title>RESTful API with Type System</title>
+				
+					<description>&lt;p&gt;Long long ago, some programming languages already have type system. They can find some bugs while compiling the code, instead of let the program run and fail. Though there are many popular languages that do not have static type system, type system has its advantage and has been accepted widely.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Sat, 02 Aug 2014 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2014-08-02-RESTful-API-with-Type-System.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2014-08-02-RESTful-API-with-Type-System.html</guid>
+			</item>
+		
+			<item>
+				<title>The Travel to Tokyo</title>
+				
+					<description>&lt;p&gt;最近一直比较忙，事情很多，变化很多，这回不愁博客没东西来写了。今天就先把最近去东京的旅游记一下吧。&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Sun, 20 Jul 2014 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2014-07-20-The-Travel-to-Tokyo.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2014-07-20-The-Travel-to-Tokyo.html</guid>
+			</item>
+		
+			<item>
+				<title>Experiment On Combining OOP With Erlang&#39;s Actor Model</title>
+				
+					<description>&lt;p&gt;Erlang’s actor model is good to use, but its syntax is not. Elixir is a very great language, but I don’t think it is enough. So I hacked it a little and did some experiments on turning it into an OOP language in some way.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Fri, 16 May 2014 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2014-05-16-Experiment-On-Combining-OOP-With-Erlang%27s-Actor-Model.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2014-05-16-Experiment-On-Combining-OOP-With-Erlang%27s-Actor-Model.html</guid>
+			</item>
+		
+			<item>
+				<title>Why I Come Back to Erlang</title>
+				
+					<description>&lt;p&gt;Some months ago, I learned Erlang and wrote a poker game with it. While I’m using it, its strange syntax drives me to crazy. The most sweet syntax I’ve ever seen is in coffee script. So in the next game I wrote (also a poker game), I tried to use Node.js with coffee script. But after the basic features are implemented, I came back to Erlang. Here is why.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Sun, 27 Apr 2014 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2014-04-27-Why-I-Come-Back-to-Erlang.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2014-04-27-Why-I-Come-Back-to-Erlang.html</guid>
+			</item>
+		
+			<item>
+				<title>What is Wrong about HTML and CSS</title>
+				
+					<description>&lt;p&gt;In my last blog, I wrote it is good to use HTML + JS + CSS. But I found I was just enjoy the part of the isolate between them, but not the language (HTML and CSS). I will talk about what is wrong about HTML and CSS.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Fri, 14 Feb 2014 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2014-02-14-What-is-Wrong-about-HTML.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2014-02-14-What-is-Wrong-about-HTML.html</guid>
+			</item>
+		
+			<item>
+				<title>HTML + CSS + JS is Good</title>
+				
+					<description>&lt;p&gt;These days I’m using Libgdx to write a mobile game. While I’m writing it, I find that the modern web tech is very good: HTML + CSS + JS. Let me talk about the details.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Tue, 28 Jan 2014 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2014-01-28-HTML-%2B-CSS-%2B-JS-is-Good.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2014-01-28-HTML-%2B-CSS-%2B-JS-is-Good.html</guid>
+			</item>
+		
+			<item>
+				<title>Languages Should Have Database Built In</title>
+				
+					<description>&lt;p&gt;When we are programming, we are programming with data. When the data is too big, we could not put them all in the Ram. So we need some place to store these data, and then read them when we need them. The place we store our data is called “database”.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Sun, 08 Dec 2013 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2013-12-08-Languages-Should-Have-Database-Built-In.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2013-12-08-Languages-Should-Have-Database-Built-In.html</guid>
+			</item>
+		
+	</channel>
+</rss>
