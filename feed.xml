@@ -7,6 +7,18 @@
 		<atom:link href="http://www.binwang.me/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Why Use Reflections to Write A Web Framework</title>
+				
+					<description>&lt;p&gt;Lots of people don’t like reflections. And I said if I could see the whole things I might not use reflections (with Annotation) to write the web framework &lt;a href=&quot;https://github.com/wb14123/bard&quot;&gt;Bard&lt;/a&gt;. But I think it is not true, I really need reflections to do the things.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Sun, 28 Dec 2014 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2014-12-28-Why-Use-Reflections-to-Write-A-Web-Framework.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2014-12-28-Why-Use-Reflections-to-Write-A-Web-Framework.html</guid>
+			</item>
+		
+			<item>
 				<title>The Thoughts Behind Bard Framework</title>
 				
 					<description>&lt;p&gt;These days I’m working on a really exciting project: a web framework. My job is to write web services, and there is no framework I thought is doing things right. So I just write one myself. It is really an interesting thing. I will talk about some thoughts behind it in this article.&lt;/p&gt;
@@ -80,8 +92,8 @@
 </description>
 				
                         	<pubDate>Fri, 16 May 2014 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2014-05-16-Experiment-On-Combining-OOP-With-Erlang%27s-Actor-Model.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2014-05-16-Experiment-On-Combining-OOP-With-Erlang%27s-Actor-Model.html</guid>
+				<link>http://www.binwang.me/2014-05-16-Experiment-On-Combining-OOP-With-Erlang's-Actor-Model.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2014-05-16-Experiment-On-Combining-OOP-With-Erlang's-Actor-Model.html</guid>
 			</item>
 		
 			<item>
@@ -116,20 +128,8 @@
 </description>
 				
                         	<pubDate>Tue, 28 Jan 2014 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2014-01-28-HTML-%2B-CSS-%2B-JS-is-Good.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2014-01-28-HTML-%2B-CSS-%2B-JS-is-Good.html</guid>
-			</item>
-		
-			<item>
-				<title>Languages Should Have Database Built In</title>
-				
-					<description>&lt;p&gt;When we are programming, we are programming with data. When the data is too big, we could not put them all in the Ram. So we need some place to store these data, and then read them when we need them. The place we store our data is called “database”.&lt;/p&gt;
-
-</description>
-				
-                        	<pubDate>Sun, 08 Dec 2013 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2013-12-08-Languages-Should-Have-Database-Built-In.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2013-12-08-Languages-Should-Have-Database-Built-In.html</guid>
+				<link>http://www.binwang.me/2014-01-28-HTML-+-CSS-+-JS-is-Good.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2014-01-28-HTML-+-CSS-+-JS-is-Good.html</guid>
 			</item>
 		
 	</channel>
