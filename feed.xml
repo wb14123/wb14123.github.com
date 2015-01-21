@@ -7,6 +7,18 @@
 		<atom:link href="http://www.binwang.me/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Backpropagation Algorithm</title>
+				
+					<description>&lt;p&gt;These days I start to learn neural networks again and write some Matlab codes from scratch. I try to understand everything I do while I write the code, so I derive the equations in the back propagation while try to keep it clear and easy to understand.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Sat, 17 Jan 2015 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2015-01-17-Backpropagation-Algorithm.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2015-01-17-Backpropagation-Algorithm.html</guid>
+			</item>
+		
+			<item>
 				<title>Why Use Reflections to Write A Web Framework</title>
 				
 					<description>&lt;p&gt;Lots of people don’t like reflections. And I said if I could see the whole things I might not use reflections (with Annotation) to write the web framework &lt;a href=&quot;https://github.com/wb14123/bard&quot;&gt;Bard&lt;/a&gt;. But I think it is not true, I really need reflections to do the things.&lt;/p&gt;
@@ -118,18 +130,6 @@
                         	<pubDate>Fri, 14 Feb 2014 00:00:00 +0800</pubDate>
 				<link>http://www.binwang.me/2014-02-14-What-is-Wrong-about-HTML.html</link>
 				<guid isPermaLink="true">http://www.binwang.me/2014-02-14-What-is-Wrong-about-HTML.html</guid>
-			</item>
-		
-			<item>
-				<title>HTML + CSS + JS is Good</title>
-				
-					<description>&lt;p&gt;These days I’m using Libgdx to write a mobile game. While I’m writing it, I find that the modern web tech is very good: HTML + CSS + JS. Let me talk about the details.&lt;/p&gt;
-
-</description>
-				
-                        	<pubDate>Tue, 28 Jan 2014 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2014-01-28-HTML-+-CSS-+-JS-is-Good.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2014-01-28-HTML-+-CSS-+-JS-is-Good.html</guid>
 			</item>
 		
 	</channel>
