@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title> How About Translate IMAP And SMTP Into HTTP API? |  Bin Wang</title>
+    <title> Use Docker to Submit Spark Jobs |  Bin Wang</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
 
     <script>
@@ -39,45 +39,42 @@
 <div id="article_content">
 <article id="post">
   <header>
-    <h1>How About Translate IMAP And SMTP Into HTTP API?</h1>
+    <h1>Use Docker to Submit Spark Jobs</h1>
     
-      <p class="description">Posted on 26 Apr 2015, tagged <code>programming</code><code>email</code><code>thought</code></p>
+      <p class="description">Posted on 29 Apr 2015, tagged <code>Docker</code><code>Spark</code></p>
     
   </header>
 
-  <p>I use Gmail as my personal Email. And it works well. I always uses the web UI for it. After Google Inbox is out, it feels even better.</p>
+  <p>These days I’m working on analyze data with Spark. Since our Spark cluster is offline in the office for now, so it needs to download data from log server every hour, analyze them with Spark and then upload to the server. The work flow is a little complex so I write some scripts to do it. In addition, I also write a whole automated end to end test for it.</p>
 
-<p>But my company uses another Email service, which their web UI is not so great to use. So I need an Email client to notify me while there are new Emails, and make some filters to archive different kinds of Emails. Since I’m using Mac OS, so I tried the Mail app that comes with the system, MailBox and Thunder Bird. Then I found, they all worked terrible. I tried to use them with my Gmail account. There are lots of Emails in my Gmail accout since I subscribe many mail list. It takes very long time to sync the mails from the server. And when I click one mail, it loads very slow, too.</p>
+<p>The whole thing is messed up with cron job configurations, shell scripts, MongoDB scripts and Spark jobs. Then I realize, I can pack them into a container, which do all the dirty things while not mess up the outside world. The better thing is, since I am using the CDH cluster, I can download the YARN configuration while build the container.</p>
 
-<p>I’ve used Thunder Bird before some years ago while I’m using Linux. I don’t remember it is not so bad. Then I realize, time is changing and the technology is developing. The technologies today makes things like website works really smooth. So why not Email technology take advantage over that? Why the clients still needs to sync many Emails from server even I don’t need to see all of them?</p>
-
-<p>So here comes an idea that sounds interesting. I don’t have time to develop it right now so I write it here in case I forget it. The idea is, why not translate IMAP and SMTP protocol into HTTP RESTful API?</p>
-
-<p>Here is the architecture: there is a server and a client. The server load all Emails from the Email server and store the messages in its own database. And it provide some APIs so that the client could just query this server or send Email through it instead of the old IMAP or SMTP protocol.</p>
-
-<p>Here are some APIs that the server could provide:</p>
+<p>Here is how the container is built up:</p>
 
 <ul>
-  <li>Get folders and its meta data (How many messages in it for example). You can specify the parent folder or just get all of the top folders.</li>
-  <li>Get messages from one folder. With pagination.</li>
-  <li>Get and modify contacts. With pagination.</li>
-  <li>Get and modify filters.</li>
-  <li>Search the Emails and contacts. (This could be done with Elastics for example).</li>
-  <li>Send an Email.</li>
+  <li>Compile the spark jobs and run unit tests.</li>
+  <li>Install Hadoop client, Spark and Hive client, and download configuration files from CDH cluster.</li>
+  <li>Install cron jobs to the system.</li>
+  <li>Generate data and test if the whole work flow works.</li>
 </ul>
 
-<p>They are just some APIs that come out of my mind in a few minutes, but it does make sense. With these APIs, the client could be written with web technologies which are more flexible, and the server could use more modern technologies such as Redis or RDBMS to improve performance.</p>
+<p>The container will do these things every hour through cron job:</p>
 
+<ul>
+  <li>Download data from log server.</li>
+  <li>Sends the data to the CDH cluster and submit the spark job to it.</li>
+  <li>Fetch result data from CDH cluster and upload them to the online server.</li>
+</ul>
+
+<p>You may wonder why not just use some work flow tools in Hadoop ecosystem like Oozie? First of all, Oozie uses XML as its config file which I think is very complex. And it is also less flexible. With Docker container, I can build it and test it without touch the outside world. And it is just a very flex component that can be attached to the Spark cluster easily with a single command. Or think the Spark cluster as a low level service, which just provides computing resource and should not care about other things.</p>
 
 </article>
 
 <footer id="post_footer">
   <table><tr>
     
-      <td id="prev"><a href="/2015-01-17-Backpropagation-Algorithm.html">Prev: Backpropagation Algorithm</a></td>
+      <td id="prev"><a href="/2015-04-26-How-About-Translate-IMAP-And-SMTP-Into-HTTP-API.html">Prev: How About Translate IMAP And SMTP Into HTTP API?</a></td>
     
-    
-      <td id="next"><a href="/2015-04-29-Use-Docker-to-Submit-Spark-Jobs.html" id="next">Next: Use Docker to Submit Spark Jobs</a></td>
     
   </tr></table>
 </footer>

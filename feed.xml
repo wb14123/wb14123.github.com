@@ -7,6 +7,18 @@
 		<atom:link href="http://www.binwang.me/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Use Docker to Submit Spark Jobs</title>
+				
+					<description>&lt;p&gt;These days I’m working on analyze data with Spark. Since our Spark cluster is offline in the office for now, so it needs to download data from log server every hour, analyze them with Spark and then upload to the server. The work flow is a little complex so I write some scripts to do it. In addition, I also write a whole automated end to end test for it.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Wed, 29 Apr 2015 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2015-04-29-Use-Docker-to-Submit-Spark-Jobs.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2015-04-29-Use-Docker-to-Submit-Spark-Jobs.html</guid>
+			</item>
+		
+			<item>
 				<title>How About Translate IMAP And SMTP Into HTTP API?</title>
 				
 					<description>&lt;p&gt;I use Gmail as my personal Email. And it works well. I always uses the web UI for it. After Google Inbox is out, it feels even better.&lt;/p&gt;
@@ -118,18 +130,6 @@
                         	<pubDate>Fri, 16 May 2014 00:00:00 +0800</pubDate>
 				<link>http://www.binwang.me/2014-05-16-Experiment-On-Combining-OOP-With-Erlang's-Actor-Model.html</link>
 				<guid isPermaLink="true">http://www.binwang.me/2014-05-16-Experiment-On-Combining-OOP-With-Erlang's-Actor-Model.html</guid>
-			</item>
-		
-			<item>
-				<title>Why I Come Back to Erlang</title>
-				
-					<description>&lt;p&gt;Some months ago, I learned Erlang and wrote a poker game with it. While I’m using it, its strange syntax drives me to crazy. The most sweet syntax I’ve ever seen is in coffee script. So in the next game I wrote (also a poker game), I tried to use Node.js with coffee script. But after the basic features are implemented, I came back to Erlang. Here is why.&lt;/p&gt;
-
-</description>
-				
-                        	<pubDate>Sun, 27 Apr 2014 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2014-04-27-Why-I-Come-Back-to-Erlang.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2014-04-27-Why-I-Come-Back-to-Erlang.html</guid>
 			</item>
 		
 	</channel>
