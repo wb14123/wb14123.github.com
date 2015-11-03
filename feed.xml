@@ -7,6 +7,18 @@
 		<atom:link href="http://www.binwang.me/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>The Proper Way to Use Spark Checkpoint</title>
+				
+					<description>&lt;p&gt;These days I’m using Spark streaming to process real time data. I’m using &lt;code&gt;updateStateByKey&lt;/code&gt;, so I need to add &lt;a href=&quot;https://spark.apache.org/docs/latest/streaming-programming-guide.html#checkpointing&quot;&gt;checkpointing&lt;/a&gt;, which is a fault tolerance mechanism of Spark streaming. The checkpoint will save DAG and RDDs. So when you restart the Spark application from failure, it will continue to compute.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Tue, 03 Nov 2015 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2015-11-03-The-Proper-Way-to-Use-Spark-Checkpoint.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2015-11-03-The-Proper-Way-to-Use-Spark-Checkpoint.html</guid>
+			</item>
+		
+			<item>
 				<title>My Recent Work About Neural Networks</title>
 				
 					<description>&lt;p&gt;These days I’ve written some code about neural networks. There is nothing important, but worth to be recorded.&lt;/p&gt;
@@ -118,18 +130,6 @@
                         	<pubDate>Sat, 02 Aug 2014 00:00:00 +0800</pubDate>
 				<link>http://www.binwang.me/2014-08-02-RESTful-API-with-Type-System.html</link>
 				<guid isPermaLink="true">http://www.binwang.me/2014-08-02-RESTful-API-with-Type-System.html</guid>
-			</item>
-		
-			<item>
-				<title>The Travel to Tokyo</title>
-				
-					<description>&lt;p&gt;最近一直比较忙，事情很多，变化很多，这回不愁博客没东西来写了。今天就先把最近去东京的旅游记一下吧。&lt;/p&gt;
-
-</description>
-				
-                        	<pubDate>Sun, 20 Jul 2014 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2014-07-20-The-Travel-to-Tokyo.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2014-07-20-The-Travel-to-Tokyo.html</guid>
 			</item>
 		
 	</channel>
