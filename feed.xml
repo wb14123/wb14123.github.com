@@ -7,6 +7,18 @@
 		<atom:link href="http://www.binwang.me/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>摒弃现代科技的隐士生活</title>
+				
+					<description>&lt;p&gt;今天在知乎上看到一篇帖子，说到意大利有一家旅馆，周围都是森林，远离外界的生活。同时在旅馆内禁止使用手机，晚上也只用蜡烛而不用灯。虽然这个旅馆的其他细节并不了解，但是给我的印象是远离城市、摒弃现代科技的浪漫感觉。初看之下， 还比较向往，但是细细想来，好像并没有什么必要非要摒弃现代的科技。&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Wed, 04 Nov 2015 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2015-11-04-the-life-of-hermit-without-materially.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2015-11-04-the-life-of-hermit-without-materially.html</guid>
+			</item>
+		
+			<item>
 				<title>The Proper Way to Use Spark Checkpoint</title>
 				
 					<description>&lt;p&gt;These days I’m using Spark streaming to process real time data. I’m using &lt;code&gt;updateStateByKey&lt;/code&gt;, so I need to add &lt;a href=&quot;https://spark.apache.org/docs/latest/streaming-programming-guide.html#checkpointing&quot;&gt;checkpointing&lt;/a&gt;, which is a fault tolerance mechanism of Spark streaming. The checkpoint will save DAG and RDDs. So when you restart the Spark application from failure, it will continue to compute.&lt;/p&gt;
@@ -14,8 +26,8 @@
 </description>
 				
                         	<pubDate>Tue, 03 Nov 2015 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2015-11-03-The-Proper-Way-to-Use-Spark-Checkpoint.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2015-11-03-The-Proper-Way-to-Use-Spark-Checkpoint.html</guid>
+				<link>http://www.binwang.me/2015-11-03-the-proper-way-to-use-spark-checkpoint.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2015-11-03-the-proper-way-to-use-spark-checkpoint.html</guid>
 			</item>
 		
 			<item>
@@ -26,8 +38,8 @@
 </description>
 				
                         	<pubDate>Thu, 02 Jul 2015 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2015-07-02-My-Recent-Work-About-Neural-Networks.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2015-07-02-My-Recent-Work-About-Neural-Networks.html</guid>
+				<link>http://www.binwang.me/2015-07-02-my-recent-work-about-neural-networks.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2015-07-02-my-recent-work-about-neural-networks.html</guid>
 			</item>
 		
 			<item>
@@ -38,8 +50,8 @@
 </description>
 				
                         	<pubDate>Wed, 29 Apr 2015 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2015-04-29-Use-Docker-to-Submit-Spark-Jobs.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2015-04-29-Use-Docker-to-Submit-Spark-Jobs.html</guid>
+				<link>http://www.binwang.me/2015-04-29-use-docker-to-submit-spark-jobs.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2015-04-29-use-docker-to-submit-spark-jobs.html</guid>
 			</item>
 		
 			<item>
@@ -50,8 +62,8 @@
 </description>
 				
                         	<pubDate>Sun, 26 Apr 2015 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2015-04-26-How-About-Translate-IMAP-And-SMTP-Into-HTTP-API.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2015-04-26-How-About-Translate-IMAP-And-SMTP-Into-HTTP-API.html</guid>
+				<link>http://www.binwang.me/2015-04-26-how-about-translate-imap-and-smtp-into-http-api.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2015-04-26-how-about-translate-imap-and-smtp-into-http-api.html</guid>
 			</item>
 		
 			<item>
@@ -62,8 +74,8 @@
 </description>
 				
                         	<pubDate>Sat, 17 Jan 2015 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2015-01-17-Backpropagation-Algorithm.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2015-01-17-Backpropagation-Algorithm.html</guid>
+				<link>http://www.binwang.me/2015-01-17-backpropagation-algorithm.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2015-01-17-backpropagation-algorithm.html</guid>
 			</item>
 		
 			<item>
@@ -74,8 +86,8 @@
 </description>
 				
                         	<pubDate>Sun, 28 Dec 2014 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2014-12-28-Why-Use-Reflections-to-Write-A-Web-Framework.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2014-12-28-Why-Use-Reflections-to-Write-A-Web-Framework.html</guid>
+				<link>http://www.binwang.me/2014-12-28-why-use-reflections-to-write-a-web-framework.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2014-12-28-why-use-reflections-to-write-a-web-framework.html</guid>
 			</item>
 		
 			<item>
@@ -86,8 +98,8 @@
 </description>
 				
                         	<pubDate>Tue, 16 Dec 2014 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2014-12-16-The-Thoughts-Behind-Bard-Framework.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2014-12-16-The-Thoughts-Behind-Bard-Framework.html</guid>
+				<link>http://www.binwang.me/2014-12-16-the-thoughts-behind-bard-framework.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2014-12-16-the-thoughts-behind-bard-framework.html</guid>
 			</item>
 		
 			<item>
@@ -104,8 +116,8 @@
 </description>
 				
                         	<pubDate>Mon, 03 Nov 2014 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2014-11-03-Docker-Is-the-One-Scaffolding-to-Rule-Them-All.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2014-11-03-Docker-Is-the-One-Scaffolding-to-Rule-Them-All.html</guid>
+				<link>http://www.binwang.me/2014-11-03-docker-is-the-one-scaffolding-to-rule-them-all.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2014-11-03-docker-is-the-one-scaffolding-to-rule-them-all.html</guid>
 			</item>
 		
 			<item>
@@ -116,20 +128,8 @@
 </description>
 				
                         	<pubDate>Mon, 01 Sep 2014 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2014-09-01-Notes-On-Go-Scheduler.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2014-09-01-Notes-On-Go-Scheduler.html</guid>
-			</item>
-		
-			<item>
-				<title>RESTful API with Type System</title>
-				
-					<description>&lt;p&gt;Long long ago, some programming languages already have type system. They can find some bugs while compiling the code, instead of let the program run and fail. Though there are many popular languages that do not have static type system, type system has its advantage and has been accepted widely.&lt;/p&gt;
-
-</description>
-				
-                        	<pubDate>Sat, 02 Aug 2014 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2014-08-02-RESTful-API-with-Type-System.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2014-08-02-RESTful-API-with-Type-System.html</guid>
+				<link>http://www.binwang.me/2014-09-01-notes-on-go-scheduler.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2014-09-01-notes-on-go-scheduler.html</guid>
 			</item>
 		
 	</channel>

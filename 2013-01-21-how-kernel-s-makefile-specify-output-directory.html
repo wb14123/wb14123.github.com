@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title> How About Translate IMAP And SMTP Into HTTP API? |  Bin Wang</title>
+    <title> How Kernel's Makefile Specify Output Directory |  Bin Wang</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
 
     <script>
@@ -39,34 +39,61 @@
 <div id="article_content">
 <article id="post">
   <header>
-    <h1>How About Translate IMAP And SMTP Into HTTP API?</h1>
+    <h1>How Kernel's Makefile Specify Output Directory</h1>
     
-      <p class="description">Posted on 26 Apr 2015, tagged <code>programming</code><code>email</code><code>thought</code></p>
+      <p class="description">Posted on 21 Jan 2013, tagged <code>kernel</code><code>make</code></p>
     
   </header>
 
-  <p>I use Gmail as my personal Email. And it works well. I always uses the web UI for it. After Google Inbox is out, it feels even better.</p>
+  <p>When compile Linux kernel, we could output files to a split directory with “make O=”. The kernel’s way to do it is a little tricky. Since kernel’s Makefile is very big, we could have a simpler version to analyse:</p>
 
-<p>But my company uses another Email service, which their web UI is not so great to use. So I need an Email client to notify me while there are new Emails, and make some filters to archive different kinds of Emails. Since I’m using Mac OS, so I tried the Mail app that comes with the system, MailBox and Thunder Bird. Then I found, they all worked terrible. I tried to use them with my Gmail account. There are lots of Emails in my Gmail accout since I subscribe many mail list. It takes very long time to sync the mails from the server. And when I click one mail, it loads very slow, too.</p>
+<pre><code>ifeq ($(KBUILD_SRC),)
+ifeq ("$(origin O)", "command line")
+	KBUILD_OUTPUT := $(O)
+endif
 
-<p>I’ve used Thunder Bird before some years ago while I’m using Linux. I don’t remember it is not so bad. Then I realize, time is changing and the technology is developing. The technologies today makes things like website works really smooth. So why not Email technology take advantage over that? Why the clients still needs to sync many Emails from server even I don’t need to see all of them?</p>
+ifneq ($(KBUILD_OUTPUT),)
+$(filter-out submake $(CURDIR)/Makefile, $(MAKECMDGOALS)): sub-make
+	@:
 
-<p>So here comes an idea that sounds interesting. I don’t have time to develop it right now so I write it here in case I forget it. The idea is, why not translate IMAP and SMTP protocol into HTTP RESTful API?</p>
+sub-make:
+	make -C $(KBUILD_OUTPUT) -f /home/wangbin/maketest/Makefile \
+		KBUILD_SRC=$(PWD) \
+		$(MAKECMDGOALS)
+	@echo " sub-make KBUILD_OUTPUT: $(KBUILD_OUTPUT)"
+skip-makefile := 1
+endif #end KBUILD_OUTPUT
+endif #end KBUILD_SRC
 
-<p>Here is the architecture: there is a server and a client. The server load all Emails from the Email server and store the messages in its own database. And it provide some APIs so that the client could just query this server or send Email through it instead of the old IMAP or SMTP protocol.</p>
+ifeq ($(skip-makefile),)
 
-<p>Here are some APIs that the server could provide:</p>
+target1:
+	touch target1
+	@echo "target KBUILD_OUTPUT: $(KBUILD_OUTPUT)"
 
-<ul>
-  <li>Get folders and its meta data (How many messages in it for example). You can specify the parent folder or just get all of the top folders.</li>
-  <li>Get messages from one folder. With pagination.</li>
-  <li>Get and modify contacts. With pagination.</li>
-  <li>Get and modify filters.</li>
-  <li>Search the Emails and contacts. (This could be done with Elastics for example).</li>
-  <li>Send an Email.</li>
-</ul>
+target2:
+	touch target2
+	@echo "target KBUILD_OUTPUT: $(KBUILD_OUTPUT)"
+endif
+</code></pre>
 
-<p>They are just some APIs that come out of my mind in a few minutes, but it does make sense. With these APIs, the client could be written with web technologies which are more flexible, and the server could use more modern technologies such as Redis or RDBMS to improve performance.</p>
+<p>You could try to execute <code>make O=../build target1</code>, it will output files to <code>../build</code>. Let’s see how it works.</p>
+
+<p>When you execute make, <code>KBUILD_SRC</code> is not defined at first, so it will make <code>sub-make</code> as a dependency of any target you input(except some <code>filter-out</code> target such as <code>sub-make</code>). Change the directory to <code>KBUILD_OUTPUT</code>(<code>-C</code> option), set <code>KBUILD_SRC</code> and then invoke itself again(<code>-f</code> option).</p>
+
+<p>At the second time, <code>KBUILD_SRC</code> is defined so it will make the real targets.</p>
+
+<p>The thing to notice is, while you make the real <code>target1</code>, <strong>variables between <code>ifeq ($(KBUILD_SRC),)</code> is not defined</strong>. You could see the output:</p>
+
+<pre><code>make -C ../build -f /home/wangbin/maketest/Makefile \
+                KBUILD_SRC=/home/wangbin/maketest \
+                target1
+make[1]: Entering directory `/home/wangbin/build'
+touch target1
+target KBUILD_OUTPUT: 
+make[1]: Leaving directory `/home/wangbin/build'
+sub-make KBUILD_OUTPUT: ../build
+</code></pre>
 
 
 </article>
@@ -74,10 +101,10 @@
 <footer id="post_footer">
   <table><tr>
     
-      <td id="prev"><a href="/2015-01-17-backpropagation-algorithm.html">Prev: Backpropagation Algorithm</a></td>
+      <td id="prev"><a href="/2013-01-15-fedora-virt-manager-guest-connect-to-host.html">Prev: Fedora Virt-manager Guest Connect to Host</a></td>
     
     
-      <td id="next"><a href="/2015-04-29-use-docker-to-submit-spark-jobs.html" id="next">Next: Use Docker to Submit Spark Jobs</a></td>
+      <td id="next"><a href="/2013-03-04-life-in-guangzhou.html" id="next">Next: Life in Guangzhou</a></td>
     
   </tr></table>
 </footer>

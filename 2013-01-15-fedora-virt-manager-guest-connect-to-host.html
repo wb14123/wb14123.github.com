@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title> HTML + CSS + JS is Good |  Bin Wang</title>
+    <title> Fedora Virt-manager Guest Connect to Host |  Bin Wang</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
 
     <script>
@@ -39,46 +39,28 @@
 <div id="article_content">
 <article id="post">
   <header>
-    <h1>HTML + CSS + JS is Good</h1>
+    <h1>Fedora Virt-manager Guest Connect to Host</h1>
     
-      <p class="description">Posted on 28 Jan 2014, tagged <code>web</code><code>UI</code><code>frontend</code></p>
+      <p class="description">Posted on 15 Jan 2013, tagged <code>kvm</code><code>fedora</code><code>virt-manager</code><code>newwork</code></p>
     
   </header>
 
-  <p>These days I’m using Libgdx to write a mobile game. While I’m writing it, I find that the modern web tech is very good: HTML + CSS + JS. Let me talk about the details.</p>
+  <p>These days I’m confused with the virt-manager’s network. While I use the Fedora guest to connect to 192.168.122.1, it always connect to itself. I searched on the internet but there are little information. I mean, though the information, it should work.</p>
 
-<p>The drawing part of the game is split into two parts:</p>
+<p>I finally solved it today. It turns out the fedora guest also start <code>libvirtd</code>. Which will create another virt network and use itself as the host. If you run <code>ifconfig</code> on the guest, you will see it has a device <code>vnet0</code> with IP 192.168.122.1.</p>
 
-<ul>
-  <li>Init all the objects.</li>
-  <li>Update these objects in every frame.</li>
-</ul>
+<p>So just disable <code>libvirtd</code> on the guest, then restart <code>libvirtd</code> and virt-manager on the host. After all, you could connect to the host through 192.168.122.1 with the default configuration.</p>
 
-<p>Why not do all the things in every frame? Because init objects need more time than change the states of an object in most cases. Init object need to allocate memory, read configuration, load assets, and so on.</p>
-
-<p>Init part also need to specify the position of every objects, or the layout of the stage. I write lots of code to init the position of every object. It is annoying. For example, when the width is changed, I have to change its position to make it in the center or something like that. And the position specification is messed with the code. So it is better to make the position and layout data split from the code.</p>
-
-<p>In web tech, here it is:</p>
-
-<ul>
-  <li>HTML is what it has in the first place (init objects).</li>
-  <li>CSS is the position and layout of the objects (data split from code).</li>
-  <li>JS update the objects when some events occurs (update objects).</li>
-</ul>
-
-<p>Everybody say and say that again. But I didn’t understand that until I really wrote an application that render graphics to the screen.</p>
-
-<p>So code is better than talk.</p>
 
 </article>
 
 <footer id="post_footer">
   <table><tr>
     
-      <td id="prev"><a href="/2013-12-08-Languages-Should-Have-Database-Built-In.html">Prev: Languages Should Have Database Built In</a></td>
+      <td id="prev"><a href="/2013-01-10-change-root-file-system-from-ext4-to-xfs-on-archlinux.html">Prev: Change Root File System from Ext4 to Xfs on Archlinux</a></td>
     
     
-      <td id="next"><a href="/2014-02-14-What-is-Wrong-about-HTML.html" id="next">Next: What is Wrong about HTML and CSS</a></td>
+      <td id="next"><a href="/2013-01-21-how-kernel-s-makefile-specify-output-directory.html" id="next">Next: How Kernel's Makefile Specify Output Directory</a></td>
     
   </tr></table>
 </footer>

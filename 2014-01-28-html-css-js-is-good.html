@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title> How About Translate IMAP And SMTP Into HTTP API? |  Bin Wang</title>
+    <title> HTML + CSS + JS is Good |  Bin Wang</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
 
     <script>
@@ -39,45 +39,46 @@
 <div id="article_content">
 <article id="post">
   <header>
-    <h1>How About Translate IMAP And SMTP Into HTTP API?</h1>
+    <h1>HTML + CSS + JS is Good</h1>
     
-      <p class="description">Posted on 26 Apr 2015, tagged <code>programming</code><code>email</code><code>thought</code></p>
+      <p class="description">Posted on 28 Jan 2014, tagged <code>web</code><code>UI</code><code>frontend</code></p>
     
   </header>
 
-  <p>I use Gmail as my personal Email. And it works well. I always uses the web UI for it. After Google Inbox is out, it feels even better.</p>
+  <p>These days I’m using Libgdx to write a mobile game. While I’m writing it, I find that the modern web tech is very good: HTML + CSS + JS. Let me talk about the details.</p>
 
-<p>But my company uses another Email service, which their web UI is not so great to use. So I need an Email client to notify me while there are new Emails, and make some filters to archive different kinds of Emails. Since I’m using Mac OS, so I tried the Mail app that comes with the system, MailBox and Thunder Bird. Then I found, they all worked terrible. I tried to use them with my Gmail account. There are lots of Emails in my Gmail accout since I subscribe many mail list. It takes very long time to sync the mails from the server. And when I click one mail, it loads very slow, too.</p>
-
-<p>I’ve used Thunder Bird before some years ago while I’m using Linux. I don’t remember it is not so bad. Then I realize, time is changing and the technology is developing. The technologies today makes things like website works really smooth. So why not Email technology take advantage over that? Why the clients still needs to sync many Emails from server even I don’t need to see all of them?</p>
-
-<p>So here comes an idea that sounds interesting. I don’t have time to develop it right now so I write it here in case I forget it. The idea is, why not translate IMAP and SMTP protocol into HTTP RESTful API?</p>
-
-<p>Here is the architecture: there is a server and a client. The server load all Emails from the Email server and store the messages in its own database. And it provide some APIs so that the client could just query this server or send Email through it instead of the old IMAP or SMTP protocol.</p>
-
-<p>Here are some APIs that the server could provide:</p>
+<p>The drawing part of the game is split into two parts:</p>
 
 <ul>
-  <li>Get folders and its meta data (How many messages in it for example). You can specify the parent folder or just get all of the top folders.</li>
-  <li>Get messages from one folder. With pagination.</li>
-  <li>Get and modify contacts. With pagination.</li>
-  <li>Get and modify filters.</li>
-  <li>Search the Emails and contacts. (This could be done with Elastics for example).</li>
-  <li>Send an Email.</li>
+  <li>Init all the objects.</li>
+  <li>Update these objects in every frame.</li>
 </ul>
 
-<p>They are just some APIs that come out of my mind in a few minutes, but it does make sense. With these APIs, the client could be written with web technologies which are more flexible, and the server could use more modern technologies such as Redis or RDBMS to improve performance.</p>
+<p>Why not do all the things in every frame? Because init objects need more time than change the states of an object in most cases. Init object need to allocate memory, read configuration, load assets, and so on.</p>
 
+<p>Init part also need to specify the position of every objects, or the layout of the stage. I write lots of code to init the position of every object. It is annoying. For example, when the width is changed, I have to change its position to make it in the center or something like that. And the position specification is messed with the code. So it is better to make the position and layout data split from the code.</p>
+
+<p>In web tech, here it is:</p>
+
+<ul>
+  <li>HTML is what it has in the first place (init objects).</li>
+  <li>CSS is the position and layout of the objects (data split from code).</li>
+  <li>JS update the objects when some events occurs (update objects).</li>
+</ul>
+
+<p>Everybody say and say that again. But I didn’t understand that until I really wrote an application that render graphics to the screen.</p>
+
+<p>So code is better than talk.</p>
 
 </article>
 
 <footer id="post_footer">
   <table><tr>
     
-      <td id="prev"><a href="/2015-01-17-backpropagation-algorithm.html">Prev: Backpropagation Algorithm</a></td>
+      <td id="prev"><a href="/2013-12-08-languages-should-have-database-built-in.html">Prev: Languages Should Have Database Built In</a></td>
     
     
-      <td id="next"><a href="/2015-04-29-use-docker-to-submit-spark-jobs.html" id="next">Next: Use Docker to Submit Spark Jobs</a></td>
+      <td id="next"><a href="/2014-02-14-what-is-wrong-about-html.html" id="next">Next: What is Wrong about HTML and CSS</a></td>
     
   </tr></table>
 </footer>
