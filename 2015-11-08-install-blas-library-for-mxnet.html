@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title> 摒弃现代科技的隐士生活 |  Bin Wang</title>
+    <title> Install BLAS Library for MXNet |  Bin Wang</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
 
     <script>
@@ -39,33 +39,38 @@
 <div id="article_content">
 <article id="post">
   <header>
-    <h1>摒弃现代科技的隐士生活</h1>
+    <h1>Install BLAS Library for MXNet</h1>
     
-      <p class="description">Posted on 04 Nov 2015, tagged <code>think</code></p>
+      <p class="description">Posted on 08 Nov 2015, tagged <code>deep learning</code><code>programming</code><code>mxnet</code><code>mac os x</code></p>
     
   </header>
 
-  <p>今天在知乎上看到一篇帖子，说到意大利有一家旅馆，周围都是森林，远离外界的生活。同时在旅馆内禁止使用手机，晚上也只用蜡烛而不用灯。虽然这个旅馆的其他细节并不了解，但是给我的印象是远离城市、摒弃现代科技的浪漫感觉。初看之下， 还比较向往，但是细细想来，好像并没有什么必要非要摒弃现代的科技。</p>
+  <p><a href="https://github.com/dmlc/mxnet">MXNet</a> is a deep learning library. I read its doc and some of its source code. It looks very good. So I’d like to install and try it. While I’m following the <a href="https://mxnet.readthedocs.org/en/latest/build.html#build-mxnet-library">installing guide</a> to install it on Mac OS X, it failed to compile with the error <code>cblas.h</code> not found. The message pointed out I may miss the BLAS library.</p>
 
-<p>隐士生活，无非是厌倦了因维持人际关系而必须做出的很多事情，而隐居到某个人际关系简单的地方，甚至于单独生活。在这之后，所生活的社会变得更加简单和原始，牺牲一定的物质生活是在所难免的。然而若是认为隐居的目的就是为了摒弃这些物质生活（尤其是给我们带来方便的物质生活），反而是本末倒置了。</p>
+<p>After some search, I find Mac OS X seems to come with its default BLAS library. But I cannot find its headers. And as an article said, the default BLAS library may not as fast as some third party ones. So I install <code>OpenBLAS</code> with homebrew:</p>
 
-<p>很多人说，这样是为了让自己不受什么干扰。然而很多事情是在于人自身真正想要的东西而不是在于外部的形式。比如，我看不出使用蜡烛而不用电灯更能免受什么干扰。若是我隐居时有网络可以帮助我在需要时更快查找到东西，我肯定也是乐于接受的，至于网络上其它的东西，如果真心不想浪费时间在上面，看不出有谁可以强迫我。我承认环境在一定程度上可以影响人的思想和行为，然而远远没有到无条件的摒弃现代科技这样严苛。</p>
+<pre><code>brew install openblas
+</code></pre>
 
-<p>更进一步，即使我们要摒弃现代科技，那我们要摒弃多少呢？如果不能用电灯，那为什么可以用蜡烛呢（毕竟那在一段时间以前也是个新奇玩意儿）？难道不是仅仅能够满足生存的物质生活就足够了吗？这样到最后，隐士们也许都只要像狄奥根尼一样住在木桶中就足够了。</p>
+<p>It is installed under <code>/usr/local/opt/openblas</code>, so we need to change these lines in the MXNet’s <code>config.mk</code> (it should be copied from <code>make/osx.mk</code> as the installing guide specified) :</p>
 
-<p>中国有句古话，“大隐隐于市”，我认为不无道理。当真正知道自己想要什么了，什么可以放弃了，那就知道什么是必须改变的，而什么只是个形式而已。这样的隐士，才是我心目中真正自在的隐士。</p>
+<pre><code># the additional link flags you want to add
+ADD_LDFLAGS = '-L/usr/local/opt/openblas/lib'
 
-<p>当然，如果真正想要的生活正是想要摒弃现代科技，那么也是可以的。只是在决定这么做的时候，注意一下不要被这些形式迷惑，当今后不想过这种生活时也不要过分执着于此，也就够了。</p>
+# the additional compile flags you want to add
+ADD_CFLAGS = '-I/usr/local/opt/openblas/include'
+</code></pre>
+
+<p>Then the compile should pass.</p>
+
 
 </article>
 
 <footer id="post_footer">
   <table><tr>
     
-      <td id="prev"><a href="/2015-11-03-the-proper-way-to-use-spark-checkpoint.html">Prev: The Proper Way to Use Spark Checkpoint</a></td>
+      <td id="prev"><a href="/2015-11-04-the-life-of-hermit-without-materially.html">Prev: 摒弃现代科技的隐士生活</a></td>
     
-    
-      <td id="next"><a href="/2015-11-08-install-blas-library-for-mxnet.html" id="next">Next: Install BLAS Library for MXNet</a></td>
     
   </tr></table>
 </footer>

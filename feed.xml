@@ -7,6 +7,18 @@
 		<atom:link href="http://www.binwang.me/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Install BLAS Library for MXNet</title>
+				
+					<description>&lt;p&gt;&lt;a href=&quot;https://github.com/dmlc/mxnet&quot;&gt;MXNet&lt;/a&gt; is a deep learning library. I read its doc and some of its source code. It looks very good. So I’d like to install and try it. While I’m following the &lt;a href=&quot;https://mxnet.readthedocs.org/en/latest/build.html#build-mxnet-library&quot;&gt;installing guide&lt;/a&gt; to install it on Mac OS X, it failed to compile with the error &lt;code&gt;cblas.h&lt;/code&gt; not found. The message pointed out I may miss the BLAS library.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Sun, 08 Nov 2015 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2015-11-08-install-blas-library-for-mxnet.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2015-11-08-install-blas-library-for-mxnet.html</guid>
+			</item>
+		
+			<item>
 				<title>摒弃现代科技的隐士生活</title>
 				
 					<description>&lt;p&gt;今天在知乎上看到一篇帖子，说到意大利有一家旅馆，周围都是森林，远离外界的生活。同时在旅馆内禁止使用手机，晚上也只用蜡烛而不用灯。虽然这个旅馆的其他细节并不了解，但是给我的印象是远离城市、摒弃现代科技的浪漫感觉。初看之下， 还比较向往，但是细细想来，好像并没有什么必要非要摒弃现代的科技。&lt;/p&gt;
@@ -118,18 +130,6 @@
                         	<pubDate>Mon, 03 Nov 2014 00:00:00 +0800</pubDate>
 				<link>http://www.binwang.me/2014-11-03-docker-is-the-one-scaffolding-to-rule-them-all.html</link>
 				<guid isPermaLink="true">http://www.binwang.me/2014-11-03-docker-is-the-one-scaffolding-to-rule-them-all.html</guid>
-			</item>
-		
-			<item>
-				<title>Notes On Go Scheduler</title>
-				
-					<description>&lt;p&gt;I read the Go source code about scheduler these days. They are under &lt;code&gt;src/pkg/runtime&lt;/code&gt;, mainly in &lt;code&gt;runtime.h&lt;/code&gt;, &lt;code&gt;proc.c&lt;/code&gt; and some Assembly files. The scheduler’s policy is easy to understand, because there are already many articles on this. I’m more interesting in the details. I learned how to switch the current running goroutine, which is a little mystery for me before.&lt;/p&gt;
-
-</description>
-				
-                        	<pubDate>Mon, 01 Sep 2014 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2014-09-01-notes-on-go-scheduler.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2014-09-01-notes-on-go-scheduler.html</guid>
 			</item>
 		
 	</channel>
