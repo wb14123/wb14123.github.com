@@ -7,6 +7,18 @@
 		<atom:link href="http://www.binwang.me/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Use Redis Instead of Spark Streaming to Count Statistics</title>
+				
+					<description>&lt;p&gt;In my work, I need to count basic statistics of streaming data, such as mean, variance, sum and so on. At first, I’m using Spark, then Spark Streaming. But after a while, I reimplemented it with Redis and find it is much better. I’d like to talk about them in this article.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Sun, 22 Nov 2015 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2015-11-22-use-redis-instead-of-spark-streaming-to-count-statistics.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2015-11-22-use-redis-instead-of-spark-streaming-to-count-statistics.html</guid>
+			</item>
+		
+			<item>
 				<title>Install BLAS Library for MXNet</title>
 				
 					<description>&lt;p&gt;&lt;a href=&quot;https://github.com/dmlc/mxnet&quot;&gt;MXNet&lt;/a&gt; is a deep learning library. I read its doc and some of its source code. It looks very good. So I’d like to install and try it. While I’m following the &lt;a href=&quot;https://mxnet.readthedocs.org/en/latest/build.html#build-mxnet-library&quot;&gt;installing guide&lt;/a&gt; to install it on Mac OS X, it failed to compile with the error &lt;code&gt;cblas.h&lt;/code&gt; not found. The message pointed out I may miss the BLAS library.&lt;/p&gt;
@@ -112,24 +124,6 @@
                         	<pubDate>Tue, 16 Dec 2014 00:00:00 +0800</pubDate>
 				<link>http://www.binwang.me/2014-12-16-the-thoughts-behind-bard-framework.html</link>
 				<guid isPermaLink="true">http://www.binwang.me/2014-12-16-the-thoughts-behind-bard-framework.html</guid>
-			</item>
-		
-			<item>
-				<title>Docker Is the One Scaffolding to Rule Them All</title>
-				
-					<description>&lt;blockquote&gt;
-  &lt;p&gt;One Ring to rule them all, One Ring to find them,&lt;/p&gt;
-
-  &lt;p&gt;One Ring to bring them all and in the darkness bind them&lt;/p&gt;
-
-  &lt;p&gt;– &lt;em&gt;The Load of the Rings&lt;/em&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-</description>
-				
-                        	<pubDate>Mon, 03 Nov 2014 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2014-11-03-docker-is-the-one-scaffolding-to-rule-them-all.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2014-11-03-docker-is-the-one-scaffolding-to-rule-them-all.html</guid>
 			</item>
 		
 	</channel>
