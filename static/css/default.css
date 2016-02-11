@@ -67,7 +67,7 @@ a:hover{
 }
 #post_list .title{
   font-size: 30px;
-  white-space: nowrap;
+  // white-space: nowrap;
 }
 #post_list .title a{
   color:  rgb(60, 60, 60);

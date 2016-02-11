@@ -7,6 +7,18 @@
 		<atom:link href="http://www.binwang.me/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>The Permission Management of Android Becomes A Bigger Problem When It Comes to Wearable Devices and TV</title>
+				
+					<description>&lt;p&gt;The permission management of Android is a problem for a long time. The behaviour of an app depends on the morality of its developers. Unluckily, many developers are big companies which making money is their primary target and morality is little considered.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Thu, 11 Feb 2016 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2016-02-11-the-permission-of-android-becomes-a-bigger-problem-when-it-comes-to-wearable-devices-and-tv.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2016-02-11-the-permission-of-android-becomes-a-bigger-problem-when-it-comes-to-wearable-devices-and-tv.html</guid>
+			</item>
+		
+			<item>
 				<title>Use Redis Instead of Spark Streaming to Count Statistics</title>
 				
 					<description>&lt;p&gt;In my work, I need to count basic statistics of streaming data, such as mean, variance, sum and so on. At first, I’m using Spark, then Spark Streaming. But after a while, I reimplemented it with Redis and find it is much better. I’d like to talk about them in this article.&lt;/p&gt;
@@ -112,18 +124,6 @@
                         	<pubDate>Sun, 28 Dec 2014 00:00:00 +0800</pubDate>
 				<link>http://www.binwang.me/2014-12-28-why-use-reflections-to-write-a-web-framework.html</link>
 				<guid isPermaLink="true">http://www.binwang.me/2014-12-28-why-use-reflections-to-write-a-web-framework.html</guid>
-			</item>
-		
-			<item>
-				<title>The Thoughts Behind Bard Framework</title>
-				
-					<description>&lt;p&gt;These days I’m working on a really exciting project: a web framework. My job is to write web services, and there is no framework I thought is doing things right. So I just write one myself. It is really an interesting thing. I will talk about some thoughts behind it in this article.&lt;/p&gt;
-
-</description>
-				
-                        	<pubDate>Tue, 16 Dec 2014 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2014-12-16-the-thoughts-behind-bard-framework.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2014-12-16-the-thoughts-behind-bard-framework.html</guid>
 			</item>
 		
 	</channel>
