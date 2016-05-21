@@ -7,6 +7,18 @@
 		<atom:link href="http://www.binwang.me/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>How to Put RNN Layers Into Nueral Network Model</title>
+				
+					<description>&lt;p&gt;If you are interested in neural networks, you must have ever read and learn lots of things about RNN, which can reason about sequences of data. RNN is awesome and very fun to play with, if you haven’t heard of it, you can read &lt;a href=&quot;http://karpathy.github.io/2015/05/21/rnn-effectiveness/&quot;&gt;this great article&lt;/a&gt; which train a char level RNN model to generate text.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Sat, 14 May 2016 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2016-05-14-how-to-put-rnn-layer-into-nueral-network-model.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2016-05-14-how-to-put-rnn-layer-into-nueral-network-model.html</guid>
+			</item>
+		
+			<item>
 				<title>The Permission Management of Android Becomes A Bigger Problem When It Comes to Wearable Devices and TV</title>
 				
 					<description>&lt;p&gt;The permission management of Android is a problem for a long time. The behaviour of an app depends on the morality of its developers. Unluckily, many developers are big companies which making money is their primary target and morality is little considered.&lt;/p&gt;
@@ -112,18 +124,6 @@
                         	<pubDate>Sat, 17 Jan 2015 00:00:00 +0800</pubDate>
 				<link>http://www.binwang.me/2015-01-17-backpropagation-algorithm.html</link>
 				<guid isPermaLink="true">http://www.binwang.me/2015-01-17-backpropagation-algorithm.html</guid>
-			</item>
-		
-			<item>
-				<title>Why Use Reflections to Write A Web Framework</title>
-				
-					<description>&lt;p&gt;Lots of people don’t like reflections. And I said if I could see the whole things I might not use reflections (with Annotation) to write the web framework &lt;a href=&quot;https://github.com/wb14123/bard&quot;&gt;Bard&lt;/a&gt;. But I think it is not true, I really need reflections to do the things.&lt;/p&gt;
-
-</description>
-				
-                        	<pubDate>Sun, 28 Dec 2014 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2014-12-28-why-use-reflections-to-write-a-web-framework.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2014-12-28-why-use-reflections-to-write-a-web-framework.html</guid>
 			</item>
 		
 	</channel>
