@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Bin Wang</title>
+		<description>This is my personal blog about computer since and technology, and my life.</description>		
+		<link>http://www.binwang.me</link>
+		<atom:link href="http://www.binwang.me/feed.xml" rel="self" type="application/rss+xml" />
+		
+			<item>
+				<title>How to Put RNN Layers Into Neural Network Model</title>
+				
+					<description>&lt;p&gt;If you are interested in neural networks, you must have ever read and learn lots of things about RNN, which can reason about sequences of data. RNN is awesome and very fun to play with, if you haven’t heard of it, you can read &lt;a href=&quot;http://karpathy.github.io/2015/05/21/rnn-effectiveness/&quot;&gt;this great article&lt;/a&gt; which train a char level RNN model to generate text.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Sat, 14 May 2016 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2016-05-14-how-to-put-rnn-layer-into-nueral-network-model.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2016-05-14-how-to-put-rnn-layer-into-nueral-network-model.html</guid>
+			</item>
+		
+			<item>
+				<title>The Permission Management of Android Becomes A Bigger Problem When It Comes to Wearable Devices and TV</title>
+				
+					<description>&lt;p&gt;The permission management of Android is a problem for a long time. The behaviour of an app depends on the morality of its developers. Unluckily, many developers are big companies which making money is their primary target and morality is little considered.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Thu, 11 Feb 2016 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2016-02-11-the-permission-of-android-becomes-a-bigger-problem-when-it-comes-to-wearable-devices-and-tv.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2016-02-11-the-permission-of-android-becomes-a-bigger-problem-when-it-comes-to-wearable-devices-and-tv.html</guid>
+			</item>
+		
+			<item>
+				<title>Use Redis Instead of Spark Streaming to Count Statistics</title>
+				
+					<description>&lt;p&gt;In my work, I need to count basic statistics of streaming data, such as mean, variance, sum and so on. At first, I’m using Spark, then Spark Streaming. But after a while, I reimplemented it with Redis and find it is much better. I’d like to talk about them in this article.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Sun, 22 Nov 2015 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2015-11-22-use-redis-instead-of-spark-streaming-to-count-statistics.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2015-11-22-use-redis-instead-of-spark-streaming-to-count-statistics.html</guid>
+			</item>
+		
+			<item>
+				<title>Install BLAS Library for MXNet</title>
+				
+					<description>&lt;p&gt;&lt;a href=&quot;https://github.com/dmlc/mxnet&quot;&gt;MXNet&lt;/a&gt; is a deep learning library. I read its doc and some of its source code. It looks very good. So I’d like to install and try it. While I’m following the &lt;a href=&quot;https://mxnet.readthedocs.org/en/latest/build.html#build-mxnet-library&quot;&gt;installing guide&lt;/a&gt; to install it on Mac OS X, it failed to compile with the error &lt;code&gt;cblas.h&lt;/code&gt; not found. The message pointed out I may miss the BLAS library.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Sun, 08 Nov 2015 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2015-11-08-install-blas-library-for-mxnet.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2015-11-08-install-blas-library-for-mxnet.html</guid>
+			</item>
+		
+			<item>
+				<title>摒弃现代科技的隐士生活</title>
+				
+					<description>&lt;p&gt;今天在知乎上看到一篇帖子，说到意大利有一家旅馆，周围都是森林，远离外界的生活。同时在旅馆内禁止使用手机，晚上也只用蜡烛而不用灯。虽然这个旅馆的其他细节并不了解，但是给我的印象是远离城市、摒弃现代科技的浪漫感觉。初看之下， 还比较向往，但是细细想来，好像并没有什么必要非要摒弃现代的科技。&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Wed, 04 Nov 2015 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2015-11-04-the-life-of-hermit-without-materially.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2015-11-04-the-life-of-hermit-without-materially.html</guid>
+			</item>
+		
+			<item>
+				<title>The Proper Way to Use Spark Checkpoint</title>
+				
+					<description>&lt;p&gt;These days I’m using Spark streaming to process real time data. I’m using &lt;code&gt;updateStateByKey&lt;/code&gt;, so I need to add &lt;a href=&quot;https://spark.apache.org/docs/latest/streaming-programming-guide.html#checkpointing&quot;&gt;checkpointing&lt;/a&gt;, which is a fault tolerance mechanism of Spark streaming. The checkpoint will save DAG and RDDs. So when you restart the Spark application from failure, it will continue to compute.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Tue, 03 Nov 2015 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2015-11-03-the-proper-way-to-use-spark-checkpoint.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2015-11-03-the-proper-way-to-use-spark-checkpoint.html</guid>
+			</item>
+		
+			<item>
+				<title>My Recent Work About Neural Networks</title>
+				
+					<description>&lt;p&gt;These days I’ve written some code about neural networks. There is nothing important, but worth to be recorded.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Thu, 02 Jul 2015 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2015-07-02-my-recent-work-about-neural-networks.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2015-07-02-my-recent-work-about-neural-networks.html</guid>
+			</item>
+		
+			<item>
+				<title>Use Docker to Submit Spark Jobs</title>
+				
+					<description>&lt;p&gt;These days I’m working on analyze data with Spark. Since our Spark cluster is offline in the office for now, so it needs to download data from log server every hour, analyze them with Spark and then upload to the server. The work flow is a little complex so I write some scripts to do it. In addition, I also write a whole automated end to end test for it.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Wed, 29 Apr 2015 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2015-04-29-use-docker-to-submit-spark-jobs.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2015-04-29-use-docker-to-submit-spark-jobs.html</guid>
+			</item>
+		
+			<item>
+				<title>How About Translate IMAP And SMTP Into HTTP API?</title>
+				
+					<description>&lt;p&gt;I use Gmail as my personal Email. And it works well. I always uses the web UI for it. After Google Inbox is out, it feels even better.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Sun, 26 Apr 2015 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2015-04-26-how-about-translate-imap-and-smtp-into-http-api.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2015-04-26-how-about-translate-imap-and-smtp-into-http-api.html</guid>
+			</item>
+		
+			<item>
+				<title>Backpropagation Algorithm</title>
+				
+					<description>&lt;p&gt;These days I start to learn neural networks again and write some Matlab codes from scratch. I try to understand everything I do while I write the code, so I derive the equations in the back propagation while try to keep it clear and easy to understand.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Sat, 17 Jan 2015 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2015-01-17-backpropagation-algorithm.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2015-01-17-backpropagation-algorithm.html</guid>
+			</item>
+		
+	</channel>
+</rss>

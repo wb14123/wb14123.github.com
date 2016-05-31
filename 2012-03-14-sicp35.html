@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title> SICP第三章总结（下）——流编程 |  Bin Wang</title>
+    <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-52904500-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+  </head>
+
+  <body>
+    <header id="page_header">
+      <nav id="page_nav">
+        <ul>
+             <li><a href="/">Home</a></li>
+             <li><a href="/read.html">Read</a></li>
+             <li><a href="/travel.html">Travel</a></li>
+             <li><a href="/search.html">Search</a></li>
+             <li><a href="/about.html">About</a></li>
+       </ul>
+      </nav>
+
+    </header>
+
+    <section id="page_content">
+      <div id="content_table">
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#section">一、语法</a></li><li><a href="#section-1">二、流编程</a></li></ol>
+</div>
+
+<div id="article_content">
+<article id="post">
+  <header>
+    <h1>SICP第三章总结（下）——流编程</h1>
+    
+      <p class="description">Posted on 14 Mar 2012, tagged <code>sicp</code><code>programming</code></p>
+    
+  </header>
+
+  <p>第三章的后半部分是讲的有关流编程。现在很多地方都会提到“流”这个概念，在SICP中，流可以被看作是一个列表，但是它所占用的空间是常数级的，并且它可以表示一个无穷的列表。因此从某种程度上说，它更像是一种规则，一种函数。</p>
+
+<p>我们在第三章的前半部分看到了，使用赋值会使代码容易出问题，但是不使用的话又有很多问题没办法方便的解决，比如面向对象的编程。但是流编程正是提供了除赋值之外的另一种方法，这是第一次听说可以不用赋值实现面向对象编程，我们后面就会分析这个巧妙的方法。首先按照惯例，我们还是分析一下这一部分所涉及到的语法吧。</p>
+
+<h2 id="section">一、语法</h2>
+
+<h3 id="delayforce">1.delay和force</h3>
+
+<p>在解释器中，当遇到一个函数或者表达式的时候，会先解释它，返回结果。比如下面的代码</p>
+
+<pre><code>(+ 2 (sqrt 4))
+</code></pre>
+
+<p>就会先计算<code>(sqrt 4)</code>，得出结果然后再加2。</p>
+
+<p>而delay的作用就是延迟这种计算，比如在解释器中输入以下代码：</p>
+
+<pre><code>(+ 2 (delay (sqrt 4)))
+</code></pre>
+
+<p>就会发现因为延迟了计算<code>(sqrt 4)</code>，解释器一直在等待。</p>
+
+<p>这样一直等待下去肯定是不行的，force和delay相对，就是结束这种延迟。也许现在看不出它们有什么太大的用，但是在后面我们会看到，这是实现流编程必不可少的两个操作。</p>
+
+<p>Scheme中大部分函数都可以由基本的函数所实现。那么delay和force又是怎么实现的呢？简单来说，</p>
+
+<pre><code>(delay &lt;exp&gt;)
+</code></pre>
+
+<p>可以看作是</p>
+
+<pre><code>(lambda () &lt;exp&gt;)
+</code></pre>
+
+<p>force可以看作：</p>
+
+<pre><code>(define (force delayed-object)
+    (delayed-object))
+</code></pre>
+
+<p>但是注意，delay直接用define是不可以实现的，需要用到宏的方式来定义。而在实际的应用中也没有这么简单，在一些递归应用中，一个被delay的表达式有可能被force多次，因此实际的实现要复杂一些。</p>
+
+<h3 id="stream">2.stream的相关操作及实现</h3>
+
+<p>看起来很神秘的stream是怎样实现的呢？其实它就是一个尾部被delay的一个列表。即在生成列表的时候，把尾部delay，在cdr函数中，再force这个被delay的尾部。这样不管一个多长的列表，都只包含一个头部，和一个被delay的尾部，它们所占的空间是常数级的。被delay的部分是用于生成列表后面部分的规则，因此只要有这个规则，可以生成一个无限长的列表，当用到列表中的某一个时，再对这部分force，就得到了真实的值。这就像一卷卫生纸，当不用的时候它是“蜷缩”在那里的，当用的时候才把它展开，取出要用到的部分。</p>
+
+<p>后面会和所关于stream巧妙的应用。这里先将stream的实现贴出来。书中给出的生成stream的函数是不行的，因为同样需要用到宏。所以我将自己的代码写到这里，也方便自己和别人查询：</p>
+
+<pre><code>(use-syntax (ice-9 syncase))
+
+(define-syntax cons-stream
+    (syntax-rules ()
+        ((cons-stream head tail)
+            (cons head (delay tail)))))
+
+(define (stream-car stream)
+    (car stream))
+
+(define (stream-cdr stream)
+    (force (cdr stream)))
+
+(define (list-stream . args)
+    (if (null? (cdr args))
+        (cons-stream (car args) the-empty-stream)
+        (cons-stream
+            (car args)
+            (apply 
+                list-stream
+                (cdr args)))))
+
+(define (stream-null? stream)
+    (eq? stream the-empty-stream))
+(define the-empty-stream 'null)
+
+(define (stream-for-each proc s)
+    (if (stream-null? s)
+        'done
+        (begin (proc (stream-car s))
+            (stream-for-each proc (stream-cdr s)))))
+
+(define (stream-ref s n)
+    (if (= n 0)
+        (stream-car s)
+        (stream-ref (stream-cdr s) (- n 1))))
+
+(define (stream-map proc . args)
+    (if (stream-null? (car args))
+        the-empty-stream
+        (cons-stream
+            (apply proc (map stream-car args))
+            (apply stream-map
+                (cons proc (map stream-cdr args))))))
+
+(define (stream-enumerate-interval low high)
+    (if (&gt; low high)
+        the-empty-stream
+        (cons-stream
+            low
+            (stream-enumerate-interval
+                (+ low 1)
+                high))))
+
+(define (stream-filter pred stream)
+    (cond ((stream-null? stream) the-empty-stream)
+        ((pred (stream-car stream))
+            (cons-stream (stream-car stream)
+                (stream-filter pred
+                    (stream-cdr stream))))
+        (else (stream-filter pred (stream-cdr stream)))))
+    
+
+(define (display-stream s)
+    (stream-for-each display-line s))
+
+(define (display-line x)
+    (display x)
+    (newline))
+
+(define (interge-starting-from n)
+    (cons-stream n (interge-starting-from (+ n 1))))
+</code></pre>
+
+<h2 id="section-1">二、流编程</h2>
+
+<p>有了上面的实现，再来看看流的巧妙应用。我们不会将所有有关流的应用都列举出来，只是分析一下其中两个很有趣的应用：无穷长的列表和面向对象编程。</p>
+
+<h3 id="section-2">1.无穷长的列表</h3>
+
+<p>我们看一个最简单的无穷长的列表，所有大于等于n的整数做组成的列表：</p>
+
+<pre><code>(define (integers-start-from n)
+    (cons-stream n
+        (integers-start-from (+ n 1))))
+</code></pre>
+
+<p>由此可以定义包含所有正整数的列表：</p>
+
+<pre><code>(define integers (integers-start-from 1))
+</code></pre>
+
+<p>当要获取这个列表第5个元素的时候，可以使用下面的代码：</p>
+
+<pre><code>(stream-ref integers 5)
+</code></pre>
+
+<p>由于<code>(integers-start-from (+ n 1))</code>没有立刻被实现，所以它现在只是作为一个函数被存储着。当执行stream-ref的时候，一步步计算尾部的数据，当计算到第5个的时候停止。所以计算的过程中所用的空间也是常数级别的。而所用的时间，是线性的。</p>
+
+<p>书中还有很多巧妙的无穷列表，但是基本的原理就是这样了，就不一一列举了。</p>
+
+<h3 id="section-3">2.面向对象编程</h3>
+
+<p>在面向对象编程中，比较重要的一个概念就是，一个类中有很多状态，而它们是随时间而改变的。这些状态的改变，可以看作是由时间所构成的函数。由此我们可以想到，为什么不把每个改变放到一个流中呢？然后对这个流进行处理。</p>
+
+<p>还是上篇文章所说的银行账户的例子。我们可以把每次用户取钱的情况看称是一个流，这个流是由输入所决定的。它可以并且应该是无限的，因为时间是无限的。这个流由用户的输入组成。在思考的过程中，把流作为一个整体来思考，而不用考虑这个流的实现细节。假设这个输入的流是amount-stream，那么我们可以用下面的代码获得存款或者取款之后余额的流：</p>
+
+<pre><code>(define (stream-withraw balance amount-stream)
+    (cons-stream
+        balance
+        (stream-withraw
+            (- balance (stream-car amount-stream))
+            (stream-cdr amount-stream))))
+</code></pre>
+
+<p>所得到的流<code>stream-withraw</code>就是相应的每次存取款之后的余额。驱动这个流前进的，可以是用户的输入。</p>
+
+<p>用流来思考面向对象编程确实比较别扭。严格的说，书中所讲的并非面向对象编程，也没有出现过面向对象编程这些字眼。但是基本的思想都是差不多的。现代的面向对象编程已经支持继承等操作，所以相对于这种方法，也许更加方便一些。而一些纯粹的函数式编程语言，却是是没有赋值操作的，当想用这些语言进行一些面向对象的操作的时候，也许就要用到这里的一些思想了。</p>
+
+<h3 id="section-4">3.一些思考</h3>
+
+<p>相对于面向对象的“一切皆是对象”，想象一切皆是流也非常不错。数据是流，从这个函数到那个函数，从这个模块到那个模块，得到的数据流则是我们想要的结果。这很像Linux中的管道的思想。只不过Linux中的管道是操作系统中的每个程序通过数据流来交互，而在Scheme中是一个程序的不同模块通过数据流来交互。读完这一部分，我对模块化的编程有了很深的感触。</p>
+
+<p>另外，有一些语言自动将列表转换成流。</p>
+
+
+</article>
+
+<footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2012-03-12-chroot.html">Prev: Chroot 简介</a></td>
+    
+    
+      <td id="next"><a href="/2012-05-19-tiandiyouyou.html" id="next">Next: 念天地之悠悠</a></td>
+    
+  </tr></table>
+</footer>
+
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+</div>
+
+    </section>
+
+    <footer id="page_footer">
+      Copyright @ 2008 - 2016 Bin Wang
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
+    </footer>
+    
+    <!-- MathJax -->
+    <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      TeX: { equationNumbers: { autoNumber: "AMS" } }
+    });
+    </script>
+  </body>
+</html>
