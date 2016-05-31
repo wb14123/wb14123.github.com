@@ -7,7 +7,7 @@
 		<atom:link href="http://www.binwang.me/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
-				<title>How to Put RNN Layers Into Nueral Network Model</title>
+				<title>How to Put RNN Layers Into Neural Network Model</title>
 				
 					<description>&lt;p&gt;If you are interested in neural networks, you must have ever read and learn lots of things about RNN, which can reason about sequences of data. RNN is awesome and very fun to play with, if you haven’t heard of it, you can read &lt;a href=&quot;http://karpathy.github.io/2015/05/21/rnn-effectiveness/&quot;&gt;this great article&lt;/a&gt; which train a char level RNN model to generate text.&lt;/p&gt;
 
