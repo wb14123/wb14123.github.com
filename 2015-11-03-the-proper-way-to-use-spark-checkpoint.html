@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title> My New Blog Website |  Bin Wang</title>
+    <title> The Proper Way to Use Spark Checkpoint |  Bin Wang</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
 
     <script>
@@ -39,29 +39,36 @@
 <div id="article_content">
 <article id="post">
   <header>
-    <h1>My New Blog Website</h1>
+    <h1>The Proper Way to Use Spark Checkpoint</h1>
     
-      <p class="description">Posted on 19 Nov 2012, tagged <code>blog</code><code>jekyll</code></p>
+      <p class="description">Posted on 03 Nov 2015, tagged <code>spark</code></p>
     
   </header>
 
-  <p>This is my new blog website, just as simple and as good as my imagine. It is powered by jekyll - a ruby tool to generate a static website. I am using wordpress to write a Chinese blog, too. But its editor is not good enough to write with. On the other hand, jekyll makes it possible to write with markdown, which is really a good tool for writing. Also, a static website is efficient and awesome.</p>
+  <p>These days I’m using Spark streaming to process real time data. I’m using <code>updateStateByKey</code>, so I need to add <a href="https://spark.apache.org/docs/latest/streaming-programming-guide.html#checkpointing">checkpointing</a>, which is a fault tolerance mechanism of Spark streaming. The checkpoint will save DAG and RDDs. So when you restart the Spark application from failure, it will continue to compute.</p>
 
-<p>But this site is too simple now. There are some features I missed, such as search box, comment, archives by date, index by tags and so on. Some of them could be solved by third party, and some of them could be solved by plugins. But it makes the blog not so simple any more.</p>
+<p>But there is a problem with checkpointing: you cannot load the checkpointed data once you change the class structure of your code, so the state in <code>updateStateByKey</code> is lost. This is a pretty big limit. Another solution is to save and load data by ourself, but in this way checkpointing is totally useless and will also break the fault tolerance. What about to use both ways? Then the data may load twice while the application is auto restarted by the Spark cluster, in the case of failure. So I asked this question in the Spark user list and somebody kindly give me <a href="https://mail-archives.apache.org/mod_mbox/incubator-spark-user/201509.mbox/%3CCAD_32VVBit6eqNhRb5axf4Quxk86v_ZkjFL4ZdziNZrCyT2qEA@mail.gmail.com%3E">a solution</a>: use <code>updateStateByKey</code> with the parameter <code>initialRDD</code>.</p>
 
-<p>With so many cool techs nowadays, it is easy to write a website. But it is not so easy to generate a static website with many features. Here is something about balance. They said “keep it stupid and simple”, and “less is more”. It is really an art to find out how less is just good for a production. Even the user himself doesn’t exactly know how much he wanted.</p>
+<p>The answer is a little simple, so I will explain it here. This way is to use both checkpointing and our own data storage mechanism. But we load our data as the <code>initalRDD</code> of <code>updateStateByKey</code>. So in both situations, the data will neither lost nor duplicate:</p>
 
-<p>Anyway, here is my new blog. Have fun and enjoy it!</p>
+<ol>
+  <li>
+    <p>When we change the code and redeploy the Spark application, we shutdown the old Spark application gracefully and cleanup the checkpoint data, so the only loaded data is the data we saved.</p>
+  </li>
+  <li>
+    <p>When the Spark application is failure and restart, it will load the data from checkpoint. But the step of DAG is saved so it will not load our own data as <code>initalRDD</code> again. So the only loaded data is the checkpointed data.</p>
+  </li>
+</ol>
 
 </article>
 
 <footer id="post_footer">
   <table><tr>
     
-      <td id="prev"><a href="/2012-05-19-tiandiyouyou.html">Prev: 念天地之悠悠</a></td>
+      <td id="prev"><a href="/2015-07-02-my-recent-work-about-neural-networks.html">Prev: My Recent Work About Neural Networks</a></td>
     
     
-      <td id="next"><a href="/2012-11-20-comment-and-search-are-available.html" id="next">Next: Comment And Search Are Available</a></td>
+      <td id="next"><a href="/2015-11-04-the-life-of-hermit-without-materially.html" id="next">Next: 摒弃现代科技的隐士生活</a></td>
     
   </tr></table>
 </footer>

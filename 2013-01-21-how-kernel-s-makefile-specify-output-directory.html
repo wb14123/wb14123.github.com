@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title> My New Blog Website |  Bin Wang</title>
+    <title> How Kernel's Makefile Specify Output Directory |  Bin Wang</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
 
     <script>
@@ -39,29 +39,72 @@
 <div id="article_content">
 <article id="post">
   <header>
-    <h1>My New Blog Website</h1>
+    <h1>How Kernel's Makefile Specify Output Directory</h1>
     
-      <p class="description">Posted on 19 Nov 2012, tagged <code>blog</code><code>jekyll</code></p>
+      <p class="description">Posted on 21 Jan 2013, tagged <code>kernel</code><code>make</code></p>
     
   </header>
 
-  <p>This is my new blog website, just as simple and as good as my imagine. It is powered by jekyll - a ruby tool to generate a static website. I am using wordpress to write a Chinese blog, too. But its editor is not good enough to write with. On the other hand, jekyll makes it possible to write with markdown, which is really a good tool for writing. Also, a static website is efficient and awesome.</p>
+  <p>When compile Linux kernel, we could output files to a split directory with “make O=”. The kernel’s way to do it is a little tricky. Since kernel’s Makefile is very big, we could have a simpler version to analyse:</p>
 
-<p>But this site is too simple now. There are some features I missed, such as search box, comment, archives by date, index by tags and so on. Some of them could be solved by third party, and some of them could be solved by plugins. But it makes the blog not so simple any more.</p>
+<pre><code>ifeq ($(KBUILD_SRC),)
+ifeq ("$(origin O)", "command line")
+	KBUILD_OUTPUT := $(O)
+endif
 
-<p>With so many cool techs nowadays, it is easy to write a website. But it is not so easy to generate a static website with many features. Here is something about balance. They said “keep it stupid and simple”, and “less is more”. It is really an art to find out how less is just good for a production. Even the user himself doesn’t exactly know how much he wanted.</p>
+ifneq ($(KBUILD_OUTPUT),)
+$(filter-out submake $(CURDIR)/Makefile, $(MAKECMDGOALS)): sub-make
+	@:
 
-<p>Anyway, here is my new blog. Have fun and enjoy it!</p>
+sub-make:
+	make -C $(KBUILD_OUTPUT) -f /home/wangbin/maketest/Makefile \
+		KBUILD_SRC=$(PWD) \
+		$(MAKECMDGOALS)
+	@echo " sub-make KBUILD_OUTPUT: $(KBUILD_OUTPUT)"
+skip-makefile := 1
+endif #end KBUILD_OUTPUT
+endif #end KBUILD_SRC
+
+ifeq ($(skip-makefile),)
+
+target1:
+	touch target1
+	@echo "target KBUILD_OUTPUT: $(KBUILD_OUTPUT)"
+
+target2:
+	touch target2
+	@echo "target KBUILD_OUTPUT: $(KBUILD_OUTPUT)"
+endif
+</code></pre>
+
+<p>You could try to execute <code>make O=../build target1</code>, it will output files to <code>../build</code>. Let’s see how it works.</p>
+
+<p>When you execute make, <code>KBUILD_SRC</code> is not defined at first, so it will make <code>sub-make</code> as a dependency of any target you input(except some <code>filter-out</code> target such as <code>sub-make</code>). Change the directory to <code>KBUILD_OUTPUT</code>(<code>-C</code> option), set <code>KBUILD_SRC</code> and then invoke itself again(<code>-f</code> option).</p>
+
+<p>At the second time, <code>KBUILD_SRC</code> is defined so it will make the real targets.</p>
+
+<p>The thing to notice is, while you make the real <code>target1</code>, <strong>variables between <code>ifeq ($(KBUILD_SRC),)</code> is not defined</strong>. You could see the output:</p>
+
+<pre><code>make -C ../build -f /home/wangbin/maketest/Makefile \
+                KBUILD_SRC=/home/wangbin/maketest \
+                target1
+make[1]: Entering directory `/home/wangbin/build'
+touch target1
+target KBUILD_OUTPUT: 
+make[1]: Leaving directory `/home/wangbin/build'
+sub-make KBUILD_OUTPUT: ../build
+</code></pre>
+
 
 </article>
 
 <footer id="post_footer">
   <table><tr>
     
-      <td id="prev"><a href="/2012-05-19-tiandiyouyou.html">Prev: 念天地之悠悠</a></td>
+      <td id="prev"><a href="/2013-01-15-fedora-virt-manager-guest-connect-to-host.html">Prev: Fedora Virt-manager Guest Connect to Host</a></td>
     
     
-      <td id="next"><a href="/2012-11-20-comment-and-search-are-available.html" id="next">Next: Comment And Search Are Available</a></td>
+      <td id="next"><a href="/2013-03-04-life-in-guangzhou.html" id="next">Next: Life in Guangzhou</a></td>
     
   </tr></table>
 </footer>

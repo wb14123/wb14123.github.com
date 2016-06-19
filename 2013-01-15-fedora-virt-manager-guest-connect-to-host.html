@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title> My New Blog Website |  Bin Wang</title>
+    <title> Fedora Virt-manager Guest Connect to Host |  Bin Wang</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
 
     <script>
@@ -39,29 +39,28 @@
 <div id="article_content">
 <article id="post">
   <header>
-    <h1>My New Blog Website</h1>
+    <h1>Fedora Virt-manager Guest Connect to Host</h1>
     
-      <p class="description">Posted on 19 Nov 2012, tagged <code>blog</code><code>jekyll</code></p>
+      <p class="description">Posted on 15 Jan 2013, tagged <code>kvm</code><code>fedora</code><code>virt-manager</code><code>newwork</code></p>
     
   </header>
 
-  <p>This is my new blog website, just as simple and as good as my imagine. It is powered by jekyll - a ruby tool to generate a static website. I am using wordpress to write a Chinese blog, too. But its editor is not good enough to write with. On the other hand, jekyll makes it possible to write with markdown, which is really a good tool for writing. Also, a static website is efficient and awesome.</p>
+  <p>These days I’m confused with the virt-manager’s network. While I use the Fedora guest to connect to 192.168.122.1, it always connect to itself. I searched on the internet but there are little information. I mean, though the information, it should work.</p>
 
-<p>But this site is too simple now. There are some features I missed, such as search box, comment, archives by date, index by tags and so on. Some of them could be solved by third party, and some of them could be solved by plugins. But it makes the blog not so simple any more.</p>
+<p>I finally solved it today. It turns out the fedora guest also start <code>libvirtd</code>. Which will create another virt network and use itself as the host. If you run <code>ifconfig</code> on the guest, you will see it has a device <code>vnet0</code> with IP 192.168.122.1.</p>
 
-<p>With so many cool techs nowadays, it is easy to write a website. But it is not so easy to generate a static website with many features. Here is something about balance. They said “keep it stupid and simple”, and “less is more”. It is really an art to find out how less is just good for a production. Even the user himself doesn’t exactly know how much he wanted.</p>
+<p>So just disable <code>libvirtd</code> on the guest, then restart <code>libvirtd</code> and virt-manager on the host. After all, you could connect to the host through 192.168.122.1 with the default configuration.</p>
 
-<p>Anyway, here is my new blog. Have fun and enjoy it!</p>
 
 </article>
 
 <footer id="post_footer">
   <table><tr>
     
-      <td id="prev"><a href="/2012-05-19-tiandiyouyou.html">Prev: 念天地之悠悠</a></td>
+      <td id="prev"><a href="/2013-01-10-change-root-file-system-from-ext4-to-xfs-on-archlinux.html">Prev: Change Root File System from Ext4 to Xfs on Archlinux</a></td>
     
     
-      <td id="next"><a href="/2012-11-20-comment-and-search-are-available.html" id="next">Next: Comment And Search Are Available</a></td>
+      <td id="next"><a href="/2013-01-21-how-kernel-s-makefile-specify-output-directory.html" id="next">Next: How Kernel's Makefile Specify Output Directory</a></td>
     
   </tr></table>
 </footer>

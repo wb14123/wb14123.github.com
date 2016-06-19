@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title> My New Blog Website |  Bin Wang</title>
+    <title> Install BLAS Library for MXNet |  Bin Wang</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
 
     <script>
@@ -39,29 +39,40 @@
 <div id="article_content">
 <article id="post">
   <header>
-    <h1>My New Blog Website</h1>
+    <h1>Install BLAS Library for MXNet</h1>
     
-      <p class="description">Posted on 19 Nov 2012, tagged <code>blog</code><code>jekyll</code></p>
+      <p class="description">Posted on 08 Nov 2015, tagged <code>deep learning</code><code>programming</code><code>mxnet</code><code>mac os x</code></p>
     
   </header>
 
-  <p>This is my new blog website, just as simple and as good as my imagine. It is powered by jekyll - a ruby tool to generate a static website. I am using wordpress to write a Chinese blog, too. But its editor is not good enough to write with. On the other hand, jekyll makes it possible to write with markdown, which is really a good tool for writing. Also, a static website is efficient and awesome.</p>
+  <p><a href="https://github.com/dmlc/mxnet">MXNet</a> is a deep learning library. I read its doc and some of its source code. It looks very good. So I’d like to install and try it. While I’m following the <a href="https://mxnet.readthedocs.org/en/latest/build.html#build-mxnet-library">installing guide</a> to install it on Mac OS X, it failed to compile with the error <code>cblas.h</code> not found. The message pointed out I may miss the BLAS library.</p>
 
-<p>But this site is too simple now. There are some features I missed, such as search box, comment, archives by date, index by tags and so on. Some of them could be solved by third party, and some of them could be solved by plugins. But it makes the blog not so simple any more.</p>
+<p>After some search, I find Mac OS X seems to come with its default BLAS library. But I cannot find its headers. And as an article said, the default BLAS library may not as fast as some third party ones. So I install <code>OpenBLAS</code> with homebrew:</p>
 
-<p>With so many cool techs nowadays, it is easy to write a website. But it is not so easy to generate a static website with many features. Here is something about balance. They said “keep it stupid and simple”, and “less is more”. It is really an art to find out how less is just good for a production. Even the user himself doesn’t exactly know how much he wanted.</p>
+<pre><code>brew install openblas
+</code></pre>
 
-<p>Anyway, here is my new blog. Have fun and enjoy it!</p>
+<p>It is installed under <code>/usr/local/opt/openblas</code>, so we need to change these lines in the MXNet’s <code>config.mk</code> (it should be copied from <code>make/osx.mk</code> as the installing guide specified) :</p>
+
+<pre><code># the additional link flags you want to add
+ADD_LDFLAGS = '-L/usr/local/opt/openblas/lib'
+
+# the additional compile flags you want to add
+ADD_CFLAGS = '-I/usr/local/opt/openblas/include'
+</code></pre>
+
+<p>Then the compile should pass.</p>
+
 
 </article>
 
 <footer id="post_footer">
   <table><tr>
     
-      <td id="prev"><a href="/2012-05-19-tiandiyouyou.html">Prev: 念天地之悠悠</a></td>
+      <td id="prev"><a href="/2015-11-04-the-life-of-hermit-without-materially.html">Prev: 摒弃现代科技的隐士生活</a></td>
     
     
-      <td id="next"><a href="/2012-11-20-comment-and-search-are-available.html" id="next">Next: Comment And Search Are Available</a></td>
+      <td id="next"><a href="/2015-11-22-use-redis-instead-of-spark-streaming-to-count-statistics.html" id="next">Next: Use Redis Instead of Spark Streaming to Count Statistics</a></td>
     
   </tr></table>
 </footer>
