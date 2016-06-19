@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title> The Proper Way to Use Spark Checkpoint |  Bin Wang</title>
+    <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-52904500-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+  </head>
+
+  <body>
+    <header id="page_header">
+      <nav id="page_nav">
+        <ul>
+             <li><a href="/">Home</a></li>
+             <li><a href="/read.html">Read</a></li>
+             <li><a href="/travel.html">Travel</a></li>
+             <li><a href="/search.html">Search</a></li>
+             <li><a href="/about.html">About</a></li>
+       </ul>
+      </nav>
+
+    </header>
+
+    <section id="page_content">
+      <div id="content_table">
+  
+</div>
+
+<div id="article_content">
+<article id="post">
+  <header>
+    <h1>The Proper Way to Use Spark Checkpoint</h1>
+    
+      <p class="description">Posted on 03 Nov 2015, tagged <code>spark</code></p>
+    
+  </header>
+
+  <p>These days I’m using Spark streaming to process real time data. I’m using <code>updateStateByKey</code>, so I need to add <a href="https://spark.apache.org/docs/latest/streaming-programming-guide.html#checkpointing">checkpointing</a>, which is a fault tolerance mechanism of Spark streaming. The checkpoint will save DAG and RDDs. So when you restart the Spark application from failure, it will continue to compute.</p>
+
+<p>But there is a problem with checkpointing: you cannot load the checkpointed data once you change the class structure of your code, so the state in <code>updateStateByKey</code> is lost. This is a pretty big limit. Another solution is to save and load data by ourself, but in this way checkpointing is totally useless and will also break the fault tolerance. What about to use both ways? Then the data may load twice while the application is auto restarted by the Spark cluster, in the case of failure. So I asked this question in the Spark user list and somebody kindly give me <a href="https://mail-archives.apache.org/mod_mbox/incubator-spark-user/201509.mbox/%3CCAD_32VVBit6eqNhRb5axf4Quxk86v_ZkjFL4ZdziNZrCyT2qEA@mail.gmail.com%3E">a solution</a>: use <code>updateStateByKey</code> with the parameter <code>initialRDD</code>.</p>
+
+<p>The answer is a little simple, so I will explain it here. This way is to use both checkpointing and our own data storage mechanism. But we load our data as the <code>initalRDD</code> of <code>updateStateByKey</code>. So in both situations, the data will neither lost nor duplicate:</p>
+
+<ol>
+  <li>
+    <p>When we change the code and redeploy the Spark application, we shutdown the old Spark application gracefully and cleanup the checkpoint data, so the only loaded data is the data we saved.</p>
+  </li>
+  <li>
+    <p>When the Spark application is failure and restart, it will load the data from checkpoint. But the step of DAG is saved so it will not load our own data as <code>initalRDD</code> again. So the only loaded data is the checkpointed data.</p>
+  </li>
+</ol>
+
+</article>
+
+<footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2015-07-02-My-Recent-Work-About-Neural-Networks.html">Prev: My Recent Work About Neural Networks</a></td>
+    
+    
+      <td id="next"><a href="/2015-11-04-The-Life-of-Hermit-without-Materially.html" id="next">Next: 摒弃现代科技的隐士生活</a></td>
+    
+  </tr></table>
+</footer>
+
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+</div>
+
+    </section>
+
+    <footer id="page_footer">
+      Copyright @ 2008 - 2016 Bin Wang
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
+    </footer>
+    
+    <!-- MathJax -->
+    <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      TeX: { equationNumbers: { autoNumber: "AMS" } }
+    });
+    </script>
+  </body>
+</html>

@@ -143,6 +143,13 @@ footer#page_footer{
   font-weight: normal;
 }
 #post table{
+  width: 90%;
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+#post th, #post td {
+  padding: 4px;
+  border: 1px solid black;
 }
 #post th{
   text-align: left;

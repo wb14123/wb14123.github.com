@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title> Experiment On Combining OOP With Erlang's Actor Model |  Bin Wang</title>
+    <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-52904500-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+  </head>
+
+  <body>
+    <header id="page_header">
+      <nav id="page_nav">
+        <ul>
+             <li><a href="/">Home</a></li>
+             <li><a href="/read.html">Read</a></li>
+             <li><a href="/travel.html">Travel</a></li>
+             <li><a href="/search.html">Search</a></li>
+             <li><a href="/about.html">About</a></li>
+       </ul>
+      </nav>
+
+    </header>
+
+    <section id="page_content">
+      <div id="content_table">
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#oop-suits-actor-model-better">OOP Suits Actor Model Better</a></li><li><a href="#it-is-complex-to-define-a-good-actor-in-erlang">It Is Complex To Define A Good Actor In Erlang</a></li><li><a href="#my-implementation">My Implementation</a></li><li><a href="#the-problems">The Problems</a></li><li><a href="#next-plan">Next Plan</a></li></ol>
+</div>
+
+<div id="article_content">
+<article id="post">
+  <header>
+    <h1>Experiment On Combining OOP With Erlang's Actor Model</h1>
+    
+      <p class="description">Posted on 16 May 2014, tagged <code>erlang</code><code>elixir</code></p>
+    
+  </header>
+
+  <p>Erlang’s actor model is good to use, but its syntax is not. Elixir is a very great language, but I don’t think it is enough. So I hacked it a little and did some experiments on turning it into an OOP language in some way.</p>
+
+<h2 id="oop-suits-actor-model-better">OOP Suits Actor Model Better</h2>
+
+<p>Erlang is a pure functional language. There are some arguments between OOP and FP. The point of pure functional programming is it avoids side effects: the function always gives the same result while the inputs are same. In Erlang or Elixir, it is true with the functions. But when there comes an actor (a <code>gen_server</code> for example), it is not so true. Let’s look at a <code>gen_server</code> module for example:</p>
+
+<pre><code>-module(example).
+
+init(_Opts) -&gt; {ok, []}.
+
+handle_call(Msg, _from, State) -&gt; {reply, State, [Msg | State]}.
+</code></pre>
+
+<p>It is FP for now. The state of the actor is one of the input, so it always give the same result while the inputs are same.</p>
+
+<p>But when you call the methods from the outside, it is not so true. For example:</p>
+
+<pre><code>{ok, Pid} = gen_server:start_link(example, [], []),
+
+%% A and B will not be the same here
+A = gen_server:call(Pid, 1)
+B = gen_server:call(Pid, 2)
+</code></pre>
+
+<p>See? In this example, the two calls of <code>gen_server:call</code> with the same inputs will not give the same outputs. It is because the actors <strong>do have state</strong>. So I think it is more suitable to think it in an OOP way.</p>
+
+<h2 id="it-is-complex-to-define-a-good-actor-in-erlang">It Is Complex To Define A Good Actor In Erlang</h2>
+
+<p>After I write Erlang programs about half a year, I realized that it puts too many works to the programmer which could be done by the compiler or library. For example, in order to define a module with <code>gen_server</code>, we need to do these things:</p>
+
+<ol>
+  <li>Define a module which behaviour is <code>gen_server</code>, and define the callbacks, and an API <code>start_link</code> which will be invoked by the supervisor.</li>
+  <li>Define a module which behaviour is <code>supervisor</code> to supervise these actors.</li>
+  <li>Define a module with the API, which will invoke <code>gen_server:call</code> or <code>gen_server:cast</code> to sent messages to the <code>gen_server</code> that is just defined.</li>
+</ol>
+
+<p>Elixir reduce the complex of Erlang’s syntax a lot. But it doesn’t reduce the steps above. I will write a library that do these things for the programmer, in an OOP way.</p>
+
+<h2 id="my-implementation">My Implementation</h2>
+
+<p>Things should be done just like this:</p>
+
+<pre><code>#this defines a `gen_server`
+defmodule Basic do
+  use Eroop
+
+  init _(init_count) do
+    # "@" means the state in actor
+    @counter = init_count
+  end
+
+  async add(num) do
+    @counter = @counter + num
+  end
+
+  sync get do
+    @counter
+  end
+end
+
+# this starts a `gen_server`
+c = Basic.new 2
+# this will be executed asynced
+c.add 1
+# this will be exeuted synced and get its result
+count = c.get
+
+</code></pre>
+
+<p>I think I don’t need to explain much about it if you are familiar with Erlang, actor model or Elixir. Thanks for the powerful Elixir and its macro, I’ve implemented it in a clean way. (View the source code <a href="https://github.com/wb14123/eroop">on Github</a>).</p>
+
+<h2 id="the-problems">The Problems</h2>
+
+<p>But there are also some problems here. The first one is: I would except the supervisor to work.</p>
+
+<p>For example, I’d like this code to work:</p>
+
+<pre><code>defmodule Crash do
+  use Eroop
+
+  init _(init_count), do: @counter = init_count
+  async crash, do: 0/0
+  sync get, do: @counter
+end
+
+Crash.start_sup
+c = Crash.new 1
+# Thought it is crashed, the supervisor should restart it and assign its new pid to `c`
+c.crash
+count = c.get
+</code></pre>
+
+<p>The fact is, the supervisor is able to restart it, but the variable <code>c</code> lost the pid of the new started server,  so <code>c.get</code> will not success. There are some ways to fix it, do a little hack and register <code>c</code> as the <code>gen_server</code>’s name is one of them.</p>
+
+<p>But the code will be complex, and it pushes me to think:</p>
+
+<ol>
+  <li>Erlang is not an OOP platform.</li>
+  <li>I still think OOP suits actor model better than FP.</li>
+</ol>
+
+<p>You must want to remind me about Scala. But its actor syntax is as worse as Erlang’s. And it is not as easy to extend its syntax as Elixir.</p>
+
+<h2 id="next-plan">Next Plan</h2>
+
+<p>So, what’s my choice? My choice is stop thinking about actor model for a moment and start to learn some Haskell. I’ve heard Haskell solves concurrency problems well and is more clean to build big applications with pure function. I want to have a look at it. So learn Haskell is my next plan. You can wait to see my posts about it!</p>
+
+</article>
+
+<footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2014-04-27-Why-I-Come-Back-to-Erlang.html">Prev: Why I Come Back to Erlang</a></td>
+    
+    
+      <td id="next"><a href="/2014-07-20-The-Travel-to-Tokyo.html" id="next">Next: 东京之旅</a></td>
+    
+  </tr></table>
+</footer>
+
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+</div>
+
+    </section>
+
+    <footer id="page_footer">
+      Copyright @ 2008 - 2016 Bin Wang
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
+    </footer>
+    
+    <!-- MathJax -->
+    <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      TeX: { equationNumbers: { autoNumber: "AMS" } }
+    });
+    </script>
+  </body>
+</html>

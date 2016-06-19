@@ -7,6 +7,18 @@
 		<atom:link href="http://www.binwang.me/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Build A Computer for Deep Learning</title>
+				
+					<description>&lt;p&gt;These days, I bought some hardware and build a computer by myself. It’s fun and I’ve learned lots of things from it. Here is a note to record it.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Sun, 19 Jun 2016 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2016-06-19-Build-A-Computer-for-Deep-Learning.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2016-06-19-Build-A-Computer-for-Deep-Learning.html</guid>
+			</item>
+		
+			<item>
 				<title>How to Put RNN Layers Into Neural Network Model</title>
 				
 					<description>&lt;p&gt;If you are interested in neural networks, you must have ever read and learn lots of things about RNN, which can reason about sequences of data. RNN is awesome and very fun to play with, if you haven’t heard of it, you can read &lt;a href=&quot;http://karpathy.github.io/2015/05/21/rnn-effectiveness/&quot;&gt;this great article&lt;/a&gt; which train a char level RNN model to generate text.&lt;/p&gt;
@@ -14,8 +26,8 @@
 </description>
 				
                         	<pubDate>Sat, 14 May 2016 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2016-05-14-how-to-put-rnn-layer-into-nueral-network-model.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2016-05-14-how-to-put-rnn-layer-into-nueral-network-model.html</guid>
+				<link>http://www.binwang.me/2016-05-14-How-to-Put-RNN-Layer-Into-Nueral-Network-Model.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2016-05-14-How-to-Put-RNN-Layer-Into-Nueral-Network-Model.html</guid>
 			</item>
 		
 			<item>
@@ -26,8 +38,8 @@
 </description>
 				
                         	<pubDate>Thu, 11 Feb 2016 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2016-02-11-the-permission-of-android-becomes-a-bigger-problem-when-it-comes-to-wearable-devices-and-tv.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2016-02-11-the-permission-of-android-becomes-a-bigger-problem-when-it-comes-to-wearable-devices-and-tv.html</guid>
+				<link>http://www.binwang.me/2016-02-11-The-Permission-of-Android-Becomes-A-Bigger-Problem-When-It-Comes-to-Wearable-Devices-and-TV.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2016-02-11-The-Permission-of-Android-Becomes-A-Bigger-Problem-When-It-Comes-to-Wearable-Devices-and-TV.html</guid>
 			</item>
 		
 			<item>
@@ -38,8 +50,8 @@
 </description>
 				
                         	<pubDate>Sun, 22 Nov 2015 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2015-11-22-use-redis-instead-of-spark-streaming-to-count-statistics.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2015-11-22-use-redis-instead-of-spark-streaming-to-count-statistics.html</guid>
+				<link>http://www.binwang.me/2015-11-22-Use-Redis-Instead-of-Spark-Streaming-to-Count-Statistics.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2015-11-22-Use-Redis-Instead-of-Spark-Streaming-to-Count-Statistics.html</guid>
 			</item>
 		
 			<item>
@@ -50,8 +62,8 @@
 </description>
 				
                         	<pubDate>Sun, 08 Nov 2015 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2015-11-08-install-blas-library-for-mxnet.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2015-11-08-install-blas-library-for-mxnet.html</guid>
+				<link>http://www.binwang.me/2015-11-08-Install-BLAS-Library-for-MXNet.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2015-11-08-Install-BLAS-Library-for-MXNet.html</guid>
 			</item>
 		
 			<item>
@@ -62,8 +74,8 @@
 </description>
 				
                         	<pubDate>Wed, 04 Nov 2015 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2015-11-04-the-life-of-hermit-without-materially.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2015-11-04-the-life-of-hermit-without-materially.html</guid>
+				<link>http://www.binwang.me/2015-11-04-The-Life-of-Hermit-without-Materially.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2015-11-04-The-Life-of-Hermit-without-Materially.html</guid>
 			</item>
 		
 			<item>
@@ -74,8 +86,8 @@
 </description>
 				
                         	<pubDate>Tue, 03 Nov 2015 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2015-11-03-the-proper-way-to-use-spark-checkpoint.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2015-11-03-the-proper-way-to-use-spark-checkpoint.html</guid>
+				<link>http://www.binwang.me/2015-11-03-The-Proper-Way-to-Use-Spark-Checkpoint.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2015-11-03-The-Proper-Way-to-Use-Spark-Checkpoint.html</guid>
 			</item>
 		
 			<item>
@@ -86,8 +98,8 @@
 </description>
 				
                         	<pubDate>Thu, 02 Jul 2015 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2015-07-02-my-recent-work-about-neural-networks.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2015-07-02-my-recent-work-about-neural-networks.html</guid>
+				<link>http://www.binwang.me/2015-07-02-My-Recent-Work-About-Neural-Networks.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2015-07-02-My-Recent-Work-About-Neural-Networks.html</guid>
 			</item>
 		
 			<item>
@@ -98,8 +110,8 @@
 </description>
 				
                         	<pubDate>Wed, 29 Apr 2015 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2015-04-29-use-docker-to-submit-spark-jobs.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2015-04-29-use-docker-to-submit-spark-jobs.html</guid>
+				<link>http://www.binwang.me/2015-04-29-Use-Docker-to-Submit-Spark-Jobs.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2015-04-29-Use-Docker-to-Submit-Spark-Jobs.html</guid>
 			</item>
 		
 			<item>
@@ -110,20 +122,8 @@
 </description>
 				
                         	<pubDate>Sun, 26 Apr 2015 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2015-04-26-how-about-translate-imap-and-smtp-into-http-api.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2015-04-26-how-about-translate-imap-and-smtp-into-http-api.html</guid>
-			</item>
-		
-			<item>
-				<title>Backpropagation Algorithm</title>
-				
-					<description>&lt;p&gt;These days I start to learn neural networks again and write some Matlab codes from scratch. I try to understand everything I do while I write the code, so I derive the equations in the back propagation while try to keep it clear and easy to understand.&lt;/p&gt;
-
-</description>
-				
-                        	<pubDate>Sat, 17 Jan 2015 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2015-01-17-backpropagation-algorithm.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2015-01-17-backpropagation-algorithm.html</guid>
+				<link>http://www.binwang.me/2015-04-26-How-About-Translate-IMAP-And-SMTP-Into-HTTP-API.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2015-04-26-How-About-Translate-IMAP-And-SMTP-Into-HTTP-API.html</guid>
 			</item>
 		
 	</channel>
