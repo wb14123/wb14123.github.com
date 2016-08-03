@@ -7,6 +7,18 @@
 		<atom:link href="http://www.binwang.me/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>读《邓小平时代》有感</title>
+				
+					<description>&lt;p&gt;最近花了一个周末加一些零零散散的时间把傅高义的《邓小平时代》这本书看完了。这本书的内容，总体上讲对邓小平的评价是正面的。里面讲的历史，我之前多多少少都了解过一些，而通过这本书，对这段历史的了解更加系统了一些。&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Sun, 24 Jul 2016 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2016-07-24-%E8%AF%BB-%E9%82%93%E5%B0%8F%E5%B9%B3%E6%97%B6%E4%BB%A3-%E6%9C%89%E6%84%9F.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2016-07-24-%E8%AF%BB-%E9%82%93%E5%B0%8F%E5%B9%B3%E6%97%B6%E4%BB%A3-%E6%9C%89%E6%84%9F.html</guid>
+			</item>
+		
+			<item>
 				<title>Config sbt to Use Both Proxy and Self Hosted Repositories</title>
 				
 					<description>&lt;p&gt;While building Scala projects, we usually use a proxy to make the build faster. On the other hand, we usually use another repository to host our internal dependencies, which usually has a password to protect it from unwanted access. Both things are good and necessary. But if you want to use both of them, you will find it’s very tricky.&lt;/p&gt;
@@ -112,18 +124,6 @@
                         	<pubDate>Thu, 02 Jul 2015 00:00:00 +0800</pubDate>
 				<link>http://www.binwang.me/2015-07-02-my-recent-work-about-neural-networks.html</link>
 				<guid isPermaLink="true">http://www.binwang.me/2015-07-02-my-recent-work-about-neural-networks.html</guid>
-			</item>
-		
-			<item>
-				<title>Use Docker to Submit Spark Jobs</title>
-				
-					<description>&lt;p&gt;These days I’m working on analyze data with Spark. Since our Spark cluster is offline in the office for now, so it needs to download data from log server every hour, analyze them with Spark and then upload to the server. The work flow is a little complex so I write some scripts to do it. In addition, I also write a whole automated end to end test for it.&lt;/p&gt;
-
-</description>
-				
-                        	<pubDate>Wed, 29 Apr 2015 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2015-04-29-use-docker-to-submit-spark-jobs.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2015-04-29-use-docker-to-submit-spark-jobs.html</guid>
 			</item>
 		
 	</channel>
