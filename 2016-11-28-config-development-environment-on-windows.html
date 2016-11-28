@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title> Build a Unix Like Environment on Windows |  Bin Wang</title>
+    <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-52904500-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+  </head>
+
+  <body>
+    <header id="page_header">
+      <nav id="page_nav">
+        <ul>
+             <li><a href="/">Home</a></li>
+             <li><a href="/read.html">Read</a></li>
+             <li><a href="/travel.html">Travel</a></li>
+             <li><a href="/search.html">Search</a></li>
+             <li><a href="/about.html">About</a></li>
+       </ul>
+      </nav>
+
+    </header>
+
+    <section id="page_content">
+      <div id="content_table">
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#terminal-and-unix-tools">Terminal and Unix Tools</a></li><li><a href="#package-manager">Package Manager</a></li><li><a href="#python">Python</a></li></ol>
+</div>
+
+<div id="article_content">
+<article id="post">
+  <header>
+    <h1>Build a Unix Like Environment on Windows</h1>
+    
+      <p class="description">Posted on 28 Nov 2016, tagged <code>Windows</code><code>Python</code><code>bash</code></p>
+    
+  </header>
+
+  <p>I’ve bought a Surface Pro 4 some days ago. It is very amazing and I’d like to use it as my backup development laptop. My daily development is under Linux and Mac OS X. I use terminal and lots of bash scripts everyday. So I need a Unix-like environment on Windows. This article will introduce how to do that.</p>
+
+<h2 id="terminal-and-unix-tools">Terminal and Unix Tools</h2>
+
+<p>There is a famous software called <a href="https://www.cygwin.com/">Cygwin</a> which provides many unix tools along with a terminal. You can download it from its homepage and install it with GUI.</p>
+
+<p>While installing it, it will ask you which tools you’d like to install. Just install the default ones and Lynx is enough, since we will install a package manager and it will be easier to install other tools then.</p>
+
+<p>You can use Xterm with Cygwin terminal, so you can config it as you are in Linux.</p>
+
+<h2 id="package-manager">Package Manager</h2>
+
+<p>The most missed thing while I’m using Windows is Linux’s package manager. You can search, install, update and manage software very easily with it. There is also HomeBrew under Mac OS X so I’d like something like that under Windows. I searched on Google and found <a href="https://github.com/transcode-open/apt-cyg">apt-cyg</a> which can manage packages in Cygwin. You can follow the steps on its homepage to install it. After install it, you can install wget with it so that it will stop print warning messages.</p>
+
+<p>I’ve installed tmux, zsh, Git and vim with it. And config them with my <a href="https://github.com/wb14123/dotfiles">config files</a>. I only need to change the tmux start up config:</p>
+
+<pre><code>- set -g default-command "reattach-to-user-namespace -l /bin/zsh"
++ set -g default-command "/usr/bin/zsh"
+</code></pre>
+
+<p>Except this, everything else works very well without any problem.</p>
+
+<h2 id="python">Python</h2>
+
+<p>There are many tools are written in Python. And my work also uses Python a lot. You can install Python with apt-cyg. But there will be some tricky things if you need to install some Python packages with pip.</p>
+
+<p>First we will install pip:</p>
+
+<pre><code>apt-cyg install python python-devel
+wget http://peak.telecommunity.com/dist/ez_setup.py
+python ez_setup.py
+easy_install pip
+</code></pre>
+
+<p>Then we need to install gcc in order to compile some python packages:</p>
+
+<pre><code>apt-cyg install colorgcc gcc-core gcc-g++ libgcc1
+</code></pre>
+
+<p>Then we need to change a python header file: /usr/include/python2.7/pyconfig.h:</p>
+
+<pre><code>- #define __BSD_VISIBLE 1
++ #define __BSD_VISIBLE 0
+</code></pre>
+
+</article>
+
+<footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2016-07-24-%E8%AF%BB-%E9%82%93%E5%B0%8F%E5%B9%B3%E6%97%B6%E4%BB%A3-%E6%9C%89%E6%84%9F.html">Prev: 读《邓小平时代》有感</a></td>
+    
+    
+  </tr></table>
+</footer>
+
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+</div>
+
+    </section>
+
+    <footer id="page_footer">
+      Copyright @ 2008 - 2016 Bin Wang
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
+    </footer>
+    
+    <!-- MathJax -->
+    <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      TeX: { equationNumbers: { autoNumber: "AMS" } }
+    });
+    </script>
+  </body>
+</html>

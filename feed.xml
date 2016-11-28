@@ -7,6 +7,18 @@
 		<atom:link href="http://www.binwang.me/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Build a Unix Like Environment on Windows</title>
+				
+					<description>&lt;p&gt;I’ve bought a Surface Pro 4 some days ago. It is very amazing and I’d like to use it as my backup development laptop. My daily development is under Linux and Mac OS X. I use terminal and lots of bash scripts everyday. So I need a Unix-like environment on Windows. This article will introduce how to do that.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Mon, 28 Nov 2016 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2016-11-28-config-development-environment-on-windows.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2016-11-28-config-development-environment-on-windows.html</guid>
+			</item>
+		
+			<item>
 				<title>读《邓小平时代》有感</title>
 				
 					<description>&lt;p&gt;最近花了一个周末加一些零零散散的时间把傅高义的《邓小平时代》这本书看完了。这本书的内容，总体上讲对邓小平的评价是正面的。里面讲的历史，我之前多多少少都了解过一些，而通过这本书，对这段历史的了解更加系统了一些。&lt;/p&gt;
@@ -112,18 +124,6 @@
                         	<pubDate>Tue, 03 Nov 2015 00:00:00 +0800</pubDate>
 				<link>http://www.binwang.me/2015-11-03-the-proper-way-to-use-spark-checkpoint.html</link>
 				<guid isPermaLink="true">http://www.binwang.me/2015-11-03-the-proper-way-to-use-spark-checkpoint.html</guid>
-			</item>
-		
-			<item>
-				<title>My Recent Work About Neural Networks</title>
-				
-					<description>&lt;p&gt;These days I’ve written some code about neural networks. There is nothing important, but worth to be recorded.&lt;/p&gt;
-
-</description>
-				
-                        	<pubDate>Thu, 02 Jul 2015 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2015-07-02-my-recent-work-about-neural-networks.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2015-07-02-my-recent-work-about-neural-networks.html</guid>
 			</item>
 		
 	</channel>
