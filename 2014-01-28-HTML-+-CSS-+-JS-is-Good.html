@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title> My New Blog Website |  Bin Wang</title>
+    <title> HTML + CSS + JS is Good |  Bin Wang</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
 
     <script>
@@ -39,29 +39,46 @@
 <div id="article_content">
 <article id="post">
   <header>
-    <h1>My New Blog Website</h1>
+    <h1>HTML + CSS + JS is Good</h1>
     
-      <p class="description">Posted on 19 Nov 2012, tagged <code>blog</code><code>jekyll</code></p>
+      <p class="description">Posted on 28 Jan 2014, tagged <code>web</code><code>UI</code><code>frontend</code></p>
     
   </header>
 
-  <p>This is my new blog website, just as simple and as good as my imagine. It is powered by jekyll - a ruby tool to generate a static website. I am using wordpress to write a Chinese blog, too. But its editor is not good enough to write with. On the other hand, jekyll makes it possible to write with markdown, which is really a good tool for writing. Also, a static website is efficient and awesome.</p>
+  <p>These days I’m using Libgdx to write a mobile game. While I’m writing it, I find that the modern web tech is very good: HTML + CSS + JS. Let me talk about the details.</p>
 
-<p>But this site is too simple now. There are some features I missed, such as search box, comment, archives by date, index by tags and so on. Some of them could be solved by third party, and some of them could be solved by plugins. But it makes the blog not so simple any more.</p>
+<p>The drawing part of the game is split into two parts:</p>
 
-<p>With so many cool techs nowadays, it is easy to write a website. But it is not so easy to generate a static website with many features. Here is something about balance. They said “keep it stupid and simple”, and “less is more”. It is really an art to find out how less is just good for a production. Even the user himself doesn’t exactly know how much he wanted.</p>
+<ul>
+  <li>Init all the objects.</li>
+  <li>Update these objects in every frame.</li>
+</ul>
 
-<p>Anyway, here is my new blog. Have fun and enjoy it!</p>
+<p>Why not do all the things in every frame? Because init objects need more time than change the states of an object in most cases. Init object need to allocate memory, read configuration, load assets, and so on.</p>
+
+<p>Init part also need to specify the position of every objects, or the layout of the stage. I write lots of code to init the position of every object. It is annoying. For example, when the width is changed, I have to change its position to make it in the center or something like that. And the position specification is messed with the code. So it is better to make the position and layout data split from the code.</p>
+
+<p>In web tech, here it is:</p>
+
+<ul>
+  <li>HTML is what it has in the first place (init objects).</li>
+  <li>CSS is the position and layout of the objects (data split from code).</li>
+  <li>JS update the objects when some events occurs (update objects).</li>
+</ul>
+
+<p>Everybody say and say that again. But I didn’t understand that until I really wrote an application that render graphics to the screen.</p>
+
+<p>So code is better than talk.</p>
 
 </article>
 
 <footer id="post_footer">
   <table><tr>
     
-      <td id="prev"><a href="/2012-05-19-tiandiyouyou.html">Prev: 念天地之悠悠</a></td>
+      <td id="prev"><a href="/2013-12-08-Languages-Should-Have-Database-Built-In.html">Prev: Languages Should Have Database Built In</a></td>
     
     
-      <td id="next"><a href="/2012-11-20-Comment-And-Search-Are-Available.html" id="next">Next: Comment And Search Are Available</a></td>
+      <td id="next"><a href="/2014-02-14-What-is-Wrong-about-HTML.html" id="next">Next: What is Wrong about HTML and CSS</a></td>
     
   </tr></table>
 </footer>

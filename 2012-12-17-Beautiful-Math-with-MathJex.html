@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title> My New Blog Website |  Bin Wang</title>
+    <title> Beautiful Math with MathJex |  Bin Wang</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
 
     <script>
@@ -39,29 +39,39 @@
 <div id="article_content">
 <article id="post">
   <header>
-    <h1>My New Blog Website</h1>
+    <h1>Beautiful Math with MathJex</h1>
     
-      <p class="description">Posted on 19 Nov 2012, tagged <code>blog</code><code>jekyll</code></p>
+      <p class="description">Posted on 17 Dec 2012, tagged <code>composition</code><code>MathJex</code><code>LaTex</code></p>
     
   </header>
 
-  <p>This is my new blog website, just as simple and as good as my imagine. It is powered by jekyll - a ruby tool to generate a static website. I am using wordpress to write a Chinese blog, too. But its editor is not good enough to write with. On the other hand, jekyll makes it possible to write with markdown, which is really a good tool for writing. Also, a static website is efficient and awesome.</p>
+  <p>Never ever say you are a geek if you don’t have some mathematical formulas on your website! I have done so though <a href="http://www.mathjax.org">MathJex</a><code>:)</code>. Here are some examples:</p>
 
-<p>But this site is too simple now. There are some features I missed, such as search box, comment, archives by date, index by tags and so on. Some of them could be solved by third party, and some of them could be solved by plugins. But it makes the blog not so simple any more.</p>
+<p>Code:</p>
 
-<p>With so many cool techs nowadays, it is easy to write a website. But it is not so easy to generate a static website with many features. Here is something about balance. They said “keep it stupid and simple”, and “less is more”. It is really an art to find out how less is just good for a production. Even the user himself doesn’t exactly know how much he wanted.</p>
+<pre><code>$$ x = {-b \pm \sqrt{b^2-4ac} \over 2a} $$
+$$ |s_n - s_m|=|\sum_{k=m+1}^n u_{k}|=|u_{m+1}+u_{m+2}+...+u_{n}| \lt \epsilon $$
+</code></pre>
 
-<p>Anyway, here is my new blog. Have fun and enjoy it!</p>
+<p>Result:</p>
+
+<p><span><script type="math/tex">x = {-b \pm \sqrt{b^2-4ac} \over 2a}</script></span></p>
+
+<p><span><script type="math/tex">|s_n - s_m|=|\sum_{k=m+1}^n u_{k}|=|u_{m+1}+u_{m+2}+...+u_{n}| \lt \epsilon</script></span></p>
+
+<p>Now let’s try some inline formulas, such as you may except <span>(b \ne 0)</span> in expression <span>(a \over b)</span> and the famous formula <span>(E = mc^2)</span> from Einstein.</p>
+
+<p>However, there are some issues to use MathJex with Markdown because symbols in formula will be parsed by Markdown first. The easiest way to avoid this is surrounding your formula with <code>&lt;span&gt;</code> since Markdown will parse nothing in a html/xml block. Such as <code>&lt;span&gt;\(a \ne 0\)&lt;/span&gt;</code> for a inline formula <span>(a \ne 0)</span>.</p>
 
 </article>
 
 <footer id="post_footer">
   <table><tr>
     
-      <td id="prev"><a href="/2012-05-19-tiandiyouyou.html">Prev: 念天地之悠悠</a></td>
+      <td id="prev"><a href="/2012-12-16-Create-A-Virtual-Machine-Network.html">Prev: Create A Virtual Machine Network</a></td>
     
     
-      <td id="next"><a href="/2012-11-20-Comment-And-Search-Are-Available.html" id="next">Next: Comment And Search Are Available</a></td>
+      <td id="next"><a href="/2012-12-18-Call-Program-Like-A-Function.html" id="next">Next: Call Program Like A Function</a></td>
     
   </tr></table>
 </footer>

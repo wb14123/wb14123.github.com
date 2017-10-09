@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title> Languages Should Have Database Built In |  Bin Wang</title>
+    <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-52904500-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+  </head>
+
+  <body>
+    <header id="page_header">
+      <nav id="page_nav">
+        <ul>
+             <li><a href="/">Home</a></li>
+             <li><a href="/read.html">Read</a></li>
+             <li><a href="/travel.html">Travel</a></li>
+             <li><a href="/search.html">Search</a></li>
+             <li><a href="/about.html">About</a></li>
+       </ul>
+      </nav>
+
+    </header>
+
+    <section id="page_content">
+      <div id="content_table">
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#database-as-a-module-of-the-language">Database as a Module of the Language</a></li><li><a href="#database-totally-built-in-the-language">Database Totally Built In the Language</a></li></ol>
+</div>
+
+<div id="article_content">
+<article id="post">
+  <header>
+    <h1>Languages Should Have Database Built In</h1>
+    
+      <p class="description">Posted on 08 Dec 2013, tagged <code>programming</code><code>language</code><code>database</code></p>
+    
+  </header>
+
+  <p>When we are programming, we are programming with data. When the data is too big, we could not put them all in the Ram. So we need some place to store these data, and then read them when we need them. The place we store our data is called “database”.</p>
+
+<p>The steps to use a database are very annoying. We need to write much code to do operations on it. We need to consider many details so that we could read and write more quickly with less problems. But why we should not care about it? The only thing we care about is that we could be able to get, store and compute the data. We do not care about how the data is stored.</p>
+
+<p>Do operations on the database is an art to manage the storage resources (include Ram and hard disk) of computers. Think about the early days. When we use C, we must manage the pointers and Ram by ourself. But most modern languages have GC built in so that we need not manage Ram manually. So why we need to manage other storage resources?</p>
+
+<p>Let us have a look at the popular languages and frameworks. PHP is very popular to write websites. It is very easy to write SQL with it. Ruby on Rails also have an easy way to use database framework. And so on.</p>
+
+<p>But I do not think it is enough. I think the ideal situation is to have a database built in it.</p>
+
+<p>There are two ways:</p>
+
+<h2 id="database-as-a-module-of-the-language">Database as a Module of the Language</h2>
+
+<p>This way is implemented as the standalone databases in nowadays. Though we have a standalone database that many different languages could be able to use, none of the language could be able to use it easily. That is the biggest problem.</p>
+
+<p>There is no need to build the database in the core language in this way. But the database library should be a standard one and the API should be easy to use.</p>
+
+<p>The good part of this way is the structure of different languages’ database could be the same, or could be able to transform to each other. So that many languages could be collaborated together.</p>
+
+<p>The bad part is we still realize the exists of the database.</p>
+
+<h2 id="database-totally-built-in-the-language">Database Totally Built In the Language</h2>
+
+<p>The other way is to totally build the database in the language. In this way, the data uses the Ram first, just as the normal languages. When the Ram is not enough, it moves the cold data to the hark disk. So that we could just write code normally, avoiding the annoying part to do operations on the database.</p>
+
+<p>The operations on the databases could be difficult. If the language don’t resolve it, it just leave these difficult things to the programmers.</p>
+
+<p>Mongodb is a good start point. It use as many Ram as it can. And when the Ram is not enough, it will put the data in the hard disk. It also uses Javascript as its query language.</p>
+
+</article>
+
+<footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2013-11-16-Fetch-Popular-Erlang-Modules-by-Coffee-Script.html">Prev: Fetch Popular Erlang Modules by Coffee Script</a></td>
+    
+    
+      <td id="next"><a href="/2014-01-28-HTML-+-CSS-+-JS-is-Good.html" id="next">Next: HTML + CSS + JS is Good</a></td>
+    
+  </tr></table>
+</footer>
+
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+</div>
+
+    </section>
+
+    <footer id="page_footer">
+      Copyright @ 2008 - 2016 Bin Wang
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
+    </footer>
+    
+    <!-- MathJax -->
+    <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      TeX: { equationNumbers: { autoNumber: "AMS" } }
+    });
+    </script>
+  </body>
+</html>

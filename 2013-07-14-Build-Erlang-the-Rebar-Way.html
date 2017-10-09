@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title> Build Erlang the Rebar Way |  Bin Wang</title>
+    <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-52904500-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+  </head>
+
+  <body>
+    <header id="page_header">
+      <nav id="page_nav">
+        <ul>
+             <li><a href="/">Home</a></li>
+             <li><a href="/read.html">Read</a></li>
+             <li><a href="/travel.html">Travel</a></li>
+             <li><a href="/search.html">Search</a></li>
+             <li><a href="/about.html">About</a></li>
+       </ul>
+      </nav>
+
+    </header>
+
+    <section id="page_content">
+      <div id="content_table">
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#basic">Basic</a></li><li><a href="#dependency">Dependency</a></li><li><a href="#test-with-eunit">Test with Eunit</a></li><li><a href="#run-the-application">Run the Application</a></li><li><a href="#reference">Reference</a></li></ol>
+</div>
+
+<div id="article_content">
+<article id="post">
+  <header>
+    <h1>Build Erlang the Rebar Way</h1>
+    
+      <p class="description">Posted on 14 Jul 2013, tagged <code>erlang</code><code>rebar</code></p>
+    
+  </header>
+
+  <p>These days I start learning erlang, and building a poker robot system. While I am learning it, I found the most difficult part is not the function style programming, nor the OTP system. The most difficult part is how to build and run erlang. Surely you can write an erlang module and run the functions from the erlang shell when you do exercises, but it is a little disturbing. And you surely don’t want to do that in the production environment. The erlang way and reltool is a little difficult for the newbies. Thanks to rebar, we can do it much easier now.</p>
+
+<p><a href="https://github.com/basho/rebar">Rebar</a> is a very good tool to build and run erlang applications. It could automatic get dependencies, run it as a daemon, attach it and hot load code. I’m wonder why there is no book about erlang introduced it. Even the book <em>Learn You Some Erlang for Great Good</em>, which is published this year. The rebar official wiki is a little simple. I will record how am I using rebar to build erlang applications.</p>
+
+<h2 id="basic">Basic</h2>
+
+<p>A typical erlang directory structure is like this:</p>
+
+<pre><code>myapp:
+ - src/
+ - include/
+ - priv/
+ - ebin/
+</code></pre>
+
+<ul>
+  <li>src: place for source code.</li>
+  <li>include: place for included files, such as <code>.hrl</code> files.</li>
+  <li>priv: not used for me now.</li>
+  <li>ebin: place for erlang object files, such as <code>.beam</code> files, <code>.app</code> file also placed here.</li>
+</ul>
+
+<p>You usually need not to place any files in <code>ebin/</code> if you use rebar. All the object files, and <code>.app</code> files, could be compiled from sorce code. In a project, there may also have such two subdirectory: <code>deps</code> for dependencies and <code>test</code> for test files.</p>
+
+<p>After download rebar, this command could create an OTP application:</p>
+
+<pre><code>rebar create-app app-id=myapp
+</code></pre>
+
+<p>It will create a directory with a <code>src/</code> subdirectory, and a file named <code>rebar.config</code>. As the name specified, <code>rebar.config</code> is the erlang config file.</p>
+
+<p>Use this command could build this app:</p>
+
+<pre><code>rebar compile
+</code></pre>
+
+<h2 id="dependency">Dependency</h2>
+
+<p>Lots of languages could manage dependencies easily now. For example, gem in ruby, npm in node.js, pip in python, maven in java and so on. Erlang is an old language, but with rebar, you could manage dependencies easily.</p>
+
+<p>Run <code>rebar help get-deps</code> to see how to add dependencies with rebar:</p>
+
+<pre><code>{deps_dir,"deps"}
+{deps,[application_name,
+       {application_name,"1.0.*"},
+       {application_name,"1.0.*",
+                         {git,"git://github.com/rebar/rebar.git",
+                              {branch,"master"}}},
+       {application_name,[],
+                         {git,"git://github.com/rebar/rebar.git",
+                              {branch,"master"}},
+                         [raw]}]}
+</code></pre>
+
+<p>Use this command to automatic get dependencies:</p>
+
+<pre><code>rebar get-deps
+</code></pre>
+
+<h2 id="test-with-eunit">Test with Eunit</h2>
+
+<p>Rebar could also compile with test. I am just using eunit for now. I add these code in <code>rebar.config</code>:</p>
+
+<pre><code>{cover_enabled, true}.
+{eunit_opts, [verbose, {report, {eunit_surefire, [{dir, "./"}]}}]}.
+</code></pre>
+
+<p>You can put test codes in subdirectory <code>test</code>. While run <code>rebar test</code>, rebar compile test code, put the object files in <code>.eunit</code>. It will also show test coverage in a web page.</p>
+
+<h2 id="run-the-application">Run the Application</h2>
+
+<p>Here comes the most important part. We will build and run our application. The rebar official wiki has an article about how to handle release, but it doesn’t mention how to handle release with dependencies. I will introduce how I do it.</p>
+
+<p>We already know we could use <code>rebar compile</code> to compile the codes. But it only put object files in <code>ebin/</code>, we also need to run them in the shell manually if we want:</p>
+
+<pre><code>erl -pa ./ebin ./deps/*/ebin
+</code></pre>
+
+<p>This command will start the shell with compiled files, and you can run them in the shell.</p>
+
+<p>But it is absolutely not we want. We want a executable file, just run it to start. Even better, run as a daemon. Even more better, attach it when we want.</p>
+
+<p>Rebar allows us to do all test things. It is a little complex, but much simpler than the origin way with erlang.</p>
+
+<p>First, make a new directory in the application directory, and using rebar to generate some files:</p>
+
+<pre><code>mkdir rel
+cd rel
+rebar create-node nodeid=myapp
+</code></pre>
+
+<p>These command will create a subdirectory named <code>files</code> and a file named <code>reltool.config</code>. We need not to touch anything in the <code>files</code> directory. But we will modify something in <code>reltool.config</code>. I’m using erlang R16B01, and I do these things:</p>
+
+<ol>
+  <li>Add <code>{lib_dirs, ["../deps"]},</code> in the <code>sys</code> config. This will include our dependencies.</li>
+  <li>Change <code>{app, myapp, [{mod_cond, app}, {incl_cond, include}]}</code> to <code>{app, myapp, [{mod_cond, app}, {incl_cond, include}, {lib_dir, ".."}]}</code>.</li>
+  <li>Add <code>{sub_dirs, ["rel"]}.</code> in <code>rebar.config</code>.</li>
+</ol>
+
+<p>Now, we could generate the executable files:</p>
+
+<pre><code>rebar compile generate
+</code></pre>
+
+<p>This command will generate files in <code>rel/myapp</code>. We can run the app with erlang shell like this:</p>
+
+<pre><code>./rel/myapp/bin/myapp/myapp console
+</code></pre>
+
+<p>Use <code>start</code> argument will start as a daemon, and using <code>attach</code> could come back to the erlang shell. You can see the usage with <code>help</code> argument.</p>
+
+<p>OK, enjoy your self!</p>
+
+<h2 id="reference">Reference</h2>
+
+<ul>
+  <li>Erlang application manual: just run <code>erl -man application</code>.</li>
+  <li><a href="http://www.erlang.org/doc/design_principles/users_guide.html">OTP design principles</a>.</li>
+  <li><a href="https://github.com/basho/rebar/wiki">Rebar official wiki</a>.</li>
+</ul>
+
+
+</article>
+
+<footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2013-05-15-Recent-Works.html">Prev: Recent Works</a></td>
+    
+    
+      <td id="next"><a href="/2013-08-30-Tired-of-Programming.html" id="next">Next: Tired of Programming</a></td>
+    
+  </tr></table>
+</footer>
+
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+</div>
+
+    </section>
+
+    <footer id="page_footer">
+      Copyright @ 2008 - 2016 Bin Wang
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
+    </footer>
+    
+    <!-- MathJax -->
+    <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      TeX: { equationNumbers: { autoNumber: "AMS" } }
+    });
+    </script>
+  </body>
+</html>

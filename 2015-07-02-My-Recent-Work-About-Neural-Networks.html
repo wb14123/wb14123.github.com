@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title> My Recent Work About Neural Networks |  Bin Wang</title>
+    <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-52904500-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+  </head>
+
+  <body>
+    <header id="page_header">
+      <nav id="page_nav">
+        <ul>
+             <li><a href="/">Home</a></li>
+             <li><a href="/read.html">Read</a></li>
+             <li><a href="/travel.html">Travel</a></li>
+             <li><a href="/search.html">Search</a></li>
+             <li><a href="/about.html">About</a></li>
+       </ul>
+      </nav>
+
+    </header>
+
+    <section id="page_content">
+      <div id="content_table">
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#choose-deep-learning-frameworks">Choose Deep Learning Frameworks</a></li><li><a href="#write-my-own-library">Write My Own Library</a></li><li><a href="#run-some-examples">Run Some Examples</a></li></ol>
+</div>
+
+<div id="article_content">
+<article id="post">
+  <header>
+    <h1>My Recent Work About Neural Networks</h1>
+    
+      <p class="description">Posted on 02 Jul 2015, tagged <code>neural network</code><code>deep learning</code><code>programming</code></p>
+    
+  </header>
+
+  <p>These days I’ve written some code about neural networks. There is nothing important, but worth to be recorded.</p>
+
+<h2 id="choose-deep-learning-frameworks">Choose Deep Learning Frameworks</h2>
+
+<p>The first thing is to decide which framework I should use. There are many frameworks about neural networks, I tried some famous ones. Here is the details:</p>
+
+<h3 id="caffe"><a href="https://github.com/BVLC/caffe">Caffe</a></h3>
+
+<p>Caffe is a famous framework, mainly used with convolution neural networks. It is written with C++ but uses protocol buffer to describe the network. It is known as its well structured code, high performance. But the use of protocol buffer doesn’t make me comfortable because I’m not afraid of write some code and the file is less flexible.</p>
+
+<h3 id="theano"><a href="http://deeplearning.net/software/theano/">Theano</a></h3>
+
+<p>Theano is a framework written in Python. You can define an expression and Theano can find the gradient for you. The training process of deep learning is mainly find the gradients for each layer, so it simplified the work a lot. It’s performance is good, too.</p>
+
+<p>But it is more like a compiler for me. I cannot see the low level things and the code is not just normal python code, it has too much hacking.</p>
+
+<p>Theano is more like a optimize library than a neural network framework. <a href="https://github.com/lisa-lab/pylearn2">PyLearn2</a> is a framework based on it, which provides many network structures and tools. But like Caffe, it uses a YAML config file to describe the structure of the network, which makes me uncomfortable.</p>
+
+<h3 id="deeplearning4j"><a href="http://deeplearning4j.org">Deeplearning4j</a></h3>
+
+<p>This is a framework written in Java. It is not so famous, but interesting to me. I’m more familiar with Java than C++. A Java framework means a better IDE, more libraries to use. And it may supports Scala, which I use a lot in these days. So I tried it a little, but it is not as good as I thought.</p>
+
+<p>First of all, it is in heavily developing. And the name of methods and variables is too long and the API is not so great to use. The most important is, the performance seems not so good and the integration with the GPU is not very easy. And it is not popular in research field so the communication with others may becomes a problem.</p>
+
+<h3 id="torch7"><a href="http://torch.ch/">Torch7</a></h3>
+
+<p>This is the framework I finally use. Actually, it is the first framework I’ve used.</p>
+
+<p>Some big companies use it, including Deep Mind (Google), Facebook and so on. It is written in Lua, which is a language I’ve always want to learn. It is easy to understand. When there comes to the low level, you just need to read the C code, which is more easy to read than the C++ code. There is no magic between the high level and the low level, I can just dig it. It’s performance is great, and the ecosystem is big and healthy.</p>
+
+<p>But it also has some cons. For example, the error hint is not so great, and the code is too flexible so that you must read the document to know how to use some modules. But I can deal with it.</p>
+
+<h2 id="write-my-own-library">Write My Own Library</h2>
+
+<p>I write my own library with Scala and <a href="https://github.com/scalanlp/breeze">Breeze</a>, in order to understand neural networks better.</p>
+
+<p>It is very easy to write a neural network library (which is not distributed), as long as you understand it. While I wrote it, I realize that the core of neural networks is just gradient optimize (with many tricks). One layer of a network is just a function, layers are just function after function. So the gradient of each layer is computed by chain rule. When you need a new layer, just write how to compute the output and the gradient, then you can push it into the network structure.</p>
+
+<p>Use Scala to write it feels good, because OOP makes it feel nature to write layers. And the trait system makes it more pleasure. But the performance is not as good as the libraries above. Make it to support GPU is hard, too. Running a large size network makes it running like forever. So I gave up after wrote the convolution network and use Torch7 instead.</p>
+
+<h2 id="run-some-examples">Run Some Examples</h2>
+
+<p><a href="https://timdettmers.wordpress.com/2014/08/14/which-gpu-for-deep-learning/">This article</a> gives some great advices to choose a GPU for deep learning. Titan X is great but is too expensive. So I decide to wait until next year while NVIDIA will release their new GPU with 10X power. At the same time, I have a GPU with 1G RAM in my office.</p>
+
+<p>I wrote some simple code like MLP and simple convolution networks to train with MNIST data. Then I decided to run some large examples.</p>
+
+<p>First, I run the example from <a href="https://github.com/facebook/fbcunn/tree/master/examples/imagenet">fbcunn</a>, which is a AlexNet training on ImageNet. The ImageNet data is too big and the bandwidth of my office is too small. So I run the example with an <code>g2.2xlarge</code> instance on AWS. It still took lots of time, which trained 2 days to archive a precision of about 30% (not ended yet). Then I realized it is too expensive to run it on AWS and stop it.</p>
+
+<p>The Second example I run is an RNN example. The code is from <a href="https://github.com/karpathy/char-rnn">here</a>. I run it on the machine with 1G RAM GPU. It looks good on small networks. But when I use the data from Chinese Wikipedia (with 1G plain text), the memory of GPU could only train a network of 512 parameters, which is too small to get good result.</p>
+
+<p>The time of training large neural networks is really long. So I will wait for the new hardware to continue my research. At the mean time, I will review the knowledge about linear algebra and probability theory.</p>
+
+</article>
+
+<footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2015-04-29-Use-Docker-to-Submit-Spark-Jobs.html">Prev: Use Docker to Submit Spark Jobs</a></td>
+    
+    
+      <td id="next"><a href="/2015-11-03-The-Proper-Way-to-Use-Spark-Checkpoint.html" id="next">Next: The Proper Way to Use Spark Checkpoint</a></td>
+    
+  </tr></table>
+</footer>
+
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+</div>
+
+    </section>
+
+    <footer id="page_footer">
+      Copyright @ 2008 - 2016 Bin Wang
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
+    </footer>
+    
+    <!-- MathJax -->
+    <script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      TeX: { equationNumbers: { autoNumber: "AMS" } }
+    });
+    </script>
+  </body>
+</html>

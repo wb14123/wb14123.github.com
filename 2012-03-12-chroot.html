@@ -33,7 +33,7 @@
 
     <section id="page_content">
       <div id="content_table">
-  <h3>Table of Contents</h3><ol class="toc"><li><a href="#chroot">Chroot命令</a></li><li><a href="#chroot-1">chroot函数</a></li><li><a href="#chroot-2">跳出chroot</a></li><li><a href="#section">安全原则</a></li><li><a href="#section-1">使用中可能遇到的问题</a></li><li><a href="#section-2">参考资料</a></li></ol>
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#chroot命令">Chroot命令</a></li><li><a href="#chroot函数">chroot函数</a></li><li><a href="#跳出chroot">跳出chroot</a></li><li><a href="#安全原则">安全原则</a></li><li><a href="#使用中可能遇到的问题">使用中可能遇到的问题</a></li><li><a href="#参考资料">参考资料</a></li></ol>
 </div>
 
 <div id="article_content">
@@ -47,7 +47,7 @@
 
   <p>chroot，既是Linux的一条命令，也是它的一个系统调用。它的作用就是就是改变当前环境的根目录到一个文件夹，这个文件夹之外的东西，对于当前环境都是不可见的。因此若是运行不信任的代码或程序，使用chroot作为一个安全沙箱是个很好的选择。这里我们简单介绍一下使用chroot的方法和需要注意的问题，并提供一些跳出chroot环境的方法。</p>
 
-<h2 id="chroot">Chroot命令</h2>
+<h2 id="chroot命令">Chroot命令</h2>
 
 <p>chroot(1)这条命令在大多数Unix/Linux系统中都能找到。它的作用是将根目录改变到一个新文件夹下并且运行一个shell。因此它要求这个新文件夹下至少有一个可运行的shell。其实大多数情况下，chroot后的文件夹结构都类似于一个小型的Linux系统，例如下面有lib、usr、bin等文件夹。这里我们介绍怎样创建一个最小的环境来使用chroot命令。</p>
 
@@ -109,7 +109,7 @@ cp /lib/ld-linux-x86-64.so.2 lib
 
 <p>使用这种方法来chroot除了可以运行不受信任的代码之外，还可以作为一个编译环境来免受外部环境的污染，例如LFS(Linux From Scrach)中的用法。</p>
 
-<h2 id="chroot-1">chroot函数</h2>
+<h2 id="chroot函数">chroot函数</h2>
 
 <p>很多语言都提供chroot这个函数，以在程序中使用chroot环境。我们主要介绍C语言当中的。其实chroot(1)这条命令，就用到了chroot这个函数。</p>
 
@@ -137,11 +137,11 @@ int main(int argc, char *argv[])
 
 <p>在程序中使用chroot的好处就是不一定非要打开一个shell，需要在chroot环境中使用什么程序，直接用exec函数族来执行就行了。这样有两个好处：（1）只需要在新环境中配置需要运行的程序。如果要执行的程序是静态编译的，那么连链接库文件都不用要了。（2）由于一直是程序在控制运行过程，没有提供shell让用户交互操作，所以安全性相对高一些。</p>
 
-<h2 id="chroot-2">跳出chroot</h2>
+<h2 id="跳出chroot">跳出chroot</h2>
 
 <p>如果有root权限，可以用很多种方法跳出chroot环境。</p>
 
-<h3 id="chroot-3">在新环境中使用chroot</h3>
+<h3 id="在新环境中使用chroot">在新环境中使用chroot</h3>
 
 <p>最简单最通用的方法是在新环境中再使用一下chroot。写一个程序可以轻易的跳出chroot环境。方法如下：</p>
 
@@ -193,17 +193,17 @@ int main()
 
 <p>使用perl等其它语言也可以达到同样的效果。很多服务器都支持CGI脚本，这种攻击不是没有可能。因此在chroot之后处理好权限是非常重要的。</p>
 
-<h3 id="mknod2">使用mknod(2)</h3>
+<h3 id="使用mknod2">使用mknod(2)</h3>
 
 <p>mknod(2)系统调用可以按照自己的需求来新建文件。所以它有可能在硬盘上新建一块有特定目的的代码，来破坏chroot环境。或者新建/dev/mem来改写内核的内存。</p>
 
-<h3 id="hard-linkchroot">找到hard link到chroot环境外的文件</h3>
+<h3 id="找到hard-link到chroot环境外的文件">找到hard link到chroot环境外的文件</h3>
 
-<h3 id="ptrace2">使用ptrace(2)</h3>
+<h3 id="使用ptrace2">使用ptrace(2)</h3>
 
 <p>ptrace(2)是用于跟踪和调试程序系统调用的一个函数，它可以跟踪并且改写程序的信号和系统调用。如果在chroot中有某个程序使用到了chroot之外的一些资源，那么就可以使用ptrace来更改这个程序的系统调用来做一些事情。</p>
 
-<h2 id="section">安全原则</h2>
+<h2 id="安全原则">安全原则</h2>
 
 <p>看到了这么多跳出chroot的方法后，就会发现，如果配置不恰当，chroot环境也不是安全的。因此这里给出一些安全的原则。</p>
 
@@ -215,7 +215,7 @@ int main()
   <li>最好不要链接到chroot环境外的文件。</li>
 </ol>
 
-<h2 id="section-1">使用中可能遇到的问题</h2>
+<h2 id="使用中可能遇到的问题">使用中可能遇到的问题</h2>
 
 <p>上面已经把容易出现的问题给说到了。这些问题虽然不大，并且懂了之后也没什么，但是却是很容易困惑新手的一些地方，所以这里突出的提一下：</p>
 
@@ -225,7 +225,7 @@ int main()
   <li>chroot后不管运行什么命令和软件，都要保证有相应的库文件。gcc默认是动态编译的，因此如果想在chroot环境中不需要库文件就可以执行编译过的二进制文件，则需要静态编译，即加上“–static”选项。</li>
 </ol>
 
-<h2 id="section-2">参考资料</h2>
+<h2 id="参考资料">参考资料</h2>
 
 <p>系统自带的手册页是很好的参考资料。详见</p>
 

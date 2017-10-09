@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title> My New Blog Website |  Bin Wang</title>
+    <title> Backup My Dotfiles |  Bin Wang</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
 
     <script>
@@ -39,29 +39,51 @@
 <div id="article_content">
 <article id="post">
   <header>
-    <h1>My New Blog Website</h1>
+    <h1>Backup My Dotfiles</h1>
     
-      <p class="description">Posted on 19 Nov 2012, tagged <code>blog</code><code>jekyll</code></p>
+      <p class="description">Posted on 05 Dec 2012, tagged <code>vim</code><code>zsh</code><code>config</code><code>git</code></p>
     
   </header>
 
-  <p>This is my new blog website, just as simple and as good as my imagine. It is powered by jekyll - a ruby tool to generate a static website. I am using wordpress to write a Chinese blog, too. But its editor is not good enough to write with. On the other hand, jekyll makes it possible to write with markdown, which is really a good tool for writing. Also, a static website is efficient and awesome.</p>
+  <p>These days I re-configure my vim and zsh. Then backup them in <a href="http://github.com">github</a>. You can see it at <a href="https://github.com/wb14123/dotfiles">here</a>.</p>
 
-<p>But this site is too simple now. There are some features I missed, such as search box, comment, archives by date, index by tags and so on. Some of them could be solved by third party, and some of them could be solved by plugins. But it makes the blog not so simple any more.</p>
+<p>Using github to backup dotfiles is really a comfortable way. In this way, you can:</p>
 
-<p>With so many cool techs nowadays, it is easy to write a website. But it is not so easy to generate a static website with many features. Here is something about balance. They said “keep it stupid and simple”, and “less is more”. It is really an art to find out how less is just good for a production. Even the user himself doesn’t exactly know how much he wanted.</p>
+<ul>
+  <li>Feel free to change your configures, since if you don’t like the configure some day, you can roll it back.</li>
+  <li>Update your configures anywhere. Just use git to clone your configure files from github.</li>
+  <li>Keep different versions for different machines (Such as for desktop and laptop). Just use branch to control them.</li>
+  <li>If you are using vim plugins from git repo or something like <a href="https://github.com/robbyrussell/oh-my-zsh">oh-my-zsh</a>, you could simple use git submodule to keep track of them.</li>
+</ul>
 
-<p>Anyway, here is my new blog. Have fun and enjoy it!</p>
+<p>The basic idea is put configure files in a directory such as <code>dotfile</code> and use git to track it. Then make a symbolic link to home. However, manual make symbolic links is boring. Firstly I am thinking of use the same directory structure as <code>~/</code> and then automatic link them. But there comes some problems: for some directories such as <code>.vim</code>, we should make a link for them while for some directories such as <code>.config</code>, we may only want to link <code>openbox</code> under it to <code>~/.config/openbox</code>. It seems impossible to use an automatic way totally. But some shell code could make life a little easy:</p>
+
+<pre><code>check_link() {
+	LINK=`pwd`/$1
+	TARGET=~/$2
+	if [ -h $TARGET ] ; then
+		echo -n "remove symbolic link: "
+		rm -v $TARGET
+	elif [ -e $TARGET ] ; then
+		echo -n "move: "
+		mv -v $TARGET $TARGET.old
+	fi
+	echo -n "link: "
+	ln -sv $LINK $TARGET
+}
+</code></pre>
+
+<p>Usage: <code>check_link &lt;path_in_dotfiles&gt; &lt;path_in_home&gt;</code>, such as <code>check_link vim/vimrc .vimrc</code>. See <a href="https://github.com/wb14123/dotfiles/blob/master/link.sh">my github repo</a> for details.</p>
 
 </article>
 
 <footer id="post_footer">
   <table><tr>
     
-      <td id="prev"><a href="/2012-05-19-tiandiyouyou.html">Prev: 念天地之悠悠</a></td>
+      <td id="prev"><a href="/2012-11-27-Compile-And-Install-Kernel.html">Prev: Compile And Install Kernel</a></td>
     
     
-      <td id="next"><a href="/2012-11-20-Comment-And-Search-Are-Available.html" id="next">Next: Comment And Search Are Available</a></td>
+      <td id="next"><a href="/2012-12-10-Remove-Categories.html" id="next">Next: Remove Categories</a></td>
     
   </tr></table>
 </footer>

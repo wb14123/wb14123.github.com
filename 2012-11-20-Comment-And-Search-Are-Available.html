@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title> My New Blog Website |  Bin Wang</title>
+    <title> Comment And Search Are Available |  Bin Wang</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
 
     <script>
@@ -33,35 +33,89 @@
 
     <section id="page_content">
       <div id="content_table">
-  
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#comment">Comment</a></li><li><a href="#search">Search</a></li><li><a href="#scripts-to-make-life-easy">Scripts to Make Life Easy</a></li></ol>
 </div>
 
 <div id="article_content">
 <article id="post">
   <header>
-    <h1>My New Blog Website</h1>
+    <h1>Comment And Search Are Available</h1>
     
-      <p class="description">Posted on 19 Nov 2012, tagged <code>blog</code><code>jekyll</code></p>
+      <p class="description">Posted on 20 Nov 2012, tagged <code>blog</code><code>disqus</code><code>google</code></p>
     
   </header>
 
-  <p>This is my new blog website, just as simple and as good as my imagine. It is powered by jekyll - a ruby tool to generate a static website. I am using wordpress to write a Chinese blog, too. But its editor is not good enough to write with. On the other hand, jekyll makes it possible to write with markdown, which is really a good tool for writing. Also, a static website is efficient and awesome.</p>
+  <p>As you can see, my blog are able to comment and search now!</p>
 
-<p>But this site is too simple now. There are some features I missed, such as search box, comment, archives by date, index by tags and so on. Some of them could be solved by third party, and some of them could be solved by plugins. But it makes the blog not so simple any more.</p>
+<h2 id="comment">Comment</h2>
 
-<p>With so many cool techs nowadays, it is easy to write a website. But it is not so easy to generate a static website with many features. Here is something about balance. They said “keep it stupid and simple”, and “less is more”. It is really an art to find out how less is just good for a production. Even the user himself doesn’t exactly know how much he wanted.</p>
+<p>I always think comment is very important for a blog. You can know how helpful or is there some issues in your article. <a href="http://disqus.com">Disqus</a> is a great tool to put comment on a website. It is neat and powerful as you can see. It may be a little slow in China. But consider of my blog are mostly written in English, it is not a big deal.</p>
 
-<p>Anyway, here is my new blog. Have fun and enjoy it!</p>
+<h2 id="search">Search</h2>
+
+<p>The search engine I am using is <a href="http://www.google.com/cse">Google custom search engine</a>. Isn’t it awesome I have google’s technology on my blog? It is easy to use, too. The badness of this choice is google may take some time to put the website’s content into its index. And google is even not available in China sometimes.</p>
+
+<h2 id="scripts-to-make-life-easy">Scripts to Make Life Easy</h2>
+
+<p>As I put the website on <a href="http://pages.github.com/">github page</a>, I don’t want to upload the jekyll directory. Just the static site is enough. So I must copy the site to git repository, add, commit and then push it. It is a boring work. I write two scripts to make it easy. I don’t know if there is some other way to do this, but I’m OK with it.</p>
+
+<p>update.sh: generate static site and upload to github.</p>
+
+<pre><code>#!/bin/bash
+
+BASE_DIR=`pwd`
+J_DIR="./jekyll"
+GIT_DIR="./wb14123.github.com"
+
+cd $J_DIR
+jekyll
+cd $BASE_DIR
+rm -r $GIT_DIR/*
+cp -r $J_DIR/_site/* $GIT_DIR/
+cd $GIT_DIR
+git add -A .
+git commit -m "Changed at $(date)"
+git push origin master
+exit $?
+</code></pre>
+
+<p>newpost.sh: use vim to open a new post with current time and some meta information.</p>
+
+<pre><code>#!/bin/bash
+
+if [ $# -lt 1 ]
+then
+    echo "newpost: You need to specify the post name."
+    exit 1
+fi
+
+POST_NAME=$1
+POST_DATE=`date +%Y-%m-%d`
+POST_DIR="./jekyll/_posts"
+FILE_NAME=`echo "$POST_DIR/$POST_DATE-$POST_NAME.md" | sed "s/ /-/g"`
+
+echo "
+---
+layout: post
+title: $POST_NAME
+categories: misc
+tags: []
+---
+" &gt; $FILE_NAME
+
+vim $FILE_NAME
+</code></pre>
+
 
 </article>
 
 <footer id="post_footer">
   <table><tr>
     
-      <td id="prev"><a href="/2012-05-19-tiandiyouyou.html">Prev: 念天地之悠悠</a></td>
+      <td id="prev"><a href="/2012-11-19-my-new-blog.html">Prev: My New Blog Website</a></td>
     
     
-      <td id="next"><a href="/2012-11-20-Comment-And-Search-Are-Available.html" id="next">Next: Comment And Search Are Available</a></td>
+      <td id="next"><a href="/2012-11-27-Compile-And-Install-Kernel.html" id="next">Next: Compile And Install Kernel</a></td>
     
   </tr></table>
 </footer>
