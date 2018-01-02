@@ -2,6 +2,15 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.binwang.me/2018-01-02-The-Year-of-2017.html</loc>
+    
+    <lastmod>2018-01-02T00:00:00+08:00</lastmod>
+    
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <url>
     <loc>http://www.binwang.me/2016-11-28-Config-Development-Environment-on-Windows.html</loc>
     
     <lastmod>2016-11-28T00:00:00+08:00</lastmod>

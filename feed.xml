@@ -7,6 +7,18 @@
 		<atom:link href="http://www.binwang.me/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>The Year of 2017 and The Thoughs About Future</title>
+				
+					<description>&lt;p&gt;When I open my blog, I suddenly realized that I haven’t even writen one blog in the year of 2017. I’ve tried to write some blogs about technology but it spent too much time and energy so I gave up at last. There happens a lot of things on me in the year of 2017. So I must write something while the next year is beginning. Things have changed both on my life and my work. I don’t want to write too many details on my personal life, so I will just record some work related things.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Tue, 02 Jan 2018 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2018-01-02-The-Year-of-2017.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2018-01-02-The-Year-of-2017.html</guid>
+			</item>
+		
+			<item>
 				<title>Build a Unix Like Environment on Windows</title>
 				
 					<description>&lt;p&gt;I’ve bought a Surface Pro 4 some days ago. It is very amazing and I’d like to use it as my backup development laptop. My daily development is under Linux and Mac OS X. I use terminal and lots of bash scripts everyday. So I need a Unix-like environment on Windows. This article will introduce how to do that.&lt;/p&gt;
@@ -112,18 +124,6 @@
                         	<pubDate>Wed, 04 Nov 2015 00:00:00 +0800</pubDate>
 				<link>http://www.binwang.me/2015-11-04-The-Life-of-Hermit-without-Materially.html</link>
 				<guid isPermaLink="true">http://www.binwang.me/2015-11-04-The-Life-of-Hermit-without-Materially.html</guid>
-			</item>
-		
-			<item>
-				<title>The Proper Way to Use Spark Checkpoint</title>
-				
-					<description>&lt;p&gt;These days I’m using Spark streaming to process real time data. I’m using &lt;code&gt;updateStateByKey&lt;/code&gt;, so I need to add &lt;a href=&quot;https://spark.apache.org/docs/latest/streaming-programming-guide.html#checkpointing&quot;&gt;checkpointing&lt;/a&gt;, which is a fault tolerance mechanism of Spark streaming. The checkpoint will save DAG and RDDs. So when you restart the Spark application from failure, it will continue to compute.&lt;/p&gt;
-
-</description>
-				
-                        	<pubDate>Tue, 03 Nov 2015 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2015-11-03-The-Proper-Way-to-Use-Spark-Checkpoint.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2015-11-03-The-Proper-Way-to-Use-Spark-Checkpoint.html</guid>
 			</item>
 		
 	</channel>
