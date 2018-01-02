@@ -79,7 +79,7 @@ function renderBook(item) {
 }
 
 function getBook(to, cb) {
-  var url = 'http://api.douban.com/v2/book/user/42177876/collections?to=' + to + '&count=200&alt=xd&callback=?';
+  var url = 'https://api.douban.com/v2/book/user/42177876/collections?to=' + to + '&count=200&alt=xd&callback=?';
   $.getJSON(url, function(data){
     $.each(data.collections, function (i, item) {
       if (i === (data.collections.length - 1) && data.count < data.total) {
