@@ -82,6 +82,12 @@ function getBook(to, cb) {
   var url = 'https://api.douban.com/v2/book/user/42177876/collections?to=' + to + '&count=200&alt=xd&callback=?';
   $.getJSON(url, function(data){
     $.each(data.collections, function (i, item) {
+      // 豆瓣中没有赵紫阳的《改革历程》，借壳评论，特殊处理。
+      if (item.book.isbn13 == "9787505877009") {
+        item.book.author = ["赵紫阳"]
+        item.book.subtitle = "完整录音 还原历史"
+        item.book.alt = "https://zh.wikipedia.org/wiki/%E6%94%B9%E9%9D%A9%E5%8E%86%E7%A8%8B"
+      }
       if (i === (data.collections.length - 1) && data.count < data.total) {
         cb(item.updated);
       }
