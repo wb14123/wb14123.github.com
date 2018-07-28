@@ -7,6 +7,18 @@
 		<atom:link href="http://www.binwang.me/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>A Review on Spanner and Open Source Implementations</title>
+				
+					<description>&lt;p&gt;When &lt;a href=&quot;https://ai.google/research/pubs/pub39966&quot;&gt;Spanner paper&lt;/a&gt; is published, the use of synced clock to implement globally distributed database attracted a lot of attentions. After these years, Google have put Spanner on its cloud to make everyone be able to use it. And there are also some open source implementations of Spanner in these years. In this article, I’d like to write about how does synced clock makes Spanner special, some notes of using it and how others implement it without special hardware clock.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Sun, 29 Jul 2018 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2018-07-29-A-Review-on-Spanner-and-Open-Source-Implementations.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2018-07-29-A-Review-on-Spanner-and-Open-Source-Implementations.html</guid>
+			</item>
+		
+			<item>
 				<title>My 2017 Year in Review</title>
 				
 					<description>&lt;p&gt;When I open my blog, I suddenly realized that I haven’t even writen one blog in 2017. I’ve tried to write some blogs about technology but it spent too much time and energy so I gave up at last. There happens a lot of things on me in 2017. So I must write something while the next year is beginning. Things have changed both on my life and my work. I don’t want to write too many details on my personal life, so I will just record some work related things.&lt;/p&gt;
@@ -112,18 +124,6 @@
                         	<pubDate>Sun, 08 Nov 2015 00:00:00 +0800</pubDate>
 				<link>http://www.binwang.me/2015-11-08-Install-BLAS-Library-for-MXNet.html</link>
 				<guid isPermaLink="true">http://www.binwang.me/2015-11-08-Install-BLAS-Library-for-MXNet.html</guid>
-			</item>
-		
-			<item>
-				<title>摒弃现代科技的隐士生活</title>
-				
-					<description>&lt;p&gt;今天在知乎上看到一篇帖子，说到意大利有一家旅馆，周围都是森林，远离外界的生活。同时在旅馆内禁止使用手机，晚上也只用蜡烛而不用灯。虽然这个旅馆的其他细节并不了解，但是给我的印象是远离城市、摒弃现代科技的浪漫感觉。初看之下， 还比较向往，但是细细想来，好像并没有什么必要非要摒弃现代的科技。&lt;/p&gt;
-
-</description>
-				
-                        	<pubDate>Wed, 04 Nov 2015 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2015-11-04-The-Life-of-Hermit-without-Materially.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2015-11-04-The-Life-of-Hermit-without-Materially.html</guid>
 			</item>
 		
 	</channel>

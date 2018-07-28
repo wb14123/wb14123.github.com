@@ -140,8 +140,13 @@ footer#page_footer{
 }
 #post h3{
   font-size: 20px;
-  font-weight: normal;
+  font-weight: 600;
 }
+#post h4{
+  font-size: 18px;
+  font-weight: 600;
+}
+
 #post table{
   width: 90%;
   border: 1px solid black;
