@@ -7,6 +7,18 @@
 		<atom:link href="http://www.binwang.me/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>The Things You Need to Know When Using Apache Sentry</title>
+				
+					<description>&lt;p&gt;For the last few days, I was working on integrating &lt;a href=&quot;https://sentry.apache.org&quot;&gt;Apache Sentry&lt;/a&gt; into our database product Splice Machine. And when doing that, I found the document of Sentry is awful. It takes me much time to figure out what’s the role of Sentry and how to configure it. So in this article, I’d like to write some really important things to help understanding Sentry.&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Sun, 02 Sep 2018 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2018-09-02-The-Things-You-Need-to-Know-When-Using-Apache-Sentry.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2018-09-02-The-Things-You-Need-to-Know-When-Using-Apache-Sentry.html</guid>
+			</item>
+		
+			<item>
 				<title>A Review on Spanner and Open Source Implementations</title>
 				
 					<description>&lt;p&gt;When &lt;a href=&quot;https://ai.google/research/pubs/pub39966&quot;&gt;Spanner paper&lt;/a&gt; is published, the use of synced clock to implement globally distributed database attracted a lot of attentions. After these years, Google have put Spanner on its cloud to make everyone be able to use it. And there are also some open source implementations of Spanner in these years. In this article, I’d like to write about how does synced clock makes Spanner special, some notes of using it and how others implement it without special hardware clock.&lt;/p&gt;
@@ -112,18 +124,6 @@
                         	<pubDate>Sun, 22 Nov 2015 00:00:00 +0800</pubDate>
 				<link>http://www.binwang.me/2015-11-22-Use-Redis-Instead-of-Spark-Streaming-to-Count-Statistics.html</link>
 				<guid isPermaLink="true">http://www.binwang.me/2015-11-22-Use-Redis-Instead-of-Spark-Streaming-to-Count-Statistics.html</guid>
-			</item>
-		
-			<item>
-				<title>Install BLAS Library for MXNet</title>
-				
-					<description>&lt;p&gt;&lt;a href=&quot;https://github.com/dmlc/mxnet&quot;&gt;MXNet&lt;/a&gt; is a deep learning library. I read its doc and some of its source code. It looks very good. So I’d like to install and try it. While I’m following the &lt;a href=&quot;https://mxnet.readthedocs.org/en/latest/build.html#build-mxnet-library&quot;&gt;installing guide&lt;/a&gt; to install it on Mac OS X, it failed to compile with the error &lt;code&gt;cblas.h&lt;/code&gt; not found. The message pointed out I may miss the BLAS library.&lt;/p&gt;
-
-</description>
-				
-                        	<pubDate>Sun, 08 Nov 2015 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2015-11-08-Install-BLAS-Library-for-MXNet.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2015-11-08-Install-BLAS-Library-for-MXNet.html</guid>
 			</item>
 		
 	</channel>

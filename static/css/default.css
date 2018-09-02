@@ -208,3 +208,8 @@ blockquote {
     margin: auto;
   }
 }
+
+.category_desc {
+  font-size: 25px;
+  color: rgb(120, 120, 120);
+}
