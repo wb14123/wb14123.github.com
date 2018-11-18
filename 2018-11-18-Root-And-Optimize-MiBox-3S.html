@@ -34,7 +34,7 @@
 
     <section id="page_content">
       <div id="content_table">
-  <h3>Table of Contents</h3><ol class="toc"><li><a href="#1-preparation">1. Preparation</a></li><li><a href="#1-root-the-device">1. Root the Device</a></li><li><a href="#2-cleanup-kingroot-and-install-superuser">2. Cleanup KingRoot and Install Superuser</a></li><li><a href="#3-install-a-third-party-launcher">3. Install A Third-Party Launcher</a></li><li><a href="#4-disable-built-in-apps">4. Disable Built-in Apps</a></li><li><a href="#5-disable-network-by-default">5. Disable Network by Default</a></li><li><a href="#6-install-some-video-apps">6. Install Some Video Apps</a></li></ol>
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#1-preparation">1. Preparation</a></li><li><a href="#2-root-the-device">2. Root the Device</a></li><li><a href="#3-cleanup-kingroot-and-install-superuser">3. Cleanup KingRoot and Install Superuser</a></li><li><a href="#4-install-a-third-party-launcher">4. Install A Third-Party Launcher</a></li><li><a href="#5-disable-built-in-apps">5. Disable Built-in Apps</a></li><li><a href="#6-disable-network-by-default">6. Disable Network by Default</a></li><li><a href="#7-install-some-video-apps">7. Install Some Video Apps</a></li></ol>
 </div>
 
 <div id="article_content">
@@ -81,11 +81,11 @@
 
 <p>We must use a mouse to do some operations since many apps are not designed for TV.</p>
 
-<h2 id="1-root-the-device">1. Root the Device</h2>
+<h2 id="2-root-the-device">2. Root the Device</h2>
 
 <p>Root the device is easy. Just install the app KingRoot and follow the instructors. One thing to notice is after root, KingRoot will ask you to optimize the system. <strong>Don’t do that!</strong>. Since KingRoot is <a href="https://forum.xda-developers.com/showthread.php?t=2473747">found to have bad behaviours</a>. We will clean it up and use Superuser to replace it.</p>
 
-<h2 id="2-cleanup-kingroot-and-install-superuser">2. Cleanup KingRoot and Install Superuser</h2>
+<h2 id="3-cleanup-kingroot-and-install-superuser">3. Cleanup KingRoot and Install Superuser</h2>
 
 <ol>
   <li>Instal SManager.</li>
@@ -93,7 +93,7 @@
   <li>In SManager, open <code>1_ROOT/SuperSU.sh</code>, check <code>su</code> option and run it.</li>
 </ol>
 
-<h2 id="3-install-a-third-party-launcher">3. Install A Third-Party Launcher</h2>
+<h2 id="4-install-a-third-party-launcher">4. Install A Third-Party Launcher</h2>
 
 <p>Many people use the original Android TV launcher from Google. I don’t want to do that. Since you must install a lot of Google apps in order to use it (which means is also bloated), and it’s not very convenience to use Google in China. So I decide to install a third-party one. At last I choose <a href="https://play.google.com/store/apps/details?id=net.i.akihiro.halauncher">HALauncher</a>. It is very simple and clean. After some simple configurations, the UI looks very beautiful. Here is a picture of it:</p>
 
@@ -101,7 +101,7 @@
 
 <p>However, after install HALauncher, we cannot set it to default. In order to use it, we must disable the built-in launcher.</p>
 
-<h2 id="4-disable-built-in-apps">4. Disable Built-in Apps</h2>
+<h2 id="5-disable-built-in-apps">5. Disable Built-in Apps</h2>
 
 <p>Uninstall built-in apps will get a higher risk since the built-in apps are integrate with the device very deeply, if uninstall the wrong one may make the device unusable. So I uses the app <a href="https://play.google.com/store/apps/details?id=com.catchingnow.icebox">Ice Box</a> to just disable them. After disable the built-in launcher, the system will use the third-party launcher that you installed in the last step.</p>
 
@@ -109,11 +109,11 @@
 
 <p>After disabled the built-in apps, if you want to use the USB drive, you must open the original launcher from XiaoMi as well as the MiSystem app from Ice Box. After mount the USB drive, you can disable them again.</p>
 
-<h2 id="5-disable-network-by-default">5. Disable Network by Default</h2>
+<h2 id="6-disable-network-by-default">6. Disable Network by Default</h2>
 
 <p>Even we’ve disabled the built-in apps, we cannot ensure the security either. Since XiaoMi may modified the Android OS. So I disabled the network at all with <a href="https://play.google.com/store/apps/details?id=dev.ukanth.ufirewall">AFWall+</a> and only let limited video apps have access to network. So whatever XiaoMi built in the OS cannot upload anything to its server, and it cannot download and upgrade the system, either. (In theory, XiaoMi can also upload things through modify the kernel but I don’t think it will do things like that deep.)</p>
 
-<h2 id="6-install-some-video-apps">6. Install Some Video Apps</h2>
+<h2 id="7-install-some-video-apps">7. Install Some Video Apps</h2>
 
 <p>At this step, the system is clean. You can install your favorite video apps. If you want to watch YouTube, you cannot install the official one since it needs Google service. You can install Smart YouTube instead. I think it is much better than the Google one. After installed the video apps, don’t forget to give them network access in AFWall+ and disable the background behavior in Greenify.</p>
 
