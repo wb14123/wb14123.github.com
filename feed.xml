@@ -7,6 +7,18 @@
 		<atom:link href="http://www.binwang.me/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Root And Optimize MiBox 3S</title>
+				
+					<description>&lt;p&gt;I’ve bought a MiBox 3S to watch TV and video for a long time. These days I’ve done lots of things to security my digital life and privacy, like change my Email to Proton Mail, change the search engine to DuckDuckGo, use Authy to enable 2FA when possible, and so on. So I didn’t turn on the MiBox for a long time since I don’t feel security to let a XiaoMi device running all the time in my LAN. The business model of XiaoMi is to sell cheap device and push ads to you. So it definitely collects your data. But I do need a device to watch TV or video on a big screen, so I decide to root and clean it to make it more security. Here is how I do it:&lt;/p&gt;
+
+</description>
+				
+                        	<pubDate>Sun, 18 Nov 2018 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2018-11-18-Root-And-Optimize-MiBox-3S.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2018-11-18-Root-And-Optimize-MiBox-3S.html</guid>
+			</item>
+		
+			<item>
 				<title>The Things You Need to Know When Using Apache Sentry</title>
 				
 					<description>&lt;p&gt;For the last few days, I was working on integrating &lt;a href=&quot;https://sentry.apache.org&quot;&gt;Apache Sentry&lt;/a&gt; into our database product Splice Machine. And when doing that, I found the document of Sentry is awful. It takes me much time to figure out what’s the role of Sentry and how to configure it. So in this article, I’d like to write some really important things to help understanding Sentry.&lt;/p&gt;
@@ -19,7 +31,7 @@
 			</item>
 		
 			<item>
-				<title>A Review on Spanner and Open Source Implementations</title>
+				<title>Spanner and Open Source Implementations</title>
 				
 					<description>&lt;p&gt;When &lt;a href=&quot;https://ai.google/research/pubs/pub39966&quot;&gt;Spanner paper&lt;/a&gt; is published, the use of synced clock to implement globally distributed database attracted a lot of attentions. After these years, Google have put Spanner on its cloud to make everyone be able to use it. And there are also some open source implementations of Spanner in these years. In this article, I’d like to write about how does synced clock makes Spanner special, some notes of using it and how others implement it without special hardware clock.&lt;/p&gt;
 
@@ -112,18 +124,6 @@
                         	<pubDate>Thu, 11 Feb 2016 00:00:00 +0800</pubDate>
 				<link>http://www.binwang.me/2016-02-11-The-Permission-of-Android-Becomes-A-Bigger-Problem-When-It-Comes-to-Wearable-Devices-and-TV.html</link>
 				<guid isPermaLink="true">http://www.binwang.me/2016-02-11-The-Permission-of-Android-Becomes-A-Bigger-Problem-When-It-Comes-to-Wearable-Devices-and-TV.html</guid>
-			</item>
-		
-			<item>
-				<title>Use Redis Instead of Spark Streaming to Count Statistics</title>
-				
-					<description>&lt;p&gt;In my work, I need to count basic statistics of streaming data, such as mean, variance, sum and so on. At first, I’m using Spark, then Spark Streaming. But after a while, I reimplemented it with Redis and find it is much better. I’d like to talk about them in this article.&lt;/p&gt;
-
-</description>
-				
-                        	<pubDate>Sun, 22 Nov 2015 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2015-11-22-Use-Redis-Instead-of-Spark-Streaming-to-Count-Statistics.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2015-11-22-Use-Redis-Instead-of-Spark-Streaming-to-Count-Statistics.html</guid>
 			</item>
 		
 	</channel>
