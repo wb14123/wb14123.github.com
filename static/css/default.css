@@ -3,14 +3,23 @@
   src: url('Adobe_Garamond_Pro.ttf');
 }
 
+@font-face {
+  font-family: adobe-source-han-serif;
+  src: url('adobe-source-han-serif.tff');
+}
+
+
 body{
   width:90%;
   margin:15px auto;
   padding: 0% 5% 5% 5%;
   font-family: AdobeGaramondPro,Georgia,serif;
   font-size: 18px;
-  line-height: 1.4;
   color:  #111111;
+}
+
+.zh {
+  font-family: adobe-source-han-serif;
 }
 
 code{
@@ -47,7 +56,6 @@ pre#char{
 }
 
 p, li{
-  line-height: 20px;
 }
 
 a{
