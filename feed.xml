@@ -7,10 +7,20 @@
 		<atom:link href="http://www.binwang.me/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Great Resources for Learning Database and Distributed System</title>
+				
+					<description>&lt;p&gt;There has been a long time since the last update of my blog. This has been a crazy year. I’ve prepared for a big change in my life in most time of the year. I may write a blog about that in a few days. In this article, I’d like to write something about my work these years: database, big data and distributed system.&lt;/p&gt;
+</description>
+				
+                        	<pubDate>Mon, 04 Nov 2019 00:00:00 +0800</pubDate>
+				<link>http://www.binwang.me/2019-11-04-Great-Resources-for-Learning-Database-and-Distributed-System.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2019-11-04-Great-Resources-for-Learning-Database-and-Distributed-System.html</guid>
+			</item>
+		
+			<item>
 				<title>Root And Optimize MiBox 3S</title>
 				
 					<description>&lt;p&gt;I’ve bought a MiBox 3S to watch TV and video for a long time. These days I’ve done lots of things to security my digital life and privacy, like change my Email to Proton Mail, change the search engine to DuckDuckGo, use Authy to enable 2FA when possible, and so on. So I didn’t turn on the MiBox for a long time since I don’t feel security to let a XiaoMi device running all the time in my LAN. The business model of XiaoMi is to sell cheap device and push ads to you. So it definitely collects your data. But I do need a device to watch TV or video on a big screen, so I decide to root and clean it to make it more security. Here is how I do it:&lt;/p&gt;
-
 </description>
 				
                         	<pubDate>Sun, 18 Nov 2018 00:00:00 +0800</pubDate>
@@ -22,7 +32,6 @@
 				<title>The Things You Need to Know When Using Apache Sentry</title>
 				
 					<description>&lt;p&gt;For the last few days, I was working on integrating &lt;a href=&quot;https://sentry.apache.org&quot;&gt;Apache Sentry&lt;/a&gt; into our database product Splice Machine. And when doing that, I found the document of Sentry is awful. It takes me much time to figure out what’s the role of Sentry and how to configure it. So in this article, I’d like to write some really important things to help understanding Sentry.&lt;/p&gt;
-
 </description>
 				
                         	<pubDate>Sun, 02 Sep 2018 00:00:00 +0800</pubDate>
@@ -34,7 +43,6 @@
 				<title>Spanner and Open Source Implementations</title>
 				
 					<description>&lt;p&gt;When &lt;a href=&quot;https://ai.google/research/pubs/pub39966&quot;&gt;Spanner paper&lt;/a&gt; is published, the use of synced clock to implement globally distributed database attracted a lot of attentions. After these years, Google have put Spanner on its cloud to make everyone be able to use it. And there are also some open source implementations of Spanner in these years. In this article, I’d like to write about how does synced clock makes Spanner special, some notes of using it and how others implement it without special hardware clock.&lt;/p&gt;
-
 </description>
 				
                         	<pubDate>Sun, 29 Jul 2018 00:00:00 +0800</pubDate>
@@ -46,7 +54,6 @@
 				<title>My 2017 Year in Review</title>
 				
 					<description>&lt;p&gt;When I open my blog, I suddenly realized that I haven’t even writen one blog in 2017. I’ve tried to write some blogs about technology but it spent too much time and energy so I gave up at last. There happens a lot of things on me in 2017. So I must write something while the next year is beginning. Things have changed both on my life and my work. I don’t want to write too many details on my personal life, so I will just record some work related things.&lt;/p&gt;
-
 </description>
 				
                         	<pubDate>Tue, 02 Jan 2018 00:00:00 +0800</pubDate>
@@ -58,7 +65,6 @@
 				<title>Build a Unix Like Environment on Windows</title>
 				
 					<description>&lt;p&gt;I’ve bought a Surface Pro 4 some days ago. It is very amazing and I’d like to use it as my backup development laptop. My daily development is under Linux and Mac OS X. I use terminal and lots of bash scripts everyday. So I need a Unix-like environment on Windows. This article will introduce how to do that.&lt;/p&gt;
-
 </description>
 				
                         	<pubDate>Mon, 28 Nov 2016 00:00:00 +0800</pubDate>
@@ -70,7 +76,6 @@
 				<title>读《邓小平时代》有感</title>
 				
 					<description>&lt;p&gt;最近花了一个周末加一些零零散散的时间把傅高义的《邓小平时代》这本书看完了。这本书的内容，总体上讲对邓小平的评价是正面的。里面讲的历史，我之前多多少少都了解过一些，而通过这本书，对这段历史的了解更加系统了一些。&lt;/p&gt;
-
 </description>
 				
                         	<pubDate>Sun, 24 Jul 2016 00:00:00 +0800</pubDate>
@@ -82,7 +87,6 @@
 				<title>Config sbt to Use Both Proxy and Self Hosted Repositories</title>
 				
 					<description>&lt;p&gt;While building Scala projects, we usually use a proxy to make the build faster. On the other hand, we usually use another repository to host our internal dependencies, which usually has a password to protect it from unwanted access. Both things are good and necessary. But if you want to use both of them, you will find it’s very tricky.&lt;/p&gt;
-
 </description>
 				
                         	<pubDate>Mon, 11 Jul 2016 00:00:00 +0800</pubDate>
@@ -94,7 +98,6 @@
 				<title>Build A Computer for Deep Learning</title>
 				
 					<description>&lt;p&gt;These days, I bought some hardware and build a computer by myself. It’s fun and I’ve learned lots of things from it. Here is a note to record it.&lt;/p&gt;
-
 </description>
 				
                         	<pubDate>Sun, 19 Jun 2016 00:00:00 +0800</pubDate>
@@ -106,24 +109,11 @@
 				<title>How to Put RNN Layers Into Neural Network Model</title>
 				
 					<description>&lt;p&gt;If you are interested in neural networks, you must have ever read and learn lots of things about RNN, which can reason about sequences of data. RNN is awesome and very fun to play with, if you haven’t heard of it, you can read &lt;a href=&quot;http://karpathy.github.io/2015/05/21/rnn-effectiveness/&quot;&gt;this great article&lt;/a&gt; which train a char level RNN model to generate text.&lt;/p&gt;
-
 </description>
 				
                         	<pubDate>Sat, 14 May 2016 00:00:00 +0800</pubDate>
 				<link>http://www.binwang.me/2016-05-14-How-to-Put-RNN-Layer-Into-Nueral-Network-Model.html</link>
 				<guid isPermaLink="true">http://www.binwang.me/2016-05-14-How-to-Put-RNN-Layer-Into-Nueral-Network-Model.html</guid>
-			</item>
-		
-			<item>
-				<title>The Permission Management of Android Becomes A Bigger Problem When It Comes to Wearable Devices and TV</title>
-				
-					<description>&lt;p&gt;The permission management of Android is a problem for a long time. The behaviour of an app depends on the morality of its developers. Unluckily, many developers are big companies which making money is their primary target and morality is little considered.&lt;/p&gt;
-
-</description>
-				
-                        	<pubDate>Thu, 11 Feb 2016 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2016-02-11-The-Permission-of-Android-Becomes-A-Bigger-Problem-When-It-Comes-to-Wearable-Devices-and-TV.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2016-02-11-The-Permission-of-Android-Becomes-A-Bigger-Problem-When-It-Comes-to-Wearable-Devices-and-TV.html</guid>
 			</item>
 		
 	</channel>
