@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Migrate Arch Linux to ZFS |  Bin Wang</title>
+    <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-52904500-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+  </head>
+
+  <body>
+    <header id="page_header">
+      <nav id="page_nav">
+        <ul>
+             <li><a href="/">Home</a></li>
+             <li><a href="/read.html">Read</a></li>
+             <li><a href="/travel.html">Travel</a></li>
+             <li><a href="/search.html">Search</a></li>
+             <li><a href="/about.html">About</a></li>
+       </ul>
+      </nav>
+
+    </header>
+
+    <section id="page_content">
+      <div id="content_table">
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#why-zfs">Why ZFS?</a></li><li><a href="#why-not-freebsd">Why not FreeBSD?</a></li><li><a href="#how-to-migrate-to-zfs">How to Migrate to ZFS?</a></li></ol>
+</div>
+
+<div id="article_content" class="">
+<article id="post">
+  <header>
+    <h1>Migrate Arch Linux to ZFS</h1>
+    
+      <p class="description">Posted on 28 Jan 2020, tagged <code>linux</code><code>zfs</code><code>technology</code><code>freebsd</code></p>
+    
+  </header>
+
+  <p>I migrated my Arch Linux installation to ZFS recently. This article describes why and how I did that.</p>
+
+<h2 id="why-zfs">Why ZFS?</h2>
+
+<p>ZFS is a very advanced file system that has many handful features. I first knew it many years ago, when I installed FreeNAS for fun. FreeNAS is an OS made for NAS based on FreeBSD. When I played with it, the features of ZFS really shocked me and let me realised what a file system can really do. I will list the features of ZFS that I’m using and no other file system has:</p>
+
+<ul>
+  <li>Snapshot: It is really easy to take a snapshot. Because ZFS has copy-on-write feature, so a snapshot doesn’t take any space until you change some content on the file system. It makes backup way much cheaper and easier. This is the biggest feature that let me want to migrate to ZFS.</li>
+  <li>RAIDZ: The traditional raid hides the disks from the file system. But for ZFS, you can use raidz which the file system can see the topological of disks so that it can optimize the I/O based on the information.</li>
+  <li>Dataset: You can create many datasets in a zfs pool. Which can have different configurations based on the use case.</li>
+  <li>L2 Cache: You can use hard disk drives as the file system and add SDD as read or write cache. Which is a very good balance between the storage space, speed and the price.</li>
+  <li>Send/Recv: ZFS has commands to send the datasets and snapshots to another dataset or a remote machine. Which makes the offline backup much easier and cheaper.</li>
+  <li>Compression: By compression you can save both storage space and make the read/write faster. And you can set different compression algorithm for different use cases.</li>
+</ul>
+
+<p>But back then ZFS is not well supported on Linux so I used ext4. Then I had an internship at Redhat and realised ext4 was really an old file system so I migrated to XFS. Until now, my storage configuration is one 128G SSD for the system (root partition). Two 2TB HDDs as a RAID1 array to store all the other data. I backup the system from SDD to HDD regularly in case of the SDD fails. And I don’t have any way to protect me from deleting files by mistake.</p>
+
+<h2 id="why-not-freebsd">Why not FreeBSD?</h2>
+
+<p>It is very nature to use BSD with ZFS since it is supported by deafult. With linux, you must install another kernel module which is not native supported by kernel. And Linus just said “don’t use ZFS” somedays ago. So I was seriously thinking about change my OS to FreeBSD. Compared to Arch Linux, the system is more security because all the packages are native supported by the FreeBSD developer and the port system also has a lot of softwares. But finally something stops me from migrating to FreeBSD:</p>
+
+<ul>
+  <li>The game support. Last year, game on Linux finally breaks out because of the Poton on Steam. Though I don’t play games a lot, it’s still a pity to have no game to play.</li>
+  <li>FreeBSD starts using ZFS on Linux as the upstream of ZFS. So with the bigger community, ZFS on Linux may has better support and more features in the future.</li>
+  <li>It’s a risk to migrate to a new system. Arch Linux works great for me for a long time. If the new installation doesn’t work, it’s time consuming to recover the system. And it says FreeBSD doesn’t have a good support on Nvidia graphic card, which I’m currently using.</li>
+  <li>FreeBSD’s Jails are much mature than Containers on Linux. And I really hate Docker for its deamon running as root. Docker also has bad community reputation (e.g. changing its community version’s name). Rkt from Core OS is much better but both Core OS and Rkt are dead after the acquire of Redhat. But finally I found Podman. So I can compromise at this point. Containers also has bigger community. For example, the Nextcloud I’m using has official image so I don’t need to build my own one.</li>
+</ul>
+
+<h2 id="how-to-migrate-to-zfs">How to Migrate to ZFS?</h2>
+
+<h3 id="1-backup-the-data">1. Backup the Data</h3>
+
+<p>My disks and partitions are like this before the migration:</p>
+
+<pre><code>- SDD
+  + / (root)
+  + /boot
+- RAID1 (hdd1, hdd2)
+  + /data
+</code></pre>
+
+<p>I only backup my data disks because I will not use my system disk for the ZFS pool at the creation time. I will use it as cache which can be added later. An important note is to <strong>use <code>tar</code> or <code>rsync</code> to backup data</strong>. Don’t use <code>cp</code>, it will break the file permissions and links.</p>
+
+<h3 id="2-install-zfs-kernel-modules-and-utils">2. Install ZFS Kernel Modules and Utils</h3>
+
+<p>Follow the <a href="https://wiki.archlinux.org/index.php/ZFS#Installation">Arch Linux’s ZFS wiki</a> to do that. I also enabled the <a href="https://wiki.archlinux.org/index.php/Unofficial_user_repositories#archzfs">ArchZFS repo</a> so I don’t need to build it from AUR. This repo is signed so it is more secure.</p>
+
+<h3 id="3-create-zfs-pool-and-dataset">3. Create ZFS Pool and Dataset</h3>
+
+<p>I added another HDD for the ZFS pool in order to make a raidz1 pool (like raid5), which doubles the current storage space with raid1. Then create a dataset for the new root partition. The dataset has native encryption and compression enabled.</p>
+
+<h3 id="4-mount-the-root-dataset-and-copy-the-root-partition">4. Mount the Root Dataset and Copy the Root Partition</h3>
+
+<p>Temparory mount the root dataset to <code>/mnt</code>. Then follow the Arch Linux wiki about <a href="https://wiki.archlinux.org/index.php/Install_Arch_Linux_from_existing_Linux#From_a_host_running_Arch_Linux">installing from a host running Arch Linux</a>.</p>
+
+<h3 id="5-make-new-boot-image-and-config-bootloader">5. Make New Boot Image and Config Bootloader</h3>
+
+<p>I was trying to install boot partition into the ZFS but failed after many attemps. At last I decide just use the old boot partition and sync them to ZFS as backup.</p>
+
+<p>So follow <a href="https://wiki.archlinux.org/index.php/Install_Arch_Linux_on_ZFS">install Arch Linux on ZFS wiki</a>. After the regular installation, add <code>zfs</code> in <code>/etc/mkinitcpio.conf</code> <code>HOOKS</code>:</p>
+
+<pre><code>HOOKS=(base udev autodetect modconf block keyboard zfs filesystems)
+</code></pre>
+
+<p>Then using <code>mkinitcpio -p</code> to make new boot image. (You may want to backup old images <code>/boot/initramfs-linux.img</code> and <code>/boot/vmlinuz-linux</code> before this step).</p>
+
+<p>Then in <code>/boot/grub/grub.cfg</code>, change the root filesystem to zfs, like this (in the menuentry):</p>
+
+<pre><code>linux   /vmlinuz-linux root=ZFS=zroot/root rw  loglevel=3 quiet
+</code></pre>
+
+<p>Which <code>zroot/root</code> is the root dataset.</p>
+
+<h3 id="6-config-mount-points">6. Config Mount Points</h3>
+
+<p>Reconfig the root dataset’s mount point to <code>/</code> and add the configuration in <code>/etc/fstab</code>:</p>
+
+<pre><code>zroot/root / zfs defaults,noatime 0 0
+</code></pre>
+
+<p>Don’t forget to set the auto import:</p>
+
+<pre><code>systemctl enable zfs-import-cache
+zpool set cachefile=/etc/zfs/zpool.cache &lt;pool&gt;
+systemctl enable zfs-mount
+systemctl enable zfs.target
+</code></pre>
+
+<p>Also need to input the passphrase if using encryption. Follow the <a href="https://wiki.archlinux.org/index.php/ZFS">Arch Linux’s ZFS wiki</a> to do that.</p>
+
+<h3 id="7-restart-and-config-new-system">7. Restart and Config New System</h3>
+
+<p>After the reboot, the system should boot into the new root. Then cleanup the old root partition and add it as the cache of the pool: <code>zpool add -f zroot cache &lt;partition-uuid&gt;</code>. Then create other datasets and move back all the old data.</p>
+
+<p>Now I can make different datasets for different purpose. For example, make a dataset for nextcloud container’s storage. Make a highly compressed dataset for backup files from other machine, and so on.</p>
+
+<p>After the migration, the first boot is slower than before because the root system is migrated to HDD. But the most useful files will be cached into SSD and it feels the same as before after a while. Now I’m very happy with the current setup and super excited about all the advanced features of ZFS! Happy hacking!</p>
+
+</article>
+
+<footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2019-11-04-Great-Resources-for-Learning-Database-and-Distributed-System.html">Prev: Great Resources for Learning Database and Distributed System</a></td>
+    
+    
+  </tr></table>
+</footer>
+
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+</div>
+
+    </section>
+
+    <footer id="page_footer">
+      Copyright @ 2008 - 2018 Bin Wang
+      <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
+    </footer>
+    
+    <!-- MathJax -->
+    <script type="text/javascript"
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      TeX: { equationNumbers: { autoNumber: "AMS" } }
+    });
+    </script>
+  </body>
+</html>

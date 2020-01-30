@@ -7,12 +7,23 @@
 		<atom:link href="http://www.binwang.me/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Migrate Arch Linux to ZFS</title>
+				
+					<description>&lt;p&gt;I migrated my Arch Linux installation to ZFS recently. This article describes why and how I did that.&lt;/p&gt;
+</description>
+				
+                        	<pubDate>Tue, 28 Jan 2020 00:00:00 -0500</pubDate>
+				<link>http://www.binwang.me/2020-01-28-Migrate-Arch-Linux-to-Zfs.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2020-01-28-Migrate-Arch-Linux-to-Zfs.html</guid>
+			</item>
+		
+			<item>
 				<title>Great Resources for Learning Database and Distributed System</title>
 				
 					<description>&lt;p&gt;There has been a long time since the last update of my blog. This has been a crazy year. I’ve prepared for a big change in my life in most time of the year. I may write a blog about that in a few days. In this article, I’d like to write something about my work these years: database, big data and distributed system.&lt;/p&gt;
 </description>
 				
-                        	<pubDate>Mon, 04 Nov 2019 00:00:00 +0800</pubDate>
+                        	<pubDate>Mon, 04 Nov 2019 00:00:00 -0500</pubDate>
 				<link>http://www.binwang.me/2019-11-04-Great-Resources-for-Learning-Database-and-Distributed-System.html</link>
 				<guid isPermaLink="true">http://www.binwang.me/2019-11-04-Great-Resources-for-Learning-Database-and-Distributed-System.html</guid>
 			</item>
@@ -23,7 +34,7 @@
 					<description>&lt;p&gt;最近一直都在关注香港的事情，无奈水平和精力有限，对于各种事实尚不能核实清楚，更不用说大局上有什么高见了。所以只是想在一个小事上说一些自己的看法。&lt;/p&gt;
 </description>
 				
-                        	<pubDate>Thu, 15 Aug 2019 00:00:00 +0800</pubDate>
+                        	<pubDate>Thu, 15 Aug 2019 00:00:00 -0400</pubDate>
 				<link>http://www.binwang.me/2019-08-15-%E7%94%B1-%E5%BA%9F%E9%9D%92-%E8%BF%99%E4%B8%AA%E7%A7%B0%E5%91%BC%E6%89%80%E6%83%B3%E5%88%B0%E7%9A%84.html</link>
 				<guid isPermaLink="true">http://www.binwang.me/2019-08-15-%E7%94%B1-%E5%BA%9F%E9%9D%92-%E8%BF%99%E4%B8%AA%E7%A7%B0%E5%91%BC%E6%89%80%E6%83%B3%E5%88%B0%E7%9A%84.html</guid>
 			</item>
@@ -34,7 +45,7 @@
 					<description>&lt;p&gt;I’ve bought a MiBox 3S to watch TV and video for a long time. These days I’ve done lots of things to security my digital life and privacy, like change my Email to Proton Mail, change the search engine to DuckDuckGo, use Authy to enable 2FA when possible, and so on. So I didn’t turn on the MiBox for a long time since I don’t feel security to let a XiaoMi device running all the time in my LAN. The business model of XiaoMi is to sell cheap device and push ads to you. So it definitely collects your data. But I do need a device to watch TV or video on a big screen, so I decide to root and clean it to make it more security. Here is how I do it:&lt;/p&gt;
 </description>
 				
-                        	<pubDate>Sun, 18 Nov 2018 00:00:00 +0800</pubDate>
+                        	<pubDate>Sun, 18 Nov 2018 00:00:00 -0500</pubDate>
 				<link>http://www.binwang.me/2018-11-18-Root-And-Optimize-MiBox-3S.html</link>
 				<guid isPermaLink="true">http://www.binwang.me/2018-11-18-Root-And-Optimize-MiBox-3S.html</guid>
 			</item>
@@ -45,7 +56,7 @@
 					<description>&lt;p&gt;For the last few days, I was working on integrating &lt;a href=&quot;https://sentry.apache.org&quot;&gt;Apache Sentry&lt;/a&gt; into our database product Splice Machine. And when doing that, I found the document of Sentry is awful. It takes me much time to figure out what’s the role of Sentry and how to configure it. So in this article, I’d like to write some really important things to help understanding Sentry.&lt;/p&gt;
 </description>
 				
-                        	<pubDate>Sun, 02 Sep 2018 00:00:00 +0800</pubDate>
+                        	<pubDate>Sun, 02 Sep 2018 00:00:00 -0400</pubDate>
 				<link>http://www.binwang.me/2018-09-02-The-Things-You-Need-to-Know-When-Using-Apache-Sentry.html</link>
 				<guid isPermaLink="true">http://www.binwang.me/2018-09-02-The-Things-You-Need-to-Know-When-Using-Apache-Sentry.html</guid>
 			</item>
@@ -56,7 +67,7 @@
 					<description>&lt;p&gt;When &lt;a href=&quot;https://ai.google/research/pubs/pub39966&quot;&gt;Spanner paper&lt;/a&gt; is published, the use of synced clock to implement globally distributed database attracted a lot of attentions. After these years, Google have put Spanner on its cloud to make everyone be able to use it. And there are also some open source implementations of Spanner in these years. In this article, I’d like to write about how does synced clock makes Spanner special, some notes of using it and how others implement it without special hardware clock.&lt;/p&gt;
 </description>
 				
-                        	<pubDate>Sun, 29 Jul 2018 00:00:00 +0800</pubDate>
+                        	<pubDate>Sun, 29 Jul 2018 00:00:00 -0400</pubDate>
 				<link>http://www.binwang.me/2018-07-29-A-Review-on-Spanner-and-Open-Source-Implementations.html</link>
 				<guid isPermaLink="true">http://www.binwang.me/2018-07-29-A-Review-on-Spanner-and-Open-Source-Implementations.html</guid>
 			</item>
@@ -67,7 +78,7 @@
 					<description>&lt;p&gt;When I open my blog, I suddenly realized that I haven’t even writen one blog in 2017. I’ve tried to write some blogs about technology but it spent too much time and energy so I gave up at last. There happens a lot of things on me in 2017. So I must write something while the next year is beginning. Things have changed both on my life and my work. I don’t want to write too many details on my personal life, so I will just record some work related things.&lt;/p&gt;
 </description>
 				
-                        	<pubDate>Tue, 02 Jan 2018 00:00:00 +0800</pubDate>
+                        	<pubDate>Tue, 02 Jan 2018 00:00:00 -0500</pubDate>
 				<link>http://www.binwang.me/2018-01-02-The-Year-of-2017.html</link>
 				<guid isPermaLink="true">http://www.binwang.me/2018-01-02-The-Year-of-2017.html</guid>
 			</item>
@@ -78,7 +89,7 @@
 					<description>&lt;p&gt;I’ve bought a Surface Pro 4 some days ago. It is very amazing and I’d like to use it as my backup development laptop. My daily development is under Linux and Mac OS X. I use terminal and lots of bash scripts everyday. So I need a Unix-like environment on Windows. This article will introduce how to do that.&lt;/p&gt;
 </description>
 				
-                        	<pubDate>Mon, 28 Nov 2016 00:00:00 +0800</pubDate>
+                        	<pubDate>Mon, 28 Nov 2016 00:00:00 -0500</pubDate>
 				<link>http://www.binwang.me/2016-11-28-Config-Development-Environment-on-Windows.html</link>
 				<guid isPermaLink="true">http://www.binwang.me/2016-11-28-Config-Development-Environment-on-Windows.html</guid>
 			</item>
@@ -89,7 +100,7 @@
 					<description>&lt;p&gt;最近花了一个周末加一些零零散散的时间把傅高义的《邓小平时代》这本书看完了。这本书的内容，总体上讲对邓小平的评价是正面的。里面讲的历史，我之前多多少少都了解过一些，而通过这本书，对这段历史的了解更加系统了一些。&lt;/p&gt;
 </description>
 				
-                        	<pubDate>Sun, 24 Jul 2016 00:00:00 +0800</pubDate>
+                        	<pubDate>Sun, 24 Jul 2016 00:00:00 -0400</pubDate>
 				<link>http://www.binwang.me/2016-07-24-%E8%AF%BB-%E9%82%93%E5%B0%8F%E5%B9%B3%E6%97%B6%E4%BB%A3-%E6%9C%89%E6%84%9F.html</link>
 				<guid isPermaLink="true">http://www.binwang.me/2016-07-24-%E8%AF%BB-%E9%82%93%E5%B0%8F%E5%B9%B3%E6%97%B6%E4%BB%A3-%E6%9C%89%E6%84%9F.html</guid>
 			</item>
@@ -100,20 +111,9 @@
 					<description>&lt;p&gt;While building Scala projects, we usually use a proxy to make the build faster. On the other hand, we usually use another repository to host our internal dependencies, which usually has a password to protect it from unwanted access. Both things are good and necessary. But if you want to use both of them, you will find it’s very tricky.&lt;/p&gt;
 </description>
 				
-                        	<pubDate>Mon, 11 Jul 2016 00:00:00 +0800</pubDate>
+                        	<pubDate>Mon, 11 Jul 2016 00:00:00 -0400</pubDate>
 				<link>http://www.binwang.me/2016-07-11-Config-sbt-to-Use-Both-Proxy-and-Self-Hosted-Repositories.html</link>
 				<guid isPermaLink="true">http://www.binwang.me/2016-07-11-Config-sbt-to-Use-Both-Proxy-and-Self-Hosted-Repositories.html</guid>
-			</item>
-		
-			<item>
-				<title>Build A Computer for Deep Learning</title>
-				
-					<description>&lt;p&gt;These days, I bought some hardware and build a computer by myself. It’s fun and I’ve learned lots of things from it. Here is a note to record it.&lt;/p&gt;
-</description>
-				
-                        	<pubDate>Sun, 19 Jun 2016 00:00:00 +0800</pubDate>
-				<link>http://www.binwang.me/2016-06-19-Build-A-Computer-for-Deep-Learning.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2016-06-19-Build-A-Computer-for-Deep-Learning.html</guid>
 			</item>
 		
 	</channel>
