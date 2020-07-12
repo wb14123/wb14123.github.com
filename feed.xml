@@ -1,120 +1,981 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-	<channel>
-		<title>Bin Wang</title>
-		<description>This is my personal blog about computer since and technology, and my life.</description>		
-		<link>http://www.binwang.me</link>
-		<atom:link href="http://www.binwang.me/feed.xml" rel="self" type="application/rss+xml" />
-		
-			<item>
-				<title>Powerful Type System</title>
-				
-					<description>&lt;p&gt;This is not an article to introduce type systems. It’s only some of my experience and thoughts about it.&lt;/p&gt;
-</description>
-				
-                        	<pubDate>Sat, 11 Jul 2020 00:00:00 -0400</pubDate>
-				<link>http://www.binwang.me/2020-07-11-Powerful-Type-System.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2020-07-11-Powerful-Type-System.html</guid>
-			</item>
-		
-			<item>
-				<title>Migrate Arch Linux to ZFS</title>
-				
-					<description>&lt;p&gt;I migrated my Arch Linux installation to ZFS recently. This article describes why and how I did that.&lt;/p&gt;
-</description>
-				
-                        	<pubDate>Tue, 28 Jan 2020 00:00:00 -0500</pubDate>
-				<link>http://www.binwang.me/2020-01-28-Migrate-Arch-Linux-to-Zfs.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2020-01-28-Migrate-Arch-Linux-to-Zfs.html</guid>
-			</item>
-		
-			<item>
-				<title>Great Resources for Learning Database and Distributed System</title>
-				
-					<description>&lt;p&gt;There has been a long time since the last update of my blog. This has been a crazy year. I’ve prepared for a big change in my life in most time of the year. I may write a blog about that in a few days. In this article, I’d like to write something about my work these years: database, big data and distributed system.&lt;/p&gt;
-</description>
-				
-                        	<pubDate>Mon, 04 Nov 2019 00:00:00 -0500</pubDate>
-				<link>http://www.binwang.me/2019-11-04-Great-Resources-for-Learning-Database-and-Distributed-System.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2019-11-04-Great-Resources-for-Learning-Database-and-Distributed-System.html</guid>
-			</item>
-		
-			<item>
-				<title>由“废青”这个称呼所想到的</title>
-				
-					<description>&lt;p&gt;最近一直都在关注香港的事情，无奈水平和精力有限，对于各种事实尚不能核实清楚，更不用说大局上有什么高见了。所以只是想在一个小事上说一些自己的看法。&lt;/p&gt;
-</description>
-				
-                        	<pubDate>Thu, 15 Aug 2019 00:00:00 -0400</pubDate>
-				<link>http://www.binwang.me/2019-08-15-%E7%94%B1-%E5%BA%9F%E9%9D%92-%E8%BF%99%E4%B8%AA%E7%A7%B0%E5%91%BC%E6%89%80%E6%83%B3%E5%88%B0%E7%9A%84.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2019-08-15-%E7%94%B1-%E5%BA%9F%E9%9D%92-%E8%BF%99%E4%B8%AA%E7%A7%B0%E5%91%BC%E6%89%80%E6%83%B3%E5%88%B0%E7%9A%84.html</guid>
-			</item>
-		
-			<item>
-				<title>Root And Optimize MiBox 3S</title>
-				
-					<description>&lt;p&gt;I’ve bought a MiBox 3S to watch TV and video for a long time. These days I’ve done lots of things to security my digital life and privacy, like change my Email to Proton Mail, change the search engine to DuckDuckGo, use Authy to enable 2FA when possible, and so on. So I didn’t turn on the MiBox for a long time since I don’t feel security to let a XiaoMi device running all the time in my LAN. The business model of XiaoMi is to sell cheap device and push ads to you. So it definitely collects your data. But I do need a device to watch TV or video on a big screen, so I decide to root and clean it to make it more security. Here is how I do it:&lt;/p&gt;
-</description>
-				
-                        	<pubDate>Sun, 18 Nov 2018 00:00:00 -0500</pubDate>
-				<link>http://www.binwang.me/2018-11-18-Root-And-Optimize-MiBox-3S.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2018-11-18-Root-And-Optimize-MiBox-3S.html</guid>
-			</item>
-		
-			<item>
-				<title>The Things You Need to Know When Using Apache Sentry</title>
-				
-					<description>&lt;p&gt;For the last few days, I was working on integrating &lt;a href=&quot;https://sentry.apache.org&quot;&gt;Apache Sentry&lt;/a&gt; into our database product Splice Machine. And when doing that, I found the document of Sentry is awful. It takes me much time to figure out what’s the role of Sentry and how to configure it. So in this article, I’d like to write some really important things to help understanding Sentry.&lt;/p&gt;
-</description>
-				
-                        	<pubDate>Sun, 02 Sep 2018 00:00:00 -0400</pubDate>
-				<link>http://www.binwang.me/2018-09-02-The-Things-You-Need-to-Know-When-Using-Apache-Sentry.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2018-09-02-The-Things-You-Need-to-Know-When-Using-Apache-Sentry.html</guid>
-			</item>
-		
-			<item>
-				<title>Spanner and Open Source Implementations</title>
-				
-					<description>&lt;p&gt;When &lt;a href=&quot;https://ai.google/research/pubs/pub39966&quot;&gt;Spanner paper&lt;/a&gt; is published, the use of synced clock to implement globally distributed database attracted a lot of attentions. After these years, Google have put Spanner on its cloud to make everyone be able to use it. And there are also some open source implementations of Spanner in these years. In this article, I’d like to write about how does synced clock makes Spanner special, some notes of using it and how others implement it without special hardware clock.&lt;/p&gt;
-</description>
-				
-                        	<pubDate>Sun, 29 Jul 2018 00:00:00 -0400</pubDate>
-				<link>http://www.binwang.me/2018-07-29-A-Review-on-Spanner-and-Open-Source-Implementations.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2018-07-29-A-Review-on-Spanner-and-Open-Source-Implementations.html</guid>
-			</item>
-		
-			<item>
-				<title>My 2017 Year in Review</title>
-				
-					<description>&lt;p&gt;When I open my blog, I suddenly realized that I haven’t even writen one blog in 2017. I’ve tried to write some blogs about technology but it spent too much time and energy so I gave up at last. There happens a lot of things on me in 2017. So I must write something while the next year is beginning. Things have changed both on my life and my work. I don’t want to write too many details on my personal life, so I will just record some work related things.&lt;/p&gt;
-</description>
-				
-                        	<pubDate>Tue, 02 Jan 2018 00:00:00 -0500</pubDate>
-				<link>http://www.binwang.me/2018-01-02-The-Year-of-2017.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2018-01-02-The-Year-of-2017.html</guid>
-			</item>
-		
-			<item>
-				<title>Build a Unix Like Environment on Windows</title>
-				
-					<description>&lt;p&gt;I’ve bought a Surface Pro 4 some days ago. It is very amazing and I’d like to use it as my backup development laptop. My daily development is under Linux and Mac OS X. I use terminal and lots of bash scripts everyday. So I need a Unix-like environment on Windows. This article will introduce how to do that.&lt;/p&gt;
-</description>
-				
-                        	<pubDate>Mon, 28 Nov 2016 00:00:00 -0500</pubDate>
-				<link>http://www.binwang.me/2016-11-28-Config-Development-Environment-on-Windows.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2016-11-28-Config-Development-Environment-on-Windows.html</guid>
-			</item>
-		
-			<item>
-				<title>读《邓小平时代》有感</title>
-				
-					<description>&lt;p&gt;最近花了一个周末加一些零零散散的时间把傅高义的《邓小平时代》这本书看完了。这本书的内容，总体上讲对邓小平的评价是正面的。里面讲的历史，我之前多多少少都了解过一些，而通过这本书，对这段历史的了解更加系统了一些。&lt;/p&gt;
-</description>
-				
-                        	<pubDate>Sun, 24 Jul 2016 00:00:00 -0400</pubDate>
-				<link>http://www.binwang.me/2016-07-24-%E8%AF%BB-%E9%82%93%E5%B0%8F%E5%B9%B3%E6%97%B6%E4%BB%A3-%E6%9C%89%E6%84%9F.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2016-07-24-%E8%AF%BB-%E9%82%93%E5%B0%8F%E5%B9%B3%E6%97%B6%E4%BB%A3-%E6%9C%89%E6%84%9F.html</guid>
-			</item>
-		
-	</channel>
-</rss>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2020-07-12T08:23:05-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Powerful Type System</title><link href="https://www.binwang.me/2020-07-11-Powerful-Type-System.html" rel="alternate" type="text/html" title="Powerful Type System" /><published>2020-07-11T00:00:00-04:00</published><updated>2020-07-11T00:00:00-04:00</updated><id>https://www.binwang.me/Powerful-Type-System</id><content type="html" xml:base="https://www.binwang.me/2020-07-11-Powerful-Type-System.html">&lt;p&gt;This is not an article to introduce type systems. It’s only some of my experience and thoughts about it.&lt;/p&gt;
+
+&lt;h2 id=&quot;basic-type-system&quot;&gt;Basic Type System&lt;/h2&gt;
+
+&lt;p&gt;When I first learned programming, I was very interested in languages with dynamic type system like Javascript and Python. It seems so straight forward. The need of annotate types on variables and methods seems so annoying.&lt;/p&gt;
+
+&lt;p&gt;But as I wrote more programs, the more I feel the power of type system. Basically there are some reasons why type system is useful:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;It serves as document. So when you read the code which is wrote by other people (or by yourself a long time ago), you can understand the methods and objects more easily.&lt;/li&gt;
+  &lt;li&gt;It can prevent some basic errors. For example, some code change the type of variables on the fly and you don’t know about it. Or you accidentally assign a wrong type of value to it. Or just a typo in the field name. The type system can find a lot of these errors at compile time.&lt;/li&gt;
+  &lt;li&gt;The tools can be powerful with type system. With type system, it’s so pleasant to write code with modern IDEs. The IDE can complete the field names for you. It can jump to the definitions of the methods or objects very easily. It can show all the usages of the methods. I’m not saying it cannot be done with dynamic type system, it’s just more difficult and inefficient. For example, when I open Intellij with a reasonable large Javascript project, the fans will run like crazy.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;All these advantages are well known by most programmers now. And it’s a trend to use type system more often. For example, Python already added the type hint so you can optional write type annotations and use some tools to check the code. So I will not go any deeper about the basic type system.&lt;/p&gt;
+
+&lt;h2 id=&quot;dependent-type-system&quot;&gt;Dependent Type System&lt;/h2&gt;
+
+&lt;p&gt;I was missing type system so much when I wrote machine learning program with TensorFlow. With TensorFlow, you need to construct the computing graph with some awful API (it’s before the eager execution mode), so it’s very easy to get lost what’s the type and shape of the current tensor. Though TensorFlow can actually check the correctness of shape when construct the graph, but the error message doesn’t help a lot if it has dynamic shapes. It will only report the shape as &lt;code&gt;?&lt;/code&gt;. So the error messages are like “&lt;code&gt;?&lt;/code&gt; doesn’t match”, but you don’t know exactly where is &lt;code&gt;?&lt;/code&gt; in the shapes come from.&lt;/p&gt;
+
+&lt;p&gt;So at that time, I thought it would be so nice if I can annotate the shape of the tensors just like the type system. So I can know every tensor’s shape when I’m writing the code. The API will also has the more information by default. For example, imagine if we can write the code like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;def&lt;/span&gt; &lt;span style=&quot;color:#06B;font-weight:bold&quot;&gt;reverseImage&lt;/span&gt;(images: Tensor[BatchSize, ImageHeight, ImageWidth]): Tensor[BatchSize, ImageWidth, ImageHeight]:
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;  &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;pass&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;So that we know the what’s the meaning of each of the demission. And if we operate on the return value, we can keep track on the properties like &lt;code&gt;BatchSize&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;But after a deeper thinking, the type system I knew at that time cannot actually handle the information like shapes. Because the shape of the tensor is dynamic and could be infinity. It’s impossible to define a type like &lt;code&gt;BatchSize&lt;/code&gt;, it’s more like a variable.&lt;/p&gt;
+
+&lt;p&gt;That was the time I found dependent type system. More specifically, I found a language that has dependent type system called &lt;a href=&quot;https://www.idris-lang.org/&quot;&gt;Idris&lt;/a&gt;. Here is an example of how it works from &lt;a href=&quot;https://www.idris-lang.org/pages/example.html&quot;&gt;its official website&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-idris highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;app : Vect n a -&amp;gt; Vect m a -&amp;gt; Vect (n + m) a
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;app Nil       ys = ys
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;app (x :: xs) ys = x :: app xs ys
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The syntax is a little like Haskell, but you get the idea: &lt;code&gt;Vect&lt;/code&gt; is a type that can have it’s own properties. And the return type’s property can based on the parameter’s type: &lt;code&gt;n+m&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;formal-proof&quot;&gt;Formal Proof&lt;/h2&gt;
+
+&lt;p&gt;Such a powerful type system exists surprised me. Even more, Idris introduces how it can proof theorem. Normally, we will write tests for methods. But there is almost no guarantee the methods will work correctly for all cases. For example, if we write a method &lt;code&gt;plus(a:int, b:int)&lt;/code&gt;, and we want to test if &lt;code&gt;plus(a, b) == plus(b, a)&lt;/code&gt;. In most languages, we will only find some values for &lt;code&gt;a&lt;/code&gt; and &lt;code&gt;b&lt;/code&gt; to see the result. And hopefully we can find some edge cases. But with Idirs, you can actually define a theorem to declare &lt;code&gt;plus(a, b) == plus(b, a)&lt;/code&gt;, and prove it with the code. If you don’t prove it the right way, the compilation will fail. This ability really opens a new world to me.&lt;/p&gt;
+
+&lt;p&gt;I find this ability can be very useful in machine learning. Because machine learning involves a lot of math. The model often needs to have some properties to make it work right. For example, maybe you need the function to be differentiable. To write down these theorem and prove it, makes it have the same advantages as type system: a much better documentation and make sure the program is working as intended.&lt;/p&gt;
+
+&lt;p&gt;As I explored the formal proof, I find it has a much wider use case than I though. For example, I found &lt;a href=&quot;https://github.com/uwplse/verdi/pull/16&quot;&gt;Raft has a formal proof&lt;/a&gt;. The thing I like about programming is I can always find how it works if I spent enough time: it’s all in the code and can only be interpreted in one way. It would be so much fun if a complex theorem in distributed system can be proved in such a way: I can learn the theorem step by step and make sure I understand them correct.&lt;/p&gt;
+
+&lt;p&gt;Even though I discovered all these information 2 years ago. Only until recently I have some time to actually learn some formal proof language. There is a very good series of books called &lt;a href=&quot;https://softwarefoundations.cis.upenn.edu/&quot;&gt;Software Foundations&lt;/a&gt;, which introduces Coq, a very popular language to prove theorems. It has many exercises in the book’s source code so I can read and modify the code to do exercises. It’s really a fun experience. A lot of the concepts are not found in popular languages so it’s refreshing and challenging. I’m tracking the progress in &lt;a href=&quot;https://softwarefoundations.cis.upenn.edu/&quot;&gt;a Git repo&lt;/a&gt; and wish I can finish them all.&lt;/p&gt;</content><author><name></name></author><category term="technology" /><category term="programming language" /><category term="type system" /><category term="machine learning" /><summary type="html">This is not an article to introduce type systems. It’s only some of my experience and thoughts about it.</summary></entry><entry><title type="html">Migrate Arch Linux to ZFS</title><link href="https://www.binwang.me/2020-01-28-Migrate-Arch-Linux-to-Zfs.html" rel="alternate" type="text/html" title="Migrate Arch Linux to ZFS" /><published>2020-01-28T00:00:00-05:00</published><updated>2020-01-28T00:00:00-05:00</updated><id>https://www.binwang.me/Migrate-Arch-Linux-to-Zfs</id><content type="html" xml:base="https://www.binwang.me/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">&lt;p&gt;I migrated my Arch Linux installation to ZFS recently. This article describes why and how I did that.&lt;/p&gt;
+
+&lt;h2 id=&quot;why-zfs&quot;&gt;Why ZFS?&lt;/h2&gt;
+
+&lt;p&gt;ZFS is a very advanced file system that has many handful features. I first knew it many years ago, when I installed FreeNAS for fun. FreeNAS is an OS made for NAS based on FreeBSD. When I played with it, the features of ZFS really shocked me and let me realised what a file system can really do. I will list the features of ZFS that I’m using and not usually avaliable in traditional file systems:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Snapshot: It is really easy to take a snapshot. Because ZFS has copy-on-write feature, so a snapshot doesn’t take any space until you change some content on the file system. It makes backup way much cheaper and easier. This is the biggest feature that let me want to migrate to ZFS.&lt;/li&gt;
+  &lt;li&gt;RAIDZ: The traditional raid hides the disks from the file system. But for ZFS, you can use raidz which the file system can see the topological of disks so that it can optimize the I/O based on the information.&lt;/li&gt;
+  &lt;li&gt;Dataset: You can create many datasets in a zfs pool. Which can have different configurations based on the use case.&lt;/li&gt;
+  &lt;li&gt;L2 Cache: You can use hard disk drives as the file system and add SDD as read or write cache. Which is a very good balance between the storage space, speed and the price.&lt;/li&gt;
+  &lt;li&gt;Send/Recv: ZFS has commands to send the datasets and snapshots to another dataset or a remote machine. Which makes the offline backup much easier and cheaper.&lt;/li&gt;
+  &lt;li&gt;Compression: By compression you can save both storage space and make the read/write faster. And you can set different compression algorithm for different use cases.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;But back then ZFS is not well supported on Linux so I used ext4. Then I had an internship at Redhat and realised ext4 was really an old file system so I migrated to XFS. Until now, my storage configuration is one 128G SSD for the system (root partition). Two 2TB HDDs as a RAID1 array to store all the other data. I backup the system from SDD to HDD regularly in case of the SDD fails. And I don’t have any way to protect me from deleting files by mistake.&lt;/p&gt;
+
+&lt;h2 id=&quot;why-not-freebsd&quot;&gt;Why not FreeBSD?&lt;/h2&gt;
+
+&lt;p&gt;It is very nature to use BSD with ZFS since it is supported by deafult. With linux, you must install another kernel module which is not native supported by kernel. And Linus just said “don’t use ZFS” somedays ago. So I was seriously thinking about change my OS to FreeBSD. Compared to Arch Linux, the system is more security because all the packages are native supported by the FreeBSD developer and the port system also has a lot of softwares. But finally something stops me from migrating to FreeBSD:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The game support. Last year, game on Linux finally breaks out because of the Poton on Steam. Though I don’t play games a lot, it’s still a pity to have no game to play.&lt;/li&gt;
+  &lt;li&gt;FreeBSD starts using ZFS on Linux as the upstream of ZFS. So with the bigger community, ZFS on Linux may has better support and more features in the future.&lt;/li&gt;
+  &lt;li&gt;It’s a risk to migrate to a new system. Arch Linux works great for me for a long time. If the new installation doesn’t work, it’s time consuming to recover the system. And it says FreeBSD doesn’t have a good support on Nvidia graphic card, which I’m currently using.&lt;/li&gt;
+  &lt;li&gt;FreeBSD’s Jails are much mature than Containers on Linux. And I really hate Docker for its deamon running as root. Docker also has bad community reputation (e.g. changing its community version’s name). Rkt from Core OS is much better but both Core OS and Rkt are dead after the acquire of Redhat. But finally I found Podman. So I can compromise at this point. Containers also has bigger community. For example, the Nextcloud I’m using has official image so I don’t need to build my own one.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;how-to-migrate-to-zfs&quot;&gt;How to Migrate to ZFS?&lt;/h2&gt;
+
+&lt;h3 id=&quot;1-backup-the-data&quot;&gt;1. Backup the Data&lt;/h3&gt;
+
+&lt;p&gt;My disks and partitions are like this before the migration:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;- SDD
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;  + / (root)
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;  + /boot
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;- RAID1 (hdd1, hdd2)
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;  + /data
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I only backup my data disks because I will not use my system disk for the ZFS pool at the creation time. I will use it as cache which can be added later. An important note is to &lt;strong&gt;use &lt;code&gt;tar&lt;/code&gt; or &lt;code&gt;rsync&lt;/code&gt; to backup data&lt;/strong&gt;. Don’t use &lt;code&gt;cp&lt;/code&gt;, it will break the file permissions and links.&lt;/p&gt;
+
+&lt;h3 id=&quot;2-install-zfs-kernel-modules-and-utils&quot;&gt;2. Install ZFS Kernel Modules and Utils&lt;/h3&gt;
+
+&lt;p&gt;Follow the &lt;a href=&quot;https://wiki.archlinux.org/index.php/ZFS#Installation&quot;&gt;Arch Linux’s ZFS wiki&lt;/a&gt; to do that. I also enabled the &lt;a href=&quot;https://wiki.archlinux.org/index.php/Unofficial_user_repositories#archzfs&quot;&gt;ArchZFS repo&lt;/a&gt; so I don’t need to build it from AUR. This repo is signed so it is more secure.&lt;/p&gt;
+
+&lt;h3 id=&quot;3-create-zfs-pool-and-dataset&quot;&gt;3. Create ZFS Pool and Dataset&lt;/h3&gt;
+
+&lt;p&gt;I added another HDD for the ZFS pool in order to make a raidz1 pool (like raid5), which doubles the current storage space with raid1. Then create a dataset for the new root partition. The dataset has native encryption and compression enabled.&lt;/p&gt;
+
+&lt;h3 id=&quot;4-mount-the-root-dataset-and-copy-the-root-partition&quot;&gt;4. Mount the Root Dataset and Copy the Root Partition&lt;/h3&gt;
+
+&lt;p&gt;Temparory mount the root dataset to &lt;code&gt;/mnt&lt;/code&gt;. Then follow the Arch Linux wiki about &lt;a href=&quot;https://wiki.archlinux.org/index.php/Install_Arch_Linux_from_existing_Linux#From_a_host_running_Arch_Linux&quot;&gt;installing from a host running Arch Linux&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;5-make-new-boot-image-and-config-bootloader&quot;&gt;5. Make New Boot Image and Config Bootloader&lt;/h3&gt;
+
+&lt;p&gt;I was trying to install boot partition into the ZFS but failed after many attemps. At last I decide just use the old boot partition and sync them to ZFS as backup.&lt;/p&gt;
+
+&lt;p&gt;So follow &lt;a href=&quot;https://wiki.archlinux.org/index.php/Install_Arch_Linux_on_ZFS&quot;&gt;install Arch Linux on ZFS wiki&lt;/a&gt;. After the regular installation, add &lt;code&gt;zfs&lt;/code&gt; in &lt;code&gt;/etc/mkinitcpio.conf&lt;/code&gt; &lt;code&gt;HOOKS&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;HOOKS=(base udev autodetect modconf block keyboard zfs filesystems)
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Then using &lt;code&gt;mkinitcpio -p&lt;/code&gt; to make new boot image. (You may want to backup old images &lt;code&gt;/boot/initramfs-linux.img&lt;/code&gt; and &lt;code&gt;/boot/vmlinuz-linux&lt;/code&gt; before this step).&lt;/p&gt;
+
+&lt;p&gt;Then in &lt;code&gt;/boot/grub/grub.cfg&lt;/code&gt;, change the root filesystem to zfs, like this (in the menuentry):&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;linux   /vmlinuz-linux root=ZFS=zroot/root rw  loglevel=3 quiet
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Which &lt;code&gt;zroot/root&lt;/code&gt; is the root dataset.&lt;/p&gt;
+
+&lt;h3 id=&quot;6-config-mount-points&quot;&gt;6. Config Mount Points&lt;/h3&gt;
+
+&lt;p&gt;Reconfig the root dataset’s mount point to &lt;code&gt;/&lt;/code&gt; and add the configuration in &lt;code&gt;/etc/fstab&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;zroot/root / zfs defaults,noatime 0 0
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Don’t forget to set the auto import:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;systemctl enable zfs-import-cache
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;zpool set cachefile=/etc/zfs/zpool.cache &amp;lt;pool&amp;gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;systemctl enable zfs-mount
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;systemctl enable zfs.target
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Also need to input the passphrase if using encryption. Follow the &lt;a href=&quot;https://wiki.archlinux.org/index.php/ZFS&quot;&gt;Arch Linux’s ZFS wiki&lt;/a&gt; to do that.&lt;/p&gt;
+
+&lt;h3 id=&quot;7-restart-and-config-new-system&quot;&gt;7. Restart and Config New System&lt;/h3&gt;
+
+&lt;p&gt;After the reboot, the system should boot into the new root. Then cleanup the old root partition and add it as the cache of the pool: &lt;code&gt;zpool add -f zroot cache &amp;lt;partition-uuid&amp;gt;&lt;/code&gt;. Then create other datasets and move back all the old data.&lt;/p&gt;
+
+&lt;p&gt;Now I can make different datasets for different purpose. For example, make a dataset for nextcloud container’s storage. Make a highly compressed dataset for backup files from other machine, and so on.&lt;/p&gt;
+
+&lt;p&gt;After the migration, the first boot is slower than before because the root system is migrated to HDD. But the most useful files will be cached into SSD and it feels the same as before after a while. Now I’m very happy with the current setup and super excited about all the advanced features of ZFS! Happy hacking!&lt;/p&gt;</content><author><name></name></author><category term="linux" /><category term="zfs" /><category term="technology" /><category term="freebsd" /><summary type="html">I migrated my Arch Linux installation to ZFS recently. This article describes why and how I did that.</summary></entry><entry><title type="html">Great Resources for Learning Database and Distributed System</title><link href="https://www.binwang.me/2019-11-04-Great-Resources-for-Learning-Database-and-Distributed-System.html" rel="alternate" type="text/html" title="Great Resources for Learning Database and Distributed System" /><published>2019-11-04T00:00:00-05:00</published><updated>2019-11-04T00:00:00-05:00</updated><id>https://www.binwang.me/Great-Resources-for-Learning-Database-and-Distributed-System</id><content type="html" xml:base="https://www.binwang.me/2019-11-04-Great-Resources-for-Learning-Database-and-Distributed-System.html">&lt;p&gt;There has been a long time since the last update of my blog. This has been a crazy year. I’ve prepared for a big change in my life in most time of the year. I may write a blog about that in a few days. In this article, I’d like to write something about my work these years: database, big data and distributed system.&lt;/p&gt;
+
+&lt;p&gt;I’ve been working on data analysis for about 5 years. And at my last company, we processed many big companies’ data. At the current company, we are building a distributed database aims to be good at both OLTP and OLAP jobs, with SQL and transaction support. So I learned a lot these years and it is extremely interesting. I have thought about sharing them a lot of times before. But a principle of my blog is sharing new things that can inspire people, even it is small, instead of repeating old things. Unfortunately, I haven’t have many original ideas or works to share about. However, when I look back, I find when I was learning and working, the resource is not very easy to find. So in this blog, I’ll list some resources that helped me a lot, and I think will help everyone that wants to get familiar with database and distributed system.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-book-designing-data-intensive-applications&quot;&gt;The Book: &lt;a href=&quot;Designing Data-Intensive Applications: The Big Ideas Behind Reliable, Scalable, and Maintainable Systems&quot;&gt;Designing Data-Intensive Applications&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;This is a book that explains many daily used ideas and practises about database and distributed system. It clarified some confused terms and makes some complex algorithms quite understandable. This book is published at 2017, so it is pretty up to date. Maybe the author doesn’t give a deep exploration for every topic, but it is enough to build a solid foundation for the reader to do future study and research. Other than only introduce the things that already exists, the author also gives some new ideas about how the data can be stored and processed. Though I’m not totally agree with his idea, it is still very insightful. And at the last chapter, the author talks about the data privacy and how can we improve it as an engineer. Which I cannot agree more. I’m very respectful for speaking it out loud in an engineer book.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-course-cmu-database-courses&quot;&gt;The Course: CMU Database Courses&lt;/h1&gt;
+
+&lt;p&gt;There are two courses: the &lt;a href=&quot;https://15445.courses.cs.cmu.edu/fall2019/&quot;&gt;basic one&lt;/a&gt; and the &lt;a href=&quot;https://15721.courses.cs.cmu.edu/spring2019/&quot;&gt;advanced one&lt;/a&gt;. The courses provide a very solid introduction to the important ideas and theories of database. For example, the implementation of transaction and optimizer, which is not covered in the previous book. It has reading materials and videos, all available online. You can pick the topics you are interested in, so that it will not take much time. And it is updated every year so some new researches and information are included.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-tool-jepsen&quot;&gt;The Tool: &lt;a href=&quot;https://jepsen.io/&quot;&gt;Jepsen&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;After reading the book and watching the course, you can at least know some claims from the database company are just fancy words. For example, some database claims to support transaction, but at what isolation level? Some database claims to support multiple nodes, but what’s the consistency level? What about the availability? Even though they describe them in details, how do you know the product is the same as the document claims. And if you are implementing a database, which is very hard, how can you be confidence that you are doing it right. Here comes the awesome tool: Jepsen. It is a tool can simulate concurrent queries to database, and introduce errors like network partition, clock drift and node failure. Then it compares the results to see if it is the same as expected. Actually I’ve used this tool to find some transaction bugs in our database.&lt;/p&gt;
+
+&lt;p&gt;The author of Jepsen has analysed many databases and write the &lt;a href=&quot;https://jepsen.io/analyses&quot;&gt;reports&lt;/a&gt; of them. I highly recommend to read these reports. You can see what can go wrong in the real world and how to find them. And what the database company claims and what really it is.&lt;/p&gt;
+
+&lt;p&gt;There is also an &lt;a href=&quot;https://github.com/aphyr/distsys-class&quot;&gt;outline for the distributed system training&lt;/a&gt;, which I think is great to see if there is any knowledge you are still not familiar with and then study by yourself.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-blog-dbms-musings&quot;&gt;The Blog: &lt;a href=&quot;https://dbmsmusings.blogspot.com/&quot;&gt;DBMS Musings&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;This is a blog by Daniel Abadi, a database researcher at University of Maryland, College Park. He explains some easy to confuse terms and some trending topics about database. The only fallback of the blog maybe the color of the webpage. The red background is very unfriendly to the eyes. You may want to read the blog in an RSS reader.&lt;/p&gt;</content><author><name></name></author><category term="database" /><category term="distributed system" /><summary type="html">There has been a long time since the last update of my blog. This has been a crazy year. I’ve prepared for a big change in my life in most time of the year. I may write a blog about that in a few days. In this article, I’d like to write something about my work these years: database, big data and distributed system.</summary></entry><entry xml:lang="zh"><title type="html">由“废青”这个称呼所想到的</title><link href="https://www.binwang.me/2019-08-15-%E7%94%B1-%E5%BA%9F%E9%9D%92-%E8%BF%99%E4%B8%AA%E7%A7%B0%E5%91%BC%E6%89%80%E6%83%B3%E5%88%B0%E7%9A%84.html" rel="alternate" type="text/html" title="由“废青”这个称呼所想到的" /><published>2019-08-15T00:00:00-04:00</published><updated>2019-08-15T00:00:00-04:00</updated><id>https://www.binwang.me/%E7%94%B1%E2%80%9C%E5%BA%9F%E9%9D%92%E2%80%9D%E8%BF%99%E4%B8%AA%E7%A7%B0%E5%91%BC%E6%89%80%E6%83%B3%E5%88%B0%E7%9A%84</id><content type="html" xml:base="https://www.binwang.me/2019-08-15-%E7%94%B1-%E5%BA%9F%E9%9D%92-%E8%BF%99%E4%B8%AA%E7%A7%B0%E5%91%BC%E6%89%80%E6%83%B3%E5%88%B0%E7%9A%84.html">&lt;p&gt;最近一直都在关注香港的事情，无奈水平和精力有限，对于各种事实尚不能核实清楚，更不用说大局上有什么高见了。所以只是想在一个小事上说一些自己的看法。&lt;/p&gt;
+
+&lt;p&gt;最近在各种社交网络上，对于香港青年的一个称呼，“废青”，很是困扰我。这才意识到，不知从什么时候开始，在网络上很多人养成了给人贴标签的习惯。我最近读了一本书名叫 Behave，其中一些地方感觉对这个问题还是挺有启发的，在此给大家分享一下。&lt;/p&gt;
+
+&lt;p&gt;书中说道，从生物学上讲，人类天生就有分辨“我们”和“他们”的本能。对于“我们”，会更加认同，更加有可能出手帮助；而对于“他们”，则会更容易激起厌恶、排斥、恐惧或愤怒等感情。这一切都是在大脑皮质受到激活前，由杏仁核等部位决定的。这意味着当你还没有意识到的时候这种潜意识就已经产生了。书中列举了很多例子，比如当实验者看到别的种族的照片时，杏仁核(主要与比较原始的情感去恐惧和愤怒相关)受到的激活会更加强烈。由于例子太多，在此不能一一列举，总而言之，这是人类进化到现在的一种本能的行为和功能。这种行为无所谓好坏，但是要看在什么环境下。比如人喜欢吃高热量的食物，这在原始时代可以帮助人类生存下来，在现代却因为摄入过量热量而造成了很多疾病。同样，区分“我们”和“他们”的本能在古代可以帮助一个部落提高凝聚力，抵抗其他部落，但是到了现代这样一个全球合作的年代，带来的恐怕大部分是负面的作用。&lt;/p&gt;
+
+&lt;p&gt;那是否有方法强化或者弱化这种本能呢？答案是肯定的。首先说强化这种本能的方法，那就是把“他们”和让人感觉到厌恶的东西联系起来，尽量把“他们”给非人化，并且描述成一个整体而不是一个个的个体。比如用老鼠、蟑螂称呼这些人。书中也列举了很多实验，我因为记忆有限也不能一一列举，希望我这篇文章能抛砖引玉让更多人去看看原书。但是有一个现实中的例子值得一提，那就是卢旺达大屠杀：在1994年，100天内，卢旺达700万人口中的50万到100万被屠杀。很多屠杀都只是用到了棍棒、砍刀等原始武器。由此可以想象得到屠杀的残酷。这么残酷的事情何以会发生呢？杀人的人真的是泯灭了人性吗？原因之一就是一些胡图人在广播中把这些人描述成蟑螂，所以要像消灭蟑螂一样把他们消灭掉。&lt;/p&gt;
+
+&lt;p&gt;以史为鉴，不看太远的，就看国内的文革，不也是用各种概念人为的分出各种群体吗？所以当现在看到“废青”这个称呼，以及这个称呼所激起到的厌恶和排斥，不免让人感到危险。使用这种称呼，不论是有意还是无意，都让人在理性判断之前先有了一种先入为主的情绪。在香港事件的这个阶段，理性分析尚不一定能够得到好的结果，激起排斥的情绪更会于事无益。我也知道国内的很多舆论都反对港独，所以如果你持这种观点，就更不要用贴标签这种行为来强化区分“我们”和“他们”的这种本能。&lt;/p&gt;
+
+&lt;p&gt;那如何能弱化这种本能？从而避免偏见，让理性主导如此复杂的时间呢？书中也介绍了一些实验，总而言之，多想想“他们”是由单独的个体组成的，不要把“他们”非人化。在香港这一个如此多人的活动中，游行者并非有高度组织，会涉及到各种不同的个体。想想这件事的复杂性，而不是有一个所谓统一意志的“废青”在主导着这个事情。&lt;/p&gt;
+
+&lt;p&gt;所以根据以上这些原因，希望大家以后讨论的时候不要暴力的直接给贴一个让人产生厌恶的标签，包括“废青”，也包括“五毛”、“小粉红”、“美狗”等等，也不要让贴标签这种行为影响你们的判断。可能在墙内因为各种原因，没办法进行太深入的讨论，但是在这样一个言论相对自由的地方，希望可以用理性代替原始的本能。言尽于此，与君共勉！&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;注：此文首发于 &lt;a href=&quot;https://www.reddit.com/r/China_irl/comments/cql13x/%E7%94%B1%E5%BA%9F%E9%9D%92%E8%BF%99%E4%B8%AA%E7%A7%B0%E5%91%BC%E6%89%80%E6%83%B3%E5%88%B0%E7%9A%84/&quot;&gt;Reddit&lt;/a&gt;，今转载于此。博文发表日期设置于与 Reddit 发表日期相同。&lt;/em&gt;&lt;/p&gt;</content><author><name></name></author><category term="politics" /><category term="Hong Kong" /><category term="China" /><category term="biological" /><category term="neurological" /><summary type="html">最近一直都在关注香港的事情，无奈水平和精力有限，对于各种事实尚不能核实清楚，更不用说大局上有什么高见了。所以只是想在一个小事上说一些自己的看法。</summary></entry><entry><title type="html">Root And Optimize MiBox 3S</title><link href="https://www.binwang.me/2018-11-18-Root-And-Optimize-MiBox-3S.html" rel="alternate" type="text/html" title="Root And Optimize MiBox 3S" /><published>2018-11-18T00:00:00-05:00</published><updated>2018-11-18T00:00:00-05:00</updated><id>https://www.binwang.me/Root-And-Optimize-MiBox-3S</id><content type="html" xml:base="https://www.binwang.me/2018-11-18-Root-And-Optimize-MiBox-3S.html">&lt;p&gt;I’ve bought a MiBox 3S to watch TV and video for a long time. These days I’ve done lots of things to security my digital life and privacy, like change my Email to Proton Mail, change the search engine to DuckDuckGo, use Authy to enable 2FA when possible, and so on. So I didn’t turn on the MiBox for a long time since I don’t feel security to let a XiaoMi device running all the time in my LAN. The business model of XiaoMi is to sell cheap device and push ads to you. So it definitely collects your data. But I do need a device to watch TV or video on a big screen, so I decide to root and clean it to make it more security. Here is how I do it:&lt;/p&gt;
+
+&lt;h2 id=&quot;1-preparation&quot;&gt;1. Preparation&lt;/h2&gt;
+
+&lt;h3 id=&quot;11-how-to-recover-the-device&quot;&gt;1.1 How to Recover the Device&lt;/h3&gt;
+
+&lt;p&gt;You need to know how to recover the device if you failed to root it and messed the system up. Just turn off the device, press confirm and back button on the remote control at the same time, then turn on the device. You can find it will enter the recovery mode and has an option to recover to factory settings.&lt;/p&gt;
+
+&lt;h3 id=&quot;12-some-apps-and-scripts&quot;&gt;1.2 Some Apps and Scripts&lt;/h3&gt;
+
+&lt;p&gt;Some apps and scripts are used to grant the root permission. You can follow &lt;a href=&quot;https://www.youtube.com/watch?v=IJ60IZjQbxk&amp;amp;t=748s&quot;&gt;this video&lt;/a&gt; to root the device (but don’t follow the video to install the Google Apps), then come back here from step 3.&lt;/p&gt;
+
+&lt;p&gt;If you don’t want to watch the video, just download the needed folder &lt;a href=&quot;https://yadi.sk/d/wOKiw5RL3EGpKX&quot;&gt;MDZ18AA_1.5.2&lt;/a&gt; and follow this tutorial from step 1.&lt;/p&gt;
+
+&lt;h3 id=&quot;13-how-to-install-apps&quot;&gt;1.3 How to Install Apps&lt;/h3&gt;
+
+&lt;p&gt;You need a USB drive to install the apps. Put the APKs in the USB drive and plug it into MiBox. It will prompt to open it. Then you can install the APK from it. KingRoot, SManager and SuperUser are already bundled in the directory &lt;code&gt;MDZ18AA_1.5.2&lt;/code&gt;. You can download apk of other apps from websites liek APK Mirror or APK Pure.&lt;/p&gt;
+
+&lt;p&gt;The apps used are:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;KingRoot: Grant root permission.&lt;/li&gt;
+  &lt;li&gt;SManager: Copy files and run scripts.&lt;/li&gt;
+  &lt;li&gt;SuperUser: Manage root permission.&lt;/li&gt;
+  &lt;li&gt;HALauncher: The third-party launcher.&lt;/li&gt;
+  &lt;li&gt;Ice Box: Disable the built-in apps.&lt;/li&gt;
+  &lt;li&gt;Greenify: Disable the background running.&lt;/li&gt;
+  &lt;li&gt;AFWall+: Disable network access.&lt;/li&gt;
+  &lt;li&gt;Smart YouTube: The YouTube client for TV that doesn’t need Google service installed.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;14-prepare-a-mouse&quot;&gt;1.4 Prepare a Mouse&lt;/h3&gt;
+
+&lt;p&gt;We must use a mouse to do some operations since many apps are not designed for TV.&lt;/p&gt;
+
+&lt;h2 id=&quot;2-root-the-device&quot;&gt;2. Root the Device&lt;/h2&gt;
+
+&lt;p&gt;Root the device is easy. Just install the app KingRoot and follow the instructors. One thing to notice is after root, KingRoot will ask you to optimize the system. &lt;strong&gt;Don’t do that!&lt;/strong&gt;. Since KingRoot is &lt;a href=&quot;https://forum.xda-developers.com/showthread.php?t=2473747&quot;&gt;found to have bad behaviours&lt;/a&gt;. We will clean it up and use Superuser to replace it.&lt;/p&gt;
+
+&lt;h2 id=&quot;3-cleanup-kingroot-and-install-superuser&quot;&gt;3. Cleanup KingRoot and Install Superuser&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Instal SManager.&lt;/li&gt;
+  &lt;li&gt;In SManager, copy the downloaded folder &lt;a href=&quot;https://yadi.sk/d/wOKiw5RL3EGpKX&quot;&gt;MDZ18AA_1.5.2&lt;/a&gt; from USB drive to &lt;code&gt;/storage/sdcard0&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;In SManager, open &lt;code&gt;1_ROOT/SuperSU.sh&lt;/code&gt;, check &lt;code&gt;su&lt;/code&gt; option and run it.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;4-install-a-third-party-launcher&quot;&gt;4. Install A Third-Party Launcher&lt;/h2&gt;
+
+&lt;p&gt;Many people use the original Android TV launcher from Google. I don’t want to do that. Since you must install a lot of Google apps in order to use it (which means is also bloated), and it’s not very convenience to use Google in China. So I decide to install a third-party one. At last I choose &lt;a href=&quot;https://play.google.com/store/apps/details?id=net.i.akihiro.halauncher&quot;&gt;HALauncher&lt;/a&gt;. It is very simple and clean. After some simple configurations, the UI looks very beautiful. Here is a picture of it:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/static/images/2018-11-18-Root-And-Optimize-MiBox-3S/halauncher.jpg&quot; alt=&quot;HALauncher&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;However, after install HALauncher, we cannot set it to default. In order to use it, we must disable the built-in launcher.&lt;/p&gt;
+
+&lt;h2 id=&quot;5-disable-built-in-apps&quot;&gt;5. Disable Built-in Apps&lt;/h2&gt;
+
+&lt;p&gt;Uninstall built-in apps will get a higher risk since the built-in apps are integrate with the device very deeply, if uninstall the wrong one may make the device unusable. So I uses the app &lt;a href=&quot;https://play.google.com/store/apps/details?id=com.catchingnow.icebox&quot;&gt;Ice Box&lt;/a&gt; to just disable them. After disable the built-in launcher, the system will use the third-party launcher that you installed in the last step.&lt;/p&gt;
+
+&lt;p&gt;One thing that is not very convenience of Ice Box is the operations must be done with a mouse. On the phone, you can add the shortcuts to open the disabled apps, but I didn’t find that option on TV. So I also install &lt;a href=&quot;https://play.google.com/store/apps/details?id=com.oasisfeng.greenify&quot;&gt;Greenify&lt;/a&gt; to make the daily used app not running in the background.&lt;/p&gt;
+
+&lt;p&gt;After disabled the built-in apps, if you want to use the USB drive, you must open the original launcher from XiaoMi as well as the MiSystem app from Ice Box. After mount the USB drive, you can disable them again.&lt;/p&gt;
+
+&lt;h2 id=&quot;6-disable-network-by-default&quot;&gt;6. Disable Network by Default&lt;/h2&gt;
+
+&lt;p&gt;Even we’ve disabled the built-in apps, we cannot ensure the security either. Since XiaoMi may modified the Android OS. So I disabled the network at all with &lt;a href=&quot;https://play.google.com/store/apps/details?id=dev.ukanth.ufirewall&quot;&gt;AFWall+&lt;/a&gt; and only let limited video apps have access to network. So whatever XiaoMi built in the OS cannot upload anything to its server, and it cannot download and upgrade the system, either. (In theory, XiaoMi can also upload things through modify the kernel but I don’t think it will do things like that deep.)&lt;/p&gt;
+
+&lt;h2 id=&quot;7-install-some-video-apps&quot;&gt;7. Install Some Video Apps&lt;/h2&gt;
+
+&lt;p&gt;At this step, the system is clean. You can install your favorite video apps. If you want to watch YouTube, you cannot install the official one since it needs Google service. You can install Smart YouTube instead. I think it is much better than the Google one. After installed the video apps, don’t forget to give them network access in AFWall+ and disable the background behavior in Greenify.&lt;/p&gt;
+
+&lt;p&gt;Since I’m in China behind the GFW, I also installed ShadowSocks in order to watch YouTube. It is easy to use as on phone, but may need a mouse the config it.&lt;/p&gt;
+
+&lt;p&gt;So here are all the things, happy hacking the device!&lt;/p&gt;</content><author><name></name></author><category term="Android" /><category term="Android TV" /><category term="MiBox" /><summary type="html">I’ve bought a MiBox 3S to watch TV and video for a long time. These days I’ve done lots of things to security my digital life and privacy, like change my Email to Proton Mail, change the search engine to DuckDuckGo, use Authy to enable 2FA when possible, and so on. So I didn’t turn on the MiBox for a long time since I don’t feel security to let a XiaoMi device running all the time in my LAN. The business model of XiaoMi is to sell cheap device and push ads to you. So it definitely collects your data. But I do need a device to watch TV or video on a big screen, so I decide to root and clean it to make it more security. Here is how I do it:</summary></entry><entry><title type="html">The Things You Need to Know When Using Apache Sentry</title><link href="https://www.binwang.me/2018-09-02-The-Things-You-Need-to-Know-When-Using-Apache-Sentry.html" rel="alternate" type="text/html" title="The Things You Need to Know When Using Apache Sentry" /><published>2018-09-02T00:00:00-04:00</published><updated>2018-09-02T00:00:00-04:00</updated><id>https://www.binwang.me/The-Things-You-Need-to-Know-When-Using-Apache-Sentry</id><content type="html" xml:base="https://www.binwang.me/2018-09-02-The-Things-You-Need-to-Know-When-Using-Apache-Sentry.html">&lt;p&gt;For the last few days, I was working on integrating &lt;a href=&quot;https://sentry.apache.org&quot;&gt;Apache Sentry&lt;/a&gt; into our database product Splice Machine. And when doing that, I found the document of Sentry is awful. It takes me much time to figure out what’s the role of Sentry and how to configure it. So in this article, I’d like to write some really important things to help understanding Sentry.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-basic&quot;&gt;The Basic&lt;/h2&gt;
+
+&lt;p&gt;From the &lt;a href=&quot;https://sentry.apache.org/&quot;&gt;official website&lt;/a&gt;, Apache Sentry is a system for enforcing fine grained role based authorization to data and metadata stored on a Hadoop cluster. The services in Hadoop can integrate Sentry so that they can use Sentry to manage authorization. You may think this implies that Sentry is a centralized authorization system and you can configure the authorization polices through Sentry, then all the services can use these polices. This is only half true: Sentry is a centralized authorization service but you may not have a centralized place to configure polices or use that policy for all Hadoop services. Let’s see the details.&lt;/p&gt;
+
+&lt;h2 id=&quot;how-to-configure-sentry-policy&quot;&gt;How to Configure Sentry Policy&lt;/h2&gt;
+
+&lt;p&gt;When I start learning to use Sentry, the configuration of authorization policy confused me a log. I thought it would be like &lt;a href=&quot;https://ranger.apache.org/&quot;&gt;Apache Ranger&lt;/a&gt; to have a centralized web UI or at least provide some CLI tool. But it turns out that’s not the case. And more confusing, there are two ways to configure Sentry polices: one is file based, which is like a centralized way to configure Sentry policy but is deprecated. Another way is to configure polices from other service, which you will not even notice the exist of Sentry.&lt;/p&gt;
+
+&lt;h3 id=&quot;use-policy-file&quot;&gt;Use Policy File&lt;/h3&gt;
+
+&lt;p&gt;Let’s start with the old and deprecated way: using the policy files. The policy file approach is more straightforward: you write a file to define the authorization policies. The file is usually on HDFS so that every node can access it. You tell the service where to find the file. Then the service will use Sentry library to parse the policy file and get the permissions for every user. So in this way, there is no Sentry service, just policy files and Sentry library to parse the files.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;          --------
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;          | User |
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;          --------
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;             |
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;             | &amp;lt;-- Write Policy Files
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;             V
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;    ------------------------
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;    | Sentry Files on HDFS |
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;    ------------------------
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;             ^
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;             | &amp;lt;-- Read and Parse with Sentry Library
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;             |
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt;    ------------------------
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n14&quot; name=&quot;n14&quot;&gt;14&lt;/a&gt;&lt;/span&gt;    | Hive/Impala/Solr ... |
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n15&quot; name=&quot;n15&quot;&gt;15&lt;/a&gt;&lt;/span&gt;    ------------------------
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n16&quot; name=&quot;n16&quot;&gt;16&lt;/a&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;For more details like how to configure the services to use Sentry policy file and how to write policy files, you can refer the &lt;a href=&quot;https://www.cloudera.com/documentation/enterprise/5-10-x/topics/cdh_sg_sentry.html&quot;&gt;Cloudera document&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;use-sentry-service&quot;&gt;Use Sentry Service&lt;/h3&gt;
+
+&lt;p&gt;Sentry service is a centralized service that other systems can use RPC to request the permissions of a user. If a system is integrated with Sentry service, there is no need to write policy files. However, the system needs to provide methods to configure the policies and save them to Sentry.&lt;/p&gt;
+
+&lt;p&gt;For example, Hive and Impala allow user to use &lt;code&gt;GRANT&lt;/code&gt; and &lt;code&gt;REVOKE&lt;/code&gt; to configure permissions and it will save the permissions into Sentry service. Then when you query from Hive and Impala, it will ask Sentry service to see if you have the permission. Solr provides a tool to let you define the policies and save to Sentry service, too.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;               --------
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;               | User |
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;               --------
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;                 |  |
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;       Query --&amp;gt; |  | &amp;lt;-- Grant Permission
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;                 V  V
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;         ------------------------
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;         | Hive/Impala/Solr ... |
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;         ------------------------
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;                 ^  |
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;  Request    --&amp;gt; |  | &amp;lt;-- Save Permissions
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;  Permission     |  |
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt;                 |  V
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n14&quot; name=&quot;n14&quot;&gt;14&lt;/a&gt;&lt;/span&gt;          -------------------
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n15&quot; name=&quot;n15&quot;&gt;15&lt;/a&gt;&lt;/span&gt;          | Sentry Service  |
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n16&quot; name=&quot;n16&quot;&gt;16&lt;/a&gt;&lt;/span&gt;          -------------------
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;So there are two things that confused me a lot and I’d like to highlight here:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;There are two ways to configure Sentry policies. The are not related and a little like different systems.&lt;/li&gt;
+  &lt;li&gt;For the Sentry service, there is no way to configure policies through Sentry service directly.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;I think these are both design failures of Sentry. For the first one, if a system changed so much, at least you need to change a big version and highlight it in document. Like Python 2 and Python 3.&lt;/p&gt;
+
+&lt;p&gt;For the second one, it is really strange to doesn’t have a way to configure and view the policies through Sentry service. If user still need to configure the permissions separately for each system, it is a little point-less to use a centralized authorization service. Unless the permission model is the same or similar, like Hive and Impala basicly use the same permission model, so if you configure the permissions in Hive, Impala can use it. But the situation like that is rare. And I don’t think it would be difficult to provide a CLI tool to configure and view Sentry policy.&lt;/p&gt;</content><author><name></name></author><category term="Sentry" /><category term="Hadoop" /><category term="Cloudera" /><category term="security" /><category term="Splice Machine" /><summary type="html">For the last few days, I was working on integrating Apache Sentry into our database product Splice Machine. And when doing that, I found the document of Sentry is awful. It takes me much time to figure out what’s the role of Sentry and how to configure it. So in this article, I’d like to write some really important things to help understanding Sentry.</summary></entry><entry><title type="html">Spanner and Open Source Implementations</title><link href="https://www.binwang.me/2018-07-29-A-Review-on-Spanner-and-Open-Source-Implementations.html" rel="alternate" type="text/html" title="Spanner and Open Source Implementations" /><published>2018-07-29T00:00:00-04:00</published><updated>2018-07-29T00:00:00-04:00</updated><id>https://www.binwang.me/A-Review-on-Spanner-and-Open-Source-Implementations</id><content type="html" xml:base="https://www.binwang.me/2018-07-29-A-Review-on-Spanner-and-Open-Source-Implementations.html">&lt;p&gt;When &lt;a href=&quot;https://ai.google/research/pubs/pub39966&quot;&gt;Spanner paper&lt;/a&gt; is published, the use of synced clock to implement globally distributed database attracted a lot of attentions. After these years, Google have put Spanner on its cloud to make everyone be able to use it. And there are also some open source implementations of Spanner in these years. In this article, I’d like to write about how does synced clock makes Spanner special, some notes of using it and how others implement it without special hardware clock.&lt;/p&gt;
+
+&lt;h2 id=&quot;1-clock-is-not-trustable&quot;&gt;1. Clock Is Not Trustable&lt;/h2&gt;
+
+&lt;p&gt;Almost every computer has a clock on nowadays. A surprising fact is, the clock is not really accurate and normally we cannot even know the upper bound of the error. There are some reasons for this:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Normally the clock is synced with a remote server using NTP. But the network delay upper bound is unknown.&lt;/li&gt;
+  &lt;li&gt;Even the local clock is synced accurately once, the hardware in normal computer makes it inaccuracy when time passes. The error is depends on the temperature and so on.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;For more details, you can read the section “Unreliable Clocks” in Chapter 8 of the book &lt;a href=&quot;http://shop.oreilly.com/product/0636920032175.do&quot;&gt;
+Designing Data-Intensive Applications&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;It is not a big deal in normal life to have an unreliable clock, but it is a big deal when your consistency algorithm relies on it. We can see the details in the next section.&lt;/p&gt;
+
+&lt;h2 id=&quot;2-what-is-truetime-api&quot;&gt;2. What is TrueTime API?&lt;/h2&gt;
+
+&lt;p&gt;In order to get rid of the unreliable of clocks, Google use some special hardware like atomic clock to make it reliable. The time which can get from each server is still inaccurate, but the error has a known upper bound. Specifically, these APIs are provided:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Method&lt;/th&gt;
+      &lt;th&gt;Returns&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TT.now()&lt;/td&gt;
+      &lt;td&gt;A time interval: [earliest, latest]&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TT.after(t)&lt;/td&gt;
+      &lt;td&gt;true if &lt;code&gt;t&lt;/code&gt; has definitely passed&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TT.before(t)&lt;/td&gt;
+      &lt;td&gt;true if &lt;code&gt;t&lt;/code&gt; has definitely not arrived&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;As we can see later, the error upper bound will effect the latency of each transaction. Google said they normally maintain it under 7ms and with an average value of 4ms in their Spanner paper.&lt;/p&gt;
+
+&lt;h2 id=&quot;3-what-truetime-api-gives-spanner&quot;&gt;3. What TrueTime API Gives Spanner?&lt;/h2&gt;
+
+&lt;p&gt;What makes Spanner special is how it uses TrueTime API to do concurrency control. Spanner can guarantee external consistency, which is the most strong concurrency model. It means Spanner is both serializable and linearizable, which makes it very easy for application to avoid concurrency bugs. Serializable isolation can be found in many databases, but usually they are single leader databases, or have a centralized server. This makes it very slow if the database is globally distributed, since the network delay between data centers is large and unstable. If every transaction needs communicate with a centralized server, the transactions will be very slow and unstable.&lt;/p&gt;
+
+&lt;p&gt;Before understanding how Spanner can do this, let’s first look at how serialization transaction can be implemented in a centralized way. The simplest way is let a transaction grant a lock if it want’s to read or write a row, so that this row cannot be modified or read at the same time by another transactions. This is a relatively strong restraint, it will give us bad performance since every transaction excludes each other. We can have a better solution: for read only transactions, serializable isolation is the same as snapshot isolation. So we can implement snapshot isolation for read only transactions in order to have better performance.&lt;/p&gt;
+
+&lt;p&gt;Here is how snapshot isolation works: for every row of data, database stores not only the data, but also a version with it. When a transaction starts, it will only read data earlier than it. Normally we assign an id for each transaction and use it as the version. So here is the key: transaction id needs to be monotone increasing so that a later transaction can only read earlier data. Make a globally monotone increasing sequence is very straightforward and easy for a single machine, but it is very hard in a distributed environment without a centralized server.&lt;/p&gt;
+
+&lt;p&gt;Ordering transactions is complex but can be done without a clock. For example, the vector clock algorithm can do this. But this will not guarantee the accurate order of transaction. For example, if T1 commits before T2 start and they are operating on different partitions, the database may order T2 before T1. An implementation of Spanner Cockroachdb uses algorithms like this. We will analysis the problem of it in Section 6.2.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;So what TrueTime API really gives Spanner is generating monotone increasing transaction ID and guarantee external consistency ( or linearizability) at the same time&lt;/strong&gt;: if T1 commits before T2 start, then T1’s transaction ID is always smaller than T2’s transaction ID. Spanner implement this by getting a timestamp from TrueTime API that absolutely passed the current time, and wait to commit until currrent time absolutely passed the timestamp. In Spanner’s paper, there is a proof that this can garantee external consistency:&lt;/p&gt;
+
+&lt;p&gt;\(s_1 &amp;lt; t_{abs}(e_1^{commit})\) (commit wait)&lt;/p&gt;
+
+&lt;p&gt;\(t_{abs}(e_1^{commit}) &amp;lt; t_{abs}(e_2^{start})\) (assumption)&lt;/p&gt;
+
+&lt;p&gt;\(t_{abs}(e_2^{start}) \leq t_{abs}(e_2^{server})\) (causality)&lt;/p&gt;
+
+&lt;p&gt;\(t_{abs}(e_2^{server}) \leq s_2\) (start)&lt;/p&gt;
+
+&lt;p&gt;\(s_1 &amp;lt; s_2\) (transitivity)&lt;/p&gt;
+
+&lt;p&gt;There are also other parts of Spanner that use TrueTime API, for example, the Paxos implementation uses TrueTime API for leader lease. But it is just a implement optimization which can be done in other ways, too.&lt;/p&gt;
+
+&lt;h2 id=&quot;4-the-myth-of-spanner&quot;&gt;4. The Myth of Spanner&lt;/h2&gt;
+
+&lt;p&gt;There are some myth and hyper for Spanner. In this section, I will highlight the weakness of Spanner. I call it “weakness” not because other databases are doing better, but because they are not as good as people may thought. And they are not necessary bad things. It depends on how you understand and use it. If you don’t understand it correctly and thinks all the things are done perfectly and magically, you may run into some problems.&lt;/p&gt;
+
+&lt;p&gt;Many people think when using Spanner, reads can go to a replica closest to the client in most of the time, so the communication between data centers are avoid. But this is not true. In fact, &lt;strong&gt;all the serializable transactions, which includes read-write transactions and read only transactions that wants to read the most recently data, must communicate with the partition leader.&lt;/strong&gt; The theory is in the Spanner paper and there is also an explicit description on &lt;a href=&quot;https://cloud.google.com/spanner/docs/replication&quot;&gt;Spanner Cloud’s document&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let’s first look at the read-write transaction. Since read-write transaction will write Paxos log, it is straightforward to understand it must involves the leader. And more, it must waits for the major of replicas to confirm the writes in order to make sure the write will not lost when leader fails.&lt;/p&gt;
+
+&lt;p&gt;Then let’s look at the read-only transactions. In Spanner, every replica keeps a timestamp \(t_{safe}\). And if a read-only want’s to read the data at timestamp \(t\) and if \(t \leq t_{safe}\), it is safe to read data from that replica. \(t_{safe}\) will be minimal one between the lastest commit timestamp and the timestamp it generates for a 2PC prepare step (if it has one). There are two situations based on how \(t\) is chosen:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;If the transaction only involves one partition, it is chosen to be the last commit time of the partition. And in order tot get the last commit time, it needs to ask the leader of this partition.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;If the transaction involves multiple partition, it would be expensive and complex to get a last commit time. So using &lt;code&gt;TT.now().lastest&lt;/code&gt; as \(t\) can garantee it will read a version more recently than current time. And replica will not store \(t_{safe} \geq TT.now().lastest\) since the lastest commit timestamp must be earlier than current, so it needs to ask the leader to confirm whether there are new writes.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;5-how-to-avoid-the-weakness&quot;&gt;5. How to Avoid the Weakness&lt;/h2&gt;
+
+&lt;p&gt;From the last section, we find Spanner cannot avoid the communication between data centers. So why Spanner is still a big deal? We must look into real world problems. In real world, the weakness could be avoid if you understand it. Here is some suggestions when designing your application.&lt;/p&gt;
+
+&lt;h3 id=&quot;51-partition-database-based-on-location&quot;&gt;5.1 Partition Database Based on Location&lt;/h3&gt;
+
+&lt;p&gt;A common pattern for globally distributed business is most transactions are happened only on the data in a limited location. For example, in the businesses like event booking, online ridesharing,  Groupon or some online market, the clients and the data are basically in the same city. So in these business, you can partition the data based on location, and put the leader of each partition on that location.&lt;/p&gt;
+
+&lt;p&gt;In this setting, most of the requests can be done in closed data centers while transactions that involve multiple data centers can also be done which guarantees external consistency.&lt;/p&gt;
+
+&lt;p&gt;Another interesting implementation detail about Spanner is it have three &lt;a href=&quot;https://cloud.google.com/spanner/docs/replication&quot;&gt;kinds of replica&lt;/a&gt;: the read-write replica, read only replica and witness replica. Carefully plan these replicas based on the business and location can make most transactions operate on nearby data centers.&lt;/p&gt;
+
+&lt;h3 id=&quot;52-no-need-to-always-avoid-stale-read&quot;&gt;5.2 No Need to Always Avoid Stale Read&lt;/h3&gt;
+
+&lt;p&gt;Serializable transactions make sure you cannot read old values. But in many cases, you may not need such guarantee. Spanner have an API to let the client specify a time interval, and let Spanner to guarantee it will not read older data that this time. For example, I can request some data no older than 10 seconds ago. When do we only need such a guarantee? I can give some examples here:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;If you are using Twitter or Facebook, the count of likes doesn’t need to be in real time. A delay around 10 seconds is acceptable. So when user request a Tweet’s like count, he can read a snapshot on the past.&lt;/li&gt;
+  &lt;li&gt;If you update your configurations in platforms like Google AdWords, the configuration need not take effect in real time. So when each device read the AdWords configuration, it can read on a past snapshot.&lt;/li&gt;
+  &lt;li&gt;When generate a report, like how many user views for each webpage, the result need not to be in real time, either.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;So what’s the benefits to allow stale read? It turns out Spanner will sync up the data and safe time to all the replica. So if the time you specify is a relatively long interval, e.g. 10 seconds, you can read from a closest server and avoid all the communication between data centers, which will make the read fast.&lt;/p&gt;
+
+&lt;h2 id=&quot;6-open-source-implementations&quot;&gt;6. Open Source Implementations&lt;/h2&gt;
+
+&lt;p&gt;Google have released Spanner on Google Cloud, which makes it possible for everyone (with money (and not behind GFW)) to use. But if you don’t want to stuck on one provider or interested in more implementation details, you may want to look into some open source ones.&lt;/p&gt;
+
+&lt;p&gt;In general, if we know the theory behind a software, we can hope there are some open source implementations. The quality of these open source software is only a matter of time and focus. However, in Spanner’s case, a hardware clock is needed, which is rare for normal users. So the open source implementations are a little different from Spanner’s original one. Let’s take a look at two popular implementations and see how they get rid of the lack of hardware clock and how the implementation effect the result.&lt;/p&gt;
+
+&lt;h3 id=&quot;61-tidb&quot;&gt;6.1 TiDB&lt;/h3&gt;
+
+&lt;p&gt;TiDB uses a single time server to generate the transaction ID in order to make it monotone increasing. This is simple and they claim the throughput of the time server is very high and can be deployed in an HA way. But the down side is also very obvious: the latency would be high if you have data centers around the world. This doesn’t only effect the read-write transactions, but will effect all the requests: include the read-only ones with snapshot isolation: since when doing readonly transaction, the client’s timestamp is not trustable, it can only get a trustable timestamp from the time server. Of course client can cache some timestamps returned from the server and maintain them to use in the future requests, but it would be complex and error-prone. In fact, TiDB’s developer recommends the network delay between the servers under 5ms in the section “What’s the recommended solution for the deployment of three geo-distributed data centers?” of &lt;a href=&quot;https://github.com/pingcap/docs/blob/master/FAQ.md&quot;&gt;their FAQ&lt;/a&gt;. Considering light still needs about 6ms to travel from Beijing to Guangzhou and needs about 12ms from New York to San Francisco, the requirements is not possible to reach in a real globally distributed cluster. And maintain a stable latency in a globally scale is hard and expensive, too.&lt;/p&gt;
+
+&lt;p&gt;Since the most highlight part of Spanner is globally distributed, the down side of TiDB is really a big deal. But the good part of TiDB is it compatible with MySQL protocol, which makes it to be a very easy solution if you want to scale out your old MySQL database.&lt;/p&gt;
+
+&lt;p&gt;And another different between TiDB and Spanner is TiDB only supports isolation level up to repeatable reads (or snapshot isolation), which is a weaker level than Spanner’s serializable isolation.&lt;/p&gt;
+
+&lt;h3 id=&quot;62-cockroachdb&quot;&gt;6.2 CockroachDB&lt;/h3&gt;
+
+&lt;p&gt;CockroachDB uses another approach to solve the lack of TrueTime API. The algorithm is a little complex. You can refer to &lt;a href=&quot;https://www.cockroachlabs.com/blog/living-without-atomic-clocks/&quot;&gt;their blog&lt;/a&gt; and the &lt;a href=&quot;https://cse.buffalo.edu/tech-reports/2014-04.pdf&quot;&gt;HLC paper&lt;/a&gt; for details.&lt;/p&gt;
+
+&lt;p&gt;The most obviously problem of this implementation is it lacks linearizability. To see what will happen when lacking linearizability, the “Comments” section of &lt;a href=&quot;https://jepsen.io/analyses/cockroachdb-beta-20160829&quot;&gt;Jepsen test for Cockroachdb&lt;/a&gt; explains it very clearly.&lt;/p&gt;
+
+&lt;h3 id=&quot;63-conclusion&quot;&gt;6.3 Conclusion&lt;/h3&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Database&lt;/th&gt;
+      &lt;th&gt;Special Hardware&lt;/th&gt;
+      &lt;th&gt;Isolation Level&lt;/th&gt;
+      &lt;th&gt;Consistency Level&lt;/th&gt;
+      &lt;th&gt;Centralized Time Server&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Spanner&lt;/td&gt;
+      &lt;td&gt;Yes&lt;/td&gt;
+      &lt;td&gt;Serializable&lt;/td&gt;
+      &lt;td&gt;Linearizable&lt;/td&gt;
+      &lt;td&gt;No&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TiDB&lt;/td&gt;
+      &lt;td&gt;No&lt;/td&gt;
+      &lt;td&gt;Repeatable Reads&lt;/td&gt;
+      &lt;td&gt;Linearizable&lt;/td&gt;
+      &lt;td&gt;Yes&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Cockroachdb&lt;/td&gt;
+      &lt;td&gt;No&lt;/td&gt;
+      &lt;td&gt;Serializable&lt;/td&gt;
+      &lt;td&gt;Causal Consistency&lt;/td&gt;
+      &lt;td&gt;No&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</content><author><name></name></author><category term="Technical" /><category term="database" /><category term="technology" /><category term="distributed system" /><summary type="html">When Spanner paper is published, the use of synced clock to implement globally distributed database attracted a lot of attentions. After these years, Google have put Spanner on its cloud to make everyone be able to use it. And there are also some open source implementations of Spanner in these years. In this article, I’d like to write about how does synced clock makes Spanner special, some notes of using it and how others implement it without special hardware clock.</summary></entry><entry><title type="html">My 2017 Year in Review</title><link href="https://www.binwang.me/2018-01-02-The-Year-of-2017.html" rel="alternate" type="text/html" title="My 2017 Year in Review" /><published>2018-01-02T00:00:00-05:00</published><updated>2018-01-02T00:00:00-05:00</updated><id>https://www.binwang.me/The-Year-of-2017</id><content type="html" xml:base="https://www.binwang.me/2018-01-02-The-Year-of-2017.html">&lt;p&gt;When I open my blog, I suddenly realized that I haven’t even writen one blog in 2017. I’ve tried to write some blogs about technology but it spent too much time and energy so I gave up at last. There happens a lot of things on me in 2017. So I must write something while the next year is beginning. Things have changed both on my life and my work. I don’t want to write too many details on my personal life, so I will just record some work related things.&lt;/p&gt;
+
+&lt;h2 id=&quot;job-change&quot;&gt;Job Change&lt;/h2&gt;
+
+&lt;p&gt;At the mid of 2017, I’ve quite my job at &lt;a href=&quot;https://www.appadhoc.com&quot;&gt;AppAdhoc (吆喝科技)&lt;/a&gt;. I was one of the earliest employee and have built most of the backend platform. It has been very happy to write a platform from scratch that can handle billions of requests per day. But the changes in the company at this year makes me tired and I decided to quite and do something else. I’ve explored, learned and used many cool technologies while I was in this company. I’d like to write some blogs about that in the future.&lt;/p&gt;
+
+&lt;h2 id=&quot;machine-learning&quot;&gt;Machine Learning&lt;/h2&gt;
+
+&lt;p&gt;After I quite the job, the thing I want to do most is writting some machine learning application. I’ve writen some of them in the past and built a workstation contains a GPU so I can train models faster. The techs are cool but I don’t know what to built yet. I tried to write a word based game (like &lt;a href=&quot;https://en.wikipedia.org/wiki/MUD&quot;&gt;Mud&lt;/a&gt;) and build some AI into it. But there is too many details. And the economic pressures makes me to do some other things that can earn money. So this game project is suspended and I became a freelancer. But let’s write about the freelancer experience later and complete my machine learning story first.&lt;/p&gt;
+
+&lt;p&gt;After the game project suspended, I’ve writen &lt;a href=&quot;https://ai.binwang.me/couplet/&quot;&gt;another machine learning application&lt;/a&gt;, which is unexpected popular. This application plays couplet (对对联), which is a traditional Chinese word game. One gives a sentence and another one come up with another sentence that matches it both in structure and meaning. It plays a big part in the traditional Chinese literature. It’s like poem which needs creation and inpiration. The structure of couplets makes it easy to train. I use it as a practice to write seq2seq model. After I publish it online, it attracted more than 200 thousands unique visitors in one week.&lt;/p&gt;
+
+&lt;p&gt;The last project I’ve written about machine learning is the dissertation of my MSc project. I’ve joined the MSc distance learning project at the University of Leicester at the mid of 2016. So I need to write a dissertation in order to get the degree this year. This project is also NLP related and is about text classification and regression. I may write more details in the future.&lt;/p&gt;
+
+&lt;p&gt;Though I’ve writen some machine learning application, I don’t think I’ve put more time on it or learned more than in 2016. For example, I’ve read less paper and book, and written less code. In my plan, the book &lt;em&gt;Probability Theory: The Logic of Science&lt;/em&gt; should be completed in 2017, but I almost haven’t read it after I quite the job. However, the degree of proficiency of writting a web crawler and Tensorflow code have been increased, which is one thing that I can comfort myself.&lt;/p&gt;
+
+&lt;h2 id=&quot;freelancer-experience&quot;&gt;Freelancer Experience&lt;/h2&gt;
+
+&lt;p&gt;After about 2 months since quiting my job, I realized I need to do something to earn money. But I was tired to go to work and sit in an office all the day. So I became a freelancer and find projects online. Until now, I have two part-time remote jobs and an ongoing project. It has been very busy. Doing outsourcing projects means there are many time-consuming details to confirm and fix. As programmers, we know that software is built with many iterations. It needs much work to build a software ready for the customer. But many customers don’t know that. They saw softwares on the market and just want one like that, not considering how much time it has been built and iterated by a how big team.  So the price for the outsourcing projects is not always good. However, it is something that I can do without other dependencies and be able to work from home. So I will deal with that for now.&lt;/p&gt;
+
+&lt;h2 id=&quot;p2p-network-and-blockchain&quot;&gt;P2P Network and Blockchain&lt;/h2&gt;
+
+&lt;p&gt;Though blockchain is a hot technology in recent years, I’ve researched little on it. But something happened recently makes me take a serious thought on it. To be more specificly, it makes me think about the decenterlized Internet, not just blockchain. But the blockchain is the technology I didn’t familar with in the past.&lt;/p&gt;
+
+&lt;p&gt;The cause is the couplet AI I’ve built. I built a trending module that let users vote the best couplets generated from the AI. And there are some couplets related to politics on that. So my Weibo account is deactived by the Chinese goverment and the couplet AI website is blocked by GFW. There are many memories and contacts in my Weibo account. That’s the time I realized how important it is to have a decenterlized Internet, which one can control his own data and no one can modify or delete it.&lt;/p&gt;
+
+&lt;p&gt;That’s also the time when the 19th CPC National Congress just concluded. And some other things happend in Beijing and in my life makes me think how AI will affect goverment and big companies’ power. At past, I didn’t care about it and just wanted to build something fun. But now I realize with the goverment’s administrative power and the big companies’ monopoly power, they can gather more data and use more computation power than the ordinary beings. And data is the key. In the past days, without the advanced AI technologies, thay can find little useful things from it because the data is too big. No one can read and analysis all of it. But with developing of AI, they can get more and more useful informations from it: the bussiness secret, your habit, your property and so on. If we cannot own ourself’s data and keep it secret, we will become the new slaves, being exploited even we are not aware of it.&lt;/p&gt;
+
+&lt;p&gt;Then I found the project &lt;a href=&quot;https://blockstack.org/&quot;&gt;BlockStack&lt;/a&gt;. It is not perfect but gives me a clue on how to build the decenterlized softwares. Maybe I will not have the time to research on that deeply in the new year, but it definitely worth to do so.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;So this is 2017 for me. Not perfect, not great. I’ve felt lots of confused, pain and pressure in the last year. But that’s not a bad thing. It gives me a chance to think the things and opportunities that I’ve never thought of. Maybe that’s the feeling of growth.&lt;/p&gt;</content><author><name></name></author><category term="thoughs" /><category term="life" /><summary type="html">When I open my blog, I suddenly realized that I haven’t even writen one blog in 2017. I’ve tried to write some blogs about technology but it spent too much time and energy so I gave up at last. There happens a lot of things on me in 2017. So I must write something while the next year is beginning. Things have changed both on my life and my work. I don’t want to write too many details on my personal life, so I will just record some work related things.</summary></entry><entry><title type="html">Build a Unix Like Environment on Windows</title><link href="https://www.binwang.me/2016-11-28-Config-Development-Environment-on-Windows.html" rel="alternate" type="text/html" title="Build a Unix Like Environment on Windows" /><published>2016-11-28T00:00:00-05:00</published><updated>2016-11-28T00:00:00-05:00</updated><id>https://www.binwang.me/Config-Development-Environment-on-Windows</id><content type="html" xml:base="https://www.binwang.me/2016-11-28-Config-Development-Environment-on-Windows.html">&lt;p&gt;I’ve bought a Surface Pro 4 some days ago. It is very amazing and I’d like to use it as my backup development laptop. My daily development is under Linux and Mac OS X. I use terminal and lots of bash scripts everyday. So I need a Unix-like environment on Windows. This article will introduce how to do that.&lt;/p&gt;
+
+&lt;h2 id=&quot;terminal-and-unix-tools&quot;&gt;Terminal and Unix Tools&lt;/h2&gt;
+
+&lt;p&gt;There is a famous software called &lt;a href=&quot;https://www.cygwin.com/&quot;&gt;Cygwin&lt;/a&gt; which provides many unix tools along with a terminal. You can download it from its homepage and install it with GUI.&lt;/p&gt;
+
+&lt;p&gt;While installing it, it will ask you which tools you’d like to install. Just install the default ones and Lynx is enough, since we will install a package manager and it will be easier to install other tools then.&lt;/p&gt;
+
+&lt;p&gt;You can use Xterm with Cygwin terminal, so you can config it as you are in Linux.&lt;/p&gt;
+
+&lt;h2 id=&quot;package-manager&quot;&gt;Package Manager&lt;/h2&gt;
+
+&lt;p&gt;The most missed thing while I’m using Windows is Linux’s package manager. You can search, install, update and manage software very easily with it. There is also HomeBrew under Mac OS X so I’d like something like that under Windows. I searched on Google and found &lt;a href=&quot;https://github.com/transcode-open/apt-cyg&quot;&gt;apt-cyg&lt;/a&gt; which can manage packages in Cygwin. You can follow the steps on its homepage to install it. After install it, you can install wget with it so that it will stop print warning messages.&lt;/p&gt;
+
+&lt;p&gt;I’ve installed tmux, zsh, Git and vim with it. And config them with my &lt;a href=&quot;https://github.com/wb14123/dotfiles&quot;&gt;config files&lt;/a&gt;. I only need to change the tmux start up config:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;- set -g default-command &amp;quot;reattach-to-user-namespace -l /bin/zsh&amp;quot;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;+ set -g default-command &amp;quot;/usr/bin/zsh&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Except this, everything else works very well without any problem.&lt;/p&gt;
+
+&lt;h2 id=&quot;python&quot;&gt;Python&lt;/h2&gt;
+
+&lt;p&gt;There are many tools are written in Python. And my work also uses Python a lot. You can install Python with apt-cyg. But there will be some tricky things if you need to install some Python packages with pip.&lt;/p&gt;
+
+&lt;p&gt;First we will install pip:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;apt-cyg install python python-devel
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;wget http://peak.telecommunity.com/dist/ez_setup.py
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;python ez_setup.py
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;easy_install pip
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Then we need to install gcc in order to compile some python packages:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;apt-cyg install colorgcc gcc-core gcc-g++ libgcc1
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Then we need to change a python header file: /usr/include/python2.7/pyconfig.h:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;- #define __BSD_VISIBLE 1
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;+ #define __BSD_VISIBLE 0
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;</content><author><name></name></author><category term="Windows" /><category term="Python" /><category term="bash" /><summary type="html">I’ve bought a Surface Pro 4 some days ago. It is very amazing and I’d like to use it as my backup development laptop. My daily development is under Linux and Mac OS X. I use terminal and lots of bash scripts everyday. So I need a Unix-like environment on Windows. This article will introduce how to do that.</summary></entry><entry xml:lang="zh"><title type="html">读《邓小平时代》有感</title><link href="https://www.binwang.me/2016-07-24-%E8%AF%BB-%E9%82%93%E5%B0%8F%E5%B9%B3%E6%97%B6%E4%BB%A3-%E6%9C%89%E6%84%9F.html" rel="alternate" type="text/html" title="读《邓小平时代》有感" /><published>2016-07-24T00:00:00-04:00</published><updated>2016-07-24T00:00:00-04:00</updated><id>https://www.binwang.me/%E8%AF%BB%E3%80%8A%E9%82%93%E5%B0%8F%E5%B9%B3%E6%97%B6%E4%BB%A3%E3%80%8B%E6%9C%89%E6%84%9F</id><content type="html" xml:base="https://www.binwang.me/2016-07-24-%E8%AF%BB-%E9%82%93%E5%B0%8F%E5%B9%B3%E6%97%B6%E4%BB%A3-%E6%9C%89%E6%84%9F.html">&lt;p&gt;最近花了一个周末加一些零零散散的时间把傅高义的《邓小平时代》这本书看完了。这本书的内容，总体上讲对邓小平的评价是正面的。里面讲的历史，我之前多多少少都了解过一些，而通过这本书，对这段历史的了解更加系统了一些。&lt;/p&gt;
+
+&lt;p&gt;邓小平主要的功绩就是改革开放，把经济作为了发展的中心，让中国成功的从毛泽东时代的封闭环境和残酷的斗争中走了出来，从而发展成了今天的经济大国。对于改革开放的功绩，是没有太大争议的。对于邓小平比较有争议的地方，主要是对于经济发展中产生的贫富差距和腐败问题，以及对于民主和自由的限制。然而贫富差距和腐败，在各国均为能免，只是程度轻重而已，而民主也能对腐败问题起到一定的制衡作用。再加上八九学潮的影响，对邓小平的主要争议还是集中在没能把中国带到真正民主的道路上来。正好我前段时间又刚看完《论美国的民主》这本书，因而不免对于中国的民主，有了一些新的想法。&lt;/p&gt;
+
+&lt;p&gt;之前我一直对政府的做法并无好感，尤其对八九事件痛心疾首，感觉失去了一个使中国实现民主的大好机会。然而这两天通过这本书对这段历史的反思，突然感觉没有完全民主的做法，也许不全然是错的。让我印象比较深刻的一点是，邓小平在听过对于三权分立的介绍后并不以为然，而且后来经常说，这种做法是三个政府互相打架，因而效率低下。而中央集权，有一个统一的领导，可以让中国集中力量实现现代化。现实也确实是如此，中国十几年来一直保持高速的经济增长，尤其是我们生活在中国的人，可以切身感觉到经济增长带来的变化。因而从这个意义上来讲，不完全实行民主，在这个阶段，也许是个正确的选择。尤其是考虑到当时刚刚经历过文革，有知识的人都被分配到了底层，而人民的思想又过于激动，这个时候实行民主，也真的不知道会发生什么事情。还有另外一个让我印象深刻的细节，就是在讲到其他社会主义国家的巨变时，邓小平评价这些领导人真是傻，不先谋求自己的政治道路，而是把政权交出去了，这样自己想做什么也都不可能了。对于东欧和俄罗斯这几年的发展，又让人感到，也许中国的做法，确实是当时的情况下一种比较好的做法。&lt;/p&gt;
+
+&lt;p&gt;然而在当时的情况下比较好的做法，并不一定一直是比较好的做法。在当时，中国落后太多，想要追上其他国家，现代化是必然的选择，引进其他国家的技术和向其他国家学习，也都是必然的道路。因此当目标比较确定时，或者有比较英明的领导人时，也许是比较适合中央集权。然而当发展到了一定程度，没有其他国家的技术让我们学习，我们也不知道要发展什么样的道路的时候，民主应该是一个更好的选择。这也许是一个低效的选择，但是当我们已经不急于挽救将要饿死的人，也没有明显的国外的威胁的时候，尤其是我们不再明确知道什么是正确的道路的时候，低效反而是可以容忍的。因为相对于把国家限于独裁统治的危险来说，这种危险要小的多。当一个政权是独裁统治的时候，固然可以作出伟大的成就，但是也很容易发生被一点偶然事件影响历史进程的情况。也许历史就在独裁者的一念间，而当外部威胁越小，独裁者就不免要固步自封，而且贪图于利益。如果没人限制权利，对于广大人民来说，危险在所难免。一个例子就是现在的互联网行业，我因为身处其中，看到了太多由于各种莫名其妙的政策上的限制，对人们的创造力和精力的无谓消耗。而这个行业，又可以说是现在最高新的产业。当一个高新产业受到这样的限制时，我很难相信整个社会会持续的保持有创造力和竞争力。&lt;/p&gt;
+
+&lt;p&gt;在西方很多国家，虽然也会看到有政治丑闻，但是至少舆论上权利是要被限制的，而且舆论更加自由，事情总能被更多的人知道。真理从来都是愈辩愈明，而不是把问题掩盖住就会消失不见。而反观中国，言论不自由，很多不想让你知道的事情，就不会让你知道。因此一不小心，舆论就会被带偏。尤其是最近这段时间，感觉民族主义越来越盛，真是让人担忧，不知道邓公当时嘱咐的一定要对外开放，是否还能继续坚持。&lt;/p&gt;
+
+&lt;p&gt;所思甚多，难免纷乱。只言片语，以鉴后世吧。&lt;/p&gt;</content><author><name></name></author><category term="politics" /><summary type="html">最近花了一个周末加一些零零散散的时间把傅高义的《邓小平时代》这本书看完了。这本书的内容，总体上讲对邓小平的评价是正面的。里面讲的历史，我之前多多少少都了解过一些，而通过这本书，对这段历史的了解更加系统了一些。</summary></entry><entry><title type="html">Config sbt to Use Both Proxy and Self Hosted Repositories</title><link href="https://www.binwang.me/2016-07-11-Config-sbt-to-Use-Both-Proxy-and-Self-Hosted-Repositories.html" rel="alternate" type="text/html" title="Config sbt to Use Both Proxy and Self Hosted Repositories" /><published>2016-07-11T00:00:00-04:00</published><updated>2016-07-11T00:00:00-04:00</updated><id>https://www.binwang.me/Config-sbt-to-Use-Both-Proxy-and-Self-Hosted-Repositories</id><content type="html" xml:base="https://www.binwang.me/2016-07-11-Config-sbt-to-Use-Both-Proxy-and-Self-Hosted-Repositories.html">&lt;p&gt;While building Scala projects, we usually use a proxy to make the build faster. On the other hand, we usually use another repository to host our internal dependencies, which usually has a password to protect it from unwanted access. Both things are good and necessary. But if you want to use both of them, you will find it’s very tricky.&lt;/p&gt;
+
+&lt;h2 id=&quot;use-proxy-repositories&quot;&gt;Use Proxy Repositories&lt;/h2&gt;
+
+&lt;p&gt;sbt has a &lt;a href=&quot;http://www.scala-sbt.org/0.13/docs/Proxy-Repositories.html&quot;&gt;document&lt;/a&gt; that described how to set proxy repositories:&lt;/p&gt;
+
+&lt;h3 id=&quot;config-repositories-in-sbtrepositories-like-this&quot;&gt;Config repositories in &lt;code&gt;~/.sbt/repositories&lt;/code&gt; like this:&lt;/h3&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;[repositories]
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;  local
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;    my-ivy-proxy-releases: http://repo.company.com/ivy-releases/, [organization]/[module]/(scala_[scalaVersion]/)(sbt_[sbtVersion]/)[revision]/[type]s/[artifact](-[classifier]).[ext]
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;    my-maven-proxy-releases: http://repo.company.com/maven-releases/
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;add--dsbtoverridebuildrepostrue-while-use-sbt-command&quot;&gt;Add &lt;code&gt;-Dsbt.override.build.repos=true&lt;/code&gt; while use sbt command.&lt;/h3&gt;
+
+&lt;p&gt;The second step will override all the resolvers defined in your project, like in the file &lt;code&gt;build.sbt&lt;/code&gt;. It is necessary because if you don’t do this, sbt will still send requests to default repos like typesafe and scala-sbt.&lt;/p&gt;
+
+&lt;h2 id=&quot;use-self-hosted-repositories&quot;&gt;Use Self Hosted Repositories&lt;/h2&gt;
+
+&lt;p&gt;sbt has a &lt;a href=&quot;http://www.scala-sbt.org/0.13/docs/Resolvers.html&quot;&gt;document&lt;/a&gt; about this, too. You will add something like this in your &lt;code&gt;build.sbt&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;resolvers +=
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;  &amp;quot;Sonatype OSS Snapshots&amp;quot; at &amp;quot;https://oss.sonatype.org/content/repositories/snapshots&amp;quot;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And if you have a password for this repo, you should also add something like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;credentials += Credentials(&amp;quot;Sonatype Nexus Repository Manager&amp;quot;, &amp;quot;oss.sonatype.org&amp;quot;,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;  &amp;quot;username&amp;quot;, &amp;quot;password&amp;quot;)
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;use-both&quot;&gt;Use Both&lt;/h2&gt;
+
+&lt;p&gt;You may see the problem to use both of them. In order to force sbt to use proxy repos, you should use the option &lt;code&gt;-Dsbt.override.build.repos=true&lt;/code&gt;, which will override your self hosted repo written in &lt;code&gt;build.sbt&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;After tried some methods, I find I can just write the repos defined in &lt;code&gt;build.sbt&lt;/code&gt; into &lt;code&gt;~/.sbt/repositories&lt;/code&gt;, and sbt will still be able to find the credentials for it while building the project.&lt;/p&gt;
+
+&lt;p&gt;This method will make sbt print some error logs while loading the project: sbt will attempt to download some dependencies from this repo but cannot find the credential since it hasn’t loaded the project yet. If you are comfortable to ignore the error log, this method would be fine.&lt;/p&gt;</content><author><name></name></author><category term="sbt" /><category term="scala" /><summary type="html">While building Scala projects, we usually use a proxy to make the build faster. On the other hand, we usually use another repository to host our internal dependencies, which usually has a password to protect it from unwanted access. Both things are good and necessary. But if you want to use both of them, you will find it’s very tricky.</summary></entry><entry><title type="html">Build A Computer for Deep Learning</title><link href="https://www.binwang.me/2016-06-19-Build-A-Computer-for-Deep-Learning.html" rel="alternate" type="text/html" title="Build A Computer for Deep Learning" /><published>2016-06-19T00:00:00-04:00</published><updated>2016-06-19T00:00:00-04:00</updated><id>https://www.binwang.me/Build-A-Computer-for-Deep-Learning</id><content type="html" xml:base="https://www.binwang.me/2016-06-19-Build-A-Computer-for-Deep-Learning.html">&lt;p&gt;These days, I bought some hardware and build a computer by myself. It’s fun and I’ve learned lots of things from it. Here is a note to record it.&lt;/p&gt;
+
+&lt;h2 id=&quot;why-i-built-it&quot;&gt;Why I Built It&lt;/h2&gt;
+
+&lt;p&gt;This computer is used for working and learning. I build it for two reasons:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Use Linux. I’ve used Linux for many years and then used MacOS X. I missed the days of using Linux, which I can control everything.&lt;/li&gt;
+  &lt;li&gt;Run deep learning programs.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;hardware&quot;&gt;Hardware&lt;/h2&gt;
+
+&lt;table&gt; &lt;tr&gt;&lt;td&gt;CPU&lt;/td&gt; &lt;td&gt;Intel i5-6600k&lt;/td&gt; &lt;td&gt;It is easy to overclock and has built in graphics to support 4k at 60Hz.&lt;/td&gt;&lt;/tr&gt;
+
+
+&lt;tr&gt;&lt;td&gt;RAM&lt;/td&gt; &lt;td&gt;G.Skill DDR4 2400Hz * 2&lt;/td&gt; &lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;td&gt;SSD&lt;/td&gt; &lt;td&gt;Samsung 850 EVO 120G SATA3&lt;/td&gt; &lt;td&gt;I use this for the system volume.&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;td&gt;Disk&lt;/td&gt; &lt;td&gt;WD blue disk 2TB * 2&lt;/td&gt; &lt;td&gt;I use this for the data volume. These two disks are built with Raid 1 so the data is safe. I've considered to buy three 1TB disks and built Raid 5, but the price is not so good.&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;td&gt;Motherboard&lt;/td&gt; &lt;td&gt;GIGABYTE Z160X-UD3&lt;/td&gt; &lt;td&gt;This motherboard is extendable. However, it doesn't support display port for 4k at 60Hz. (I found this after I bought it and I couldn't return it ...)&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;td&gt;Power&lt;/td&gt; &lt;td&gt;GreatWall 600W GW-7000D&lt;/td&gt; &lt;td&gt;It has enough power.&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;td&gt;Case&lt;/td&gt; &lt;td&gt;SAMA Tank&lt;/td&gt; &lt;td&gt;This case is big enough. However, it has just two 3.5 disk positions and three 2.5 disk positions. But I can deal with it.&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;td&gt;CPU Cooler&lt;/td&gt; &lt;td&gt;DeepCool&lt;/td&gt; &lt;td&gt;This cooler is by wind and the noise is small.&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;td&gt;Monitor&lt;/td&gt; &lt;td&gt;DELL P2715Q&lt;/td&gt; &lt;td&gt;This monitor has 4k support. The display effect is very fantasy.&lt;/td&gt;&lt;/tr&gt;
+
+&lt;tr&gt;&lt;td&gt;Graphics&lt;/td&gt; &lt;td&gt;NVIDIA GTX 1080&lt;/td&gt; &lt;td&gt;I haven't buy it yet. Use this to run deep learning programs.&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;software&quot;&gt;Software&lt;/h2&gt;
+
+&lt;p&gt;I may share all my configurations some day. Here is a brief list:&lt;/p&gt;
+
+&lt;table&gt;
+&lt;tr&gt;&lt;td&gt;OS&lt;/td&gt; &lt;td&gt;Archlinux&lt;/td&gt; &lt;td&gt;I've used ArchLinux for many years and I love the philosophies like rolling update, just install what you need ans so on.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Window Manager&lt;/td&gt; &lt;td&gt;i3wm&lt;/td&gt; &lt;td&gt;Tilling window manger is very awesome.&lt;/td&gt; &lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;dmenu&lt;/td&gt; &lt;td&gt;Rofi&lt;/td&gt; &lt;td&gt;It supports fuzzy search and searching opening windows.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;Monitor&lt;/td&gt; &lt;td&gt;Conky&lt;/td&gt; &lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;screenshots&quot;&gt;Screenshots&lt;/h2&gt;
+
+&lt;p&gt;Split with Chrome and Terminal:
+&lt;img src=&quot;/static/images/2016-06-19-Build-A-Computer-For-Deep-Learning/screenshot1.png&quot; alt=&quot;screenshot1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Conky and Rofi:
+&lt;img src=&quot;/static/images/2016-06-19-Build-A-Computer-For-Deep-Learning/screenshot2.png&quot; alt=&quot;screenshot2&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Read a PDF:
+&lt;img src=&quot;/static/images/2016-06-19-Build-A-Computer-For-Deep-Learning/screenshot3.png&quot; alt=&quot;screenshot3&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><category term="life" /><summary type="html">These days, I bought some hardware and build a computer by myself. It’s fun and I’ve learned lots of things from it. Here is a note to record it.</summary></entry><entry><title type="html">How to Put RNN Layers Into Neural Network Model</title><link href="https://www.binwang.me/2016-05-14-How-to-Put-RNN-Layer-Into-Nueral-Network-Model.html" rel="alternate" type="text/html" title="How to Put RNN Layers Into Neural Network Model" /><published>2016-05-14T00:00:00-04:00</published><updated>2016-05-14T00:00:00-04:00</updated><id>https://www.binwang.me/How-to-Put-RNN-Layer-Into-Nueral-Network-Model</id><content type="html" xml:base="https://www.binwang.me/2016-05-14-How-to-Put-RNN-Layer-Into-Nueral-Network-Model.html">&lt;p&gt;If you are interested in neural networks, you must have ever read and learn lots of things about RNN, which can reason about sequences of data. RNN is awesome and very fun to play with, if you haven’t heard of it, you can read &lt;a href=&quot;http://karpathy.github.io/2015/05/21/rnn-effectiveness/&quot;&gt;this great article&lt;/a&gt; which train a char level RNN model to generate text.&lt;/p&gt;
+
+&lt;p&gt;While these articles are very great and introduce the idea and structure of RNN, but they didn’t mention the details of how to put an RNN layer into your neural network model. I’ve reimplemented char level RNN these days two times, one with Theano and the other one with TensorFlow. I’ll talk about how to fit a RNN layer into a neural network model.&lt;/p&gt;
+
+&lt;h2 id=&quot;basic-idea-of-rnn&quot;&gt;Basic Idea of RNN&lt;/h2&gt;
+
+&lt;p&gt;The basic idea of RNN is that you have a sequence of data, you can train on this data so that represent the sequence of data as a vector, then you can do other tricks on this trained vector in other tasks. So make it simple: &lt;strong&gt;RNN deals with sequence data (maybe dymical length)&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;For example, given this task: the input is a sequence of chars, and you need to predict the next char of the sequence. Then you can train to represent the sequence of chars as a vector with RNN, and then input the vector into next layer, maybe a linear layer with softmax activation, like in other classification tasks.&lt;/p&gt;
+
+&lt;p&gt;So how does RNN do this? RNN will do these things:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Step over the sequence of data.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;For each step:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Count next state based on the current step data and current state: &lt;span&gt;\(next\_state = state\_func(state, input_i)\)&lt;/span&gt;&lt;/li&gt;
+  &lt;li&gt;Count output from current input and state: &lt;span&gt;\(output_i = out\_func(state, input_i)\)&lt;/span&gt;&lt;/li&gt;
+  &lt;li&gt;Update the state: &lt;span&gt;\(state = next\_state\)&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The &lt;code&gt;state_func&lt;/code&gt; and &lt;code&gt;out_func&lt;/code&gt; maybe different depends on what kind of the RNN is (for example, LSTM or GRU), but the basic structure is the same.&lt;/p&gt;
+
+&lt;p&gt;A thing we need to notice is, the process I just described, is just the behaviour of one RNN layer.&lt;/p&gt;
+
+&lt;p&gt;Then we’ve got two outputs from the RNN: a sequence of output and its inner state. Normally, if we want to stack multiple RNN layers, we can use the sequence of output as the next input of RNN layer. If you just want a vector to represent the sequence of data, you can get the output of the last step. Some other models such as seq2seq also uses the inner state to represent the sequence of data.&lt;/p&gt;
+
+&lt;h2 id=&quot;feed-the-input&quot;&gt;Feed the Input&lt;/h2&gt;
+
+&lt;p&gt;We have the basic idea of RNN. How do we implement it efficiently? If we want our model run fast, we need to run it on GPU. So in order to make it fast, we should:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Copy batch of inputs into the GPU instead of run them one by one. So use mini-batch training.&lt;/li&gt;
+  &lt;li&gt;Represent the data as tensor and use tensor operations as many as you could. (Many BLAS library and deep learning frameworks will do a lot of optimizations on tensor operations).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Based on this, we should represent the input data as tensor. We may need these dimensions for the tensor:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Batch size to represent multiple batches.&lt;/li&gt;
+  &lt;li&gt;Time step to represent the sequence of data.&lt;/li&gt;
+  &lt;li&gt;Vector size for each item of the input sequence. (If each item of the input sequence cannot be represent as a vector, you may need other dimensions to represent the item. )&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;So the shape of the tensor is [batch_size * time_step * size]. With this regular tensor, we can fit our RNN layer into the neural network model.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/static/images/2016-05-14-How-to-Put-RNN-Layer-Into-Nueral-Network-Model/rnn_layers.png&quot; alt=&quot;RNN layers&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;some-other-details&quot;&gt;Some Other Details&lt;/h2&gt;
+
+&lt;h3 id=&quot;loop-operations&quot;&gt;Loop Operations&lt;/h3&gt;
+
+&lt;p&gt;Since we want to use tensor operations as many as we could, we don’t want to split the tensor based on the time_step dimension and use our own loop. Some deep learning frameworks have there own loop operations. These operations should be optimized to be more efficient.&lt;/p&gt;
+
+&lt;p&gt;Theana and TensorFlow both use symbol computation. They both have the loop operation, too. It’s &lt;a href=&quot;http://deeplearning.net/software/theano/library/scan.html&quot;&gt;scan&lt;/a&gt; in Theano and &lt;a href=&quot;https://www.tensorflow.org/versions/r0.8/api_docs/python/control_flow_ops.html#while_loop&quot;&gt;while_loop&lt;/a&gt; in TensorFlow.&lt;/p&gt;
+
+&lt;h3 id=&quot;variable-time-step&quot;&gt;Variable Time Step&lt;/h3&gt;
+
+&lt;p&gt;Some input sequences of RNN have different length. One way to solve this is use the max length as time step, and padding other samples with some special value like zero. But this can be expensive. Another way is split the sequences into many tensors with the same time step, and let RNN keep its inner state while training on a same sequence. The implement can be tricky, you can see the &lt;a href=&quot;http://keras.io/layers/recurrent/&quot;&gt;implement of Keras&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><category term="neural nerwork" /><category term="rnn" /><summary type="html">If you are interested in neural networks, you must have ever read and learn lots of things about RNN, which can reason about sequences of data. RNN is awesome and very fun to play with, if you haven’t heard of it, you can read this great article which train a char level RNN model to generate text.</summary></entry><entry><title type="html">The Permission Management of Android Becomes A Bigger Problem When It Comes to Wearable Devices and TV</title><link href="https://www.binwang.me/2016-02-11-The-Permission-of-Android-Becomes-A-Bigger-Problem-When-It-Comes-to-Wearable-Devices-and-TV.html" rel="alternate" type="text/html" title="The Permission Management of Android Becomes A Bigger Problem When It Comes to Wearable Devices and TV" /><published>2016-02-11T00:00:00-05:00</published><updated>2016-02-11T00:00:00-05:00</updated><id>https://www.binwang.me/The-Permission-of-Android-Becomes-A-Bigger-Problem-When-It-Comes-to-Wearable-Devices-and-TV</id><content type="html" xml:base="https://www.binwang.me/2016-02-11-The-Permission-of-Android-Becomes-A-Bigger-Problem-When-It-Comes-to-Wearable-Devices-and-TV.html">&lt;p&gt;The permission management of Android is a problem for a long time. The behaviour of an app depends on the morality of its developers. Unluckily, many developers are big companies which making money is their primary target and morality is little considered.&lt;/p&gt;
+
+&lt;p&gt;The problem gets bigger while it comes to the devices less power than smart phones such as TVs, or the devices that can get more privacy such as smart watches. The main permission problems of Android are:&lt;/p&gt;
+
+&lt;h2 id=&quot;you-must-give-all-the-permissions-to-an-app-if-it-requests&quot;&gt;You must give all the permissions to an app if it requests&lt;/h2&gt;
+
+&lt;p&gt;On Android, you must give all the permissions it requests, or you just cannot install this app. This behaviour has been optimized since Android 5.0. But it is far from enough. Though we can also modify the permissions with tools such as Xposed, it is very difficult for normal users and not all the devices can use it.&lt;/p&gt;
+
+&lt;p&gt;There is also another way to solve this: provide a more trusted app market. Think about Linux: there is barely permission management in most Linux distributions. (User and group management don’t count, because a normal user can do many things). But most Linux distributions have a software repository which is maintained by trusted developers, so as long as we install programs from the official repo, we can think we are safe.&lt;/p&gt;
+
+&lt;p&gt;This may not a very big problem for a smart phone because you can install tools to manage it, or you just don’t care if your contact information is uploaded to some server.  But when it comes to a smart watch, you are wearing it all the day alone, it can get much more informations than a smart phone. I cannot give those informations to a random app.&lt;/p&gt;
+
+&lt;p&gt;This is also a big problem for a smart TV. It is very difficult to root it or install custom tools. And a TV is in a family network, which is in the same network with your PCs and laptops. It can also get many private informations.&lt;/p&gt;
+
+&lt;h2 id=&quot;many-apps-always-running-in-the-background&quot;&gt;Many apps always running in the background&lt;/h2&gt;
+
+&lt;p&gt;Android allows apps running in the background and awaken each other. It is really a bad design to allow an app awaken another one in the background. If I’m using an app and it open another one in the front of me, I can see it and know what is happening. Which is the only situation I may want such a behaviour.&lt;/p&gt;
+
+&lt;p&gt;Allowing random apps running in the background hurts performance a lot. You cannot control what the app is doing in the background. Maybe you will not notice this in a smart phone which is more and more powerful nowadays (or you may have noticed that your smart phone is losing power quicker and quicker as you install more and more apps). But the problem appears a lot while the device is not so powerful, for example, for a smart watch or a smart TV. This happens in my real life. My family bought a TV some days ago, but I cannot instal more than 4 video apps, or the TV will get stuck. It really sucks.&lt;/p&gt;</content><author><name></name></author><category term="Android" /><summary type="html">The permission management of Android is a problem for a long time. The behaviour of an app depends on the morality of its developers. Unluckily, many developers are big companies which making money is their primary target and morality is little considered.</summary></entry><entry><title type="html">Use Redis Instead of Spark Streaming to Count Statistics</title><link href="https://www.binwang.me/2015-11-22-Use-Redis-Instead-of-Spark-Streaming-to-Count-Statistics.html" rel="alternate" type="text/html" title="Use Redis Instead of Spark Streaming to Count Statistics" /><published>2015-11-22T00:00:00-05:00</published><updated>2015-11-22T00:00:00-05:00</updated><id>https://www.binwang.me/Use-Redis-Instead-of-Spark-Streaming-to-Count-Statistics</id><content type="html" xml:base="https://www.binwang.me/2015-11-22-Use-Redis-Instead-of-Spark-Streaming-to-Count-Statistics.html">&lt;p&gt;In my work, I need to count basic statistics of streaming data, such as mean, variance, sum and so on. At first, I’m using Spark, then Spark Streaming. But after a while, I reimplemented it with Redis and find it is much better. I’d like to talk about them in this article.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-problem&quot;&gt;The Problem&lt;/h2&gt;
+
+&lt;p&gt;Let’s talk about the problem first. I’ve simplified it: assume we have a vector &lt;span&gt;\(\vec{a}\)&lt;/span&gt;, and there is a data stream, each element of it has the structure like (i, v). When an element arrives, we will update &lt;span&gt;\(a_i\)&lt;/span&gt; to &lt;span&gt;\(a_i + v\)&lt;/span&gt;. We want to get basic statistics of this vector, such as mean, variance and sum.&lt;/p&gt;
+
+&lt;h2 id=&quot;analyzing-the-problem&quot;&gt;Analyzing the Problem&lt;/h2&gt;
+
+&lt;p&gt;Sum and mean is very easy to compute, the tricky one is to compute the variance. We will use this formula:&lt;/p&gt;
+
+&lt;p&gt;&lt;span&gt;\(variance(\vec{a}) = {mean(\vec{a})^2} - {\sum_{i=1}^n a_i^2 \over |\vec{a}|}\)&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;So we need to count the sum of squares: &lt;span&gt;\(\sum_{i=1}^n a_i^2\)&lt;/span&gt;.&lt;/p&gt;
+
+&lt;p&gt;Since &lt;span&gt;\(a_i\)&lt;/span&gt; is changing as the data is coming, we need to keep tracking of all the elements in &lt;span&gt;\(\vec{a}\)&lt;/span&gt;. This is the key to solve the problem.&lt;/p&gt;
+
+&lt;p&gt;Next, I’ll show you how to compute sum of squares with Spark Streaming and Redis.&lt;/p&gt;
+
+&lt;h2 id=&quot;using-spark-streaming&quot;&gt;Using Spark Streaming&lt;/h2&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;def updateFunc(newValues: Seq[Double], oldValue: Option[Double]): Option[Double] = {
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;  Some(newValues.sum + oldValue.getOrElse(0))
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;}
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;val sumOfSquares = sc.updateStateByKey[Double](updateFunc _).map(a =&amp;gt; a * a)
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The code is clean and easy to read. But there are two problems, both are about &lt;code&gt;updateStateByKey&lt;/code&gt;:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code&gt;updateStateByKey&lt;/code&gt; has a state in memory, we need to enable checkpointing for it in order to support fault tolerance. And in the case of updating the code, we need to save the state by ourself, as I have specified in &lt;a href=&quot;/2015-11-03-the-proper-way-to-use-spark-checkpoint.html&quot;&gt;an earlier blog&lt;/a&gt;. When the state is big, it will be very slow and complex.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;code&gt;updateStateByKey&lt;/code&gt; is not so fast. It will run against all the elements in it every time. It is not necessary in our situation. The Spark guys seems to &lt;a href=&quot;http://technicaltidbit.blogspot.sg/2015/11/spark-streaming-16-stop-using.html&quot;&gt;realize this problem&lt;/a&gt;, too.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;I tried this program with billions of elements and save the state data into Cassandra. I ran this on a cluster with 4 machines, each of them have 32GB RAM. The program simply cannot save the state data into Cassandra and crashed.&lt;/p&gt;
+
+&lt;p&gt;So what do we need? What we really need is just a place to store and update the vector &lt;span&gt;\(\vec{a}\)&lt;/span&gt;. Redis is the perfect tool to do this thing.&lt;/p&gt;
+
+&lt;h2 id=&quot;using-redis&quot;&gt;Using Redis&lt;/h2&gt;
+
+&lt;p&gt;We will store the whole vector into Redis: for each element in the vector, we will use &lt;code&gt;i&lt;/code&gt; as the key and &lt;span&gt;\(a_i\)&lt;/span&gt; as the value.  When a new element arrives in the data stream, we will update the key-valule and the sum of sqaures. Here is the code:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;val redis = RedisClient()
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;val resultKey = &amp;quot;sum_of_squares&amp;quot;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;stream.foreach { elem =&amp;gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;  val newValue = redis.incrbyfloat(elem.i, elem.v).getOrElse(elem.v)
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;  val oldValue = newValue - elem.v
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;  val incValue = (newValue * newValue - oldValue * oldValue)
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;  redis.incrbyfloat(resultKey, incValue)
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;}
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Comparing to the Spark version, this has been turned into a single thread program (Redis is a single thread program). But this is a realtime data stream, CPU should not be the bottleneck before IO. And this program uses no more memory than the Spark version. If the memory doesn’t fit into a single machine, we can use &lt;a href=&quot;https://github.com/wandoulabs/codis&quot;&gt;Codis&lt;/a&gt; (or other Redis Cluster solutions).&lt;/p&gt;
+
+&lt;p&gt;This program can compute billions of elements in one day. And the memory usage of Redis is about 100GB for billions of keys. (The raw problem I’m solving is more complex than I described here so I’m storing more data than this problem needs.)&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;At first, I use Spark Streaming to solve this problem becuase it seems to be a “big data” problem. But after analyzing the problem, what I really need is just a place to store state. And CPU is really not the bottleneck. Spark is good for batch processing but not so good at this kind of problem. Choosing the right tool instead of the most awesome tool is very important.&lt;/p&gt;</content><author><name></name></author><category term="big data" /><category term="redis" /><category term="spark" /><summary type="html">In my work, I need to count basic statistics of streaming data, such as mean, variance, sum and so on. At first, I’m using Spark, then Spark Streaming. But after a while, I reimplemented it with Redis and find it is much better. I’d like to talk about them in this article.</summary></entry><entry><title type="html">Install BLAS Library for MXNet</title><link href="https://www.binwang.me/2015-11-08-Install-BLAS-Library-for-MXNet.html" rel="alternate" type="text/html" title="Install BLAS Library for MXNet" /><published>2015-11-08T00:00:00-05:00</published><updated>2015-11-08T00:00:00-05:00</updated><id>https://www.binwang.me/Install-BLAS-Library-for-MXNet</id><content type="html" xml:base="https://www.binwang.me/2015-11-08-Install-BLAS-Library-for-MXNet.html">&lt;p&gt;&lt;a href=&quot;https://github.com/dmlc/mxnet&quot;&gt;MXNet&lt;/a&gt; is a deep learning library. I read its doc and some of its source code. It looks very good. So I’d like to install and try it. While I’m following the &lt;a href=&quot;https://mxnet.readthedocs.org/en/latest/build.html#build-mxnet-library&quot;&gt;installing guide&lt;/a&gt; to install it on Mac OS X, it failed to compile with the error &lt;code&gt;cblas.h&lt;/code&gt; not found. The message pointed out I may miss the BLAS library.&lt;/p&gt;
+
+&lt;p&gt;After some search, I find Mac OS X seems to come with its default BLAS library. But I cannot find its headers. And as an article said, the default BLAS library may not as fast as some third party ones. So I install &lt;code&gt;OpenBLAS&lt;/code&gt; with homebrew:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;brew install openblas
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;It is installed under &lt;code&gt;/usr/local/opt/openblas&lt;/code&gt;, so we need to change these lines in the MXNet’s &lt;code&gt;config.mk&lt;/code&gt; (it should be copied from &lt;code&gt;make/osx.mk&lt;/code&gt; as the installing guide specified) :&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;# the additional link flags you want to add
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;ADD_LDFLAGS = '-L/usr/local/opt/openblas/lib'
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;# the additional compile flags you want to add
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;ADD_CFLAGS = '-I/usr/local/opt/openblas/include'
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Then the compile should pass.&lt;/p&gt;</content><author><name></name></author><category term="deep learning" /><category term="programming" /><category term="mxnet" /><category term="mac os x" /><summary type="html">MXNet is a deep learning library. I read its doc and some of its source code. It looks very good. So I’d like to install and try it. While I’m following the installing guide to install it on Mac OS X, it failed to compile with the error cblas.h not found. The message pointed out I may miss the BLAS library.</summary></entry><entry xml:lang="zh"><title type="html">摒弃现代科技的隐士生活</title><link href="https://www.binwang.me/2015-11-04-The-Life-of-Hermit-without-Materially.html" rel="alternate" type="text/html" title="摒弃现代科技的隐士生活" /><published>2015-11-04T00:00:00-05:00</published><updated>2015-11-04T00:00:00-05:00</updated><id>https://www.binwang.me/The-Life-of-Hermit-without-Materially</id><content type="html" xml:base="https://www.binwang.me/2015-11-04-The-Life-of-Hermit-without-Materially.html">&lt;p&gt;今天在知乎上看到一篇帖子，说到意大利有一家旅馆，周围都是森林，远离外界的生活。同时在旅馆内禁止使用手机，晚上也只用蜡烛而不用灯。虽然这个旅馆的其他细节并不了解，但是给我的印象是远离城市、摒弃现代科技的浪漫感觉。初看之下， 还比较向往，但是细细想来，好像并没有什么必要非要摒弃现代的科技。&lt;/p&gt;
+
+&lt;p&gt;隐士生活，无非是厌倦了因维持人际关系而必须做出的很多事情，而隐居到某个人际关系简单的地方，甚至于单独生活。在这之后，所生活的社会变得更加简单和原始，牺牲一定的物质生活是在所难免的。然而若是认为隐居的目的就是为了摒弃这些物质生活（尤其是给我们带来方便的物质生活），反而是本末倒置了。&lt;/p&gt;
+
+&lt;p&gt;很多人说，这样是为了让自己不受什么干扰。然而很多事情是在于人自身真正想要的东西而不是在于外部的形式。比如，我看不出使用蜡烛而不用电灯更能免受什么干扰。若是我隐居时有网络可以帮助我在需要时更快查找到东西，我肯定也是乐于接受的，至于网络上其它的东西，如果真心不想浪费时间在上面，看不出有谁可以强迫我。我承认环境在一定程度上可以影响人的思想和行为，然而远远没有到无条件的摒弃现代科技这样严苛。&lt;/p&gt;
+
+&lt;p&gt;更进一步，即使我们要摒弃现代科技，那我们要摒弃多少呢？如果不能用电灯，那为什么可以用蜡烛呢（毕竟那在一段时间以前也是个新奇玩意儿）？难道不是仅仅能够满足生存的物质生活就足够了吗？这样到最后，隐士们也许都只要像狄奥根尼一样住在木桶中就足够了。&lt;/p&gt;
+
+&lt;p&gt;中国有句古话，“大隐隐于市”，我认为不无道理。当真正知道自己想要什么了，什么可以放弃了，那就知道什么是必须改变的，而什么只是个形式而已。这样的隐士，才是我心目中真正自在的隐士。&lt;/p&gt;
+
+&lt;p&gt;当然，如果真正想要的生活正是想要摒弃现代科技，那么也是可以的。只是在决定这么做的时候，注意一下不要被这些形式迷惑，当今后不想过这种生活时也不要过分执着于此，也就够了。&lt;/p&gt;</content><author><name></name></author><category term="think" /><summary type="html">今天在知乎上看到一篇帖子，说到意大利有一家旅馆，周围都是森林，远离外界的生活。同时在旅馆内禁止使用手机，晚上也只用蜡烛而不用灯。虽然这个旅馆的其他细节并不了解，但是给我的印象是远离城市、摒弃现代科技的浪漫感觉。初看之下， 还比较向往，但是细细想来，好像并没有什么必要非要摒弃现代的科技。</summary></entry><entry><title type="html">The Proper Way to Use Spark Checkpoint</title><link href="https://www.binwang.me/2015-11-03-The-Proper-Way-to-Use-Spark-Checkpoint.html" rel="alternate" type="text/html" title="The Proper Way to Use Spark Checkpoint" /><published>2015-11-03T00:00:00-05:00</published><updated>2015-11-03T00:00:00-05:00</updated><id>https://www.binwang.me/The-Proper-Way-to-Use-Spark-Checkpoint</id><content type="html" xml:base="https://www.binwang.me/2015-11-03-The-Proper-Way-to-Use-Spark-Checkpoint.html">&lt;p&gt;These days I’m using Spark streaming to process real time data. I’m using &lt;code&gt;updateStateByKey&lt;/code&gt;, so I need to add &lt;a href=&quot;https://spark.apache.org/docs/latest/streaming-programming-guide.html#checkpointing&quot;&gt;checkpointing&lt;/a&gt;, which is a fault tolerance mechanism of Spark streaming. The checkpoint will save DAG and RDDs. So when you restart the Spark application from failure, it will continue to compute.&lt;/p&gt;
+
+&lt;p&gt;But there is a problem with checkpointing: you cannot load the checkpointed data once you change the class structure of your code, so the state in &lt;code&gt;updateStateByKey&lt;/code&gt; is lost. This is a pretty big limit. Another solution is to save and load data by ourself, but in this way checkpointing is totally useless and will also break the fault tolerance. What about to use both ways? Then the data may load twice while the application is auto restarted by the Spark cluster, in the case of failure. So I asked this question in the Spark user list and somebody kindly give me &lt;a href=&quot;https://mail-archives.apache.org/mod_mbox/incubator-spark-user/201509.mbox/%3CCAD_32VVBit6eqNhRb5axf4Quxk86v_ZkjFL4ZdziNZrCyT2qEA@mail.gmail.com%3E&quot;&gt;a solution&lt;/a&gt;: use &lt;code&gt;updateStateByKey&lt;/code&gt; with the parameter &lt;code&gt;initialRDD&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;The answer is a little simple, so I will explain it here. This way is to use both checkpointing and our own data storage mechanism. But we load our data as the &lt;code&gt;initalRDD&lt;/code&gt; of &lt;code&gt;updateStateByKey&lt;/code&gt;. So in both situations, the data will neither lost nor duplicate:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;When we change the code and redeploy the Spark application, we shutdown the old Spark application gracefully and cleanup the checkpoint data, so the only loaded data is the data we saved.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;When the Spark application is failure and restart, it will load the data from checkpoint. But the step of DAG is saved so it will not load our own data as &lt;code&gt;initalRDD&lt;/code&gt; again. So the only loaded data is the checkpointed data.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;</content><author><name></name></author><category term="spark" /><summary type="html">These days I’m using Spark streaming to process real time data. I’m using updateStateByKey, so I need to add checkpointing, which is a fault tolerance mechanism of Spark streaming. The checkpoint will save DAG and RDDs. So when you restart the Spark application from failure, it will continue to compute.</summary></entry><entry><title type="html">My Recent Work About Neural Networks</title><link href="https://www.binwang.me/2015-07-02-My-Recent-Work-About-Neural-Networks.html" rel="alternate" type="text/html" title="My Recent Work About Neural Networks" /><published>2015-07-02T00:00:00-04:00</published><updated>2015-07-02T00:00:00-04:00</updated><id>https://www.binwang.me/My-Recent-Work-About-Neural-Networks</id><content type="html" xml:base="https://www.binwang.me/2015-07-02-My-Recent-Work-About-Neural-Networks.html">&lt;p&gt;These days I’ve written some code about neural networks. There is nothing important, but worth to be recorded.&lt;/p&gt;
+
+&lt;h2 id=&quot;choose-deep-learning-frameworks&quot;&gt;Choose Deep Learning Frameworks&lt;/h2&gt;
+
+&lt;p&gt;The first thing is to decide which framework I should use. There are many frameworks about neural networks, I tried some famous ones. Here is the details:&lt;/p&gt;
+
+&lt;h3 id=&quot;caffe&quot;&gt;&lt;a href=&quot;https://github.com/BVLC/caffe&quot;&gt;Caffe&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Caffe is a famous framework, mainly used with convolution neural networks. It is written with C++ but uses protocol buffer to describe the network. It is known as its well structured code, high performance. But the use of protocol buffer doesn’t make me comfortable because I’m not afraid of write some code and the file is less flexible.&lt;/p&gt;
+
+&lt;h3 id=&quot;theano&quot;&gt;&lt;a href=&quot;http://deeplearning.net/software/theano/&quot;&gt;Theano&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Theano is a framework written in Python. You can define an expression and Theano can find the gradient for you. The training process of deep learning is mainly find the gradients for each layer, so it simplified the work a lot. It’s performance is good, too.&lt;/p&gt;
+
+&lt;p&gt;But it is more like a compiler for me. I cannot see the low level things and the code is not just normal python code, it has too much hacking.&lt;/p&gt;
+
+&lt;p&gt;Theano is more like a optimize library than a neural network framework. &lt;a href=&quot;https://github.com/lisa-lab/pylearn2&quot;&gt;PyLearn2&lt;/a&gt; is a framework based on it, which provides many network structures and tools. But like Caffe, it uses a YAML config file to describe the structure of the network, which makes me uncomfortable.&lt;/p&gt;
+
+&lt;h3 id=&quot;deeplearning4j&quot;&gt;&lt;a href=&quot;http://deeplearning4j.org&quot;&gt;Deeplearning4j&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;This is a framework written in Java. It is not so famous, but interesting to me. I’m more familiar with Java than C++. A Java framework means a better IDE, more libraries to use. And it may supports Scala, which I use a lot in these days. So I tried it a little, but it is not as good as I thought.&lt;/p&gt;
+
+&lt;p&gt;First of all, it is in heavily developing. And the name of methods and variables is too long and the API is not so great to use. The most important is, the performance seems not so good and the integration with the GPU is not very easy. And it is not popular in research field so the communication with others may becomes a problem.&lt;/p&gt;
+
+&lt;h3 id=&quot;torch7&quot;&gt;&lt;a href=&quot;http://torch.ch/&quot;&gt;Torch7&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;This is the framework I finally use. Actually, it is the first framework I’ve used.&lt;/p&gt;
+
+&lt;p&gt;Some big companies use it, including Deep Mind (Google), Facebook and so on. It is written in Lua, which is a language I’ve always want to learn. It is easy to understand. When there comes to the low level, you just need to read the C code, which is more easy to read than the C++ code. There is no magic between the high level and the low level, I can just dig it. It’s performance is great, and the ecosystem is big and healthy.&lt;/p&gt;
+
+&lt;p&gt;But it also has some cons. For example, the error hint is not so great, and the code is too flexible so that you must read the document to know how to use some modules. But I can deal with it.&lt;/p&gt;
+
+&lt;h2 id=&quot;write-my-own-library&quot;&gt;Write My Own Library&lt;/h2&gt;
+
+&lt;p&gt;I write my own library with Scala and &lt;a href=&quot;https://github.com/scalanlp/breeze&quot;&gt;Breeze&lt;/a&gt;, in order to understand neural networks better.&lt;/p&gt;
+
+&lt;p&gt;It is very easy to write a neural network library (which is not distributed), as long as you understand it. While I wrote it, I realize that the core of neural networks is just gradient optimize (with many tricks). One layer of a network is just a function, layers are just function after function. So the gradient of each layer is computed by chain rule. When you need a new layer, just write how to compute the output and the gradient, then you can push it into the network structure.&lt;/p&gt;
+
+&lt;p&gt;Use Scala to write it feels good, because OOP makes it feel nature to write layers. And the trait system makes it more pleasure. But the performance is not as good as the libraries above. Make it to support GPU is hard, too. Running a large size network makes it running like forever. So I gave up after wrote the convolution network and use Torch7 instead.&lt;/p&gt;
+
+&lt;h2 id=&quot;run-some-examples&quot;&gt;Run Some Examples&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://timdettmers.wordpress.com/2014/08/14/which-gpu-for-deep-learning/&quot;&gt;This article&lt;/a&gt; gives some great advices to choose a GPU for deep learning. Titan X is great but is too expensive. So I decide to wait until next year while NVIDIA will release their new GPU with 10X power. At the same time, I have a GPU with 1G RAM in my office.&lt;/p&gt;
+
+&lt;p&gt;I wrote some simple code like MLP and simple convolution networks to train with MNIST data. Then I decided to run some large examples.&lt;/p&gt;
+
+&lt;p&gt;First, I run the example from &lt;a href=&quot;https://github.com/facebook/fbcunn/tree/master/examples/imagenet&quot;&gt;fbcunn&lt;/a&gt;, which is a AlexNet training on ImageNet. The ImageNet data is too big and the bandwidth of my office is too small. So I run the example with an &lt;code&gt;g2.2xlarge&lt;/code&gt; instance on AWS. It still took lots of time, which trained 2 days to archive a precision of about 30% (not ended yet). Then I realized it is too expensive to run it on AWS and stop it.&lt;/p&gt;
+
+&lt;p&gt;The Second example I run is an RNN example. The code is from &lt;a href=&quot;https://github.com/karpathy/char-rnn&quot;&gt;here&lt;/a&gt;. I run it on the machine with 1G RAM GPU. It looks good on small networks. But when I use the data from Chinese Wikipedia (with 1G plain text), the memory of GPU could only train a network of 512 parameters, which is too small to get good result.&lt;/p&gt;
+
+&lt;p&gt;The time of training large neural networks is really long. So I will wait for the new hardware to continue my research. At the mean time, I will review the knowledge about linear algebra and probability theory.&lt;/p&gt;</content><author><name></name></author><category term="neural network" /><category term="deep learning" /><category term="programming" /><summary type="html">These days I’ve written some code about neural networks. There is nothing important, but worth to be recorded.</summary></entry><entry><title type="html">Use Docker to Submit Spark Jobs</title><link href="https://www.binwang.me/2015-04-29-Use-Docker-to-Submit-Spark-Jobs.html" rel="alternate" type="text/html" title="Use Docker to Submit Spark Jobs" /><published>2015-04-29T00:00:00-04:00</published><updated>2015-04-29T00:00:00-04:00</updated><id>https://www.binwang.me/Use-Docker-to-Submit-Spark-Jobs</id><content type="html" xml:base="https://www.binwang.me/2015-04-29-Use-Docker-to-Submit-Spark-Jobs.html">&lt;p&gt;These days I’m working on analyze data with Spark. Since our Spark cluster is offline in the office for now, so it needs to download data from log server every hour, analyze them with Spark and then upload to the server. The work flow is a little complex so I write some scripts to do it. In addition, I also write a whole automated end to end test for it.&lt;/p&gt;
+
+&lt;p&gt;The whole thing is messed up with cron job configurations, shell scripts, MongoDB scripts and Spark jobs. Then I realize, I can pack them into a container, which do all the dirty things while not mess up the outside world. The better thing is, since I am using the CDH cluster, I can download the YARN configuration while build the container.&lt;/p&gt;
+
+&lt;p&gt;Here is how the container is built up:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Compile the spark jobs and run unit tests.&lt;/li&gt;
+  &lt;li&gt;Install Hadoop client, Spark and Hive client, and download configuration files from CDH cluster.&lt;/li&gt;
+  &lt;li&gt;Install cron jobs to the system.&lt;/li&gt;
+  &lt;li&gt;Generate data and test if the whole work flow works.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The container will do these things every hour through cron job:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Download data from log server.&lt;/li&gt;
+  &lt;li&gt;Sends the data to the CDH cluster and submit the spark job to it.&lt;/li&gt;
+  &lt;li&gt;Fetch result data from CDH cluster and upload them to the online server.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;You may wonder why not just use some work flow tools in Hadoop ecosystem like Oozie? First of all, Oozie uses XML as its config file which I think is very complex. And it is also less flexible. With Docker container, I can build it and test it without touch the outside world. And it is just a very flex component that can be attached to the Spark cluster easily with a single command. Or think the Spark cluster as a low level service, which just provides computing resource and should not care about other things.&lt;/p&gt;</content><author><name></name></author><category term="Docker" /><category term="Spark" /><summary type="html">These days I’m working on analyze data with Spark. Since our Spark cluster is offline in the office for now, so it needs to download data from log server every hour, analyze them with Spark and then upload to the server. The work flow is a little complex so I write some scripts to do it. In addition, I also write a whole automated end to end test for it.</summary></entry></feed>
