@@ -52,13 +52,19 @@
 
 <p>It is happy to have a kernel git repo. Using <code>git tag</code> to see the kernel versions and use <code>git checkout &lt;tag&gt;</code> to checkout the specified version, such as:</p>
 
-<pre><code>git checkout v3.7-rc6
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git checkout v3.7-rc6
+</pre></div>
+</div>
+</div>
 
 <p>It is recommended to use the distribution’s kernel configure file as a basic configure when you compile the kernel for the first time. Copy it from <code>/boot</code> to <code>&lt;build_dir&gt;/.config</code>. Use this command to modify it:</p>
 
-<pre><code>make O=&lt;build_dir&gt; menuconfig
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>make O=&lt;build_dir&gt; menuconfig
+</pre></div>
+</div>
+</div>
 
 <p>It will save the new configure and rename the old configure with <code>.config.old</code>.</p>
 
@@ -66,8 +72,11 @@
 
 <p>Kernel image is the most important part. Use this command to compile kernel in <code>&lt;build_dir&gt;</code>:</p>
 
-<pre><code>make O=&lt;build_dir&gt; -j4
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>make O=&lt;build_dir&gt; -j4
+</pre></div>
+</div>
+</div>
 
 <p>After that, Copy <code>vmlinux</code> and <code>System.map</code> to <code>/boot</code>. And then configure the boot loader. Or use the command <code>installkernel</code> if you have it.</p>
 
@@ -75,13 +84,19 @@
 
 <p>Some code are compiled to kernel modules. It need to be installed to the system. Use this command to install kernel modules and firmwares:</p>
 
-<pre><code>make O=&lt;build_dir&gt; modules_install
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>make O=&lt;build_dir&gt; modules_install
+</pre></div>
+</div>
+</div>
 
 <p>It installs kernel modules under <code>/usr/lib/modules/&lt;kernel_version&gt;</code>. You can also specify the output directory using <code>INSTALL_MOD_PATH</code>:</p>
 
-<pre><code>make O=&lt;build_dir&gt; INSTALL_MOD_PATH=&lt;module_dir&gt; modules_install
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>make O=&lt;build_dir&gt; INSTALL_MOD_PATH=&lt;module_dir&gt; modules_install
+</pre></div>
+</div>
+</div>
 
 <p>The <code>INSTALL_MOD_PATH</code> is <code>/</code> by default.</p>
 
@@ -89,8 +104,11 @@
 
 <p>Linux headers are some header files to invoked by user space programs. Using this command to output it:</p>
 
-<pre><code>make O=&lt;build_dir&gt; INSTALL_HDR_PATH=&lt;headers_dir&gt; headers_install
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>make O=&lt;build_dir&gt; INSTALL_HDR_PATH=&lt;headers_dir&gt; headers_install
+</pre></div>
+</div>
+</div>
 
 <p>It installs headers to <code>&lt;headers_dir&gt;</code>. You should copy them into <code>/usr/include</code>.</p>
 
@@ -98,8 +116,11 @@
 
 <p>After all, you may want to make a kernel package to install on other machines. Such as:</p>
 
-<pre><code>make O=&lt;build_dir&gt; -j4 binrpm-pkg
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>make O=&lt;build_dir&gt; -j4 binrpm-pkg
+</pre></div>
+</div>
+</div>
 
 </article>
 

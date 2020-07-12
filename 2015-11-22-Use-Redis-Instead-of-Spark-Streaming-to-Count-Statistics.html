@@ -50,28 +50,31 @@
 
 <h2 id="the-problem">The Problem</h2>
 
-<p>Let’s talk about the problem first. I’ve simplified it: assume we have a vector <span><script type="math/tex">\vec{a}</script></span>, and there is a data stream, each element of it has the structure like (i, v). When an element arrives, we will update <span><script type="math/tex">a_i</script></span> to <span><script type="math/tex">a_i + v</script></span>. We want to get basic statistics of this vector, such as mean, variance and sum.</p>
+<p>Let’s talk about the problem first. I’ve simplified it: assume we have a vector <span>\(\vec{a}\)</span>, and there is a data stream, each element of it has the structure like (i, v). When an element arrives, we will update <span>\(a_i\)</span> to <span>\(a_i + v\)</span>. We want to get basic statistics of this vector, such as mean, variance and sum.</p>
 
 <h2 id="analyzing-the-problem">Analyzing the Problem</h2>
 
 <p>Sum and mean is very easy to compute, the tricky one is to compute the variance. We will use this formula:</p>
 
-<p><span><script type="math/tex">variance(\vec{a}) = {mean(\vec{a})^2} - {\sum_{i=1}^n a_i^2 \over |\vec{a}|}</script></span></p>
+<p><span>\(variance(\vec{a}) = {mean(\vec{a})^2} - {\sum_{i=1}^n a_i^2 \over |\vec{a}|}\)</span></p>
 
-<p>So we need to count the sum of squares: <span><script type="math/tex">\sum_{i=1}^n a_i^2</script></span>.</p>
+<p>So we need to count the sum of squares: <span>\(\sum_{i=1}^n a_i^2\)</span>.</p>
 
-<p>Since <span><script type="math/tex">a_i</script></span> is changing as the data is coming, we need to keep tracking of all the elements in <span><script type="math/tex">\vec{a}</script></span>. This is the key to solve the problem.</p>
+<p>Since <span>\(a_i\)</span> is changing as the data is coming, we need to keep tracking of all the elements in <span>\(\vec{a}\)</span>. This is the key to solve the problem.</p>
 
 <p>Next, I’ll show you how to compute sum of squares with Spark Streaming and Redis.</p>
 
 <h2 id="using-spark-streaming">Using Spark Streaming</h2>
 
-<pre><code>def updateFunc(newValues: Seq[Double], oldValue: Option[Double]): Option[Double] = {
-  Some(newValues.sum + oldValue.getOrElse(0))
-}
-
-val sumOfSquares = sc.updateStateByKey[Double](updateFunc _).map(a =&gt; a * a)
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>def updateFunc(newValues: Seq[Double], oldValue: Option[Double]): Option[Double] = {
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  Some(newValues.sum + oldValue.getOrElse(0))
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>}
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>val sumOfSquares = sc.updateStateByKey[Double](updateFunc _).map(a =&gt; a * a)
+</pre></div>
+</div>
+</div>
 
 <p>The code is clean and easy to read. But there are two problems, both are about <code>updateStateByKey</code>:</p>
 
@@ -86,22 +89,25 @@ val sumOfSquares = sc.updateStateByKey[Double](updateFunc _).map(a =&gt; a * a)
 
 <p>I tried this program with billions of elements and save the state data into Cassandra. I ran this on a cluster with 4 machines, each of them have 32GB RAM. The program simply cannot save the state data into Cassandra and crashed.</p>
 
-<p>So what do we need? What we really need is just a place to store and update the vector <span><script type="math/tex">\vec{a}</script></span>. Redis is the perfect tool to do this thing.</p>
+<p>So what do we need? What we really need is just a place to store and update the vector <span>\(\vec{a}\)</span>. Redis is the perfect tool to do this thing.</p>
 
 <h2 id="using-redis">Using Redis</h2>
 
-<p>We will store the whole vector into Redis: for each element in the vector, we will use <code>i</code> as the key and <span><script type="math/tex">a_i</script></span> as the value.  When a new element arrives in the data stream, we will update the key-valule and the sum of sqaures. Here is the code:</p>
+<p>We will store the whole vector into Redis: for each element in the vector, we will use <code>i</code> as the key and <span>\(a_i\)</span> as the value.  When a new element arrives in the data stream, we will update the key-valule and the sum of sqaures. Here is the code:</p>
 
-<pre><code>val redis = RedisClient()
-val resultKey = "sum_of_squares"
-
-stream.foreach { elem =&gt;
-  val newValue = redis.incrbyfloat(elem.i, elem.v).getOrElse(elem.v)
-  val oldValue = newValue - elem.v
-  val incValue = (newValue * newValue - oldValue * oldValue)
-  redis.incrbyfloat(resultKey, incValue)
-}
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>val redis = RedisClient()
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>val resultKey = &quot;sum_of_squares&quot;
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>stream.foreach { elem =&gt;
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  val newValue = redis.incrbyfloat(elem.i, elem.v).getOrElse(elem.v)
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  val oldValue = newValue - elem.v
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  val incValue = (newValue * newValue - oldValue * oldValue)
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  redis.incrbyfloat(resultKey, incValue)
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>}
+</pre></div>
+</div>
+</div>
 
 <p>Comparing to the Spark version, this has been turned into a single thread program (Redis is a single thread program). But this is a realtime data stream, CPU should not be the bottleneck before IO. And this program uses no more memory than the Spark version. If the memory doesn’t fit into a single machine, we can use <a href="https://github.com/wandoulabs/codis">Codis</a> (or other Redis Cluster solutions).</p>
 

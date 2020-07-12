@@ -54,12 +54,15 @@
 
 <p>A typical erlang directory structure is like this:</p>
 
-<pre><code>myapp:
- - src/
- - include/
- - priv/
- - ebin/
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>myapp:
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span> - src/
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span> - include/
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span> - priv/
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span> - ebin/
+</pre></div>
+</div>
+</div>
 
 <ul>
   <li>src: place for source code.</li>
@@ -72,15 +75,21 @@
 
 <p>After download rebar, this command could create an OTP application:</p>
 
-<pre><code>rebar create-app app-id=myapp
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rebar create-app app-id=myapp
+</pre></div>
+</div>
+</div>
 
 <p>It will create a directory with a <code>src/</code> subdirectory, and a file named <code>rebar.config</code>. As the name specified, <code>rebar.config</code> is the erlang config file.</p>
 
 <p>Use this command could build this app:</p>
 
-<pre><code>rebar compile
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rebar compile
+</pre></div>
+</div>
+</div>
 
 <h2 id="dependency">Dependency</h2>
 
@@ -88,30 +97,39 @@
 
 <p>Run <code>rebar help get-deps</code> to see how to add dependencies with rebar:</p>
 
-<pre><code>{deps_dir,"deps"}
-{deps,[application_name,
-       {application_name,"1.0.*"},
-       {application_name,"1.0.*",
-                         {git,"git://github.com/rebar/rebar.git",
-                              {branch,"master"}}},
-       {application_name,[],
-                         {git,"git://github.com/rebar/rebar.git",
-                              {branch,"master"}},
-                         [raw]}]}
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>{deps_dir,&quot;deps&quot;}
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>{deps,[application_name,
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>       {application_name,&quot;1.0.*&quot;},
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>       {application_name,&quot;1.0.*&quot;,
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>                         {git,&quot;git://github.com/rebar/rebar.git&quot;,
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>                              {branch,&quot;master&quot;}}},
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>       {application_name,[],
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>                         {git,&quot;git://github.com/rebar/rebar.git&quot;,
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>                              {branch,&quot;master&quot;}},
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>                         [raw]}]}
+</pre></div>
+</div>
+</div>
 
 <p>Use this command to automatic get dependencies:</p>
 
-<pre><code>rebar get-deps
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rebar get-deps
+</pre></div>
+</div>
+</div>
 
 <h2 id="test-with-eunit">Test with Eunit</h2>
 
 <p>Rebar could also compile with test. I am just using eunit for now. I add these code in <code>rebar.config</code>:</p>
 
-<pre><code>{cover_enabled, true}.
-{eunit_opts, [verbose, {report, {eunit_surefire, [{dir, "./"}]}}]}.
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>{cover_enabled, true}.
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>{eunit_opts, [verbose, {report, {eunit_surefire, [{dir, &quot;./&quot;}]}}]}.
+</pre></div>
+</div>
+</div>
 
 <p>You can put test codes in subdirectory <code>test</code>. While run <code>rebar test</code>, rebar compile test code, put the object files in <code>.eunit</code>. It will also show test coverage in a web page.</p>
 
@@ -121,8 +139,11 @@
 
 <p>We already know we could use <code>rebar compile</code> to compile the codes. But it only put object files in <code>ebin/</code>, we also need to run them in the shell manually if we want:</p>
 
-<pre><code>erl -pa ./ebin ./deps/*/ebin
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>erl -pa ./ebin ./deps/*/ebin
+</pre></div>
+</div>
+</div>
 
 <p>This command will start the shell with compiled files, and you can run them in the shell.</p>
 
@@ -132,10 +153,13 @@
 
 <p>First, make a new directory in the application directory, and using rebar to generate some files:</p>
 
-<pre><code>mkdir rel
-cd rel
-rebar create-node nodeid=myapp
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>mkdir rel
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>cd rel
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>rebar create-node nodeid=myapp
+</pre></div>
+</div>
+</div>
 
 <p>These command will create a subdirectory named <code>files</code> and a file named <code>reltool.config</code>. We need not to touch anything in the <code>files</code> directory. But we will modify something in <code>reltool.config</code>. I’m using erlang R16B01, and I do these things:</p>
 
@@ -147,13 +171,19 @@ rebar create-node nodeid=myapp
 
 <p>Now, we could generate the executable files:</p>
 
-<pre><code>rebar compile generate
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>rebar compile generate
+</pre></div>
+</div>
+</div>
 
 <p>This command will generate files in <code>rel/myapp</code>. We can run the app with erlang shell like this:</p>
 
-<pre><code>./rel/myapp/bin/myapp/myapp console
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>./rel/myapp/bin/myapp/myapp console
+</pre></div>
+</div>
+</div>
 
 <p>Use <code>start</code> argument will start as a daemon, and using <code>attach</code> could come back to the erlang shell. You can see the usage with <code>help</code> argument.</p>
 

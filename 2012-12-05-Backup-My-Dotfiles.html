@@ -59,20 +59,23 @@
 
 <p>The basic idea is put configure files in a directory such as <code>dotfile</code> and use git to track it. Then make a symbolic link to home. However, manual make symbolic links is boring. Firstly I am thinking of use the same directory structure as <code>~/</code> and then automatic link them. But there comes some problems: for some directories such as <code>.vim</code>, we should make a link for them while for some directories such as <code>.config</code>, we may only want to link <code>openbox</code> under it to <code>~/.config/openbox</code>. It seems impossible to use an automatic way totally. But some shell code could make life a little easy:</p>
 
-<pre><code>check_link() {
-	LINK=`pwd`/$1
-	TARGET=~/$2
-	if [ -h $TARGET ] ; then
-		echo -n "remove symbolic link: "
-		rm -v $TARGET
-	elif [ -e $TARGET ] ; then
-		echo -n "move: "
-		mv -v $TARGET $TARGET.old
-	fi
-	echo -n "link: "
-	ln -sv $LINK $TARGET
-}
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>check_link() {
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>        LINK=`pwd`/$1
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>        TARGET=~/$2
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>        if [ -h $TARGET ] ; then
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>                echo -n &quot;remove symbolic link: &quot;
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>                rm -v $TARGET
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>        elif [ -e $TARGET ] ; then
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>                echo -n &quot;move: &quot;
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>                mv -v $TARGET $TARGET.old
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>        fi
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>        echo -n &quot;link: &quot;
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>        ln -sv $LINK $TARGET
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>}
+</pre></div>
+</div>
+</div>
 
 <p>Usage: <code>check_link &lt;path_in_dotfiles&gt; &lt;path_in_home&gt;</code>, such as <code>check_link vim/vimrc .vimrc</code>. See <a href="https://github.com/wb14123/dotfiles/blob/master/link.sh">my github repo</a> for details.</p>
 

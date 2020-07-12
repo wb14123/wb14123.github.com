@@ -50,17 +50,23 @@
 
 <p>After some search, I find Mac OS X seems to come with its default BLAS library. But I cannot find its headers. And as an article said, the default BLAS library may not as fast as some third party ones. So I install <code>OpenBLAS</code> with homebrew:</p>
 
-<pre><code>brew install openblas
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>brew install openblas
+</pre></div>
+</div>
+</div>
 
 <p>It is installed under <code>/usr/local/opt/openblas</code>, so we need to change these lines in the MXNet’s <code>config.mk</code> (it should be copied from <code>make/osx.mk</code> as the installing guide specified) :</p>
 
-<pre><code># the additional link flags you want to add
-ADD_LDFLAGS = '-L/usr/local/opt/openblas/lib'
-
-# the additional compile flags you want to add
-ADD_CFLAGS = '-I/usr/local/opt/openblas/include'
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span># the additional link flags you want to add
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>ADD_LDFLAGS = '-L/usr/local/opt/openblas/lib'
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span># the additional compile flags you want to add
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>ADD_CFLAGS = '-I/usr/local/opt/openblas/include'
+</pre></div>
+</div>
+</div>
 
 <p>Then the compile should pass.</p>
 

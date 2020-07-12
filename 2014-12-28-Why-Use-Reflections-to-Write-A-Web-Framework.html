@@ -71,8 +71,11 @@
 
 <p>The first way to this is write the injectors in the framework information. For example:</p>
 
-<pre><code>framework.addInjector(handler, getQueryString("a", Integer.class))
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>framework.addInjector(handler, getQueryString(&quot;a&quot;, Integer.class))
+</pre></div>
+</div>
+</div>
 
 <p>In this way, the framework knows the information. But it is not easy to use this framework. The problem is how to write the handler? How do we store the integer we’ve just get? The general way is store it into the context and takes it from context in the handler. It comes with two problems:</p>
 
@@ -89,15 +92,18 @@
 
 <p>The second way is just get the query string in to handler’s code. For example:</p>
 
-<pre><code>void handler(context) {
-	Integer a = getQueryString(context, "a", Integer.class)
-
-	# then do other things:
-
-	...
-
-}
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>void handler(context) {
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>        Integer a = getQueryString(context, &quot;a&quot;, Integer.class)
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>        # then do other things:
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>        ...
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>
+<span class="line-numbers"><a href="#n8" name="n8">8</a></span>}
+</pre></div>
+</div>
+</div>
 
 <p>This is very straightfoward. But in this way, we cannot get the information from the framework: the framework has no way to know this API needs a parameter “a” typed int in URL query string.</p>
 
@@ -105,14 +111,17 @@
 
 <p>Things get easy when we use reflections with annotations. We can write the handler like this:</p>
 
-<pre><code>void handler(@QueryParam("a") int a) {
-	# do things in the handler:
-
-	...
-
-
-}
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>void handler(@QueryParam(&quot;a&quot;) int a) {
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>        # do things in the handler:
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>        ...
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>}
+</pre></div>
+</div>
+</div>
 
 <p>The framework knows what parameter this API needs. And the user know how to use the injected value. We are all happy now.</p>
 

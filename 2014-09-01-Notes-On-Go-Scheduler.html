@@ -75,50 +75,53 @@
 
 <p>Well, it is not very detailed. Let’s read the code. The bootstrap code is Assembly. You can find one example in <code>asm_386.s</code>:</p>
 
-<pre><code>ok:
-	// set up m and g "registers"
-	get_tls(BX)
-	LEAL	runtime·g0(SB), CX
-	MOVL	CX, g(BX)
-	LEAL	runtime·m0(SB), AX
-
-	// save m-&gt;g0 = g0
-	MOVL	CX, m_g0(AX)
-	// save g0-&gt;m = m0
-	MOVL	AX, g_m(CX)
-
-	CALL	runtime·emptyfunc(SB)	// fault if stack check is wrong
-
-	// convention is D is always cleared
-	CLD
-
-	CALL	runtime·check(SB)
-
-	// saved argc, argv
-	MOVL	120(SP), AX
-	MOVL	AX, 0(SP)
-	MOVL	124(SP), AX
-	MOVL	AX, 4(SP)
-	CALL	runtime·args(SB)
-	CALL	runtime·osinit(SB)
-	CALL	runtime·hashinit(SB)
-	CALL	runtime·schedinit(SB)
-
-	// create a new goroutine to start program
-	PUSHL	$runtime·main·f(SB)	// entry
-	PUSHL	$0	// arg size
-	ARGSIZE(8)
-	CALL	runtime·newproc(SB)
-	ARGSIZE(-1)
-	POPL	AX
-	POPL	AX
-
-	// start this M
-	CALL	runtime·mstart(SB)
-
-	INT $3
-	RET
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>ok:
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>        // set up m and g &quot;registers&quot;
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>        get_tls(BX)
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>        LEAL        runtime·g0(SB), CX
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>        MOVL        CX, g(BX)
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>        LEAL        runtime·m0(SB), AX
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>        // save m-&gt;g0 = g0
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>        MOVL        CX, m_g0(AX)
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>        // save g0-&gt;m = m0
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>        MOVL        AX, g_m(CX)
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>        CALL        runtime·emptyfunc(SB)        // fault if stack check is wrong
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>        // convention is D is always cleared
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>        CLD
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>        CALL        runtime·check(SB)
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>        // saved argc, argv
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>        MOVL        120(SP), AX
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>        MOVL        AX, 0(SP)
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>        MOVL        124(SP), AX
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>        MOVL        AX, 4(SP)
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span>        CALL        runtime·args(SB)
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>        CALL        runtime·osinit(SB)
+<span class="line-numbers"><a href="#n27" name="n27">27</a></span>        CALL        runtime·hashinit(SB)
+<span class="line-numbers"><a href="#n28" name="n28">28</a></span>        CALL        runtime·schedinit(SB)
+<span class="line-numbers"><a href="#n29" name="n29">29</a></span>
+<span class="line-numbers"><strong><a href="#n30" name="n30">30</a></strong></span>        // create a new goroutine to start program
+<span class="line-numbers"><a href="#n31" name="n31">31</a></span>        PUSHL        $runtime·main·f(SB)        // entry
+<span class="line-numbers"><a href="#n32" name="n32">32</a></span>        PUSHL        $0        // arg size
+<span class="line-numbers"><a href="#n33" name="n33">33</a></span>        ARGSIZE(8)
+<span class="line-numbers"><a href="#n34" name="n34">34</a></span>        CALL        runtime·newproc(SB)
+<span class="line-numbers"><a href="#n35" name="n35">35</a></span>        ARGSIZE(-1)
+<span class="line-numbers"><a href="#n36" name="n36">36</a></span>        POPL        AX
+<span class="line-numbers"><a href="#n37" name="n37">37</a></span>        POPL        AX
+<span class="line-numbers"><a href="#n38" name="n38">38</a></span>
+<span class="line-numbers"><a href="#n39" name="n39">39</a></span>        // start this M
+<span class="line-numbers"><strong><a href="#n40" name="n40">40</a></strong></span>        CALL        runtime·mstart(SB)
+<span class="line-numbers"><a href="#n41" name="n41">41</a></span>
+<span class="line-numbers"><a href="#n42" name="n42">42</a></span>        INT $3
+<span class="line-numbers"><a href="#n43" name="n43">43</a></span>        RET
+</pre></div>
+</div>
+</div>
 
 <p>It init an <code>M</code>, and a <code>G</code> as this <code>M</code>’s <code>g0</code>.</p>
 
@@ -132,23 +135,26 @@
 
 <p>Here is what <code>runtime.gogo</code> do, for example in <code>asm_386.s</code>:</p>
 
-<pre><code>// void gogo(Gobuf*)
-// restore state from Gobuf; longjmp
-TEXT runtime·gogo(SB), NOSPLIT, $0-4
-	MOVL	4(SP), BX		// gobuf
-	MOVL	gobuf_g(BX), DX
-	MOVL	0(DX), CX		// make sure g != nil
-	get_tls(CX)
-	MOVL	DX, g(CX)
-	MOVL	gobuf_sp(BX), SP	// restore SP
-	MOVL	gobuf_ret(BX), AX
-	MOVL	gobuf_ctxt(BX), DX
-	MOVL	$0, gobuf_sp(BX)	// clear to help garbage collector
-	MOVL	$0, gobuf_ret(BX)
-	MOVL	$0, gobuf_ctxt(BX)
-	MOVL	gobuf_pc(BX), BX
-	JMP	BX
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>// void gogo(Gobuf*)
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>// restore state from Gobuf; longjmp
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>TEXT runtime·gogo(SB), NOSPLIT, $0-4
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>        MOVL        4(SP), BX                // gobuf
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>        MOVL        gobuf_g(BX), DX
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>        MOVL        0(DX), CX                // make sure g != nil
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>        get_tls(CX)
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>        MOVL        DX, g(CX)
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>        MOVL        gobuf_sp(BX), SP        // restore SP
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>        MOVL        gobuf_ret(BX), AX
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>        MOVL        gobuf_ctxt(BX), DX
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>        MOVL        $0, gobuf_sp(BX)        // clear to help garbage collector
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>        MOVL        $0, gobuf_ret(BX)
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>        MOVL        $0, gobuf_ctxt(BX)
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>        MOVL        gobuf_pc(BX), BX
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>        JMP        BX
+</pre></div>
+</div>
+</div>
 
 <h2 id="the-start-of-the-other-goroutines">The Start of the Other Goroutines</h2>
 
@@ -168,65 +174,71 @@ TEXT runtime·gogo(SB), NOSPLIT, $0-4
 
 <p>This could be verified by a piece of code:</p>
 
-<pre><code>package main
-
-import (
-	"fmt"
-	"sync"
-	"time"
-)
-
-type Counter struct {
-	Count int
-	Mu    sync.Mutex
-}
-
-func loop1() {
-	loop1()
-}
-
-func loop2() {
-	for {
-	}
-}
-
-func main() {
-	counter := Counter{Count: 0}
-	loop2()
-
-	for j := 0; j &lt; 10; j++ {
-		go func() {
-			// get uid
-			counter.Mu.Lock()
-			id := counter.Count
-			counter.Count += 1
-			counter.Mu.Unlock()
-
-			/*
-			   It will print the current number of goroutine.
-			   It is a system call, so it will give other goroutines a chance to run,
-			   but it just happens in the beginning,
-			   so it will just allow a limited number of Goroutines to run.
-			*/
-			fmt.Println(id)
-
-			/*
-			  loop2() is a dead end loop. So it will block other Goroutines to run.
-			  loop1() keeps call functions, so it give other Goroutines a chance to run.
-			  You can see what will happen when change it to loop1()
-			*/
-			loop2()
-		}()
-	}
-	fmt.Println("hi")
-	time.Sleep(time.Second * 1000)
-}
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>package main
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>import (
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>        &quot;fmt&quot;
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>        &quot;sync&quot;
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>        &quot;time&quot;
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>)
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>type Counter struct {
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>        Count int
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>        Mu    sync.Mutex
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>}
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>func loop1() {
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>        loop1()
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>}
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>func loop2() {
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>        for {
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>        }
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>}
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>func main() {
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>        counter := Counter{Count: 0}
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span>        loop2()
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>
+<span class="line-numbers"><a href="#n27" name="n27">27</a></span>        for j := 0; j &lt; 10; j++ {
+<span class="line-numbers"><a href="#n28" name="n28">28</a></span>                go func() {
+<span class="line-numbers"><a href="#n29" name="n29">29</a></span>                        // get uid
+<span class="line-numbers"><strong><a href="#n30" name="n30">30</a></strong></span>                        counter.Mu.Lock()
+<span class="line-numbers"><a href="#n31" name="n31">31</a></span>                        id := counter.Count
+<span class="line-numbers"><a href="#n32" name="n32">32</a></span>                        counter.Count += 1
+<span class="line-numbers"><a href="#n33" name="n33">33</a></span>                        counter.Mu.Unlock()
+<span class="line-numbers"><a href="#n34" name="n34">34</a></span>
+<span class="line-numbers"><a href="#n35" name="n35">35</a></span>                        /*
+<span class="line-numbers"><a href="#n36" name="n36">36</a></span>                           It will print the current number of goroutine.
+<span class="line-numbers"><a href="#n37" name="n37">37</a></span>                           It is a system call, so it will give other goroutines a chance to run,
+<span class="line-numbers"><a href="#n38" name="n38">38</a></span>                           but it just happens in the beginning,
+<span class="line-numbers"><a href="#n39" name="n39">39</a></span>                           so it will just allow a limited number of Goroutines to run.
+<span class="line-numbers"><strong><a href="#n40" name="n40">40</a></strong></span>                        */
+<span class="line-numbers"><a href="#n41" name="n41">41</a></span>                        fmt.Println(id)
+<span class="line-numbers"><a href="#n42" name="n42">42</a></span>
+<span class="line-numbers"><a href="#n43" name="n43">43</a></span>                        /*
+<span class="line-numbers"><a href="#n44" name="n44">44</a></span>                          loop2() is a dead end loop. So it will block other Goroutines to run.
+<span class="line-numbers"><a href="#n45" name="n45">45</a></span>                          loop1() keeps call functions, so it give other Goroutines a chance to run.
+<span class="line-numbers"><a href="#n46" name="n46">46</a></span>                          You can see what will happen when change it to loop1()
+<span class="line-numbers"><a href="#n47" name="n47">47</a></span>                        */
+<span class="line-numbers"><a href="#n48" name="n48">48</a></span>                        loop2()
+<span class="line-numbers"><a href="#n49" name="n49">49</a></span>                }()
+<span class="line-numbers"><strong><a href="#n50" name="n50">50</a></strong></span>        }
+<span class="line-numbers"><a href="#n51" name="n51">51</a></span>        fmt.Println(&quot;hi&quot;)
+<span class="line-numbers"><a href="#n52" name="n52">52</a></span>        time.Sleep(time.Second * 1000)
+<span class="line-numbers"><a href="#n53" name="n53">53</a></span>}
+</pre></div>
+</div>
+</div>
 
 <p>Run it with the debug options:</p>
 
-<pre><code>GODEBUG=schedtrace=1000,scheddetail=1 GOMAXPROCS=10 go run a.go
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>GODEBUG=schedtrace=1000,scheddetail=1 GOMAXPROCS=10 go run a.go
+</pre></div>
+</div>
+</div>
 
 <h3 id="how-to-change">How to Change</h3>
 

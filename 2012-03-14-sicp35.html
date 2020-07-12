@@ -56,15 +56,21 @@
 
 <p>在解释器中，当遇到一个函数或者表达式的时候，会先解释它，返回结果。比如下面的代码</p>
 
-<pre><code>(+ 2 (sqrt 4))
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>(+ 2 (sqrt 4))
+</pre></div>
+</div>
+</div>
 
 <p>就会先计算<code>(sqrt 4)</code>，得出结果然后再加2。</p>
 
 <p>而delay的作用就是延迟这种计算，比如在解释器中输入以下代码：</p>
 
-<pre><code>(+ 2 (delay (sqrt 4)))
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>(+ 2 (delay (sqrt 4)))
+</pre></div>
+</div>
+</div>
 
 <p>就会发现因为延迟了计算<code>(sqrt 4)</code>，解释器一直在等待。</p>
 
@@ -72,19 +78,28 @@
 
 <p>Scheme中大部分函数都可以由基本的函数所实现。那么delay和force又是怎么实现的呢？简单来说，</p>
 
-<pre><code>(delay &lt;exp&gt;)
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>(delay &lt;exp&gt;)
+</pre></div>
+</div>
+</div>
 
 <p>可以看作是</p>
 
-<pre><code>(lambda () &lt;exp&gt;)
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>(lambda () &lt;exp&gt;)
+</pre></div>
+</div>
+</div>
 
 <p>force可以看作：</p>
 
-<pre><code>(define (force delayed-object)
-    (delayed-object))
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>(define (force delayed-object)
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>    (delayed-object))
+</pre></div>
+</div>
+</div>
 
 <p>但是注意，delay直接用define是不可以实现的，需要用到宏的方式来定义。而在实际的应用中也没有这么简单，在一些递归应用中，一个被delay的表达式有可能被force多次，因此实际的实现要复杂一些。</p>
 
@@ -94,79 +109,82 @@
 
 <p>后面会和所关于stream巧妙的应用。这里先将stream的实现贴出来。书中给出的生成stream的函数是不行的，因为同样需要用到宏。所以我将自己的代码写到这里，也方便自己和别人查询：</p>
 
-<pre><code>(use-syntax (ice-9 syncase))
-
-(define-syntax cons-stream
-    (syntax-rules ()
-        ((cons-stream head tail)
-            (cons head (delay tail)))))
-
-(define (stream-car stream)
-    (car stream))
-
-(define (stream-cdr stream)
-    (force (cdr stream)))
-
-(define (list-stream . args)
-    (if (null? (cdr args))
-        (cons-stream (car args) the-empty-stream)
-        (cons-stream
-            (car args)
-            (apply 
-                list-stream
-                (cdr args)))))
-
-(define (stream-null? stream)
-    (eq? stream the-empty-stream))
-(define the-empty-stream 'null)
-
-(define (stream-for-each proc s)
-    (if (stream-null? s)
-        'done
-        (begin (proc (stream-car s))
-            (stream-for-each proc (stream-cdr s)))))
-
-(define (stream-ref s n)
-    (if (= n 0)
-        (stream-car s)
-        (stream-ref (stream-cdr s) (- n 1))))
-
-(define (stream-map proc . args)
-    (if (stream-null? (car args))
-        the-empty-stream
-        (cons-stream
-            (apply proc (map stream-car args))
-            (apply stream-map
-                (cons proc (map stream-cdr args))))))
-
-(define (stream-enumerate-interval low high)
-    (if (&gt; low high)
-        the-empty-stream
-        (cons-stream
-            low
-            (stream-enumerate-interval
-                (+ low 1)
-                high))))
-
-(define (stream-filter pred stream)
-    (cond ((stream-null? stream) the-empty-stream)
-        ((pred (stream-car stream))
-            (cons-stream (stream-car stream)
-                (stream-filter pred
-                    (stream-cdr stream))))
-        (else (stream-filter pred (stream-cdr stream)))))
-    
-
-(define (display-stream s)
-    (stream-for-each display-line s))
-
-(define (display-line x)
-    (display x)
-    (newline))
-
-(define (interge-starting-from n)
-    (cons-stream n (interge-starting-from (+ n 1))))
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>(use-syntax (ice-9 syncase))
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>(define-syntax cons-stream
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>    (syntax-rules ()
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>        ((cons-stream head tail)
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>            (cons head (delay tail)))))
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>(define (stream-car stream)
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>    (car stream))
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>(define (stream-cdr stream)
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>    (force (cdr stream)))
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>(define (list-stream . args)
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>    (if (null? (cdr args))
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>        (cons-stream (car args) the-empty-stream)
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>        (cons-stream
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>            (car args)
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>            (apply 
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>                list-stream
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>                (cdr args)))))
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>(define (stream-null? stream)
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>    (eq? stream the-empty-stream))
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span>(define the-empty-stream 'null)
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>
+<span class="line-numbers"><a href="#n27" name="n27">27</a></span>(define (stream-for-each proc s)
+<span class="line-numbers"><a href="#n28" name="n28">28</a></span>    (if (stream-null? s)
+<span class="line-numbers"><a href="#n29" name="n29">29</a></span>        'done
+<span class="line-numbers"><strong><a href="#n30" name="n30">30</a></strong></span>        (begin (proc (stream-car s))
+<span class="line-numbers"><a href="#n31" name="n31">31</a></span>            (stream-for-each proc (stream-cdr s)))))
+<span class="line-numbers"><a href="#n32" name="n32">32</a></span>
+<span class="line-numbers"><a href="#n33" name="n33">33</a></span>(define (stream-ref s n)
+<span class="line-numbers"><a href="#n34" name="n34">34</a></span>    (if (= n 0)
+<span class="line-numbers"><a href="#n35" name="n35">35</a></span>        (stream-car s)
+<span class="line-numbers"><a href="#n36" name="n36">36</a></span>        (stream-ref (stream-cdr s) (- n 1))))
+<span class="line-numbers"><a href="#n37" name="n37">37</a></span>
+<span class="line-numbers"><a href="#n38" name="n38">38</a></span>(define (stream-map proc . args)
+<span class="line-numbers"><a href="#n39" name="n39">39</a></span>    (if (stream-null? (car args))
+<span class="line-numbers"><strong><a href="#n40" name="n40">40</a></strong></span>        the-empty-stream
+<span class="line-numbers"><a href="#n41" name="n41">41</a></span>        (cons-stream
+<span class="line-numbers"><a href="#n42" name="n42">42</a></span>            (apply proc (map stream-car args))
+<span class="line-numbers"><a href="#n43" name="n43">43</a></span>            (apply stream-map
+<span class="line-numbers"><a href="#n44" name="n44">44</a></span>                (cons proc (map stream-cdr args))))))
+<span class="line-numbers"><a href="#n45" name="n45">45</a></span>
+<span class="line-numbers"><a href="#n46" name="n46">46</a></span>(define (stream-enumerate-interval low high)
+<span class="line-numbers"><a href="#n47" name="n47">47</a></span>    (if (&gt; low high)
+<span class="line-numbers"><a href="#n48" name="n48">48</a></span>        the-empty-stream
+<span class="line-numbers"><a href="#n49" name="n49">49</a></span>        (cons-stream
+<span class="line-numbers"><strong><a href="#n50" name="n50">50</a></strong></span>            low
+<span class="line-numbers"><a href="#n51" name="n51">51</a></span>            (stream-enumerate-interval
+<span class="line-numbers"><a href="#n52" name="n52">52</a></span>                (+ low 1)
+<span class="line-numbers"><a href="#n53" name="n53">53</a></span>                high))))
+<span class="line-numbers"><a href="#n54" name="n54">54</a></span>
+<span class="line-numbers"><a href="#n55" name="n55">55</a></span>(define (stream-filter pred stream)
+<span class="line-numbers"><a href="#n56" name="n56">56</a></span>    (cond ((stream-null? stream) the-empty-stream)
+<span class="line-numbers"><a href="#n57" name="n57">57</a></span>        ((pred (stream-car stream))
+<span class="line-numbers"><a href="#n58" name="n58">58</a></span>            (cons-stream (stream-car stream)
+<span class="line-numbers"><a href="#n59" name="n59">59</a></span>                (stream-filter pred
+<span class="line-numbers"><strong><a href="#n60" name="n60">60</a></strong></span>                    (stream-cdr stream))))
+<span class="line-numbers"><a href="#n61" name="n61">61</a></span>        (else (stream-filter pred (stream-cdr stream)))))
+<span class="line-numbers"><a href="#n62" name="n62">62</a></span>    
+<span class="line-numbers"><a href="#n63" name="n63">63</a></span>
+<span class="line-numbers"><a href="#n64" name="n64">64</a></span>(define (display-stream s)
+<span class="line-numbers"><a href="#n65" name="n65">65</a></span>    (stream-for-each display-line s))
+<span class="line-numbers"><a href="#n66" name="n66">66</a></span>
+<span class="line-numbers"><a href="#n67" name="n67">67</a></span>(define (display-line x)
+<span class="line-numbers"><a href="#n68" name="n68">68</a></span>    (display x)
+<span class="line-numbers"><a href="#n69" name="n69">69</a></span>    (newline))
+<span class="line-numbers"><strong><a href="#n70" name="n70">70</a></strong></span>
+<span class="line-numbers"><a href="#n71" name="n71">71</a></span>(define (interge-starting-from n)
+<span class="line-numbers"><a href="#n72" name="n72">72</a></span>    (cons-stream n (interge-starting-from (+ n 1))))
+</pre></div>
+</div>
+</div>
 
 <h2 id="二流编程">二、流编程</h2>
 
@@ -176,20 +194,29 @@
 
 <p>我们看一个最简单的无穷长的列表，所有大于等于n的整数做组成的列表：</p>
 
-<pre><code>(define (integers-start-from n)
-    (cons-stream n
-        (integers-start-from (+ n 1))))
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>(define (integers-start-from n)
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>    (cons-stream n
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>        (integers-start-from (+ n 1))))
+</pre></div>
+</div>
+</div>
 
 <p>由此可以定义包含所有正整数的列表：</p>
 
-<pre><code>(define integers (integers-start-from 1))
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>(define integers (integers-start-from 1))
+</pre></div>
+</div>
+</div>
 
 <p>当要获取这个列表第5个元素的时候，可以使用下面的代码：</p>
 
-<pre><code>(stream-ref integers 5)
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>(stream-ref integers 5)
+</pre></div>
+</div>
+</div>
 
 <p>由于<code>(integers-start-from (+ n 1))</code>没有立刻被实现，所以它现在只是作为一个函数被存储着。当执行stream-ref的时候，一步步计算尾部的数据，当计算到第5个的时候停止。所以计算的过程中所用的空间也是常数级别的。而所用的时间，是线性的。</p>
 
@@ -201,13 +228,16 @@
 
 <p>还是上篇文章所说的银行账户的例子。我们可以把每次用户取钱的情况看称是一个流，这个流是由输入所决定的。它可以并且应该是无限的，因为时间是无限的。这个流由用户的输入组成。在思考的过程中，把流作为一个整体来思考，而不用考虑这个流的实现细节。假设这个输入的流是amount-stream，那么我们可以用下面的代码获得存款或者取款之后余额的流：</p>
 
-<pre><code>(define (stream-withraw balance amount-stream)
-    (cons-stream
-        balance
-        (stream-withraw
-            (- balance (stream-car amount-stream))
-            (stream-cdr amount-stream))))
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>(define (stream-withraw balance amount-stream)
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>    (cons-stream
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>        balance
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>        (stream-withraw
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>            (- balance (stream-car amount-stream))
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>            (stream-cdr amount-stream))))
+</pre></div>
+</div>
+</div>
 
 <p>所得到的流<code>stream-withraw</code>就是相应的每次存取款之后的余额。驱动这个流前进的，可以是用户的输入。</p>
 

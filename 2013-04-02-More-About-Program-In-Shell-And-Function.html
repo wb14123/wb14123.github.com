@@ -54,11 +54,14 @@
 
 <p>But think about the program could receive arguments from shell, we need not treat standard input as its argument. In C programming, it’s like:</p>
 
-<pre><code>int main(int argc, char *argv[])
-{
-	return 0;
-}
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>int main(int argc, char *argv[])
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>{
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>        return 0;
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>}
+</pre></div>
+</div>
+</div>
 
 <p><code>argc</code> is the number of arguments, and <code>argv</code> is what they are. So there is no need to see standard input as the program’s arguments.</p>
 
@@ -66,27 +69,36 @@
 
 <p>Now let’s think about why we treat program’s standard output as function’s return value. In the example above, you could return other type as you want, such as <code>void</code>, <code>char</code> and so on. But there will be a warning while compiling and the result will be transformed to <code>int</code> at last. You can try to modify the code like this:</p>
 
-<pre><code>char main(int argc, char *argv[])
-{
-	return 'a';
-}
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>char main(int argc, char *argv[])
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>{
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>        return 'a';
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>}
+</pre></div>
+</div>
+</div>
 
 <p>Then compile and see the return value:</p>
 
-<pre><code>~/testing » gcc -Wall a.c
-a.c:4:11: warning: return type of ‘main’ is not ‘int’ [-Wmain]
-------------------------------------------------------------
-~/testing » ./a.out
-------------------------------------------------------------
-~/testing » echo $?
-46
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>~/testing » gcc -Wall a.c
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>a.c:4:11: warning: return type of ‘main’ is not ‘int’ [-Wmain]
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>------------------------------------------------------------
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>~/testing » ./a.out
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>------------------------------------------------------------
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>~/testing » echo $?
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>46
+</pre></div>
+</div>
+</div>
 
 <p>So if we want to get more information from program, we should get its output. Luckily, it’s easy to do it in shell. Using <code>$()</code> you could get the output of program and using them in the shell. For example:</p>
 
-<pre><code>echo `ls`
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>echo `ls`
+</pre></div>
+</div>
+</div>
 
 <h2 id="and-then">And then?</h2>
 

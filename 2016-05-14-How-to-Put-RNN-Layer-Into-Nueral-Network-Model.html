@@ -65,9 +65,9 @@
 <p>For each step:</p>
 
 <ul>
-  <li>Count next state based on the current step data and current state: <span><script type="math/tex">next\_state = state\_func(state, input_i)</script></span></li>
-  <li>Count output from current input and state: <span><script type="math/tex">output_i = out\_func(state, input_i)</script></span></li>
-  <li>Update the state: <span><script type="math/tex">state = next\_state</script></span></li>
+  <li>Count next state based on the current step data and current state: <span>\(next\_state = state\_func(state, input_i)\)</span></li>
+  <li>Count output from current input and state: <span>\(output_i = out\_func(state, input_i)\)</span></li>
+  <li>Update the state: <span>\(state = next\_state\)</span></li>
 </ul>
 
 <p>The <code>state_func</code> and <code>out_func</code> maybe different depends on what kind of the RNN is (for example, LSTM or GRU), but the basic structure is the same.</p>

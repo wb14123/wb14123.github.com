@@ -56,13 +56,19 @@
 
 <p>Copy files from origin ext4 partation to the new xfs partation with <code>tar</code>. Be careful, <em>never</em> use <code>cp</code> to backup a file system since <code>cp</code> will change the setuid bit and follow hard links. Use <code>tar</code> instead, for example:</p>
 
-<pre><code>tar --exclude=proc/ --exclude=sys/ -cf - / | ( cd &lt;xfs_mount_path&gt; ; tar -xpvf - )
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>tar --exclude=proc/ --exclude=sys/ -cf - / | ( cd &lt;xfs_mount_path&gt; ; tar -xpvf - )
+</pre></div>
+</div>
+</div>
 
 <p>I just exclude two directories for an example. You should exclude all mounted file systems (except root of cause). It is recommended to use a bootable CD or USB disk to boot your system, mount both ext4 and xfs partations, then use <code>tar</code> to copy files. In this way, you need not exclude any directory:</p>
 
-<pre><code>tar  -cf - &lt;ext4_mount_path&gt; | ( cd &lt;xfs_mount_path&gt; ; tar -xpvf - )
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>tar  -cf - &lt;ext4_mount_path&gt; | ( cd &lt;xfs_mount_path&gt; ; tar -xpvf - )
+</pre></div>
+</div>
+</div>
 
 <h2 id="3-config-grub-and-modify-fstab">3. Config grub and modify fstab</h2>
 
@@ -72,24 +78,33 @@
 
 <p>In the boot process, kernel use initramfs as root first, then mount the real root file system. If your initramfs don’t include support for xfs, you may see these errors during booting:</p>
 
-<pre><code>fsck.xfs: file not found
-mount: unknown filesystem type "xfs"
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>fsck.xfs: file not found
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>mount: unknown filesystem type &quot;xfs&quot;
+</pre></div>
+</div>
+</div>
 
 <p>In this case,  you need boot into your old ext4 root partation and modify initramfs. In archlinux, you can do it with <a href="https://wiki.archlinux.org/index.php/mkinitcpio">mkinitcpio</a>.</p>
 
 <p>Just add <code>xfs</code> to kernel modules and <code>fsck.xfs</code> to binary files in <code>/etc/mkinitcpio.conf</code>:</p>
 
-<pre><code>MODULES="xfs"
-BINARIES="fsck.xfs"
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>MODULES=&quot;xfs&quot;
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>BINARIES=&quot;fsck.xfs&quot;
+</pre></div>
+</div>
+</div>
 
 <p>Remember to copy it to your xfs partation, too.</p>
 
 <p>Then make a initramfs:</p>
 
-<pre><code>mkinitcpio -p linux
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>mkinitcpio -p linux
+</pre></div>
+</div>
+</div>
 
 
 </article>

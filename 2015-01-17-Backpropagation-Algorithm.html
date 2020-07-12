@@ -67,17 +67,17 @@ a_i(x, w, b) = \sigma(z_i(x, w, b))
 
 </div>
 
-<p>Assume <span><script type="math/tex">layer_i</script></span> means the number of neural in layer i, then the variables in the equations could be explained as below:</p>
+<p>Assume <span>\(layer_i\)</span> means the number of neural in layer i, then the variables in the equations could be explained as below:</p>
 
 <ul>
-  <li><code>x</code> is the input, which is a row vector, it has <span><script type="math/tex">layer_1</script></span> elements.</li>
-  <li><span><script type="math/tex">w_i</script></span> meas the weights in layer <code>i</code>, which is a matrix of <span><script type="math/tex">layer_i</script></span> rows and <span><script type="math/tex">layer_{i+1}</script></span> columns.</li>
-  <li><span><script type="math/tex">b_i</script></span> means biases in layer i, which is a row vector of <span><script type="math/tex">layer_{i+1}</script></span> elements.</li>
-  <li><span><script type="math/tex">a_i</script></span> means activation function in the ith layer, which the output is a row vector, it has <span><script type="math/tex">layer_i</script></span> elements.</li>
-  <li><code>l</code> means the last layer. The output of <span><script type="math/tex">a_l</script></span> is the output of the neural network.</li>
+  <li><code>x</code> is the input, which is a row vector, it has <span>\(layer_1\)</span> elements.</li>
+  <li><span>\(w_i\)</span> meas the weights in layer <code>i</code>, which is a matrix of <span>\(layer_i\)</span> rows and <span>\(layer_{i+1}\)</span> columns.</li>
+  <li><span>\(b_i\)</span> means biases in layer i, which is a row vector of <span>\(layer_{i+1}\)</span> elements.</li>
+  <li><span>\(a_i\)</span> means activation function in the ith layer, which the output is a row vector, it has <span>\(layer_i\)</span> elements.</li>
+  <li><code>l</code> means the last layer. The output of <span>\(a_l\)</span> is the output of the neural network.</li>
 </ul>
 
-<p>And <span><script type="math/tex">\sigma(z)</script></span> may be different in different use cases. This one is an example:</p>
+<p>And <span>\(\sigma(z)\)</span> may be different in different use cases. This one is an example:</p>
 
 <div>
 \begin{equation}
@@ -105,11 +105,11 @@ C(x, y, w, b) = {1 \over 2} (y - a_l(x, w, b)) ^ 2
 \end{equation}
 </div>
 
-<p>In order to make the cost function smaller, we need to make <span><script type="math/tex">\Delta C</script></span> negative. We can make <span><script type="math/tex">\Delta w = - {\partial C \over \partial w}</script></span> and <span><script type="math/tex">\Delta b = - {\partial C \over \partial b}</script></span>. So that <span><script type="math/tex">\Delta C = - ({\partial C \over \partial w}) ^ 2 - ({\partial C \over \partial b}) ^ 2</script></span> which is always negative.</p>
+<p>In order to make the cost function smaller, we need to make <span>\(\Delta C\)</span> negative. We can make <span>\(\Delta w = - {\partial C \over \partial w}\)</span> and <span>\(\Delta b = - {\partial C \over \partial b}\)</span>. So that <span>\(\Delta C = - ({\partial C \over \partial w}) ^ 2 - ({\partial C \over \partial b}) ^ 2\)</span> which is always negative.</p>
 
 <h2 id="compute-partial-derivative">Compute Partial Derivative</h2>
 
-<p>So the goal is to compute the partial derivative <span><script type="math/tex">\partial C \over \partial w</script></span> and <span><script type="math/tex">\partial C \over \partial b</script></span>. Using equations (1), (2), (3), (5) and chain rule, we can get this:</p>
+<p>So the goal is to compute the partial derivative <span>\(\partial C \over \partial w\)</span> and <span>\(\partial C \over \partial b\)</span>. Using equations (1), (2), (3), (5) and chain rule, we can get this:</p>
 
 <div>
 
@@ -131,9 +131,9 @@ C(x, y, w, b) = {1 \over 2} (y - a_l(x, w, b)) ^ 2
 
 </div>
 
-<p>Note that we use <span><script type="math/tex">\odot</script></span> before <span><script type="math/tex">\sigma^{'}</script></span> is because function <span><script type="math/tex">\sigma(z)</script></span> is element wise.</p>
+<p>Note that we use <span>\(\odot\)</span> before <span>\(\sigma^{'}\)</span> is because function <span>\(\sigma(z)\)</span> is element wise.</p>
 
-<p>We can find there are many same parts in these equations: <span><script type="math/tex">{\partial C \over \partial a_{i+1}} \odot {\sigma^{'}(z_{i+1})}</script></span>. So we can define <span><script type="math/tex">\delta_i = {\partial C \over \partial a_i} \odot {\sigma^{'}(z_i)}</script></span>, and rewrite these equations like this to avoid compute these parts many times:</p>
+<p>We can find there are many same parts in these equations: <span>\({\partial C \over \partial a_{i+1}} \odot {\sigma^{'}(z_{i+1})}\)</span>. So we can define <span>\(\delta_i = {\partial C \over \partial a_i} \odot {\sigma^{'}(z_i)}\)</span>, and rewrite these equations like this to avoid compute these parts many times:</p>
 
 <div>
 \begin{equation}

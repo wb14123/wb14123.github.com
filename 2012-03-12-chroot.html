@@ -54,55 +54,76 @@
 
 <p>首先，我们希望这个文件夹的结构是类似于Linux基本的系统结构，这样chroot后的环境可以作为一个基本的Linux环境来使用。所以用下面的命令先创建一些新文件夹：</p>
 
-<pre><code>mkdir newroot
-cd newroot
-mkdir bin
-mkdir lib
-mkdir usr
-mkdir usr/bin
-mkdir usr/lib
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>mkdir newroot
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>cd newroot
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>mkdir bin
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>mkdir lib
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>mkdir usr
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>mkdir usr/bin
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>mkdir usr/lib
+</pre></div>
+</div>
+</div>
 
 <p>这样就建立了一些必须的文件夹。其中bin和usr/bin是放二进制文件的，而lib和usr/lib是存放链接库文件。</p>
 
 <p>前面说过了，chroot后的环境至少需要一个可以运行的shell，我们可以直接将自己系统中的bash拷贝过去。一般bash都在/bin文件夹下，如果不能确定，可以使用下面的命令来查找：</p>
 
-<pre><code>whereis bash
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>whereis bash
+</pre></div>
+</div>
+</div>
 
 <p>然后将bash拷贝到新目录中的相应位置:</p>
 
-<pre><code>cp /bin/bash bin
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>cp /bin/bash bin
+</pre></div>
+</div>
+</div>
 
 <p>只拷贝这一个文件是不够的，因为一般来说，bash这个程序是通过动态链接来编译的，所以我们要将所包含的库文件也拷贝过去。使用ldd(1)命令可以查看bash所需要的库文件：</p>
 
-<pre><code>ldd /bin/bash
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>ldd /bin/bash
+</pre></div>
+</div>
+</div>
 
 <p>在我的系统中这条命令的输出是:</p>
 
-<pre><code>    linux-vdso.so.1 =&gt;  (0x00007fff46bff000)
-    libreadline.so.6 =&gt; /lib/libreadline.so.6 (0x00007fca39fa9000)
-    libncursesw.so.5 =&gt; /usr/lib/libncursesw.so.5 (0x00007fca39d4c000)
-    libdl.so.2 =&gt; /lib/libdl.so.2 (0x00007fca39b48000)
-    libc.so.6 =&gt; /lib/libc.so.6 (0x00007fca397a7000)
-    /lib/ld-linux-x86-64.so.2 (0x00007fca3a1ef000)
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>    linux-vdso.so.1 =&gt;  (0x00007fff46bff000)
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>    libreadline.so.6 =&gt; /lib/libreadline.so.6 (0x00007fca39fa9000)
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>    libncursesw.so.5 =&gt; /usr/lib/libncursesw.so.5 (0x00007fca39d4c000)
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>    libdl.so.2 =&gt; /lib/libdl.so.2 (0x00007fca39b48000)
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>    libc.so.6 =&gt; /lib/libc.so.6 (0x00007fca397a7000)
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>    /lib/ld-linux-x86-64.so.2 (0x00007fca3a1ef000)
+</pre></div>
+</div>
+</div>
 
 <p>然后根据输出来拷贝库文件到相应的文件夹：</p>
 
-<pre><code>cp /lib/libreadline.so.6 lib
-cp /usr/lib/libncursesw.so.5 usr/lib
-cp /lib/libdl.so.2 lib
-cp /lib/libc.so.6 lib
-cp /lib/ld-linux-x86-64.so.2 lib
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>cp /lib/libreadline.so.6 lib
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>cp /usr/lib/libncursesw.so.5 usr/lib
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>cp /lib/libdl.so.2 lib
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>cp /lib/libc.so.6 lib
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>cp /lib/ld-linux-x86-64.so.2 lib
+</pre></div>
+</div>
+</div>
 
 <p>这样就可以使用chroot命令来chroot到新目录了（需要root权限）：</p>
 
-<pre><code>chroot . /bin/bash
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>chroot . /bin/bash
+</pre></div>
+</div>
+</div>
 
 <p>chroot参数的详细作用可以使用<code>man chroot</code>命令来查看。在chroot之后，我们可以随便输入一些命令，可以发现很多在新环境中是没有的。而一直执行<code>cd ..</code>的命令，也只能在newroot这个文件夹中。然而在新环境中来开，newroot就是根目录。</p>
 
@@ -118,23 +139,29 @@ cp /lib/ld-linux-x86-64.so.2 lib
 
 <p>下面是一个很简单的chroot程序示例:</p>
 
-<pre><code>#include &lt;stdio.h&gt;
-#include &lt;unistd.h&gt;
-#include &lt;stdlib.h&gt;
-
-int main(int argc, char *argv[])
-{
-    chroot(".");
-    chdir("/");
-    execvp("/bin/bash", NULL);
-    return 0;
-}
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>#include &lt;stdio.h&gt;
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>#include &lt;unistd.h&gt;
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>#include &lt;stdlib.h&gt;
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>int main(int argc, char *argv[])
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>{
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>    chroot(&quot;.&quot;);
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    chdir(&quot;/&quot;);
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>    execvp(&quot;/bin/bash&quot;, NULL);
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    return 0;
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>}
+</pre></div>
+</div>
+</div>
 
 <p>这段代码的功能就是chroot到当前目录下并且打开bash这个shell。需要注意的是，上面这段代码除了没有错误提示之外，还是很危险的！因为运行它就必须给用户root权限，而在以root权限chroot之后，并没有收回权限就打开了一个shell让用户操作。我们后面可以看到，用一段很简单的代码就可以轻易的跳出这个chroot环境。正确的做法是，在chroot之后使用setuid，使当前用户变成一个权限较低的用户，比如在chroot后添加如下代码：</p>
 
-<pre><code>setuid(1000);
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>setuid(1000);
+</pre></div>
+</div>
+</div>
 
 <p>在程序中使用chroot的好处就是不一定非要打开一个shell，需要在chroot环境中使用什么程序，直接用exec函数族来执行就行了。这样有两个好处：（1）只需要在新环境中配置需要运行的程序。如果要执行的程序是静态编译的，那么连链接库文件都不用要了。（2）由于一直是程序在控制运行过程，没有提供shell让用户交互操作，所以安全性相对高一些。</p>
 
@@ -154,41 +181,53 @@ int main(int argc, char *argv[])
 
 <p>下面是一个简单的C语言代码示例，我们将它保存为jumpout.c：</p>
 
-<pre><code>//jumpout.c
-
-#include &lt;stdio.h&gt;  
-#include &lt;unistd.h&gt;  
-   
-#define TEMP_DIR "temp"  
-   
-int main()
-{  
-    int x;
-    chroot(TEMP_DIR);
-    for(x=0;x&lt;1024;x++)   
-        chdir("..");  
-    chroot(".");  
-    execl("/bin/sh", "-i", NULL);
-    
-    return 0; 
-}
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>//jumpout.c
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>#include &lt;stdio.h&gt;  
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>#include &lt;unistd.h&gt;  
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>   
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>#define TEMP_DIR &quot;temp&quot;  
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>   
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>int main()
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>{  
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    int x;
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>    chroot(TEMP_DIR);
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>    for(x=0;x&lt;1024;x++)   
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>        chdir(&quot;..&quot;);  
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>    chroot(&quot;.&quot;);  
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>    execl(&quot;/bin/sh&quot;, &quot;-i&quot;, NULL);
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>    
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>    return 0; 
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>}
+</pre></div>
+</div>
+</div>
 
 <p>现在来体验一下这段代码。首先静态编译（这样编译后的可执行文件就不需要动态链接库的支持了）:</p>
 
-<pre><code>gcc --static jumpout.c -o jumpout
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>gcc --static jumpout.c -o jumpout
+</pre></div>
+</div>
+</div>
 
 <p>然后在newroot下面新建一个名为temp的文件夹：</p>
 
-<pre><code>mkdir temp
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>mkdir temp
+</pre></div>
+</div>
+</div>
 
 <p>这样准备工作就做好了。现在chroot到newroot，然后执行jumpout：</p>
 
-<pre><code>chroot . /bin/bash
-./jumpout
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>chroot . /bin/bash
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>./jumpout
+</pre></div>
+</div>
+</div>
 
 <p>可以看到我们现在已经跳出chroot环境了。各种命令都可以使用，并且文件夹也都是真正的根文件夹下的结构。</p>
 
@@ -230,9 +269,12 @@ int main()
 
 <p>系统自带的手册页是很好的参考资料。详见</p>
 
-<pre><code>man 1 chroot
-man 2 chroot
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>man 1 chroot
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>man 2 chroot
+</pre></div>
+</div>
+</div>
 
 <p>这篇文章中有跳出chroot环境的详细讲解和C语言代码：http://www.bpfh.net/simes/computing/chroot-break.html</p>
 

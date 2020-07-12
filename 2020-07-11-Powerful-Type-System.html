@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Powerful Type System |  Bin Wang</title>
+    <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-52904500-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+  </head>
+
+  <body>
+    <header id="page_header">
+      <nav id="page_nav">
+        <ul>
+             <li><a href="/">Home</a></li>
+             <li><a href="/read.html">Read</a></li>
+             <li><a href="/travel.html">Travel</a></li>
+             <li><a href="/search.html">Search</a></li>
+             <li><a href="/about.html">About</a></li>
+       </ul>
+      </nav>
+
+    </header>
+
+    <section id="page_content">
+      <div id="content_table">
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#basic-type-system">Basic Type System</a></li><li><a href="#dependent-type-system">Dependent Type System</a></li><li><a href="#formal-proof">Formal Proof</a></li></ol>
+</div>
+
+<div id="article_content" class="">
+<article id="post">
+  <header>
+    <h1>Powerful Type System</h1>
+    
+      <p class="description">Posted on 11 Jul 2020, tagged <code>technology</code><code>programming language</code><code>type system</code><code>machine learning</code></p>
+    
+  </header>
+
+  <p>This is not an article to introduce type systems. It’s only some of my experience and thoughts about it.</p>
+
+<h2 id="basic-type-system">Basic Type System</h2>
+
+<p>When I first learned programming, I was very interested in languages with dynamic type system like Javascript and Python. It seems so straight forward. The need of annotate types on variables and methods seems so annoying.</p>
+
+<p>But as I wrote more programs, the more I feel the power of type system. Basically there are some reasons why type system is useful:</p>
+
+<ol>
+  <li>It serves as document. So when you read the code which is wrote by other people (or by yourself a long time ago), you can understand the methods and objects more easily.</li>
+  <li>It can prevent some basic errors. For example, some code change the type of variables on the fly and you don’t know about it. Or you accidentally assign a wrong type of value to it. Or just a typo in the field name. The type system can find a lot of these errors at compile time.</li>
+  <li>The tools can be powerful with type system. With type system, it’s so pleasant to write code with modern IDEs. The IDE can complete the field names for you. It can jump to the definitions of the methods or objects very easily. It can show all the usages of the methods. I’m not saying it cannot be done with dynamic type system, it’s just more difficult and inefficient. For example, when I open Intellij with a reasonable large Javascript project, the fans will run like crazy.</li>
+</ol>
+
+<p>All these advantages are well known by most programmers now. And it’s a trend to use type system more often. For example, Python already added the type hint so you can optional write type annotations and use some tools to check the code. So I will not go any deeper about the basic type system.</p>
+
+<h2 id="dependent-type-system">Dependent Type System</h2>
+
+<p>I was missing type system so much when I wrote machine learning program with TensorFlow. With TensorFlow, you need to construct the computing graph with some awful API (it’s before the eager execution mode), so it’s very easy to get lost what’s the type and shape of the current tensor. Though TensorFlow can actually check the correctness of shape when construct the graph, but the error message doesn’t help a lot if it has dynamic shapes. It will only report the shape as <code>?</code>. So the error messages are like “<code>?</code> doesn’t match”, but you don’t know exactly where is <code>?</code> in the shapes come from.</p>
+
+<p>So at that time, I thought it would be so nice if I can annotate the shape of the tensors just like the type system. So I can know every tensor’s shape when I’m writing the code. The API will also has the more information by default. For example, imagine if we can write the code like this:</p>
+
+<div class="language-python highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">reverseImage</span>(images: Tensor[BatchSize, ImageHeight, ImageWidth]): Tensor[BatchSize, ImageWidth, ImageHeight]:
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>  <span style="color:#080;font-weight:bold">pass</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>
+</pre></div>
+</div>
+</div>
+
+<p>So that we know the what’s the meaning of each of the demission. And if we operate on the return value, we can keep track on the properties like <code>BatchSize</code>.</p>
+
+<p>But after a deeper thinking, the type system I knew at that time cannot actually handle the information like shapes. Because the shape of the tensor is dynamic and could be infinity. It’s impossible to define a type like <code>BatchSize</code>, it’s more like a variable.</p>
+
+<p>That was the time I found dependent type system. More specifically, I found a language that has dependent type system called <a href="https://www.idris-lang.org/">Idris</a>. Here is an example of how it works from <a href="https://www.idris-lang.org/pages/example.html">its official website</a>:</p>
+
+<div class="language-idris highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>app : Vect n a -&gt; Vect m a -&gt; Vect (n + m) a
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>app Nil       ys = ys
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>app (x :: xs) ys = x :: app xs ys
+</pre></div>
+</div>
+</div>
+
+<p>The syntax is a little like Haskell, but you get the idea: <code>Vect</code> is a type that can have it’s own properties. And the return type’s property can based on the parameter’s type: <code>n+m</code>.</p>
+
+<h2 id="formal-proof">Formal Proof</h2>
+
+<p>Such a powerful type system exists surprised me. Even more, Idris introduces how it can proof theorem. Normally, we will write tests for methods. But there is almost no guarantee the methods will work correctly for all cases. For example, if we write a method <code>plus(a:int, b:int)</code>, and we want to test if <code>plus(a, b) == plus(b, a)</code>. In most languages, we will only find some values for <code>a</code> and <code>b</code> to see the result. And hopefully we can find some edge cases. But with Idirs, you can actually define a theorem to declare <code>plus(a, b) == plus(b, a)</code>, and prove it with the code. If you don’t prove it the right way, the compilation will fail. This ability really opens a new world to me.</p>
+
+<p>I find this ability can be very useful in machine learning. Because machine learning involves a lot of math. The model often needs to have some properties to make it work right. For example, maybe you need the function to be differentiable. To write down these theorem and prove it, makes it have the same advantages as type system: a much better documentation and make sure the program is working as intended.</p>
+
+<p>As I explored the formal proof, I find it has a much wider use case than I though. For example, I found <a href="https://github.com/uwplse/verdi/pull/16">Raft has a formal proof</a>. The thing I like about programming is I can always find how it works if I spent enough time: it’s all in the code and can only be interpreted in one way. It would be so much fun if a complex theorem in distributed system can be proved in such a way: I can learn the theorem step by step and make sure I understand them correct.</p>
+
+<p>Even though I discovered all these information 2 years ago. Only until recently I have some time to actually learn some formal proof language. There is a very good series of books called <a href="https://softwarefoundations.cis.upenn.edu/">Software Foundations</a>, which introduces Coq, a very popular language to prove theorems. It has many exercises in the book’s source code so I can read and modify the code to do exercises. It’s really a fun experience. A lot of the concepts are not found in popular languages so it’s refreshing and challenging. I’m tracking the progress in <a href="https://softwarefoundations.cis.upenn.edu/">a Git repo</a> and wish I can finish them all.</p>
+
+</article>
+
+<footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Prev: Migrate Arch Linux to ZFS</a></td>
+    
+    
+  </tr></table>
+</footer>
+
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+</div>
+
+    </section>
+
+    <footer id="page_footer">
+      Copyright @ 2008 - 2018 Bin Wang
+      <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
+    </footer>
+    
+    <!-- MathJax -->
+    <script type="text/javascript"
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      TeX: { equationNumbers: { autoNumber: "AMS" } }
+    });
+    </script>
+  </body>
+</html>

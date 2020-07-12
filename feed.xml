@@ -7,6 +7,17 @@
 		<atom:link href="http://www.binwang.me/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Powerful Type System</title>
+				
+					<description>&lt;p&gt;This is not an article to introduce type systems. It’s only some of my experience and thoughts about it.&lt;/p&gt;
+</description>
+				
+                        	<pubDate>Sat, 11 Jul 2020 00:00:00 -0400</pubDate>
+				<link>http://www.binwang.me/2020-07-11-Powerful-Type-System.html</link>
+				<guid isPermaLink="true">http://www.binwang.me/2020-07-11-Powerful-Type-System.html</guid>
+			</item>
+		
+			<item>
 				<title>Migrate Arch Linux to ZFS</title>
 				
 					<description>&lt;p&gt;I migrated my Arch Linux installation to ZFS recently. This article describes why and how I did that.&lt;/p&gt;
@@ -103,17 +114,6 @@
                         	<pubDate>Sun, 24 Jul 2016 00:00:00 -0400</pubDate>
 				<link>http://www.binwang.me/2016-07-24-%E8%AF%BB-%E9%82%93%E5%B0%8F%E5%B9%B3%E6%97%B6%E4%BB%A3-%E6%9C%89%E6%84%9F.html</link>
 				<guid isPermaLink="true">http://www.binwang.me/2016-07-24-%E8%AF%BB-%E9%82%93%E5%B0%8F%E5%B9%B3%E6%97%B6%E4%BB%A3-%E6%9C%89%E6%84%9F.html</guid>
-			</item>
-		
-			<item>
-				<title>Config sbt to Use Both Proxy and Self Hosted Repositories</title>
-				
-					<description>&lt;p&gt;While building Scala projects, we usually use a proxy to make the build faster. On the other hand, we usually use another repository to host our internal dependencies, which usually has a password to protect it from unwanted access. Both things are good and necessary. But if you want to use both of them, you will find it’s very tricky.&lt;/p&gt;
-</description>
-				
-                        	<pubDate>Mon, 11 Jul 2016 00:00:00 -0400</pubDate>
-				<link>http://www.binwang.me/2016-07-11-Config-sbt-to-Use-Both-Proxy-and-Self-Hosted-Repositories.html</link>
-				<guid isPermaLink="true">http://www.binwang.me/2016-07-11-Config-sbt-to-Use-Both-Proxy-and-Self-Hosted-Repositories.html</guid>
 			</item>
 		
 	</channel>

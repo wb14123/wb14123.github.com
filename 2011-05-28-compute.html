@@ -51,19 +51,25 @@
 
 <p>两个加数进制数为base，分别为：(anan-1…a2a1)base，(bnbn-1…b2b1)base ，加得的数存到s中，则：</p>
 
-<pre><code>c ← 0
-for i ← 1 to n
-	temp ← [(ai+bi+c)/base]
-	si ← ai+bi+c-temp*base
-c ← temp
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>c ← 0
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>for i ← 1 to n
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>        temp ← [(ai+bi+c)/base]
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>        si ← ai+bi+c-temp*base
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>c ← temp
+</pre></div>
+</div>
+</div>
 
 <p>然后又看见了一个关于二进制乘法的算法，是一个分治算法，将两个n位的乘数分别拆分为高n/2位和低n/2位，我们知道对于进制数为base的数来说，将一个数左移t位就是乘以baset，那么我们可以推出以下的公式：</p>
 
-<pre><code>若A = (anan-1…a2a1)base， B = (bnbn-1…b2b1)base ，A1 = (anan-1…an/2+1)base，A0 = (an/2an/2-1…a1)base，B1 = (bnbn-1…bn/2+1)base，B0 = (bn/2bn/2-1…b1)base
-
-则A*B = (basen/2*A1+A0)*(basen/2*B1+B0) = A1B1*basen+((A1-B1)(B0-A0)+A1B1+A0B0)*basen/2+A0B0
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>若A = (anan-1…a2a1)base， B = (bnbn-1…b2b1)base ，A1 = (anan-1…an/2+1)base，A0 = (an/2an/2-1…a1)base，B1 = (bnbn-1…bn/2+1)base，B0 = (bn/2bn/2-1…b1)base
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>则A*B = (basen/2*A1+A0)*(basen/2*B1+B0) = A1B1*basen+((A1-B1)(B0-A0)+A1B1+A0B0)*basen/2+A0B0
+</pre></div>
+</div>
+</div>
 
 <p>这样递归来算，在程序中需要调用三次乘法函数就可以了，假设这个算法的时间复杂度是T(n)，那么当n=1时，T(n)=O(1)，否则，T(n)=3T(n/2)+O(n)。用我们学过的可以解出来这个递归式的时间复杂度是T(n)=O(nlog3)=O(n1.585)。比普通高精度乘法算法的O(n2)要快一些。</p>
 

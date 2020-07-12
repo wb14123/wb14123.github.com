@@ -76,8 +76,11 @@
 
 <p>The API to define filters may like this:</p>
 
-<pre><code>framework.addFilter([handlerA, handlerB], [filterA, filterB])
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>framework.addFilter([handlerA, handlerB], [filterA, filterB])
+</pre></div>
+</div>
+</div>
 
 <h2 id="we-need-injectors-while-performance-matters">We Need Injectors While Performance Matters</h2>
 
@@ -89,22 +92,31 @@
 
 <p>The API could be as same as filters’:</p>
 
-<pre><code>framework.addInjector([handlerA, handlerB], [injectorA, injectorB])
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>framework.addInjector([handlerA, handlerB], [injectorA, injectorB])
+</pre></div>
+</div>
+</div>
 
 <h2 id="how-to-define-the-route">How to Define The Route</h2>
 
 <p>Just one handler should handle the HTTP request. So how we define the rule? HTTP has defined it in its standard, based on URL, HTTP method and so on. So almost all the framework provides API based on these rules. For example, it provides API to let you specify handler A should handle path ‘/abc’ and method GET, it may looks like this:</p>
 
-<pre><code>framework.get('/abc', handlerA)
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>framework.get('/abc', handlerA)
+</pre></div>
+</div>
+</div>
 
 <p>But what if we what some more control over the request? We should be able to custom and extend it. My design is a function called adapter. It is a function that returns a function, which takes HTTP request as parameter and  return a result that tell the framework whether this request suits this adapter. For example, <code>pathAdapter("/abc")</code> could return a function, that return true if the HTTP URL is “/abc” otherwise return false.</p>
 
 <p>So the API may looks like this:</p>
 
-<pre><code>framework.addAdapter([handlerA], [pathAdapter("/abc"), methodAdapter("GET")])
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>framework.addAdapter([handlerA], [pathAdapter(&quot;/abc&quot;), methodAdapter(&quot;GET&quot;)])
+</pre></div>
+</div>
+</div>
 
 <h2 id="all-the-components-should-be-equal">All the Components Should Be Equal</h2>
 
@@ -112,8 +124,11 @@
 
 <p>For example:</p>
 
-<pre><code>framework.addFilter([injectorA], [filterA])
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>framework.addFilter([injectorA], [filterA])
+</pre></div>
+</div>
+</div>
 
 <p><code>filterA</code> will be run before we run <code>injectorA</code>.</p>
 

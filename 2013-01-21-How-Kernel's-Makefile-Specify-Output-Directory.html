@@ -48,35 +48,38 @@
 
   <p>When compile Linux kernel, we could output files to a split directory with “make O=”. The kernel’s way to do it is a little tricky. Since kernel’s Makefile is very big, we could have a simpler version to analyse:</p>
 
-<pre><code>ifeq ($(KBUILD_SRC),)
-ifeq ("$(origin O)", "command line")
-	KBUILD_OUTPUT := $(O)
-endif
-
-ifneq ($(KBUILD_OUTPUT),)
-$(filter-out submake $(CURDIR)/Makefile, $(MAKECMDGOALS)): sub-make
-	@:
-
-sub-make:
-	make -C $(KBUILD_OUTPUT) -f /home/wangbin/maketest/Makefile \
-		KBUILD_SRC=$(PWD) \
-		$(MAKECMDGOALS)
-	@echo " sub-make KBUILD_OUTPUT: $(KBUILD_OUTPUT)"
-skip-makefile := 1
-endif #end KBUILD_OUTPUT
-endif #end KBUILD_SRC
-
-ifeq ($(skip-makefile),)
-
-target1:
-	touch target1
-	@echo "target KBUILD_OUTPUT: $(KBUILD_OUTPUT)"
-
-target2:
-	touch target2
-	@echo "target KBUILD_OUTPUT: $(KBUILD_OUTPUT)"
-endif
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>ifeq ($(KBUILD_SRC),)
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>ifeq (&quot;$(origin O)&quot;, &quot;command line&quot;)
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>        KBUILD_OUTPUT := $(O)
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>endif
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>ifneq ($(KBUILD_OUTPUT),)
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>$(filter-out submake $(CURDIR)/Makefile, $(MAKECMDGOALS)): sub-make
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>        @:
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>sub-make:
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>        make -C $(KBUILD_OUTPUT) -f /home/wangbin/maketest/Makefile \
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>                KBUILD_SRC=$(PWD) \
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>                $(MAKECMDGOALS)
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>        @echo &quot; sub-make KBUILD_OUTPUT: $(KBUILD_OUTPUT)&quot;
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>skip-makefile := 1
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>endif #end KBUILD_OUTPUT
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>endif #end KBUILD_SRC
+<span class="line-numbers"><a href="#n18" name="n18">18</a></span>
+<span class="line-numbers"><a href="#n19" name="n19">19</a></span>ifeq ($(skip-makefile),)
+<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>
+<span class="line-numbers"><a href="#n21" name="n21">21</a></span>target1:
+<span class="line-numbers"><a href="#n22" name="n22">22</a></span>        touch target1
+<span class="line-numbers"><a href="#n23" name="n23">23</a></span>        @echo &quot;target KBUILD_OUTPUT: $(KBUILD_OUTPUT)&quot;
+<span class="line-numbers"><a href="#n24" name="n24">24</a></span>
+<span class="line-numbers"><a href="#n25" name="n25">25</a></span>target2:
+<span class="line-numbers"><a href="#n26" name="n26">26</a></span>        touch target2
+<span class="line-numbers"><a href="#n27" name="n27">27</a></span>        @echo &quot;target KBUILD_OUTPUT: $(KBUILD_OUTPUT)&quot;
+<span class="line-numbers"><a href="#n28" name="n28">28</a></span>endif
+</pre></div>
+</div>
+</div>
 
 <p>You could try to execute <code>make O=../build target1</code>, it will output files to <code>../build</code>. Let’s see how it works.</p>
 
@@ -86,15 +89,18 @@ endif
 
 <p>The thing to notice is, while you make the real <code>target1</code>, <strong>variables between <code>ifeq ($(KBUILD_SRC),)</code> is not defined</strong>. You could see the output:</p>
 
-<pre><code>make -C ../build -f /home/wangbin/maketest/Makefile \
-                KBUILD_SRC=/home/wangbin/maketest \
-                target1
-make[1]: Entering directory `/home/wangbin/build'
-touch target1
-target KBUILD_OUTPUT: 
-make[1]: Leaving directory `/home/wangbin/build'
-sub-make KBUILD_OUTPUT: ../build
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>make -C ../build -f /home/wangbin/maketest/Makefile \
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>                KBUILD_SRC=/home/wangbin/maketest \
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>                target1
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>make[1]: Entering directory `/home/wangbin/build'
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>touch target1
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span>target KBUILD_OUTPUT: 
+<span class="line-numbers"><a href="#n7" name="n7">7</a></span>make[1]: Leaving directory `/home/wangbin/build'
+<span class="line-numbers"><a href="#n8" name="n8">8</a></span>sub-make KBUILD_OUTPUT: ../build
+</pre></div>
+</div>
+</div>
 
 
 </article>

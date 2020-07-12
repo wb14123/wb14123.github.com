@@ -103,18 +103,15 @@ Designing Data-Intensive Applications</a>.</p>
 
 <p><strong>So what TrueTime API really gives Spanner is generating monotone increasing transaction ID and guarantee external consistency ( or linearizability) at the same time</strong>: if T1 commits before T2 start, then T1’s transaction ID is always smaller than T2’s transaction ID. Spanner implement this by getting a timestamp from TrueTime API that absolutely passed the current time, and wait to commit until currrent time absolutely passed the timestamp. In Spanner’s paper, there is a proof that this can garantee external consistency:</p>
 
-<p><script type="math/tex">% <![CDATA[
-s_1 < t_{abs}(e_1^{commit}) %]]></script> (commit wait)</p>
+<p>\(s_1 &lt; t_{abs}(e_1^{commit})\) (commit wait)</p>
 
-<p><script type="math/tex">% <![CDATA[
-t_{abs}(e_1^{commit}) < t_{abs}(e_2^{start}) %]]></script> (assumption)</p>
+<p>\(t_{abs}(e_1^{commit}) &lt; t_{abs}(e_2^{start})\) (assumption)</p>
 
-<p><script type="math/tex">t_{abs}(e_2^{start}) \leq t_{abs}(e_2^{server})</script> (causality)</p>
+<p>\(t_{abs}(e_2^{start}) \leq t_{abs}(e_2^{server})\) (causality)</p>
 
-<p><script type="math/tex">t_{abs}(e_2^{server}) \leq s_2</script> (start)</p>
+<p>\(t_{abs}(e_2^{server}) \leq s_2\) (start)</p>
 
-<p><script type="math/tex">% <![CDATA[
-s_1 < s_2 %]]></script> (transitivity)</p>
+<p>\(s_1 &lt; s_2\) (transitivity)</p>
 
 <p>There are also other parts of Spanner that use TrueTime API, for example, the Paxos implementation uses TrueTime API for leader lease. But it is just a implement optimization which can be done in other ways, too.</p>
 
@@ -126,14 +123,14 @@ s_1 < s_2 %]]></script> (transitivity)</p>
 
 <p>Let’s first look at the read-write transaction. Since read-write transaction will write Paxos log, it is straightforward to understand it must involves the leader. And more, it must waits for the major of replicas to confirm the writes in order to make sure the write will not lost when leader fails.</p>
 
-<p>Then let’s look at the read-only transactions. In Spanner, every replica keeps a timestamp <script type="math/tex">t_{safe}</script>. And if a read-only want’s to read the data at timestamp <script type="math/tex">t</script> and if <script type="math/tex">t \leq t_{safe}</script>, it is safe to read data from that replica. <script type="math/tex">t_{safe}</script> will be minimal one between the lastest commit timestamp and the timestamp it generates for a 2PC prepare step (if it has one). There are two situations based on how <script type="math/tex">t</script> is chosen:</p>
+<p>Then let’s look at the read-only transactions. In Spanner, every replica keeps a timestamp \(t_{safe}\). And if a read-only want’s to read the data at timestamp \(t\) and if \(t \leq t_{safe}\), it is safe to read data from that replica. \(t_{safe}\) will be minimal one between the lastest commit timestamp and the timestamp it generates for a 2PC prepare step (if it has one). There are two situations based on how \(t\) is chosen:</p>
 
 <ol>
   <li>
     <p>If the transaction only involves one partition, it is chosen to be the last commit time of the partition. And in order tot get the last commit time, it needs to ask the leader of this partition.</p>
   </li>
   <li>
-    <p>If the transaction involves multiple partition, it would be expensive and complex to get a last commit time. So using <code>TT.now().lastest</code> as <script type="math/tex">t</script> can garantee it will read a version more recently than current time. And replica will not store <script type="math/tex">t_{safe} \geq TT.now().lastest</script> since the lastest commit timestamp must be earlier than current, so it needs to ask the leader to confirm whether there are new writes.</p>
+    <p>If the transaction involves multiple partition, it would be expensive and complex to get a last commit time. So using <code>TT.now().lastest</code> as \(t\) can garantee it will read a version more recently than current time. And replica will not store \(t_{safe} \geq TT.now().lastest\) since the lastest commit timestamp must be earlier than current, so it needs to ask the leader to confirm whether there are new writes.</p>
   </li>
 </ol>
 

@@ -62,9 +62,12 @@
 
 <p>I’ve installed tmux, zsh, Git and vim with it. And config them with my <a href="https://github.com/wb14123/dotfiles">config files</a>. I only need to change the tmux start up config:</p>
 
-<pre><code>- set -g default-command "reattach-to-user-namespace -l /bin/zsh"
-+ set -g default-command "/usr/bin/zsh"
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>- set -g default-command &quot;reattach-to-user-namespace -l /bin/zsh&quot;
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>+ set -g default-command &quot;/usr/bin/zsh&quot;
+</pre></div>
+</div>
+</div>
 
 <p>Except this, everything else works very well without any problem.</p>
 
@@ -74,22 +77,31 @@
 
 <p>First we will install pip:</p>
 
-<pre><code>apt-cyg install python python-devel
-wget http://peak.telecommunity.com/dist/ez_setup.py
-python ez_setup.py
-easy_install pip
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>apt-cyg install python python-devel
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>wget http://peak.telecommunity.com/dist/ez_setup.py
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>python ez_setup.py
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>easy_install pip
+</pre></div>
+</div>
+</div>
 
 <p>Then we need to install gcc in order to compile some python packages:</p>
 
-<pre><code>apt-cyg install colorgcc gcc-core gcc-g++ libgcc1
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>apt-cyg install colorgcc gcc-core gcc-g++ libgcc1
+</pre></div>
+</div>
+</div>
 
 <p>Then we need to change a python header file: /usr/include/python2.7/pyconfig.h:</p>
 
-<pre><code>- #define __BSD_VISIBLE 1
-+ #define __BSD_VISIBLE 0
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>- #define __BSD_VISIBLE 1
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>+ #define __BSD_VISIBLE 0
+</pre></div>
+</div>
+</div>
 
 </article>
 

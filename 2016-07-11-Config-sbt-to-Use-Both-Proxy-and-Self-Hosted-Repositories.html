@@ -54,11 +54,14 @@
 
 <h3 id="config-repositories-in-sbtrepositories-like-this">Config repositories in <code>~/.sbt/repositories</code> like this:</h3>
 
-<pre><code>[repositories]
-  local
-    my-ivy-proxy-releases: http://repo.company.com/ivy-releases/, [organization]/[module]/(scala_[scalaVersion]/)(sbt_[sbtVersion]/)[revision]/[type]s/[artifact](-[classifier]).[ext]
-    my-maven-proxy-releases: http://repo.company.com/maven-releases/
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>[repositories]
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  local
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>    my-ivy-proxy-releases: http://repo.company.com/ivy-releases/, [organization]/[module]/(scala_[scalaVersion]/)(sbt_[sbtVersion]/)[revision]/[type]s/[artifact](-[classifier]).[ext]
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>    my-maven-proxy-releases: http://repo.company.com/maven-releases/
+</pre></div>
+</div>
+</div>
 
 <h3 id="add--dsbtoverridebuildrepostrue-while-use-sbt-command">Add <code>-Dsbt.override.build.repos=true</code> while use sbt command.</h3>
 
@@ -68,15 +71,21 @@
 
 <p>sbt has a <a href="http://www.scala-sbt.org/0.13/docs/Resolvers.html">document</a> about this, too. You will add something like this in your <code>build.sbt</code>:</p>
 
-<pre><code>resolvers +=
-  "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>resolvers +=
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  &quot;Sonatype OSS Snapshots&quot; at &quot;https://oss.sonatype.org/content/repositories/snapshots&quot;
+</pre></div>
+</div>
+</div>
 
 <p>And if you have a password for this repo, you should also add something like this:</p>
 
-<pre><code>credentials += Credentials("Sonatype Nexus Repository Manager", "oss.sonatype.org",
-  "username", "password")
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>credentials += Credentials(&quot;Sonatype Nexus Repository Manager&quot;, &quot;oss.sonatype.org&quot;,
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  &quot;username&quot;, &quot;password&quot;)
+</pre></div>
+</div>
+</div>
 
 <h2 id="use-both">Use Both</h2>
 

@@ -80,12 +80,15 @@
 
 <p>My disks and partitions are like this before the migration:</p>
 
-<pre><code>- SDD
-  + / (root)
-  + /boot
-- RAID1 (hdd1, hdd2)
-  + /data
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>- SDD
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  + / (root)
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>  + /boot
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>- RAID1 (hdd1, hdd2)
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span>  + /data
+</pre></div>
+</div>
+</div>
 
 <p>I only backup my data disks because I will not use my system disk for the ZFS pool at the creation time. I will use it as cache which can be added later. An important note is to <strong>use <code>tar</code> or <code>rsync</code> to backup data</strong>. Don’t use <code>cp</code>, it will break the file permissions and links.</p>
 
@@ -107,15 +110,21 @@
 
 <p>So follow <a href="https://wiki.archlinux.org/index.php/Install_Arch_Linux_on_ZFS">install Arch Linux on ZFS wiki</a>. After the regular installation, add <code>zfs</code> in <code>/etc/mkinitcpio.conf</code> <code>HOOKS</code>:</p>
 
-<pre><code>HOOKS=(base udev autodetect modconf block keyboard zfs filesystems)
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>HOOKS=(base udev autodetect modconf block keyboard zfs filesystems)
+</pre></div>
+</div>
+</div>
 
 <p>Then using <code>mkinitcpio -p</code> to make new boot image. (You may want to backup old images <code>/boot/initramfs-linux.img</code> and <code>/boot/vmlinuz-linux</code> before this step).</p>
 
 <p>Then in <code>/boot/grub/grub.cfg</code>, change the root filesystem to zfs, like this (in the menuentry):</p>
 
-<pre><code>linux   /vmlinuz-linux root=ZFS=zroot/root rw  loglevel=3 quiet
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>linux   /vmlinuz-linux root=ZFS=zroot/root rw  loglevel=3 quiet
+</pre></div>
+</div>
+</div>
 
 <p>Which <code>zroot/root</code> is the root dataset.</p>
 
@@ -123,16 +132,22 @@
 
 <p>Reconfig the root dataset’s mount point to <code>/</code> and add the configuration in <code>/etc/fstab</code>:</p>
 
-<pre><code>zroot/root / zfs defaults,noatime 0 0
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>zroot/root / zfs defaults,noatime 0 0
+</pre></div>
+</div>
+</div>
 
 <p>Don’t forget to set the auto import:</p>
 
-<pre><code>systemctl enable zfs-import-cache
-zpool set cachefile=/etc/zfs/zpool.cache &lt;pool&gt;
-systemctl enable zfs-mount
-systemctl enable zfs.target
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>systemctl enable zfs-import-cache
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>zpool set cachefile=/etc/zfs/zpool.cache &lt;pool&gt;
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>systemctl enable zfs-mount
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>systemctl enable zfs.target
+</pre></div>
+</div>
+</div>
 
 <p>Also need to input the passphrase if using encryption. Follow the <a href="https://wiki.archlinux.org/index.php/ZFS">Arch Linux’s ZFS wiki</a> to do that.</p>
 
@@ -151,6 +166,8 @@ systemctl enable zfs.target
     
       <td id="prev"><a href="/2019-11-04-Great-Resources-for-Learning-Database-and-Distributed-System.html">Prev: Great Resources for Learning Database and Distributed System</a></td>
     
+    
+      <td id="next"><a href="/2020-07-11-Powerful-Type-System.html" id="next">Next: Powerful Type System</a></td>
     
   </tr></table>
 </footer>

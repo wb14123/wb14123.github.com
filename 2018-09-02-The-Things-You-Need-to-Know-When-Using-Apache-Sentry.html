@@ -60,23 +60,26 @@
 
 <p>Let’s start with the old and deprecated way: using the policy files. The policy file approach is more straightforward: you write a file to define the authorization policies. The file is usually on HDFS so that every node can access it. You tell the service where to find the file. Then the service will use Sentry library to parse the policy file and get the permissions for every user. So in this way, there is no Sentry service, just policy files and Sentry library to parse the files.</p>
 
-<pre><code>          --------
-          | User |
-          --------
-             |
-             | &lt;-- Write Policy Files
-             V
-    ------------------------
-    | Sentry Files on HDFS |
-    ------------------------
-             ^
-             | &lt;-- Read and Parse with Sentry Library
-             |
-    ------------------------
-    | Hive/Impala/Solr ... |
-    ------------------------
-
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>          --------
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>          | User |
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>          --------
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>             |
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>             | &lt;-- Write Policy Files
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>             V
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>    ------------------------
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    | Sentry Files on HDFS |
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>    ------------------------
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>             ^
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>             | &lt;-- Read and Parse with Sentry Library
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>             |
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>    ------------------------
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>    | Hive/Impala/Solr ... |
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>    ------------------------
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>
+</pre></div>
+</div>
+</div>
 
 <p>For more details like how to configure the services to use Sentry policy file and how to write policy files, you can refer the <a href="https://www.cloudera.com/documentation/enterprise/5-10-x/topics/cdh_sg_sentry.html">Cloudera document</a>.</p>
 
@@ -86,23 +89,26 @@
 
 <p>For example, Hive and Impala allow user to use <code>GRANT</code> and <code>REVOKE</code> to configure permissions and it will save the permissions into Sentry service. Then when you query from Hive and Impala, it will ask Sentry service to see if you have the permission. Solr provides a tool to let you define the policies and save to Sentry service, too.</p>
 
-<pre><code>               --------
-               | User |
-               --------
-                 |  |
-       Query --&gt; |  | &lt;-- Grant Permission
-                 V  V
-         ------------------------
-         | Hive/Impala/Solr ... |
-         ------------------------
-                 ^  |
-  Request    --&gt; |  | &lt;-- Save Permissions
-  Permission     |  |
-                 |  V
-          -------------------
-          | Sentry Service  |
-          -------------------
-</code></pre>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>               --------
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>               | User |
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>               --------
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>                 |  |
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>       Query --&gt; |  | &lt;-- Grant Permission
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>                 V  V
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>         ------------------------
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>         | Hive/Impala/Solr ... |
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>         ------------------------
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>                 ^  |
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>  Request    --&gt; |  | &lt;-- Save Permissions
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>  Permission     |  |
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>                 |  V
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>          -------------------
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>          | Sentry Service  |
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>          -------------------
+</pre></div>
+</div>
+</div>
 
 <h2 id="conclusion">Conclusion</h2>
 
