@@ -1,25 +1,28 @@
 @font-face {
-  font-family: AdobeGaramondPro;
+  font-family: mixFont;
   src: url('Adobe_Garamond_Pro.ttf');
 }
 
 @font-face {
-  font-family: adobe-source-han-serif;
-  src: url('adobe-source-han-serif.tff');
+  font-family: mixFont;
+  src: url('SourceHanSerifSC-Regular.otf');
+  unicode-range: U+4E00-9FCB;/*汉字字符集*/
 }
+
+@font-face {
+  font-family: fangzhengkaiti;
+  src: url('fangzhengkaiti.ttf');
+}
+
 
 
 body{
   width:90%;
   margin:15px auto;
   padding: 0% 5% 5% 5%;
-  font-family: AdobeGaramondPro,Georgia,serif;
+  font-family: mixFont,Georgia,serif;
   font-size: 18px;
   color:  #111111;
-}
-
-.zh {
-  font-family: adobe-source-han-serif;
 }
 
 code{
@@ -191,6 +194,10 @@ blockquote {
   border: 1px solid #EAEAEA;
   margin-left: 0px;
   font-family: cursive;
+}
+
+.zh blockquote {
+  font-family: fangzhengkaiti;
 }
 
 #article_content img {
