@@ -5,13 +5,15 @@
 
 @font-face {
   font-family: mixFont;
-  src: url('SourceHanSerifSC-Regular.otf');
+  src: local('SimSun'), local('STSong'), url('SourceHanSerifSC-Regular.otf');
   unicode-range: U+4E00-9FCB;/*汉字字符集*/
+  font-display: swap;
 }
 
 @font-face {
   font-family: fangzhengkaiti;
-  src: url('fangzhengkaiti.ttf');
+  src: local('Georgia'), local('serif'), url('fangzhengkaiti.ttf');
+  font-display: swap;
 }
 
 
