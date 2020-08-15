@@ -1,6 +1,7 @@
 @font-face {
   font-family: mixFont;
   src: local('Georgia'), local('serif'), url('Adobe_Garamond_Pro.ttf');
+  font-display: swap;
 }
 
 @font-face {
