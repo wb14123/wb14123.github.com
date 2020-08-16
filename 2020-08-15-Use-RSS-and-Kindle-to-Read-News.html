@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Use RSS and Kindle to Read News |  Bin Wang - My Personal Blog</title>
+    <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-52904500-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+  </head>
+
+  <body>
+    <header id="page_header">
+      <nav id="page_nav">
+        <ul>
+             <li><a href="/">Home</a></li>
+             <li><a href="/snippets">Snippets</a></li>
+             <li><a href="/read.html">Read</a></li>
+             <li><a href="/travel.html">Travel</a></li>
+             <li><a href="/search.html">Search</a></li>
+             <li><a href="/about.html">About</a></li>
+             <li><a href="/feed.xml">RSS</a></li>
+       </ul>
+      </nav>
+
+    </header>
+
+    <section id="page_content">
+      <div id="content_table">
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#use-rss-to-get-news">Use RSS to Get News</a></li><li><a href="#use-calibre-to-send-rss-feeds-to-kindle">Use Calibre to Send RSS Feeds to Kindle</a></li><li><a href="#use-kindle-or-other-e-readers-instead-of-phone-or-computer">Use Kindle (Or Other E-Readers) Instead of Phone or Computer</a></li></ol>
+</div>
+
+<div id="article_content" class="">
+<article id="post">
+  <header>
+    <h1>Use RSS and Kindle to Read News</h1>
+    
+      <p class="description">Posted on 15 Aug 2020, tagged <code>technology</code><code>RSS</code></p>
+    
+  </header>
+
+  <p>In a <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">previous blog post</a>, I talked about one of the reasons I want to use mobile phone and social network less often. In this article, I will talk about one of the strategies of doing that: don’t read news on mobile phone or computer. Use Kindle or other E-Readers instead. Here is how I do it:</p>
+
+<h2 id="use-rss-to-get-news">Use RSS to Get News</h2>
+
+<p>RSS was so popular before Google Reader was killed. You can choose the sources by yourself instead of some black box recommendation algorithms. I talked about what’s wrong about the recommendation system in <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">a previous post</a>. RSS is also an open protocol, so you can choose whatever software you want without vendor lock-in.</p>
+
+<p>RSS is open and flexible, so people have various ways of using it. As a person who only wants to know important news and doesn’t want to lost in the overwhelming information, I subscribe to a few high quality sources. Basically 1 or 2 sources for local news, global news, tech news and culture. That’s enough for 1~2 hour’s daily reading. For the news sources, they should be focus on facts instead of its own opinion, and should cover the whole story instead of partial fact. With limited sources, I can focus more on the whole article instead of a lot titles.</p>
+
+<p>Many websites doesn’t provide full article RSS output. Some doesn’t even provide RSS at all. But as long as the content is available online, we can use tools to crawl and convert it to an RSS feed. There is a tool called <a href="https://github.com/DIYgod/RSSHub">RSSHub</a> does exactly this. I also contributed some code to it.</p>
+
+<h2 id="use-calibre-to-send-rss-feeds-to-kindle">Use Calibre to Send RSS Feeds to Kindle</h2>
+
+<p>Kindle doesn’t have any RSS reader. So once we have the RSS sources ready, we need to import them. There were a lot of platforms to do that, but most of them are not reliable anymore. Luckily, we have an even better option now: <a href="https://calibre-ebook.com/">Calibre</a>. It’s a very powerful e-book management software. Most importantly, it’s free and open source. So you don’t need to give any information to anyone else.</p>
+
+<p>The feature is available at “Fetch News” in Calibre’s menu. It turns the RSS sources into an e-book and send it to an Email address (Most E-readers, including Kindle, allow you to transfer books by sending an Email). It has many pre-defined sources but you can also add custom RSS sources. You can do it manually or import an OPML file. It can be configured to send the e-book daily or on specific days in a week. The only downside is you need to leave it running in the background. But since it doesn’t collect your data secretly, it barely uses any resource in the background.</p>
+
+<h2 id="use-kindle-or-other-e-readers-instead-of-phone-or-computer">Use Kindle (Or Other E-Readers) Instead of Phone or Computer</h2>
+
+<p>I got a Kindle after I graduated from university. I find it’s the most useful thing I’ve bought in that price range. I read much more books because of it. It’s so easy to take so I usually read it during commute. (My readings dropped a lot after I started working from home). And the screen likes paper so it doesn’t hurt my eyes. Some people may find low fresh rate E-Ink display is hard too use, but it’s perfect for book reading. And just because of that, I can focus on reading instead of watching videos or play games.</p>
+
+<p>After I started reading news on Kindle, I find I can read more carefully and completely. Though I spent much less time on reading news, I don’t feel I missed anything. Maybe the only things I missed are the rumors without fact check and click-bias content. I feel I’m still connected to the world, but with a much more peaceful mind.</p>
+
+</article>
+
+<footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2020-08-09-%E7%9B%9B%E5%94%90%E8%AF%97%E4%BA%BA%E5%92%8C%E8%BF%9C%E6%B8%B8.html">Prev: 盛唐诗人和远游</a></td>
+    
+    
+  </tr></table>
+</footer>
+
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+
+<!-- MathJax -->
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+</div>
+
+    </section>
+
+    <footer id="page_footer">
+      Copyright @ 2008 - 2020 Bin Wang
+      <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
+    </footer>
+  </body>
+</html>
