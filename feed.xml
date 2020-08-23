@@ -1,4 +1,38 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2020-08-15T22:14:40-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Use RSS and Kindle to Read News</title><link href="https://www.binwang.me/2020-08-15-Use-RSS-and-Kindle-to-Read-News.html" rel="alternate" type="text/html" title="Use RSS and Kindle to Read News" /><published>2020-08-15T00:00:00-04:00</published><updated>2020-08-15T00:00:00-04:00</updated><id>https://www.binwang.me/Use-RSS-and-Kindle-to-Read-News</id><content type="html" xml:base="https://www.binwang.me/2020-08-15-Use-RSS-and-Kindle-to-Read-News.html">&lt;p&gt;In a &lt;a href=&quot;/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html&quot;&gt;previous blog post&lt;/a&gt;, I talked about one of the reasons I want to use mobile phone and social network less often. In this article, I will talk about one of the strategies of doing that: don’t read news on mobile phone or computer. Use Kindle or other E-Readers instead. Here is how I do it:&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2020-08-23T16:58:36-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Build An Instant Messaging System without Censorship: Choose the Right Technology</title><link href="https://www.binwang.me/2020-08-23-Build-An-Instant_Messaging-System-without-Censorship-Choose-the-right-technology.html" rel="alternate" type="text/html" title="Build An Instant Messaging System without Censorship: Choose the Right Technology" /><published>2020-08-23T00:00:00-04:00</published><updated>2020-08-23T00:00:00-04:00</updated><id>https://www.binwang.me/Build-An-Instant_Messaging-System-without-Censorship-Choose-the-right-technology</id><content type="html" xml:base="https://www.binwang.me/2020-08-23-Build-An-Instant_Messaging-System-without-Censorship-Choose-the-right-technology.html">&lt;p&gt;&lt;em&gt;This article is the first one of a series of articles that talk about how to build an instant messaging system without censorship.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Instant messaging (IM) software maybe the most commonly used type of software. Privacy is especially important for instant messaging apps. No one wants to be eavesdropped when talking with friends and family. However, most of the instant messaging applications don’t have end to end encryption, which means the service provider can see all the messages. This information is much more sensitive than financial information, yet we have regulations for banks but have basically zero regulation for instant messaging providers. Sometimes it’s even worse while having regulations: Chinese government can require the provider to hand over server data &lt;a href=&quot;http://www.cac.gov.cn/2016-11/07/c_1119867116_2.htm&quot;&gt;by law&lt;/a&gt; (Ironically, the offical website of Cyberspace Administration of China doesn’t even have https). That’s why TikTok is such a hot topic recently. And while Tencent saying they never look at the messages in WeChat, I never trust them. There are even &lt;a href=&quot;https://news.qq.com/a/20151012/010241.htm#p=4&quot;&gt;news&lt;/a&gt; that showing QQ (another IM software provided by Tencent that is very similar with WeChat) messages helped the police to find criminals. Even if the providers don’t look at the data as they declared, as long as they store the data, it becomes permanent record. You don’t know who will use that data on what purpose in the future.&lt;/p&gt;
+
+&lt;p&gt;There are a few IM software that have end to end encryption built in. However, each of them has some shortcomings which prevent them to be truly secure. For example, &lt;a href=&quot;https://www.signal.org/&quot;&gt;Signal&lt;/a&gt; is considered as the most secure one, but it needs a phone number and use it as verification sometimes. As we all know, text message is very easy to be hacked. While the hacker cannot view the message history in Signal, it may makes the account disappear. (The technology details behind this is complex, I may write another article to explain this in the future). WhatsApp is another popular one. But it’s not open sourced so it’s hard to tell if it’s doing something secretly or really implementing the end to end algorithm correctly. Most important of all, end to end encryption doesn’t mean decentralize. They all have centralized servers. And unfortunately, the servers are all blocked by China.&lt;/p&gt;
+
+&lt;p&gt;There are also some P2P IM software. I tried a lot of them. Most of them don’t have end to end encryption. And they are all too slow to have a good user experience.&lt;/p&gt;
+
+&lt;p&gt;So the ideal solution would be deploying an instance messaging system with end to end encryption by myself. Signal is open sourced. The server code is clean and easy to deploy. But as I said before, I don’t like the use of phone number. And because it’s not designed for decentralized deployment, the iOS and Android client needs to be modified to bind push keys from Apple and Google in order to have notifications. Downloading a customized version of client is not very user friendly.&lt;/p&gt;
+
+&lt;p&gt;Then I found &lt;a href=&quot;https://matrix.org/&quot;&gt;Matrix&lt;/a&gt;, an open standard for instant messaging. It’s decentralized by design. People can have different service providers like Email. People can speak with other persons on other server. The servers talk with each other to deliver messages. The username of Matrix contains the server name, so the servers can tell where to deliver messages. The diagram below shows how user1 on &lt;code&gt;server1.com&lt;/code&gt; talks with user2 on &lt;code&gt;server2.com&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt; User: @user1:server1.com
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;          |    ^
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;          |    |
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;          V    |
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt; Server: server1.com
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;          |    ^
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;          |    |
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;          V    |
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt; Server: server2.com
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;          |    ^
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;          |    |
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt;          V    |
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n14&quot; name=&quot;n14&quot;&gt;14&lt;/a&gt;&lt;/span&gt; User: @user2:server2.com
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n15&quot; name=&quot;n15&quot;&gt;15&lt;/a&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;While it has a lot of &lt;a href=&quot;https://matrix.org/clients-matrix/&quot;&gt;clients&lt;/a&gt;, the most popular one is &lt;a href=&quot;https://element.io/&quot;&gt;Element&lt;/a&gt;(used to be named Riot). The most popular server is &lt;a href=&quot;https://github.com/matrix-org/synapse&quot;&gt;Synapse&lt;/a&gt;. The authentication server is separated from the messaging server. &lt;a href=&quot;https://github.com/matrix-org/sydent&quot;&gt;Sydent&lt;/a&gt; is a one of the implementations. Synapse and Sydent are both written in Python. While it takes some efforts to deploy it, they are both well documented and shouldn’t be too hard for someone with server admin experience.&lt;/p&gt;
+
+&lt;p&gt;It would be much easier if we live in a world without Internet censorship. However, Chinese government built powerful tools and strict policies around it. In the future articles of this series, I will give a brief overview of Chinese goverment Internet censorship strategies, and some options to deploy Matrix servers with such restrictions.&lt;/p&gt;</content><author><name></name></author><category term="technology" /><category term="Matrix" /><category term="instant messaging" /><category term="censorship" /><summary type="html">This article is the first one of a series of articles that talk about how to build an instant messaging system without censorship.</summary></entry><entry><title type="html">Use RSS and Kindle to Read News</title><link href="https://www.binwang.me/2020-08-15-Use-RSS-and-Kindle-to-Read-News.html" rel="alternate" type="text/html" title="Use RSS and Kindle to Read News" /><published>2020-08-15T00:00:00-04:00</published><updated>2020-08-15T00:00:00-04:00</updated><id>https://www.binwang.me/Use-RSS-and-Kindle-to-Read-News</id><content type="html" xml:base="https://www.binwang.me/2020-08-15-Use-RSS-and-Kindle-to-Read-News.html">&lt;p&gt;In a &lt;a href=&quot;/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html&quot;&gt;previous blog post&lt;/a&gt;, I talked about one of the reasons I want to use mobile phone and social network less often. In this article, I will talk about one of the strategies of doing that: don’t read news on mobile phone or computer. Use Kindle or other E-Readers instead. Here is how I do it:&lt;/p&gt;
 
 &lt;h2 id=&quot;use-rss-to-get-news&quot;&gt;Use RSS to Get News&lt;/h2&gt;
 
@@ -891,73 +925,4 @@ Designing Data-Intensive Applications&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Android allows apps running in the background and awaken each other. It is really a bad design to allow an app awaken another one in the background. If I’m using an app and it open another one in the front of me, I can see it and know what is happening. Which is the only situation I may want such a behaviour.&lt;/p&gt;
 
-&lt;p&gt;Allowing random apps running in the background hurts performance a lot. You cannot control what the app is doing in the background. Maybe you will not notice this in a smart phone which is more and more powerful nowadays (or you may have noticed that your smart phone is losing power quicker and quicker as you install more and more apps). But the problem appears a lot while the device is not so powerful, for example, for a smart watch or a smart TV. This happens in my real life. My family bought a TV some days ago, but I cannot instal more than 4 video apps, or the TV will get stuck. It really sucks.&lt;/p&gt;</content><author><name></name></author><category term="Android" /><summary type="html">The permission management of Android is a problem for a long time. The behaviour of an app depends on the morality of its developers. Unluckily, many developers are big companies which making money is their primary target and morality is little considered.</summary></entry><entry><title type="html">Use Redis Instead of Spark Streaming to Count Statistics</title><link href="https://www.binwang.me/2015-11-22-Use-Redis-Instead-of-Spark-Streaming-to-Count-Statistics.html" rel="alternate" type="text/html" title="Use Redis Instead of Spark Streaming to Count Statistics" /><published>2015-11-22T00:00:00-05:00</published><updated>2015-11-22T00:00:00-05:00</updated><id>https://www.binwang.me/Use-Redis-Instead-of-Spark-Streaming-to-Count-Statistics</id><content type="html" xml:base="https://www.binwang.me/2015-11-22-Use-Redis-Instead-of-Spark-Streaming-to-Count-Statistics.html">&lt;p&gt;In my work, I need to count basic statistics of streaming data, such as mean, variance, sum and so on. At first, I’m using Spark, then Spark Streaming. But after a while, I reimplemented it with Redis and find it is much better. I’d like to talk about them in this article.&lt;/p&gt;
-
-&lt;h2 id=&quot;the-problem&quot;&gt;The Problem&lt;/h2&gt;
-
-&lt;p&gt;Let’s talk about the problem first. I’ve simplified it: assume we have a vector &lt;span&gt;\(\vec{a}\)&lt;/span&gt;, and there is a data stream, each element of it has the structure like (i, v). When an element arrives, we will update &lt;span&gt;\(a_i\)&lt;/span&gt; to &lt;span&gt;\(a_i + v\)&lt;/span&gt;. We want to get basic statistics of this vector, such as mean, variance and sum.&lt;/p&gt;
-
-&lt;h2 id=&quot;analyzing-the-problem&quot;&gt;Analyzing the Problem&lt;/h2&gt;
-
-&lt;p&gt;Sum and mean is very easy to compute, the tricky one is to compute the variance. We will use this formula:&lt;/p&gt;
-
-&lt;p&gt;&lt;span&gt;\(variance(\vec{a}) = {mean(\vec{a})^2} - {\sum_{i=1}^n a_i^2 \over |\vec{a}|}\)&lt;/span&gt;&lt;/p&gt;
-
-&lt;p&gt;So we need to count the sum of squares: &lt;span&gt;\(\sum_{i=1}^n a_i^2\)&lt;/span&gt;.&lt;/p&gt;
-
-&lt;p&gt;Since &lt;span&gt;\(a_i\)&lt;/span&gt; is changing as the data is coming, we need to keep tracking of all the elements in &lt;span&gt;\(\vec{a}\)&lt;/span&gt;. This is the key to solve the problem.&lt;/p&gt;
-
-&lt;p&gt;Next, I’ll show you how to compute sum of squares with Spark Streaming and Redis.&lt;/p&gt;
-
-&lt;h2 id=&quot;using-spark-streaming&quot;&gt;Using Spark Streaming&lt;/h2&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;def updateFunc(newValues: Seq[Double], oldValue: Option[Double]): Option[Double] = {
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;  Some(newValues.sum + oldValue.getOrElse(0))
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;}
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;val sumOfSquares = sc.updateStateByKey[Double](updateFunc _).map(a =&amp;gt; a * a)
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The code is clean and easy to read. But there are two problems, both are about &lt;code&gt;updateStateByKey&lt;/code&gt;:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;code&gt;updateStateByKey&lt;/code&gt; has a state in memory, we need to enable checkpointing for it in order to support fault tolerance. And in the case of updating the code, we need to save the state by ourself, as I have specified in &lt;a href=&quot;/2015-11-03-the-proper-way-to-use-spark-checkpoint.html&quot;&gt;an earlier blog&lt;/a&gt;. When the state is big, it will be very slow and complex.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;code&gt;updateStateByKey&lt;/code&gt; is not so fast. It will run against all the elements in it every time. It is not necessary in our situation. The Spark guys seems to &lt;a href=&quot;http://technicaltidbit.blogspot.sg/2015/11/spark-streaming-16-stop-using.html&quot;&gt;realize this problem&lt;/a&gt;, too.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;I tried this program with billions of elements and save the state data into Cassandra. I ran this on a cluster with 4 machines, each of them have 32GB RAM. The program simply cannot save the state data into Cassandra and crashed.&lt;/p&gt;
-
-&lt;p&gt;So what do we need? What we really need is just a place to store and update the vector &lt;span&gt;\(\vec{a}\)&lt;/span&gt;. Redis is the perfect tool to do this thing.&lt;/p&gt;
-
-&lt;h2 id=&quot;using-redis&quot;&gt;Using Redis&lt;/h2&gt;
-
-&lt;p&gt;We will store the whole vector into Redis: for each element in the vector, we will use &lt;code&gt;i&lt;/code&gt; as the key and &lt;span&gt;\(a_i\)&lt;/span&gt; as the value.  When a new element arrives in the data stream, we will update the key-valule and the sum of sqaures. Here is the code:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;val redis = RedisClient()
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;val resultKey = &amp;quot;sum_of_squares&amp;quot;
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;stream.foreach { elem =&amp;gt;
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;  val newValue = redis.incrbyfloat(elem.i, elem.v).getOrElse(elem.v)
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;  val oldValue = newValue - elem.v
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;  val incValue = (newValue * newValue - oldValue * oldValue)
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;  redis.incrbyfloat(resultKey, incValue)
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;}
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Comparing to the Spark version, this has been turned into a single thread program (Redis is a single thread program). But this is a realtime data stream, CPU should not be the bottleneck before IO. And this program uses no more memory than the Spark version. If the memory doesn’t fit into a single machine, we can use &lt;a href=&quot;https://github.com/wandoulabs/codis&quot;&gt;Codis&lt;/a&gt; (or other Redis Cluster solutions).&lt;/p&gt;
-
-&lt;p&gt;This program can compute billions of elements in one day. And the memory usage of Redis is about 100GB for billions of keys. (The raw problem I’m solving is more complex than I described here so I’m storing more data than this problem needs.)&lt;/p&gt;
-
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-
-&lt;p&gt;At first, I use Spark Streaming to solve this problem becuase it seems to be a “big data” problem. But after analyzing the problem, what I really need is just a place to store state. And CPU is really not the bottleneck. Spark is good for batch processing but not so good at this kind of problem. Choosing the right tool instead of the most awesome tool is very important.&lt;/p&gt;</content><author><name></name></author><category term="big data" /><category term="redis" /><category term="spark" /><summary type="html">In my work, I need to count basic statistics of streaming data, such as mean, variance, sum and so on. At first, I’m using Spark, then Spark Streaming. But after a while, I reimplemented it with Redis and find it is much better. I’d like to talk about them in this article.</summary></entry></feed>
+&lt;p&gt;Allowing random apps running in the background hurts performance a lot. You cannot control what the app is doing in the background. Maybe you will not notice this in a smart phone which is more and more powerful nowadays (or you may have noticed that your smart phone is losing power quicker and quicker as you install more and more apps). But the problem appears a lot while the device is not so powerful, for example, for a smart watch or a smart TV. This happens in my real life. My family bought a TV some days ago, but I cannot instal more than 4 video apps, or the TV will get stuck. It really sucks.&lt;/p&gt;</content><author><name></name></author><category term="Android" /><summary type="html">The permission management of Android is a problem for a long time. The behaviour of an app depends on the morality of its developers. Unluckily, many developers are big companies which making money is their primary target and morality is little considered.</summary></entry></feed>
