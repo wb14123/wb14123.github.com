@@ -2,6 +2,15 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.binwang.me/2020-08-29-Build-An-Instant_Messaging-System-without-Censorship-Choose-An-Overview-of-Chinese-Internet-Censorship-Strategy.html</loc>
+    
+    <lastmod>2020-08-29T00:00:00-04:00</lastmod>
+    
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <url>
     <loc>https://www.binwang.me/2020-08-23-Build-An-Instant_Messaging-System-without-Censorship-Choose-the-right-technology.html</loc>
     
     <lastmod>2020-08-23T00:00:00-04:00</lastmod>
@@ -675,6 +684,8 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+  
+  
   
   
   
