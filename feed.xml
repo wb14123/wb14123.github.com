@@ -1,4 +1,187 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2020-09-04T16:54:48-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Build An Instant Messaging System without Censorship: An Overview of Chinese Internet Censorship Strategy</title><link href="https://www.binwang.me/2020-08-29-Build-An-Instant_Messaging-System-without-Censorship-Choose-An-Overview-of-Chinese-Internet-Censorship-Strategy.html" rel="alternate" type="text/html" title="Build An Instant Messaging System without Censorship: An Overview of Chinese Internet Censorship Strategy" /><published>2020-08-29T00:00:00-04:00</published><updated>2020-08-29T00:00:00-04:00</updated><id>https://www.binwang.me/Build-An-Instant_Messaging-System-without-Censorship-Choose-An-Overview-of-Chinese-Internet-Censorship-Strategy</id><content type="html" xml:base="https://www.binwang.me/2020-08-29-Build-An-Instant_Messaging-System-without-Censorship-Choose-An-Overview-of-Chinese-Internet-Censorship-Strategy.html">&lt;p&gt;&lt;em&gt;This article is the second one of a series of articles that talk about how to build an instant messaging system without censorship. See the previous article &lt;a href=&quot;/2020-08-23-Build-An-Instant_Messaging-System-without-Censorship-Choose-the-right-technology.html&quot;&gt;Chose the right technology&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2020-09-08T21:27:32-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Deploy Matrix for Users in China</title><link href="https://www.binwang.me/2020-09-08-Build-An-Instant-Messaging-System-without-Censorship-Deployment-Options.html" rel="alternate" type="text/html" title="Deploy Matrix for Users in China" /><published>2020-09-08T00:00:00-04:00</published><updated>2020-09-08T00:00:00-04:00</updated><id>https://www.binwang.me/Build-An-Instant-Messaging-System-without-Censorship-Deployment-Options</id><content type="html" xml:base="https://www.binwang.me/2020-09-08-Build-An-Instant-Messaging-System-without-Censorship-Deployment-Options.html">&lt;p&gt;&lt;em&gt;This article belongs of a series of articles that talk about how to build an instant messaging system without censorship:&lt;/em&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;/2020-08-23-Build-An-Instant_Messaging-System-without-Censorship-Choose-the-right-technology.html&quot;&gt;Matrix: A Self Hosted Instant Messaging Solution with End to End Encryption&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;/2020-08-29-Build-An-Instant_Messaging-System-without-Censorship-Choose-An-Overview-of-Chinese-Internet-Censorship-Strategy.html&quot;&gt;Overview of China’s Internet censorship strategy&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;/2020-09-08-Build-An-Instant-Messaging-System-without-Censorship-Deployment-Options.html&quot;&gt;Deploy Matrix for Users in China&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;In the previous articles, we chose Matrix as our IM service solution. We also discussed how the Internet is censored in China. In this article, we will discuss multiple ways to deploy Matrix service. The goals are providing the best user experience while avoiding the censorship. Specifically, we want to meet these requirements:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Avoid the government censorship.&lt;/li&gt;
+  &lt;li&gt;Make the latency between users and server as low as possible.&lt;/li&gt;
+  &lt;li&gt;Make it easy for end users to setup.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;We will explore the deployment options. And compare them at the end.&lt;/p&gt;
+
+&lt;h2 id=&quot;1-deploy-a-single-im-server-outside-china&quot;&gt;1. Deploy A Single IM Server Outside China&lt;/h2&gt;
+
+&lt;p&gt;The easiest solution would be deploying a single Matrix server. There are a lot of requirements to deploy a server in China, so it would be better to deploy a server outside China:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;   Users in China
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;           ^
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;           |
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;           V
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;        Server
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;           ^
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;           |
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;           V
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt; Users outside China
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;But as we discussed in the previous article, the latency for users in China will be high. Sometimes, GFW may completely block the server so that the users cannot connect at all.&lt;/p&gt;
+
+&lt;p&gt;Matrix is a distributed protocol, so we can deploy multiple servers to give the best experience for all users. From here, we will explore the options with multiple servers: a server outside China and at least one server in China.&lt;/p&gt;
+
+&lt;h2 id=&quot;2-deploy-a-server-in-china-with-license&quot;&gt;2. Deploy A Server in China with License&lt;/h2&gt;
+
+&lt;p&gt;The most regular way to deploy a service in China is to get all the required licenses. Then the users in China can connect to this server:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;   Users in China
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;           ^
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;           |
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;           V
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;   Server in China  &amp;lt;----- Public DNS Record
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;           ^
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;           |
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;           V
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt; Server outside China
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;           ^
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;           |
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;           V
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt; Users outside China
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n14&quot; name=&quot;n14&quot;&gt;14&lt;/a&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The shortcomings are also obvious:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;It needs some work to get a license. Especially it would be hard for an individual to get a license for IM service. It’s possible to hide the business purpose while applying, but there are risks.&lt;/li&gt;
+  &lt;li&gt;Once the service is on government’s record, government can track it and require information from the server. Even the messages are end to end encrypted, some information on the server can still be sensitive.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;3-deploy-a-server-in-china-without-dns-resolving&quot;&gt;3. Deploy A Server in China without DNS Resolving&lt;/h2&gt;
+
+&lt;p&gt;The main reason we need a license to deploy a server in China is because the IDC and cloud providers may block the server if a domain without license is resolving to it. So one way to avoid the blocking is, don’t bind a domain name to the server. But we cannot use IP address directly either: we need HTTPS to encrypt the traffic. And the communications between servers also depends on domain names.&lt;/p&gt;
+
+&lt;p&gt;So we need to find a way to resolve domain name without public DNS server. Though it’s hard, it’s not impossible. For example, you can change the DNS record on the computer by modifying the hosts file. Or you can create a DNS server on the home router. For the mobile phones, it’s much harder. But I believe there are apps can do that.&lt;/p&gt;
+
+&lt;p&gt;So this solution is don’t register the domain name in public DNS servers. Instead, add the records on end user devices:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;   Users in China
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;   (Add DNS record)
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;           ^
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;           |
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;           V
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;   Server in China
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;           ^
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;           |
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;           V
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt; Server outside China
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;   (Add DNS record)
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;           ^
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt;           |
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n14&quot; name=&quot;n14&quot;&gt;14&lt;/a&gt;&lt;/span&gt;           V
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n15&quot; name=&quot;n15&quot;&gt;15&lt;/a&gt;&lt;/span&gt; Users outside China
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n16&quot; name=&quot;n16&quot;&gt;16&lt;/a&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;4-deploy-another-server-in-china-with-personal-internet&quot;&gt;4. Deploy Another Server in China with Personal Internet&lt;/h2&gt;
+
+&lt;p&gt;As we mentioned in the last article, while cloud providers and IDC block servers, ISP doesn’t block high number ports. So if we can deploy another server at home and point the domain name to this server, the end user doesn’t need to setup custom DNS records. We will still keep the other server in cloud/IDC for the stable connection between servers.&lt;/p&gt;
+
+&lt;p&gt;For the two servers in China, only one of them needs to host the IM service. The other one can just be a proxy.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;        Users in China
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;              ^
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;              |
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;              V
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;      Proxy server in China    &amp;lt;----- Public DNS Record
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;        (Home Internet)
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;              ^
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;              |
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;              V
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;      IM Server in China
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;         (Cloud/IDC)
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;              ^
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt;              |
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n14&quot; name=&quot;n14&quot;&gt;14&lt;/a&gt;&lt;/span&gt;              V
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n15&quot; name=&quot;n15&quot;&gt;15&lt;/a&gt;&lt;/span&gt;     Server outside China
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n16&quot; name=&quot;n16&quot;&gt;16&lt;/a&gt;&lt;/span&gt;(Add DNS record that resolves domain
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n17&quot; name=&quot;n17&quot;&gt;17&lt;/a&gt;&lt;/span&gt;  name to server on Cloud/IDC)
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n18&quot; name=&quot;n18&quot;&gt;18&lt;/a&gt;&lt;/span&gt;              ^
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n19&quot; name=&quot;n19&quot;&gt;19&lt;/a&gt;&lt;/span&gt;              |
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n20&quot; name=&quot;n20&quot;&gt;20&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;              V
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n21&quot; name=&quot;n21&quot;&gt;21&lt;/a&gt;&lt;/span&gt;    Users outside China
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n22&quot; name=&quot;n22&quot;&gt;22&lt;/a&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;There are also disadvantages for this solution: other than we need another server, the home Internet may not be able to provide the best speed for users in China.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;In the table below, we can compare them by the censorship circumvention, service speed and end user setup easiness:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Deployment Option&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Censorship Circumvention&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Service Speed&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;End User Setup Easiness&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;1&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;3 stars&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;1 star&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;3 stars&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;2&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;1 star&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;3 stars&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;3 stars&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;3&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;2 stars&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;3 stars&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;1 star&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;4&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;2 stars&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;2 stars&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;3 stars&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;I believe the world will be a better place if everyone can communicate with each other freely. But it’s never easy. Even though we can deploy the services and make it accessible from China, the most popular Matrix client Element (Riot) is banned in China. There is a long way to go. I hope I can help even a little bit by sharing some technical information here.&lt;/p&gt;</content><author><name></name></author><category term="technology" /><category term="Matrix" /><category term="instant messaging" /><summary type="html">This article belongs of a series of articles that talk about how to build an instant messaging system without censorship:</summary></entry><entry><title type="html">An Overview of China’s Internet Censorship Strategy</title><link href="https://www.binwang.me/2020-08-29-Build-An-Instant_Messaging-System-without-Censorship-Choose-An-Overview-of-Chinese-Internet-Censorship-Strategy.html" rel="alternate" type="text/html" title="An Overview of China’s Internet Censorship Strategy" /><published>2020-08-29T00:00:00-04:00</published><updated>2020-08-29T00:00:00-04:00</updated><id>https://www.binwang.me/Build-An-Instant_Messaging-System-without-Censorship-Choose-An-Overview-of-Chinese-Internet-Censorship-Strategy</id><content type="html" xml:base="https://www.binwang.me/2020-08-29-Build-An-Instant_Messaging-System-without-Censorship-Choose-An-Overview-of-Chinese-Internet-Censorship-Strategy.html">&lt;p&gt;&lt;em&gt;Updated at sep 6, 2020: change the title and add other articles in this series.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;This article belongs of a series of articles that talk about how to build an instant messaging system without censorship:&lt;/em&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;/2020-08-23-Build-An-Instant_Messaging-System-without-Censorship-Choose-the-right-technology.html&quot;&gt;Matrix: A Self Hosted Instant Messaging Solution with End to End Encryption&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;/2020-08-29-Build-An-Instant_Messaging-System-without-Censorship-Choose-An-Overview-of-Chinese-Internet-Censorship-Strategy.html&quot;&gt;Overview of China’s Internet censorship strategy&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;/2020-09-08-Build-An-Instant-Messaging-System-without-Censorship-Deployment-Options.html&quot;&gt;Deploy Matrix for Users in China&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ol&gt;
 
 &lt;p&gt;There are two parts of Internet censorship in China:&lt;/p&gt;
 
@@ -39,7 +222,15 @@
 
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
-&lt;p&gt;We had an overview of the Internet censorship methods in China. I believe it will get back fired once the restrictions are more and more strict and ridiculous. In the next article, we will explore how to deploy an IM server in such environment and make it as convenience as possible for end users.&lt;/p&gt;</content><author><name></name></author><category term="technology" /><category term="Matrix" /><category term="instant messaging" /><category term="censorship" /><summary type="html">This article is the second one of a series of articles that talk about how to build an instant messaging system without censorship. See the previous article Chose the right technology.</summary></entry><entry><title type="html">Build An Instant Messaging System without Censorship: Choose the Right Technology</title><link href="https://www.binwang.me/2020-08-23-Build-An-Instant_Messaging-System-without-Censorship-Choose-the-right-technology.html" rel="alternate" type="text/html" title="Build An Instant Messaging System without Censorship: Choose the Right Technology" /><published>2020-08-23T00:00:00-04:00</published><updated>2020-08-23T00:00:00-04:00</updated><id>https://www.binwang.me/Build-An-Instant_Messaging-System-without-Censorship-Choose-the-right-technology</id><content type="html" xml:base="https://www.binwang.me/2020-08-23-Build-An-Instant_Messaging-System-without-Censorship-Choose-the-right-technology.html">&lt;p&gt;&lt;em&gt;This article is the first one of a series of articles that talk about how to build an instant messaging system without censorship.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;We had an overview of the Internet censorship methods in China. I believe it will get back fired once the restrictions are more and more strict and ridiculous. In the next article, we will explore how to deploy an IM server in such environment and make it as convenience as possible for end users.&lt;/p&gt;</content><author><name></name></author><category term="technology" /><category term="GFW" /><category term="China" /><category term="Internet" /><summary type="html">Updated at sep 6, 2020: change the title and add other articles in this series.</summary></entry><entry><title type="html">Matrix: A Self Hosted Instant Messaging Solution with End to End Encryption</title><link href="https://www.binwang.me/2020-08-23-Build-An-Instant_Messaging-System-without-Censorship-Choose-the-right-technology.html" rel="alternate" type="text/html" title="Matrix: A Self Hosted Instant Messaging Solution with End to End Encryption" /><published>2020-08-23T00:00:00-04:00</published><updated>2020-08-23T00:00:00-04:00</updated><id>https://www.binwang.me/Build-An-Instant_Messaging-System-without-Censorship-Choose-the-right-technology</id><content type="html" xml:base="https://www.binwang.me/2020-08-23-Build-An-Instant_Messaging-System-without-Censorship-Choose-the-right-technology.html">&lt;p&gt;&lt;em&gt;Updated at sep 6, 2020: change the title and add other articles in this series.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;This article belongs of a series of articles that talk about how to build an instant messaging system without censorship:&lt;/em&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;/2020-08-23-Build-An-Instant_Messaging-System-without-Censorship-Choose-the-right-technology.html&quot;&gt;Matrix: A Self Hosted Instant Messaging Solution with End to End Encryption&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;/2020-08-29-Build-An-Instant_Messaging-System-without-Censorship-Choose-An-Overview-of-Chinese-Internet-Censorship-Strategy.html&quot;&gt;Overview of China’s Internet censorship strategy&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;/2020-09-08-Build-An-Instant-Messaging-System-without-Censorship-Deployment-Options.html&quot;&gt;Deploy Matrix for Users in China&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ol&gt;
 
 &lt;p&gt;Instant messaging (IM) software maybe the most commonly used type of software. Privacy is especially important for instant messaging apps. No one wants to be eavesdropped when talking with friends and family. However, most of the instant messaging applications don’t have end to end encryption, which means the service provider can see all the messages. This information is much more sensitive than financial information, yet we have regulations for banks but have basically zero regulation for instant messaging providers. Sometimes it’s even worse while having regulations: Chinese government can require the provider to hand over server data &lt;a href=&quot;http://www.cac.gov.cn/2016-11/07/c_1119867116_2.htm&quot;&gt;by law&lt;/a&gt; (Ironically, the offical website of Cyberspace Administration of China doesn’t even have https). That’s why TikTok is such a hot topic recently. And while Tencent saying they never look at the messages in WeChat, I never trust them. There are even &lt;a href=&quot;https://news.qq.com/a/20151012/010241.htm#p=4&quot;&gt;news&lt;/a&gt; that showing QQ (another IM software provided by Tencent that is very similar with WeChat) messages helped the police to find criminals. Even if the providers don’t look at the data as they declared, as long as they store the data, it becomes permanent record. You don’t know who will use that data on what purpose in the future.&lt;/p&gt;
 
@@ -73,7 +264,7 @@
 
 &lt;p&gt;While it has a lot of &lt;a href=&quot;https://matrix.org/clients-matrix/&quot;&gt;clients&lt;/a&gt;, the most popular one is &lt;a href=&quot;https://element.io/&quot;&gt;Element&lt;/a&gt;(used to be named Riot). The most popular server is &lt;a href=&quot;https://github.com/matrix-org/synapse&quot;&gt;Synapse&lt;/a&gt;. The authentication server is separated from the messaging server. &lt;a href=&quot;https://github.com/matrix-org/sydent&quot;&gt;Sydent&lt;/a&gt; is a one of the implementations. Synapse and Sydent are both written in Python. While it takes some efforts to deploy it, they are both well documented and shouldn’t be too hard for someone with server admin experience.&lt;/p&gt;
 
-&lt;p&gt;It would be much easier if we live in a world without Internet censorship. However, Chinese government built powerful tools and strict policies around it. In the future articles of this series, I will give a brief overview of Chinese goverment Internet censorship strategies, and some options to deploy Matrix servers with such restrictions.&lt;/p&gt;</content><author><name></name></author><category term="technology" /><category term="Matrix" /><category term="instant messaging" /><category term="censorship" /><summary type="html">This article is the first one of a series of articles that talk about how to build an instant messaging system without censorship.</summary></entry><entry><title type="html">Use RSS and Kindle to Read News</title><link href="https://www.binwang.me/2020-08-15-Use-RSS-and-Kindle-to-Read-News.html" rel="alternate" type="text/html" title="Use RSS and Kindle to Read News" /><published>2020-08-15T00:00:00-04:00</published><updated>2020-08-15T00:00:00-04:00</updated><id>https://www.binwang.me/Use-RSS-and-Kindle-to-Read-News</id><content type="html" xml:base="https://www.binwang.me/2020-08-15-Use-RSS-and-Kindle-to-Read-News.html">&lt;p&gt;In a &lt;a href=&quot;/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html&quot;&gt;previous blog post&lt;/a&gt;, I talked about one of the reasons I want to use mobile phone and social network less often. In this article, I will talk about one of the strategies of doing that: don’t read news on mobile phone or computer. Use Kindle or other E-Readers instead. Here is how I do it:&lt;/p&gt;
+&lt;p&gt;It would be much easier if we live in a world without Internet censorship. However, Chinese government built powerful tools and strict policies around it. In the future articles of this series, I will give a brief overview of Chinese goverment Internet censorship strategies, and some options to deploy Matrix servers with such restrictions.&lt;/p&gt;</content><author><name></name></author><category term="technology" /><category term="Matrix" /><category term="instant messaging" /><category term="censorship" /><summary type="html">Updated at sep 6, 2020: change the title and add other articles in this series.</summary></entry><entry><title type="html">Use RSS and Kindle to Read News</title><link href="https://www.binwang.me/2020-08-15-Use-RSS-and-Kindle-to-Read-News.html" rel="alternate" type="text/html" title="Use RSS and Kindle to Read News" /><published>2020-08-15T00:00:00-04:00</published><updated>2020-08-15T00:00:00-04:00</updated><id>https://www.binwang.me/Use-RSS-and-Kindle-to-Read-News</id><content type="html" xml:base="https://www.binwang.me/2020-08-15-Use-RSS-and-Kindle-to-Read-News.html">&lt;p&gt;In a &lt;a href=&quot;/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html&quot;&gt;previous blog post&lt;/a&gt;, I talked about one of the reasons I want to use mobile phone and social network less often. In this article, I will talk about one of the strategies of doing that: don’t read news on mobile phone or computer. Use Kindle or other E-Readers instead. Here is how I do it:&lt;/p&gt;
 
 &lt;h2 id=&quot;use-rss-to-get-news&quot;&gt;Use RSS to Get News&lt;/h2&gt;
 
@@ -887,65 +1078,4 @@ Designing Data-Intensive Applications&lt;/a&gt;.&lt;/p&gt;
 &lt;img src=&quot;/static/images/2016-06-19-Build-A-Computer-For-Deep-Learning/screenshot2.png&quot; alt=&quot;screenshot2&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Read a PDF:
-&lt;img src=&quot;/static/images/2016-06-19-Build-A-Computer-For-Deep-Learning/screenshot3.png&quot; alt=&quot;screenshot3&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><category term="life" /><summary type="html">These days, I bought some hardware and build a computer by myself. It’s fun and I’ve learned lots of things from it. Here is a note to record it.</summary></entry><entry><title type="html">How to Put RNN Layers Into Neural Network Model</title><link href="https://www.binwang.me/2016-05-14-How-to-Put-RNN-Layer-Into-Nueral-Network-Model.html" rel="alternate" type="text/html" title="How to Put RNN Layers Into Neural Network Model" /><published>2016-05-14T00:00:00-04:00</published><updated>2016-05-14T00:00:00-04:00</updated><id>https://www.binwang.me/How-to-Put-RNN-Layer-Into-Nueral-Network-Model</id><content type="html" xml:base="https://www.binwang.me/2016-05-14-How-to-Put-RNN-Layer-Into-Nueral-Network-Model.html">&lt;p&gt;If you are interested in neural networks, you must have ever read and learn lots of things about RNN, which can reason about sequences of data. RNN is awesome and very fun to play with, if you haven’t heard of it, you can read &lt;a href=&quot;http://karpathy.github.io/2015/05/21/rnn-effectiveness/&quot;&gt;this great article&lt;/a&gt; which train a char level RNN model to generate text.&lt;/p&gt;
-
-&lt;p&gt;While these articles are very great and introduce the idea and structure of RNN, but they didn’t mention the details of how to put an RNN layer into your neural network model. I’ve reimplemented char level RNN these days two times, one with Theano and the other one with TensorFlow. I’ll talk about how to fit a RNN layer into a neural network model.&lt;/p&gt;
-
-&lt;h2 id=&quot;basic-idea-of-rnn&quot;&gt;Basic Idea of RNN&lt;/h2&gt;
-
-&lt;p&gt;The basic idea of RNN is that you have a sequence of data, you can train on this data so that represent the sequence of data as a vector, then you can do other tricks on this trained vector in other tasks. So make it simple: &lt;strong&gt;RNN deals with sequence data (maybe dymical length)&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;For example, given this task: the input is a sequence of chars, and you need to predict the next char of the sequence. Then you can train to represent the sequence of chars as a vector with RNN, and then input the vector into next layer, maybe a linear layer with softmax activation, like in other classification tasks.&lt;/p&gt;
-
-&lt;p&gt;So how does RNN do this? RNN will do these things:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Step over the sequence of data.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;For each step:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Count next state based on the current step data and current state: &lt;span&gt;\(next\_state = state\_func(state, input_i)\)&lt;/span&gt;&lt;/li&gt;
-  &lt;li&gt;Count output from current input and state: &lt;span&gt;\(output_i = out\_func(state, input_i)\)&lt;/span&gt;&lt;/li&gt;
-  &lt;li&gt;Update the state: &lt;span&gt;\(state = next\_state\)&lt;/span&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The &lt;code&gt;state_func&lt;/code&gt; and &lt;code&gt;out_func&lt;/code&gt; maybe different depends on what kind of the RNN is (for example, LSTM or GRU), but the basic structure is the same.&lt;/p&gt;
-
-&lt;p&gt;A thing we need to notice is, the process I just described, is just the behaviour of one RNN layer.&lt;/p&gt;
-
-&lt;p&gt;Then we’ve got two outputs from the RNN: a sequence of output and its inner state. Normally, if we want to stack multiple RNN layers, we can use the sequence of output as the next input of RNN layer. If you just want a vector to represent the sequence of data, you can get the output of the last step. Some other models such as seq2seq also uses the inner state to represent the sequence of data.&lt;/p&gt;
-
-&lt;h2 id=&quot;feed-the-input&quot;&gt;Feed the Input&lt;/h2&gt;
-
-&lt;p&gt;We have the basic idea of RNN. How do we implement it efficiently? If we want our model run fast, we need to run it on GPU. So in order to make it fast, we should:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Copy batch of inputs into the GPU instead of run them one by one. So use mini-batch training.&lt;/li&gt;
-  &lt;li&gt;Represent the data as tensor and use tensor operations as many as you could. (Many BLAS library and deep learning frameworks will do a lot of optimizations on tensor operations).&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Based on this, we should represent the input data as tensor. We may need these dimensions for the tensor:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Batch size to represent multiple batches.&lt;/li&gt;
-  &lt;li&gt;Time step to represent the sequence of data.&lt;/li&gt;
-  &lt;li&gt;Vector size for each item of the input sequence. (If each item of the input sequence cannot be represent as a vector, you may need other dimensions to represent the item. )&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;So the shape of the tensor is [batch_size * time_step * size]. With this regular tensor, we can fit our RNN layer into the neural network model.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/static/images/2016-05-14-How-to-Put-RNN-Layer-Into-Nueral-Network-Model/rnn_layers.png&quot; alt=&quot;RNN layers&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;some-other-details&quot;&gt;Some Other Details&lt;/h2&gt;
-
-&lt;h3 id=&quot;loop-operations&quot;&gt;Loop Operations&lt;/h3&gt;
-
-&lt;p&gt;Since we want to use tensor operations as many as we could, we don’t want to split the tensor based on the time_step dimension and use our own loop. Some deep learning frameworks have there own loop operations. These operations should be optimized to be more efficient.&lt;/p&gt;
-
-&lt;p&gt;Theana and TensorFlow both use symbol computation. They both have the loop operation, too. It’s &lt;a href=&quot;http://deeplearning.net/software/theano/library/scan.html&quot;&gt;scan&lt;/a&gt; in Theano and &lt;a href=&quot;https://www.tensorflow.org/versions/r0.8/api_docs/python/control_flow_ops.html#while_loop&quot;&gt;while_loop&lt;/a&gt; in TensorFlow.&lt;/p&gt;
-
-&lt;h3 id=&quot;variable-time-step&quot;&gt;Variable Time Step&lt;/h3&gt;
-
-&lt;p&gt;Some input sequences of RNN have different length. One way to solve this is use the max length as time step, and padding other samples with some special value like zero. But this can be expensive. Another way is split the sequences into many tensors with the same time step, and let RNN keep its inner state while training on a same sequence. The implement can be tricky, you can see the &lt;a href=&quot;http://keras.io/layers/recurrent/&quot;&gt;implement of Keras&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><category term="neural nerwork" /><category term="rnn" /><summary type="html">If you are interested in neural networks, you must have ever read and learn lots of things about RNN, which can reason about sequences of data. RNN is awesome and very fun to play with, if you haven’t heard of it, you can read this great article which train a char level RNN model to generate text.</summary></entry></feed>
+&lt;img src=&quot;/static/images/2016-06-19-Build-A-Computer-For-Deep-Learning/screenshot3.png&quot; alt=&quot;screenshot3&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><category term="life" /><summary type="html">These days, I bought some hardware and build a computer by myself. It’s fun and I’ve learned lots of things from it. Here is a note to record it.</summary></entry></feed>
