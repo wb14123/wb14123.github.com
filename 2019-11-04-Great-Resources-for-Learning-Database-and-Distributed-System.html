@@ -36,7 +36,7 @@
 
     <section id="page_content">
       <div id="content_table">
-  
+  <h3>Table of Contents</h3><ol class="toc"><li></li><li><a href="#the-course-cmu-database-courses">The Course: CMU Database Courses</a></li><li></li><li></li></ol>
 </div>
 
 <div id="article_content" class="">
@@ -52,15 +52,15 @@
 
 <p>I’ve been working on data analysis for about 5 years. And at my last company, we processed many big companies’ data. At the current company, we are building a distributed database aims to be good at both OLTP and OLAP jobs, with SQL and transaction support. So I learned a lot these years and it is extremely interesting. I have thought about sharing them a lot of times before. But a principle of my blog is sharing new things that can inspire people, even it is small, instead of repeating old things. Unfortunately, I haven’t have many original ideas or works to share about. However, when I look back, I find when I was learning and working, the resource is not very easy to find. So in this blog, I’ll list some resources that helped me a lot, and I think will help everyone that wants to get familiar with database and distributed system.</p>
 
-<h1 id="the-book-designing-data-intensive-applications">The Book: <a href="https://www.amazon.com/Designing-Data-Intensive-Applications-Reliable-Maintainable-ebook/dp/B06XPJML5D">Designing Data-Intensive Applications</a></h1>
+<h2 id="the-book-designing-data-intensive-applications">The Book: <a href="https://www.amazon.com/Designing-Data-Intensive-Applications-Reliable-Maintainable-ebook/dp/B06XPJML5D">Designing Data-Intensive Applications</a></h2>
 
 <p>This is a book that explains many daily used ideas and practises about database and distributed system. It clarified some confused terms and makes some complex algorithms quite understandable. This book is published at 2017, so it is pretty up to date. Maybe the author doesn’t give a deep exploration for every topic, but it is enough to build a solid foundation for the reader to do future study and research. Other than only introduce the things that already exists, the author also gives some new ideas about how the data can be stored and processed. Though I’m not totally agree with his idea, it is still very insightful. And at the last chapter, the author talks about the data privacy and how can we improve it as an engineer. Which I cannot agree more. I’m very respectful for speaking it out loud in an engineer book.</p>
 
-<h1 id="the-course-cmu-database-courses">The Course: CMU Database Courses</h1>
+<h2 id="the-course-cmu-database-courses">The Course: CMU Database Courses</h2>
 
 <p>There are two courses: the <a href="https://15445.courses.cs.cmu.edu/fall2019/">basic one</a> and the <a href="https://15721.courses.cs.cmu.edu/spring2019/">advanced one</a>. The courses provide a very solid introduction to the important ideas and theories of database. For example, the implementation of transaction and optimizer, which is not covered in the previous book. It has reading materials and videos, all available online. You can pick the topics you are interested in, so that it will not take much time. And it is updated every year so some new researches and information are included.</p>
 
-<h1 id="the-tool-jepsen">The Tool: <a href="https://jepsen.io/">Jepsen</a></h1>
+<h2 id="the-tool-jepsen">The Tool: <a href="https://jepsen.io/">Jepsen</a></h2>
 
 <p>After reading the book and watching the course, you can at least know some claims from the database company are just fancy words. For example, some database claims to support transaction, but at what isolation level? Some database claims to support multiple nodes, but what’s the consistency level? What about the availability? Even though they describe them in details, how do you know the product is the same as the document claims. And if you are implementing a database, which is very hard, how can you be confidence that you are doing it right. Here comes the awesome tool: Jepsen. It is a tool can simulate concurrent queries to database, and introduce errors like network partition, clock drift and node failure. Then it compares the results to see if it is the same as expected. Actually I’ve used this tool to find some transaction bugs in our database.</p>
 
@@ -68,7 +68,7 @@
 
 <p>There is also an <a href="https://github.com/aphyr/distsys-class">outline for the distributed system training</a>, which I think is great to see if there is any knowledge you are still not familiar with and then study by yourself.</p>
 
-<h1 id="the-blog-dbms-musings">The Blog: <a href="https://dbmsmusings.blogspot.com/">DBMS Musings</a></h1>
+<h2 id="the-blog-dbms-musings">The Blog: <a href="https://dbmsmusings.blogspot.com/">DBMS Musings</a></h2>
 
 <p>This is a blog by Daniel Abadi, a database researcher at University of Maryland, College Park. He explains some easy to confuse terms and some trending topics about database. The only fallback of the blog maybe the color of the webpage. The red background is very unfriendly to the eyes. You may want to read the blog in an RSS reader.</p>
 
