@@ -1,4 +1,132 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2020-09-16T21:33:43-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Aurora Database</title><link href="https://www.binwang.me/2020-09-16-Aurora-Database.html" rel="alternate" type="text/html" title="Aurora Database" /><published>2020-09-16T00:00:00-04:00</published><updated>2020-09-16T00:00:00-04:00</updated><id>https://www.binwang.me/Aurora-Database</id><content type="html" xml:base="https://www.binwang.me/2020-09-16-Aurora-Database.html">&lt;p&gt;I’m very interested in databases and distributed systems. It’s shocking that how less in depth articles about databases are on the Internet. I wrote an &lt;a href=&quot;/2018-07-29-A-Review-on-Spanner-and-Open-Source-Implementations.html&quot;&gt;article about Spanner&lt;/a&gt; before and I’m very satisfied with that. So recently, I’m looking at another interesting database &lt;a href=&quot;https://aws.amazon.com/rds/aurora/&quot;&gt;Aurora&lt;/a&gt;. This article is about it.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2020-10-06T21:49:14-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Understand Liveness and Fairness in TLA+</title><link href="https://www.binwang.me/2020-10-06-Understand-Liveness-and-Fairness-in-TLA.html" rel="alternate" type="text/html" title="Understand Liveness and Fairness in TLA+" /><published>2020-10-06T00:00:00-04:00</published><updated>2020-10-06T00:00:00-04:00</updated><id>https://www.binwang.me/Understand-Liveness-and-Fairness-in-TLA</id><content type="html" xml:base="https://www.binwang.me/2020-10-06-Understand-Liveness-and-Fairness-in-TLA.html">&lt;p&gt;Recently I’m learning &lt;a href=&quot;https://lamport.azurewebsites.net/tla/tla.html&quot;&gt;TLA+&lt;/a&gt;: A language that can specify distributed and concurrent systems. Though it’s very different from most programming languages, the idea behind it is very simple: basically what it does is specifying a state machine. The &lt;a href=&quot;https://lamport.azurewebsites.net/tla/toolbox.html&quot;&gt;TLA+ tool box&lt;/a&gt; has a model checker called TLC that can explore all the states of the state machine and check properties of the system. If the state space is too big or infinite, we can define a reasonable subset of it to check. So it will not always guarantee the correctness. However, the tool box also has a more advanced tool called TLA+ Proof System (TLAPS) to write formal proof like Coq. I highly recommend the &lt;a href=&quot;http://lamport.azurewebsites.net/video/videos.html&quot;&gt;video course&lt;/a&gt; to learn TLA+. It’s short and includes TLC. I first started with The TLA+ Book &lt;em&gt;Specifying Systems&lt;/em&gt; which doesn’t include TLC, and I was wondering how specify a system can check properties of it.&lt;/p&gt;
+
+&lt;p&gt;Even though many programmers may not be very comfortable with the concept of TLA+ at first, it shouldn’t take a lot effort to write a specification. However, I did have some hard time to understand liveness and fairness in the last two videos. The video does a great job to define and explain it. But the example it uses is not very simple which adds a barrier to understand the concepts. In this article, I want to introduce a much simpler example, which makes it much easier to do experiment with it and see if your understanding is right.&lt;/p&gt;
+
+&lt;p&gt;This example is a very simple state machine, which state can go from &lt;code&gt;a&lt;/code&gt; to &lt;code&gt;b&lt;/code&gt; to &lt;code&gt;c&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;a -&amp;gt; b -&amp;gt; c
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The TLA+ code to specify it is also very simple:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;VARIABLE state
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;Init == state = &amp;quot;a&amp;quot;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;AToB == state = &amp;quot;a&amp;quot; /\ state' = &amp;quot;b&amp;quot;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;BToC == state = &amp;quot;b&amp;quot; /\ state' = &amp;quot;c&amp;quot;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;Next == AToB \/ BToC
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;Spec == Init /\ [][Next]_state
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The specification defines what’s the possible states and steps of the system. This is &lt;strong&gt;safety property&lt;/strong&gt; which defines what a system can do. If we want to use TLC to check anything about this system, we need to select “Temporal formula” under “What is the behavior spec” and put “Spec” in it. For example, if we want to check &lt;code&gt;state&lt;/code&gt; is always be one of &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt; or &lt;code&gt;c&lt;/code&gt;. We can check this formula in TLC as an invariance:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;state \in {&amp;quot;a&amp;quot;, &amp;quot;b&amp;quot;, &amp;quot;c&amp;quot;}
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The property we want to check in the system may not always be this simple. For example, we may want to check &lt;code&gt;state&lt;/code&gt; can be &lt;code&gt;c&lt;/code&gt; at some point. The property that defines what a system must satisfy is called &lt;strong&gt;liveness&lt;/strong&gt;. I found this name confusing at first. I think the reason it’s called liveness is because it usually defines what property a system can eventually reach, which means the system is making progress thus “liveness”.&lt;/p&gt;
+
+&lt;p&gt;So let’s define the liveness property that says the system can eventually reach the state &lt;code&gt;c&lt;/code&gt;. TLA+ uses &lt;code&gt;&amp;lt;&amp;gt;&lt;/code&gt; to define the meaning of eventually, so the property can be written like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;&amp;lt;&amp;gt;(state = &amp;quot;c&amp;quot;)
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;We can add this to TLC model’s properties field and run it to check if the system satisfies the property.&lt;/p&gt;
+
+&lt;p&gt;So far, if we run this against &lt;code&gt;Spec&lt;/code&gt;, TLC will report error. What happened? It turns out the specification not only specifies how the state can be changed in next state, but also specifies the state can be unchanged during steps. This makes it possible to interact with other systems. So the states of the system can stuck in one state forever and may never reaches &lt;code&gt;c&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;a -&amp;gt; b -&amp;gt; b -&amp;gt; b -&amp;gt; ....
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This doesn’t seem right. We don’t want the system stuck in one state forever. This is where fairness comes in. We can see in the situation above, the state is always in &lt;code&gt;b&lt;/code&gt;, which &lt;code&gt;BToC&lt;/code&gt; is enabled and we want it to be executed at some point:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;a -&amp;gt; b -&amp;gt; b -&amp;gt; b -&amp;gt; ... -&amp;gt; c
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;More specifically, we want the behavior to be executed at some point if it’s enabled continuously. This is called &lt;strong&gt;weak fairness&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;So let’s add weak fairness to all the next steps of our specification. Then &lt;code&gt;Spec&lt;/code&gt; changed in to this:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;Spec == Init /\ [][Next]_state /\ WF_state(Next)
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;If we run TLC again, we can see &lt;code&gt;&amp;lt;&amp;gt;(state = &quot;c&quot;)&lt;/code&gt; will pass the check.&lt;/p&gt;
+
+&lt;p&gt;So far so good. But let’s make our state machine a little more complex by adding a step from &lt;code&gt;b&lt;/code&gt; to &lt;code&gt;a&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;a &amp;lt;---&amp;gt; b --&amp;gt; c
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The corresponding TLA+ specification is like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;VARIABLE state
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;Init == state = &amp;quot;a&amp;quot;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;AToB == state = &amp;quot;a&amp;quot; /\ state' = &amp;quot;b&amp;quot;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;BToA == state = &amp;quot;b&amp;quot; /\ state' = &amp;quot;a&amp;quot;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;BToC == state = &amp;quot;b&amp;quot; /\ state' = &amp;quot;c&amp;quot;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;Next == AToB \/ BToA \/ BToC
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;Spec == Init /\ [][Next]_state /\ WF_state(Next)
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Let’s check &lt;code&gt;&amp;lt;&amp;gt;(state = &quot;c&quot;)&lt;/code&gt; in TLC again, and we can find it failed. What’s happening now? It turns out even though the system will not stuck in one state forever, it can stuck in some of the states, in this case, &lt;code&gt;a&lt;/code&gt; and &lt;code&gt;b&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;a -&amp;gt; b -&amp;gt; a -&amp;gt; b -&amp;gt; a -&amp;gt; b -&amp;gt; ....
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Sometimes this is the expected behaviour, but sometimes we want other steps have a chance to happen. In this case, we want to &lt;code&gt;BToC&lt;/code&gt; have a chance to happen if &lt;code&gt;state&lt;/code&gt; reached &lt;code&gt;b&lt;/code&gt; repeatedly:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;a -&amp;gt; b -&amp;gt; a -&amp;gt; b -&amp;gt; a -&amp;gt; b -&amp;gt; .... -&amp;gt; c
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;We call this kind of property &lt;strong&gt;strong fairness&lt;/strong&gt;: if a behavior is enabled repeatedly, it should be executed at some point. So let’s add strong fairness to &lt;code&gt;BToC&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;Spec == Init /\ [][Next]_state /\ WF_state(Next) /\ SF_state(BToC)
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;After this, the check of &lt;code&gt;&amp;lt;&amp;gt;(state = &quot;c&quot;)&lt;/code&gt; can pass again.&lt;/p&gt;
+
+&lt;p&gt;Let’s sum it up. Liveness is a property that the system must satisfies and can be checked with TLC. It usually defines that the system can eventually reach a state. In this case, it’s &lt;code&gt;&amp;lt;&amp;gt;(state = &quot;c&quot;)&lt;/code&gt;. Weak fairness is a part of the specification that says a behavior will eventually happen if it’s enabled continuously, which means &lt;code&gt;a -&amp;gt; b -&amp;gt; b -&amp;gt; b -&amp;gt; ... -&amp;gt; c&lt;/code&gt; in this example. Strong fairness is also a part of the specification, which says a behavior will eventually happen if it’s enabled repeatedly, which means &lt;code&gt;a -&amp;gt; b -&amp;gt; a -&amp;gt; b -&amp;gt; ... -&amp;gt; c&lt;/code&gt; in this case.&lt;/p&gt;</content><author><name></name></author><category term="TLA+" /><category term="Formal Proof" /><category term="Distributed System" /><category term="liveness" /><category term="fairness" /><summary type="html">Recently I’m learning TLA+: A language that can specify distributed and concurrent systems. Though it’s very different from most programming languages, the idea behind it is very simple: basically what it does is specifying a state machine. The TLA+ tool box has a model checker called TLC that can explore all the states of the state machine and check properties of the system. If the state space is too big or infinite, we can define a reasonable subset of it to check. So it will not always guarantee the correctness. However, the tool box also has a more advanced tool called TLA+ Proof System (TLAPS) to write formal proof like Coq. I highly recommend the video course to learn TLA+. It’s short and includes TLC. I first started with The TLA+ Book Specifying Systems which doesn’t include TLC, and I was wondering how specify a system can check properties of it.</summary></entry><entry><title type="html">Aurora Database</title><link href="https://www.binwang.me/2020-09-16-Aurora-Database.html" rel="alternate" type="text/html" title="Aurora Database" /><published>2020-09-16T00:00:00-04:00</published><updated>2020-09-16T00:00:00-04:00</updated><id>https://www.binwang.me/Aurora-Database</id><content type="html" xml:base="https://www.binwang.me/2020-09-16-Aurora-Database.html">&lt;p&gt;I’m very interested in databases and distributed systems. It’s shocking that how less in depth articles about databases are on the Internet. I wrote an &lt;a href=&quot;/2018-07-29-A-Review-on-Spanner-and-Open-Source-Implementations.html&quot;&gt;article about Spanner&lt;/a&gt; before and I’m very satisfied with that. So recently, I’m looking at another interesting database &lt;a href=&quot;https://aws.amazon.com/rds/aurora/&quot;&gt;Aurora&lt;/a&gt;. This article is about it.&lt;/p&gt;
 
 &lt;p&gt;Aurora is a cloud based database from Amazon. It’s not as fancy as Spanner, which provides serializable and linearizable in a globally distributed system. Aurora is much more practice. In really life, most business don’t need global distributed database. They only need a database that can survive from a data center failure. In this case, Aurora can provide much higher throughput and much lower latency.&lt;/p&gt;
 
@@ -1055,51 +1183,4 @@ Designing Data-Intensive Applications&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;在西方很多国家，虽然也会看到有政治丑闻，但是至少舆论上权利是要被限制的，而且舆论更加自由，事情总能被更多的人知道。真理从来都是愈辩愈明，而不是把问题掩盖住就会消失不见。而反观中国，言论不自由，很多不想让你知道的事情，就不会让你知道。因此一不小心，舆论就会被带偏。尤其是最近这段时间，感觉民族主义越来越盛，真是让人担忧，不知道邓公当时嘱咐的一定要对外开放，是否还能继续坚持。&lt;/p&gt;
 
-&lt;p&gt;所思甚多，难免纷乱。只言片语，以鉴后世吧。&lt;/p&gt;</content><author><name></name></author><category term="politics" /><summary type="html">最近花了一个周末加一些零零散散的时间把傅高义的《邓小平时代》这本书看完了。这本书的内容，总体上讲对邓小平的评价是正面的。里面讲的历史，我之前多多少少都了解过一些，而通过这本书，对这段历史的了解更加系统了一些。</summary></entry><entry><title type="html">Config sbt to Use Both Proxy and Self Hosted Repositories</title><link href="https://www.binwang.me/2016-07-11-Config-sbt-to-Use-Both-Proxy-and-Self-Hosted-Repositories.html" rel="alternate" type="text/html" title="Config sbt to Use Both Proxy and Self Hosted Repositories" /><published>2016-07-11T00:00:00-04:00</published><updated>2016-07-11T00:00:00-04:00</updated><id>https://www.binwang.me/Config-sbt-to-Use-Both-Proxy-and-Self-Hosted-Repositories</id><content type="html" xml:base="https://www.binwang.me/2016-07-11-Config-sbt-to-Use-Both-Proxy-and-Self-Hosted-Repositories.html">&lt;p&gt;While building Scala projects, we usually use a proxy to make the build faster. On the other hand, we usually use another repository to host our internal dependencies, which usually has a password to protect it from unwanted access. Both things are good and necessary. But if you want to use both of them, you will find it’s very tricky.&lt;/p&gt;
-
-&lt;h2 id=&quot;use-proxy-repositories&quot;&gt;Use Proxy Repositories&lt;/h2&gt;
-
-&lt;p&gt;sbt has a &lt;a href=&quot;http://www.scala-sbt.org/0.13/docs/Proxy-Repositories.html&quot;&gt;document&lt;/a&gt; that described how to set proxy repositories:&lt;/p&gt;
-
-&lt;h3 id=&quot;config-repositories-in-sbtrepositories-like-this&quot;&gt;Config repositories in &lt;code&gt;~/.sbt/repositories&lt;/code&gt; like this:&lt;/h3&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;[repositories]
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;  local
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;    my-ivy-proxy-releases: http://repo.company.com/ivy-releases/, [organization]/[module]/(scala_[scalaVersion]/)(sbt_[sbtVersion]/)[revision]/[type]s/[artifact](-[classifier]).[ext]
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;    my-maven-proxy-releases: http://repo.company.com/maven-releases/
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&quot;add--dsbtoverridebuildrepostrue-while-use-sbt-command&quot;&gt;Add &lt;code&gt;-Dsbt.override.build.repos=true&lt;/code&gt; while use sbt command.&lt;/h3&gt;
-
-&lt;p&gt;The second step will override all the resolvers defined in your project, like in the file &lt;code&gt;build.sbt&lt;/code&gt;. It is necessary because if you don’t do this, sbt will still send requests to default repos like typesafe and scala-sbt.&lt;/p&gt;
-
-&lt;h2 id=&quot;use-self-hosted-repositories&quot;&gt;Use Self Hosted Repositories&lt;/h2&gt;
-
-&lt;p&gt;sbt has a &lt;a href=&quot;http://www.scala-sbt.org/0.13/docs/Resolvers.html&quot;&gt;document&lt;/a&gt; about this, too. You will add something like this in your &lt;code&gt;build.sbt&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;resolvers +=
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;  &amp;quot;Sonatype OSS Snapshots&amp;quot; at &amp;quot;https://oss.sonatype.org/content/repositories/snapshots&amp;quot;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;p&gt;And if you have a password for this repo, you should also add something like this:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;credentials += Credentials(&amp;quot;Sonatype Nexus Repository Manager&amp;quot;, &amp;quot;oss.sonatype.org&amp;quot;,
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;  &amp;quot;username&amp;quot;, &amp;quot;password&amp;quot;)
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;use-both&quot;&gt;Use Both&lt;/h2&gt;
-
-&lt;p&gt;You may see the problem to use both of them. In order to force sbt to use proxy repos, you should use the option &lt;code&gt;-Dsbt.override.build.repos=true&lt;/code&gt;, which will override your self hosted repo written in &lt;code&gt;build.sbt&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;After tried some methods, I find I can just write the repos defined in &lt;code&gt;build.sbt&lt;/code&gt; into &lt;code&gt;~/.sbt/repositories&lt;/code&gt;, and sbt will still be able to find the credentials for it while building the project.&lt;/p&gt;
-
-&lt;p&gt;This method will make sbt print some error logs while loading the project: sbt will attempt to download some dependencies from this repo but cannot find the credential since it hasn’t loaded the project yet. If you are comfortable to ignore the error log, this method would be fine.&lt;/p&gt;</content><author><name></name></author><category term="sbt" /><category term="scala" /><summary type="html">While building Scala projects, we usually use a proxy to make the build faster. On the other hand, we usually use another repository to host our internal dependencies, which usually has a password to protect it from unwanted access. Both things are good and necessary. But if you want to use both of them, you will find it’s very tricky.</summary></entry></feed>
+&lt;p&gt;所思甚多，难免纷乱。只言片语，以鉴后世吧。&lt;/p&gt;</content><author><name></name></author><category term="politics" /><summary type="html">最近花了一个周末加一些零零散散的时间把傅高义的《邓小平时代》这本书看完了。这本书的内容，总体上讲对邓小平的评价是正面的。里面讲的历史，我之前多多少少都了解过一些，而通过这本书，对这段历史的了解更加系统了一些。</summary></entry></feed>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Understand Liveness and Fairness in TLA+ |  Bin Wang - My Personal Blog</title>
+    <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-52904500-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+  </head>
+
+  <body>
+    <header id="page_header">
+      <nav id="page_nav">
+        <ul>
+             <li><a href="/">Home</a></li>
+             <li><a href="/snippets">Snippets</a></li>
+             <li><a href="/read.html">Read</a></li>
+             <li><a href="/travel.html">Travel</a></li>
+             <li><a href="/search.html">Search</a></li>
+             <li><a href="/about.html">About</a></li>
+             <li><a href="/feed.xml">RSS</a></li>
+       </ul>
+      </nav>
+
+    </header>
+
+    <section id="page_content">
+      <div id="content_table">
+  
+</div>
+
+<div id="article_content" class="">
+<article id="post">
+  <header>
+    <h1>Understand Liveness and Fairness in TLA+</h1>
+    
+      <p class="description">Posted on 06 Oct 2020, tagged <code>TLA+</code><code>Formal Proof</code><code>Distributed System</code><code>liveness</code><code>fairness</code></p>
+    
+  </header>
+
+  <p>Recently I’m learning <a href="https://lamport.azurewebsites.net/tla/tla.html">TLA+</a>: A language that can specify distributed and concurrent systems. Though it’s very different from most programming languages, the idea behind it is very simple: basically what it does is specifying a state machine. The <a href="https://lamport.azurewebsites.net/tla/toolbox.html">TLA+ tool box</a> has a model checker called TLC that can explore all the states of the state machine and check properties of the system. If the state space is too big or infinite, we can define a reasonable subset of it to check. So it will not always guarantee the correctness. However, the tool box also has a more advanced tool called TLA+ Proof System (TLAPS) to write formal proof like Coq. I highly recommend the <a href="http://lamport.azurewebsites.net/video/videos.html">video course</a> to learn TLA+. It’s short and includes TLC. I first started with The TLA+ Book <em>Specifying Systems</em> which doesn’t include TLC, and I was wondering how specify a system can check properties of it.</p>
+
+<p>Even though many programmers may not be very comfortable with the concept of TLA+ at first, it shouldn’t take a lot effort to write a specification. However, I did have some hard time to understand liveness and fairness in the last two videos. The video does a great job to define and explain it. But the example it uses is not very simple which adds a barrier to understand the concepts. In this article, I want to introduce a much simpler example, which makes it much easier to do experiment with it and see if your understanding is right.</p>
+
+<p>This example is a very simple state machine, which state can go from <code>a</code> to <code>b</code> to <code>c</code>:</p>
+
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>a -&gt; b -&gt; c
+</pre></div>
+</div>
+</div>
+
+<p>The TLA+ code to specify it is also very simple:</p>
+
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>VARIABLE state
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>Init == state = &quot;a&quot;
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>AToB == state = &quot;a&quot; /\ state' = &quot;b&quot;
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>BToC == state = &quot;b&quot; /\ state' = &quot;c&quot;
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>Next == AToB \/ BToC
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>Spec == Init /\ [][Next]_state
+</pre></div>
+</div>
+</div>
+
+<p>The specification defines what’s the possible states and steps of the system. This is <strong>safety property</strong> which defines what a system can do. If we want to use TLC to check anything about this system, we need to select “Temporal formula” under “What is the behavior spec” and put “Spec” in it. For example, if we want to check <code>state</code> is always be one of <code>a</code>, <code>b</code> or <code>c</code>. We can check this formula in TLC as an invariance:</p>
+
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>state \in {&quot;a&quot;, &quot;b&quot;, &quot;c&quot;}
+</pre></div>
+</div>
+</div>
+
+<p>The property we want to check in the system may not always be this simple. For example, we may want to check <code>state</code> can be <code>c</code> at some point. The property that defines what a system must satisfy is called <strong>liveness</strong>. I found this name confusing at first. I think the reason it’s called liveness is because it usually defines what property a system can eventually reach, which means the system is making progress thus “liveness”.</p>
+
+<p>So let’s define the liveness property that says the system can eventually reach the state <code>c</code>. TLA+ uses <code>&lt;&gt;</code> to define the meaning of eventually, so the property can be written like this:</p>
+
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>&lt;&gt;(state = &quot;c&quot;)
+</pre></div>
+</div>
+</div>
+
+<p>We can add this to TLC model’s properties field and run it to check if the system satisfies the property.</p>
+
+<p>So far, if we run this against <code>Spec</code>, TLC will report error. What happened? It turns out the specification not only specifies how the state can be changed in next state, but also specifies the state can be unchanged during steps. This makes it possible to interact with other systems. So the states of the system can stuck in one state forever and may never reaches <code>c</code>:</p>
+
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>a -&gt; b -&gt; b -&gt; b -&gt; ....
+</pre></div>
+</div>
+</div>
+
+<p>This doesn’t seem right. We don’t want the system stuck in one state forever. This is where fairness comes in. We can see in the situation above, the state is always in <code>b</code>, which <code>BToC</code> is enabled and we want it to be executed at some point:</p>
+
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>a -&gt; b -&gt; b -&gt; b -&gt; ... -&gt; c
+</pre></div>
+</div>
+</div>
+
+<p>More specifically, we want the behavior to be executed at some point if it’s enabled continuously. This is called <strong>weak fairness</strong>.</p>
+
+<p>So let’s add weak fairness to all the next steps of our specification. Then <code>Spec</code> changed in to this:</p>
+
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>Spec == Init /\ [][Next]_state /\ WF_state(Next)
+</pre></div>
+</div>
+</div>
+
+<p>If we run TLC again, we can see <code>&lt;&gt;(state = "c")</code> will pass the check.</p>
+
+<p>So far so good. But let’s make our state machine a little more complex by adding a step from <code>b</code> to <code>a</code>:</p>
+
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>a &lt;---&gt; b --&gt; c
+</pre></div>
+</div>
+</div>
+
+<p>The corresponding TLA+ specification is like this:</p>
+
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>VARIABLE state
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>Init == state = &quot;a&quot;
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>AToB == state = &quot;a&quot; /\ state' = &quot;b&quot;
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>BToA == state = &quot;b&quot; /\ state' = &quot;a&quot;
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>BToC == state = &quot;b&quot; /\ state' = &quot;c&quot;
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>Next == AToB \/ BToA \/ BToC
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>Spec == Init /\ [][Next]_state /\ WF_state(Next)
+</pre></div>
+</div>
+</div>
+
+<p>Let’s check <code>&lt;&gt;(state = "c")</code> in TLC again, and we can find it failed. What’s happening now? It turns out even though the system will not stuck in one state forever, it can stuck in some of the states, in this case, <code>a</code> and <code>b</code>:</p>
+
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>a -&gt; b -&gt; a -&gt; b -&gt; a -&gt; b -&gt; ....
+</pre></div>
+</div>
+</div>
+
+<p>Sometimes this is the expected behaviour, but sometimes we want other steps have a chance to happen. In this case, we want to <code>BToC</code> have a chance to happen if <code>state</code> reached <code>b</code> repeatedly:</p>
+
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>a -&gt; b -&gt; a -&gt; b -&gt; a -&gt; b -&gt; .... -&gt; c
+</pre></div>
+</div>
+</div>
+
+<p>We call this kind of property <strong>strong fairness</strong>: if a behavior is enabled repeatedly, it should be executed at some point. So let’s add strong fairness to <code>BToC</code>.</p>
+
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>Spec == Init /\ [][Next]_state /\ WF_state(Next) /\ SF_state(BToC)
+</pre></div>
+</div>
+</div>
+
+<p>After this, the check of <code>&lt;&gt;(state = "c")</code> can pass again.</p>
+
+<p>Let’s sum it up. Liveness is a property that the system must satisfies and can be checked with TLC. It usually defines that the system can eventually reach a state. In this case, it’s <code>&lt;&gt;(state = "c")</code>. Weak fairness is a part of the specification that says a behavior will eventually happen if it’s enabled continuously, which means <code>a -&gt; b -&gt; b -&gt; b -&gt; ... -&gt; c</code> in this example. Strong fairness is also a part of the specification, which says a behavior will eventually happen if it’s enabled repeatedly, which means <code>a -&gt; b -&gt; a -&gt; b -&gt; ... -&gt; c</code> in this case.</p>
+
+</article>
+
+<footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2020-09-16-Aurora-Database.html">Prev: Aurora Database</a></td>
+    
+    
+  </tr></table>
+</footer>
+
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+
+<!-- MathJax -->
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+</div>
+
+    </section>
+
+    <footer id="page_footer">
+      Copyright @ 2008 - 2020 Bin Wang
+      <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
+    </footer>
+  </body>
+</html>

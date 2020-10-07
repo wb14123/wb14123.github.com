@@ -268,3 +268,7 @@ blockquote {
   display: block;
   font-size: 25px;
 }
+
+.line-numbers {
+  margin-right: 10px;
+}
