@@ -1,4 +1,177 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2020-10-19T08:59:20-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">How to Estimate Max TPS from TPM</title><link href="https://www.binwang.me/2020-10-18-How-to-Estimate-Max-TPS-from-TPM.html" rel="alternate" type="text/html" title="How to Estimate Max TPS from TPM" /><published>2020-10-18T00:00:00-04:00</published><updated>2020-10-18T00:00:00-04:00</updated><id>https://www.binwang.me/How-to-Estimate-Max-TPS-from-TPM</id><content type="html" xml:base="https://www.binwang.me/2020-10-18-How-to-Estimate-Max-TPS-from-TPM.html">&lt;p&gt;It’s good to understand the TPS (transaction per second) of a service. But sometimes we only have TPM (transaction per minute) metrics. It may because we don’t have TPS metric at all since it needs resources to compute, or it has been deleted because storing all the historical per second metrics needs a lot of storage space. So we need to estimate TPS from TPM (or even longer time period, which the method below also applies). It’s not hard to get an average TPS from TPM: just divide TPM by 60. However, because the database and the dependency services have a limit on how many concurrent requests it can handle, we also need to understand what’s the max TPS. In this article, we will explore how to do that.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2020-11-02T23:20:08-05:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Use TLA+ to Verify Cache Consistency</title><link href="https://www.binwang.me/2020-11-02-Use-TLA+-to-Verify-Cache-Consistency.html" rel="alternate" type="text/html" title="Use TLA+ to Verify Cache Consistency" /><published>2020-11-02T00:00:00-05:00</published><updated>2020-11-02T00:00:00-05:00</updated><id>https://www.binwang.me/Use-TLA+-to-Verify-Cache-Consistency</id><content type="html" xml:base="https://www.binwang.me/2020-11-02-Use-TLA+-to-Verify-Cache-Consistency.html">&lt;blockquote&gt;
+  &lt;p&gt;There are only two hard things in Computer Science: cache invalidation and naming things.&lt;/p&gt;
+
+  &lt;p&gt;– Phil Karlton&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;During web service development, it’s very usual to use a cache before the database. It’s so common that almost becomes the default solution whenever there is a performance issue. But a lot of people don’t really think about the consistency between database and cache. A main reason is it’s so hard to reason about the consistency under a distributed system. So in this article, I will explore how to use TLA+ to specify different cache algorithms and use TLC to check whether it will keep the data consistency between cache and database. All the code in this article is available at &lt;a href=&quot;https://github.com/wb14123/tla-cache&quot;&gt;my Github repo&lt;/a&gt;. The code may be updated after this article is published.&lt;/p&gt;
+
+&lt;h2 id=&quot;system-architecture&quot;&gt;System Architecture&lt;/h2&gt;
+
+&lt;p&gt;Let’s first describe the normal architecture of the cache and database system. Normally, a web service query data from a database and save data to it. The service itself usually doesn’t store any stateful data. This makes it’s very easy to scale up: just start a bunch of servers and put them behind a load balancer. But for the database, it’s not so easy. It’s usually very hard to scale up a database. So when the performance of the database is an issue, we usually put a cache before it. The cache stores everything in memory so it would be much faster and can handle much more requests than a traditional database that needs to persistent everything. When we read data, we read cache first and only load it from database if there is no data in cache. When save data, we must persistent the data to database. Here is a graph about what this architecture looks like:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;web_server_1
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;web_server_2
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;web_server_3  &amp;lt;--&amp;gt; cache &amp;lt;--&amp;gt; database
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;...
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;web_server_n
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;We need to notice this is a different architecture than the cache of CPU. In multi-core CPUs, each core has it’s own cache instead of having a shared cache, which looks like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;core_1 &amp;lt;--&amp;gt; cache_1
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;core_2 &amp;lt;--&amp;gt; cache_2
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;core_3 &amp;lt;--&amp;gt; cache_3  &amp;lt;---&amp;gt; main memory
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;...
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;core_n &amp;lt;--&amp;gt; cache_n
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Because of the differences of architectures, consistency and latency requirements, they usually needs different solutions. In this article, we only talk about the cache algorithms for web services.&lt;/p&gt;
+
+&lt;h2 id=&quot;cache-algorithms&quot;&gt;Cache Algorithms&lt;/h2&gt;
+
+&lt;p&gt;The cache algorithms are very simple. When read data, read data from cache first. If there is no data in cache, read from database and write it back to cache. When write data, because normally database has stronger consistency model and can persistent data better, we usually write to database first, then write to cache or invalidate cache. In our example, we invalidate data after write since it’s the most widely used one and has less consistency issues.&lt;/p&gt;
+
+&lt;p&gt;This is the pseudocode for this algorithm:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;read(key) {
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;    cache = readCache(key)
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;    if (cache != null) {
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;        return cache
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;    }
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;    data = readDB(key)
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;    writeCache(key, data)
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;    return data
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;}
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;write(key, value) {
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;    writeDB(key, value)
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt;    invalidateCache(key)
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n14&quot; name=&quot;n14&quot;&gt;14&lt;/a&gt;&lt;/span&gt;}
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;tla-specification&quot;&gt;TLA+ Specification&lt;/h2&gt;
+
+&lt;p&gt;Once we have the algorithm in mind, we can write a TLA+ specification and let TLC to check whether it has the properties we want. A TLA+ specification is not a 100% map from the system, it’s an abstraction that omits irrelevant details. In our specification, we make two key abstractions:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Data is inconsistent between cache and database if one row is inconsistent. So in the specification, we only care about one row. Which means we don’t need the parameter for &lt;code&gt;key&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;In the specification, we don’t care about what’s the actual value as long as each client writes different values. So we let the client write it’s own ID as the value. Thus we can also omit &lt;code&gt;value&lt;/code&gt; from write behavior.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;We need also to notice that if we write multiple state changes in one TLA+ statement, it means those state changes are atomic. In the code, we assume read/write cache/database is atomic while others are not, which means each line is an atomic operation but the lines between them are not. So for each of the lines, we should write separate statements.&lt;/p&gt;
+
+&lt;p&gt;So keeping this in mind, we have these variables for our specification:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;CONSTANT CLIENTS
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;VARIABLE cache, db, cacheResults, dbResults, cacheWritten, states
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;CLIENTS: all the clients&lt;/li&gt;
+  &lt;li&gt;cache: the value in cache&lt;/li&gt;
+  &lt;li&gt;db: the value in database&lt;/li&gt;
+  &lt;li&gt;cacheResults: read cache results for each client&lt;/li&gt;
+  &lt;li&gt;dbResults: read DB results for each client&lt;/li&gt;
+  &lt;li&gt;cacheWritten: whether the cache has been written.&lt;/li&gt;
+  &lt;li&gt;states: the state of clients&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The reason we want to have a variable &lt;code&gt;cacheWritten&lt;/code&gt; is, we want to make sure the algorithm really wrote to the cache. Otherwise it would be simple to keep data consistent by not using the cache at all. (We don’t check this property in this article, but it’s not hard to add that).&lt;/p&gt;
+
+&lt;p&gt;For &lt;code&gt;states&lt;/code&gt;, we want all client start with &lt;code&gt;free&lt;/code&gt; and ends with &lt;code&gt;done&lt;/code&gt; when read/write is done. It can go from &lt;code&gt;done&lt;/code&gt; to &lt;code&gt;free&lt;/code&gt; again to start another read/write.&lt;/p&gt;
+
+&lt;p&gt;Then we have &lt;code&gt;Null&lt;/code&gt; value for no data in cache or database, &lt;code&gt;InitValue&lt;/code&gt; for any value that exists before the system is running, and all the data that could be put into cache and database;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;Null == &amp;quot;null&amp;quot;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;InitValue == &amp;quot;init&amp;quot;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;Data == CLIENTS \union {Null, InitValue}
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Once these basic values are ready, it’s not hard to write the specification for cache and database interface. The specification of it is in &lt;a href=&quot;https://github.com/wb14123/tla-cache/blob/master/CacheInterface.tla&quot;&gt;CacheInterface.tla&lt;/a&gt;. Then we can use the interface to specify the algorithm described above: &lt;a href=&quot;https://github.com/wb14123/tla-cache/blob/master/WriteInvalidateCache.tla&quot;&gt;WriteInvalidateCache.tla&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Finally, we want to also specify what property we want for our system. We want the data in cache and database to be consistent. It would be very hard to make them to be the same all the time. So we make a reasonable weaker statement: we want to make sure once all the clients are done, either the cache doesn’t have any data, or it has the same data as in database:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;AllDone == \A c \in CLIENTS: states[c] = &amp;quot;done&amp;quot;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;Consistency == IF AllDone THEN (cache = db \/ cache = Null) ELSE TRUE
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;We can put the specification and all the properties we want to check into a TLC model config file &lt;a href=&quot;https://github.com/wb14123/tla-cache/blob/master/WriteInvalidateCache.cfg&quot;&gt;WriteInvalidateCache.cfg&lt;/a&gt; and let TLC to check it:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;tlc WriteInvalidateCache
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;After running this, it will show it violates &lt;code&gt;Consistency&lt;/code&gt;, and also show all the sequences to reach the violation. In this way, we know this algorithm cannot guarantee consistency between cache and database.&lt;/p&gt;
+
+&lt;h2 id=&quot;a-better-algorithm&quot;&gt;A Better Algorithm&lt;/h2&gt;
+
+&lt;p&gt;An algorithm that makes data possible to be inconsistent doesn’t necessary makes it a bad algorithm. It maybe faster than stronger consistent algorithms and some application is fine with stale data. It all depends on the use case. What makes it a bad algorithm is people use it without truly understand it.&lt;/p&gt;
+
+&lt;p&gt;In this section, I’ll introduce an algorithm with better consistency. It’s introduced by the paper &lt;a href=&quot;https://pdos.csail.mit.edu/6.824/papers/memcache-fb.pdf&quot;&gt;Scaling Memcache at Facebook&lt;/a&gt;. In this algorithm, if there is a cache miss during read, the cache server will return a lease token to client. A newer token or the invalidate of the cache will make previous token invalidate. The client can only write cache if it has a valid token.&lt;/p&gt;
+
+&lt;p&gt;I implemented the specification of this algorithm in &lt;a href=&quot;https://github.com/wb14123/tla-cache/blob/master/WriteInvalidateLease.tla&quot;&gt;WriteInvalidateLease.tla&lt;/a&gt; and the model config &lt;a href=&quot;https://github.com/wb14123/tla-cache/blob/master/WriteInvalidateLease.cfg&quot;&gt;WriteInvalidateLease.cfg&lt;/a&gt;. If you run the TLC checker on it:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;tlc WriteInvalidateLease
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You will find it passed the check. Because we specify two clients in &lt;code&gt;WriteInvalidateLease.cfg&lt;/code&gt;, so it means it meets the &lt;code&gt;Consistency&lt;/code&gt; requirement with two concurrent clients:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;CLIENTS = {&amp;quot;c1&amp;quot;, &amp;quot;c2&amp;quot;}
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You can make it as many clients as you want. But increase one client will increase the checking time a lot. Usually 3 clients is enough. It will not guarantee it meets the property under unlimited clients (we need formal proof to do that), but it will give us much higher confidence on the algorithm.&lt;/p&gt;
+
+&lt;h2 id=&quot;what-else-can-go-wrong&quot;&gt;What Else Can Go Wrong&lt;/h2&gt;
+
+&lt;p&gt;In the algorithm above, we can see the data in cache and database can be consistent once the client has done the work. But it doesn’t say any thing about client failure. Because the client write to database then invalid the cache, if the client is down during these two operations, it will not invalid the cache so it will have stale data. To specify this in TLA+, we can add two behaviors into Next:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;Failure(c) == /\ states' = [states EXCEPT ![c] = &amp;quot;fail&amp;quot;]
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;              /\ UNCHANGED &amp;lt;&amp;lt;cache, db, cacheResults, dbResults, cacheWritten, lease&amp;gt;&amp;gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;Recover(c) == /\ states[c] = &amp;quot;fail&amp;quot;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;              /\ states' = [states EXCEPT ![c] = &amp;quot;start&amp;quot;]
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;              /\ UNCHANGED &amp;lt;&amp;lt;cache, db, cacheResults, dbResults, cacheWritten, lease&amp;gt;&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Since it’s much less likely for the server to not graceful shutdown, this problem is much smaller than the previous one. And the effect can be limited by having a TTL for cache. However, you need to understand that to know if the algorithm really meets your need.&lt;/p&gt;
+
+&lt;p&gt;Another thing need to notice is the consistency property we defined above is a really weak one. It doesn’t guarantee you always read the newest data.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;In this article, we can see how easy a cache algorithm can go wrong and how to use TLA+ to specify and verify it. Based on the specification examples above, you can verify any cache algorithm you like: for example, instead of invalidate the cache after write to database, update the cache and see how it works.&lt;/p&gt;
+
+&lt;p&gt;In next articles, I will write an implementation for Redis to use the lease token algorithm. And compare the performance between database and cache to see if we really need to use cache in some use cases.&lt;/p&gt;</content><author><name></name></author><category term="TLA+" /><category term="cache" /><category term="database" /><category term="consistency" /><category term="algorithm" /><category term="distributed system" /><summary type="html">There are only two hard things in Computer Science: cache invalidation and naming things. – Phil Karlton</summary></entry><entry><title type="html">How to Estimate Max TPS from TPM</title><link href="https://www.binwang.me/2020-10-18-How-to-Estimate-Max-TPS-from-TPM.html" rel="alternate" type="text/html" title="How to Estimate Max TPS from TPM" /><published>2020-10-18T00:00:00-04:00</published><updated>2020-10-18T00:00:00-04:00</updated><id>https://www.binwang.me/How-to-Estimate-Max-TPS-from-TPM</id><content type="html" xml:base="https://www.binwang.me/2020-10-18-How-to-Estimate-Max-TPS-from-TPM.html">&lt;p&gt;It’s good to understand the TPS (transaction per second) of a service. But sometimes we only have TPM (transaction per minute) metrics. It may because we don’t have TPS metric at all since it needs resources to compute, or it has been deleted because storing all the historical per second metrics needs a lot of storage space. So we need to estimate TPS from TPM (or even longer time period, which the method below also applies). It’s not hard to get an average TPS from TPM: just divide TPM by 60. However, because the database and the dependency services have a limit on how many concurrent requests it can handle, we also need to understand what’s the max TPS. In this article, we will explore how to do that.&lt;/p&gt;
 
 &lt;p&gt;We have an assumption before we go to the solution: we assume that in the time period of one minute, the requests to the service has the same probability to happen at any time. In another word, the requests are independently of the time since last request. This means the time of the requests is a uniform distribution. This is a reasonable assumption: though most services has peak requests during a day, it tends to be distributed evenly in a short period like one minute,. We need to notice that the equal of probability doesn’t mean all the requests &lt;strong&gt;will&lt;/strong&gt; arrive evenly in the minute, otherwise max TPS will be the same as average TPS.&lt;/p&gt;
 
@@ -1148,59 +1321,4 @@ Designing Data-Intensive Applications&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
-&lt;p&gt;So this is 2017 for me. Not perfect, not great. I’ve felt lots of confused, pain and pressure in the last year. But that’s not a bad thing. It gives me a chance to think the things and opportunities that I’ve never thought of. Maybe that’s the feeling of growth.&lt;/p&gt;</content><author><name></name></author><category term="thoughs" /><category term="life" /><summary type="html">When I open my blog, I suddenly realized that I haven’t even writen one blog in 2017. I’ve tried to write some blogs about technology but it spent too much time and energy so I gave up at last. There happens a lot of things on me in 2017. So I must write something while the next year is beginning. Things have changed both on my life and my work. I don’t want to write too many details on my personal life, so I will just record some work related things.</summary></entry><entry><title type="html">Build a Unix Like Environment on Windows</title><link href="https://www.binwang.me/2016-11-28-Config-Development-Environment-on-Windows.html" rel="alternate" type="text/html" title="Build a Unix Like Environment on Windows" /><published>2016-11-28T00:00:00-05:00</published><updated>2016-11-28T00:00:00-05:00</updated><id>https://www.binwang.me/Config-Development-Environment-on-Windows</id><content type="html" xml:base="https://www.binwang.me/2016-11-28-Config-Development-Environment-on-Windows.html">&lt;p&gt;I’ve bought a Surface Pro 4 some days ago. It is very amazing and I’d like to use it as my backup development laptop. My daily development is under Linux and Mac OS X. I use terminal and lots of bash scripts everyday. So I need a Unix-like environment on Windows. This article will introduce how to do that.&lt;/p&gt;
-
-&lt;h2 id=&quot;terminal-and-unix-tools&quot;&gt;Terminal and Unix Tools&lt;/h2&gt;
-
-&lt;p&gt;There is a famous software called &lt;a href=&quot;https://www.cygwin.com/&quot;&gt;Cygwin&lt;/a&gt; which provides many unix tools along with a terminal. You can download it from its homepage and install it with GUI.&lt;/p&gt;
-
-&lt;p&gt;While installing it, it will ask you which tools you’d like to install. Just install the default ones and Lynx is enough, since we will install a package manager and it will be easier to install other tools then.&lt;/p&gt;
-
-&lt;p&gt;You can use Xterm with Cygwin terminal, so you can config it as you are in Linux.&lt;/p&gt;
-
-&lt;h2 id=&quot;package-manager&quot;&gt;Package Manager&lt;/h2&gt;
-
-&lt;p&gt;The most missed thing while I’m using Windows is Linux’s package manager. You can search, install, update and manage software very easily with it. There is also HomeBrew under Mac OS X so I’d like something like that under Windows. I searched on Google and found &lt;a href=&quot;https://github.com/transcode-open/apt-cyg&quot;&gt;apt-cyg&lt;/a&gt; which can manage packages in Cygwin. You can follow the steps on its homepage to install it. After install it, you can install wget with it so that it will stop print warning messages.&lt;/p&gt;
-
-&lt;p&gt;I’ve installed tmux, zsh, Git and vim with it. And config them with my &lt;a href=&quot;https://github.com/wb14123/dotfiles&quot;&gt;config files&lt;/a&gt;. I only need to change the tmux start up config:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;- set -g default-command &amp;quot;reattach-to-user-namespace -l /bin/zsh&amp;quot;
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;+ set -g default-command &amp;quot;/usr/bin/zsh&amp;quot;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Except this, everything else works very well without any problem.&lt;/p&gt;
-
-&lt;h2 id=&quot;python&quot;&gt;Python&lt;/h2&gt;
-
-&lt;p&gt;There are many tools are written in Python. And my work also uses Python a lot. You can install Python with apt-cyg. But there will be some tricky things if you need to install some Python packages with pip.&lt;/p&gt;
-
-&lt;p&gt;First we will install pip:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;apt-cyg install python python-devel
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;wget http://peak.telecommunity.com/dist/ez_setup.py
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;python ez_setup.py
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;easy_install pip
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Then we need to install gcc in order to compile some python packages:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;apt-cyg install colorgcc gcc-core gcc-g++ libgcc1
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Then we need to change a python header file: /usr/include/python2.7/pyconfig.h:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;- #define __BSD_VISIBLE 1
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;+ #define __BSD_VISIBLE 0
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;</content><author><name></name></author><category term="Windows" /><category term="Python" /><category term="bash" /><summary type="html">I’ve bought a Surface Pro 4 some days ago. It is very amazing and I’d like to use it as my backup development laptop. My daily development is under Linux and Mac OS X. I use terminal and lots of bash scripts everyday. So I need a Unix-like environment on Windows. This article will introduce how to do that.</summary></entry></feed>
+&lt;p&gt;So this is 2017 for me. Not perfect, not great. I’ve felt lots of confused, pain and pressure in the last year. But that’s not a bad thing. It gives me a chance to think the things and opportunities that I’ve never thought of. Maybe that’s the feeling of growth.&lt;/p&gt;</content><author><name></name></author><category term="thoughs" /><category term="life" /><summary type="html">When I open my blog, I suddenly realized that I haven’t even writen one blog in 2017. I’ve tried to write some blogs about technology but it spent too much time and energy so I gave up at last. There happens a lot of things on me in 2017. So I must write something while the next year is beginning. Things have changed both on my life and my work. I don’t want to write too many details on my personal life, so I will just record some work related things.</summary></entry></feed>
