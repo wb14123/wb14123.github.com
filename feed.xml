@@ -1,4 +1,114 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2020-11-02T23:20:08-05:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Use TLA+ to Verify Cache Consistency</title><link href="https://www.binwang.me/2020-11-02-Use-TLA+-to-Verify-Cache-Consistency.html" rel="alternate" type="text/html" title="Use TLA+ to Verify Cache Consistency" /><published>2020-11-02T00:00:00-05:00</published><updated>2020-11-02T00:00:00-05:00</updated><id>https://www.binwang.me/Use-TLA+-to-Verify-Cache-Consistency</id><content type="html" xml:base="https://www.binwang.me/2020-11-02-Use-TLA+-to-Verify-Cache-Consistency.html">&lt;blockquote&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2020-11-08T11:31:59-05:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">DNS Resolving Bug in iOS 14</title><link href="https://www.binwang.me/2020-11-08-DNS-Resolving-Bug-in-iOS-14.html" rel="alternate" type="text/html" title="DNS Resolving Bug in iOS 14" /><published>2020-11-08T00:00:00-05:00</published><updated>2020-11-08T00:00:00-05:00</updated><id>https://www.binwang.me/DNS-Resolving-Bug-in-iOS-14</id><content type="html" xml:base="https://www.binwang.me/2020-11-08-DNS-Resolving-Bug-in-iOS-14.html">&lt;h2 id=&quot;the-bug-description&quot;&gt;The Bug Description&lt;/h2&gt;
+
+&lt;p&gt;iOS 14 has a bug for DNS resolving under this circumstances:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Manually specify a custom DNS server for a WiFi network.&lt;/li&gt;
+  &lt;li&gt;For a domain, this custom DNS server has different DNS record than the default public DNS server.&lt;/li&gt;
+  &lt;li&gt;The DNS record type of this domain is CNAME on public DNS server.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Under this setup, after connecting to WiFi with custom DNS, iOS 14 should get the IP for this domain according the record on custom DNS server. However, it still gets the IP that’s on public DNS server.&lt;/p&gt;
+
+&lt;p&gt;Here is an example. The table below shows the DNS records on public DNS servers:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Domain&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;DNS Record Type&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Value&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;domain-1&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;CNAME&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;domain-2&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;domain-2&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;A&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;1.1.1.1&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;So &lt;code&gt;domain-1&lt;/code&gt; will be resolved to &lt;code&gt;1.1.1.1&lt;/code&gt; by using the default public DNS server.&lt;/p&gt;
+
+&lt;p&gt;Then we have a custom DNS server, which modifies record for &lt;code&gt;domain-1&lt;/code&gt;. For other records, it uses the upstream ones:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Domain&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;DNS Record Type&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Value&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;domain-1&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;A&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;2.2.2.2&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;domain-2&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;A&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;1.1.1.1&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;So if you use the custom DNS server, &lt;code&gt;domain-1&lt;/code&gt; should be resolved to &lt;code&gt;2.2.2.2&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;However in iOS 14, even if you manually specify the custom DNS server for the WiFi network, &lt;code&gt;domain-1&lt;/code&gt; is still resolved to &lt;code&gt;1.1.1.1&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;I guess this is because of DNS cache problem. I tried to clean up the DNS cache by changing my device to airplane mode, reboot the device, or stay in the WiFi with custom DNS for days. Despite all the attempts, the problem still exists.&lt;/p&gt;
+
+&lt;p&gt;I filled a bug report to Apple but didn’t get any response after almost one month. So I think I can share it here so it may help someone else with the same problem.&lt;/p&gt;
+
+&lt;h2 id=&quot;how-do-i-know-its-not-the-problem-of-my-dns-setup&quot;&gt;How Do I know It’s not the Problem of My DNS Setup&lt;/h2&gt;
+
+&lt;p&gt;The setup above works on every other devices I have (Linux devices, MacOS devices). It also works on the same iOS device before I upgraded it to iOS 14. I also installed the app &lt;a href=&quot;https://apps.apple.com/us/app/network-analyzer-pro/id557405467&quot;&gt;Network Analyzer Pro&lt;/a&gt; to debug the setup. In Network Analyzer Pro, if I use the DNS resolving tool with the custom DNS server, it can resolve the right IP address. But if I ping the domain directly, it resolved to the wrong IP. So there is something wrong at the system level of iOS 14.&lt;/p&gt;
+
+&lt;h2 id=&quot;workaround&quot;&gt;Workaround&lt;/h2&gt;
+
+&lt;p&gt;This bug is very frustrating. I spent lots of time to identify what’s the issue: for the application, to the permission setup (iOS 14 has a new local network permission), to the system. And finally found it’s iOS system DNS resolving problem and found a workaround.&lt;/p&gt;
+
+&lt;p&gt;The workaround is to add a DNS record for the domain behind CNAME (in this case &lt;code&gt;domain-2&lt;/code&gt;) into the custom DNS server:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Domain&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;DNS Record Type&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Value&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;domain-1&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;A&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;2.2.2.2&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;domain-2&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;A&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;2.2.2.2&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;However, if you have multiple domains point to &lt;code&gt;domain-2&lt;/code&gt; and don’t want to change IP addresses for those domains, this workaround may not be able to support that use case.&lt;/p&gt;
+
+&lt;h2 id=&quot;a-little-more-story&quot;&gt;A Little More Story&lt;/h2&gt;
+
+&lt;p&gt;It may looks weird that I have a DNS setup like this. I host some services on my desktop machine. Because of my home router provided by ISP disabled NAT loopback (which means the router denies all the traffic that comes from itself), I must use the IP address in local network to access the services if my devices are in the same network. So I setup a custom DNS server that resolves the service domains to my desktop’s internal IP address, and use this DNS server when I’m using home WiFi.&lt;/p&gt;
+
+&lt;p&gt;I depend on this workflow heavily. Everything worked smoothly until I upgraded to iOS 14. For more than 1 month, under the home WiFi connection (which is most of the time because of CoVID-19), I cannot sync my calendar or notes, or fetch an E-Book from my collections to iPad, or upload my photos automatically, or chat with my friends on phone, and so on. It’s very frustrating and is still not fixed after two version upgrades of iOS 14.&lt;/p&gt;
+
+&lt;p&gt;After my previous Android phone broken, I decided to buy an old generation iPhone. One big reason is it’s really cheap with the carrier contract. I’m trying to reduce my time on phones so an old generate is more than enough. In many ways it’s much better than an Android phone: for an Android phone, I need so many tweaks to make sure it respects my privacy and apps not running at background all the time. And after that, many apps are not usable or don’t have proper notifications. On contrast, Apple controls the ecosystem strongly to make sure the developers don’t abuse the system. But on the other hand, Apple also controls the users strongly. It’s hard to downgrade the system. It’s hard to debug the system. It’s even hard to submit a bug report: you need to enroll Beta profile and use an app to submit it. (I’m not sure if there are other ways but it’s the suggested way on Apple’s website). With an Apple mobile device, I feel more like renting it instead of owning it. I really hope one day there is a device that’s both open to users and have a strong permission management to limit the app behaviors (including the apps owned by device provider). It must be hard based on the user base, but doesn’t hurt to have some hopes.&lt;/p&gt;</content><author><name></name></author><category term="DNS" /><category term="iOS" /><category term="technology" /><category term="self hosted" /><summary type="html">The Bug Description</summary></entry><entry><title type="html">Use TLA+ to Verify Cache Consistency</title><link href="https://www.binwang.me/2020-11-02-Use-TLA+-to-Verify-Cache-Consistency.html" rel="alternate" type="text/html" title="Use TLA+ to Verify Cache Consistency" /><published>2020-11-02T00:00:00-05:00</published><updated>2020-11-02T00:00:00-05:00</updated><id>https://www.binwang.me/Use-TLA+-to-Verify-Cache-Consistency</id><content type="html" xml:base="https://www.binwang.me/2020-11-02-Use-TLA+-to-Verify-Cache-Consistency.html">&lt;blockquote&gt;
   &lt;p&gt;There are only two hard things in Computer Science: cache invalidation and naming things.&lt;/p&gt;
 
   &lt;p&gt;– Phil Karlton&lt;/p&gt;
@@ -1289,36 +1399,4 @@ Designing Data-Intensive Applications&lt;/a&gt;.&lt;/p&gt;
       &lt;td&gt;No&lt;/td&gt;
     &lt;/tr&gt;
   &lt;/tbody&gt;
-&lt;/table&gt;</content><author><name></name></author><category term="Technical" /><category term="database" /><category term="technology" /><category term="distributed system" /><summary type="html">When Spanner paper was published, the use of synced clock to implement globally distributed database attracted a lot of attentions. After these years, Google have put Spanner on its cloud to make everyone be able to use it. And there are also some open source implementations of Spanner in these years. In this article, I’d like to write about how synced clock makes Spanner special, some notes of using it and how others implement it without special hardware clock.</summary></entry><entry><title type="html">My 2017 Year in Review</title><link href="https://www.binwang.me/2018-01-02-The-Year-of-2017.html" rel="alternate" type="text/html" title="My 2017 Year in Review" /><published>2018-01-02T00:00:00-05:00</published><updated>2018-01-02T00:00:00-05:00</updated><id>https://www.binwang.me/The-Year-of-2017</id><content type="html" xml:base="https://www.binwang.me/2018-01-02-The-Year-of-2017.html">&lt;p&gt;When I open my blog, I suddenly realized that I haven’t even writen one blog in 2017. I’ve tried to write some blogs about technology but it spent too much time and energy so I gave up at last. There happens a lot of things on me in 2017. So I must write something while the next year is beginning. Things have changed both on my life and my work. I don’t want to write too many details on my personal life, so I will just record some work related things.&lt;/p&gt;
-
-&lt;h2 id=&quot;job-change&quot;&gt;Job Change&lt;/h2&gt;
-
-&lt;p&gt;At the mid of 2017, I’ve quite my job at &lt;a href=&quot;https://www.appadhoc.com&quot;&gt;AppAdhoc (吆喝科技)&lt;/a&gt;. I was one of the earliest employee and have built most of the backend platform. It has been very happy to write a platform from scratch that can handle billions of requests per day. But the changes in the company at this year makes me tired and I decided to quite and do something else. I’ve explored, learned and used many cool technologies while I was in this company. I’d like to write some blogs about that in the future.&lt;/p&gt;
-
-&lt;h2 id=&quot;machine-learning&quot;&gt;Machine Learning&lt;/h2&gt;
-
-&lt;p&gt;After I quite the job, the thing I want to do most is writting some machine learning application. I’ve writen some of them in the past and built a workstation contains a GPU so I can train models faster. The techs are cool but I don’t know what to built yet. I tried to write a word based game (like &lt;a href=&quot;https://en.wikipedia.org/wiki/MUD&quot;&gt;Mud&lt;/a&gt;) and build some AI into it. But there is too many details. And the economic pressures makes me to do some other things that can earn money. So this game project is suspended and I became a freelancer. But let’s write about the freelancer experience later and complete my machine learning story first.&lt;/p&gt;
-
-&lt;p&gt;After the game project suspended, I’ve writen &lt;a href=&quot;https://ai.binwang.me/couplet/&quot;&gt;another machine learning application&lt;/a&gt;, which is unexpected popular. This application plays couplet (对对联), which is a traditional Chinese word game. One gives a sentence and another one come up with another sentence that matches it both in structure and meaning. It plays a big part in the traditional Chinese literature. It’s like poem which needs creation and inpiration. The structure of couplets makes it easy to train. I use it as a practice to write seq2seq model. After I publish it online, it attracted more than 200 thousands unique visitors in one week.&lt;/p&gt;
-
-&lt;p&gt;The last project I’ve written about machine learning is the dissertation of my MSc project. I’ve joined the MSc distance learning project at the University of Leicester at the mid of 2016. So I need to write a dissertation in order to get the degree this year. This project is also NLP related and is about text classification and regression. I may write more details in the future.&lt;/p&gt;
-
-&lt;p&gt;Though I’ve writen some machine learning application, I don’t think I’ve put more time on it or learned more than in 2016. For example, I’ve read less paper and book, and written less code. In my plan, the book &lt;em&gt;Probability Theory: The Logic of Science&lt;/em&gt; should be completed in 2017, but I almost haven’t read it after I quite the job. However, the degree of proficiency of writting a web crawler and Tensorflow code have been increased, which is one thing that I can comfort myself.&lt;/p&gt;
-
-&lt;h2 id=&quot;freelancer-experience&quot;&gt;Freelancer Experience&lt;/h2&gt;
-
-&lt;p&gt;After about 2 months since quiting my job, I realized I need to do something to earn money. But I was tired to go to work and sit in an office all the day. So I became a freelancer and find projects online. Until now, I have two part-time remote jobs and an ongoing project. It has been very busy. Doing outsourcing projects means there are many time-consuming details to confirm and fix. As programmers, we know that software is built with many iterations. It needs much work to build a software ready for the customer. But many customers don’t know that. They saw softwares on the market and just want one like that, not considering how much time it has been built and iterated by a how big team.  So the price for the outsourcing projects is not always good. However, it is something that I can do without other dependencies and be able to work from home. So I will deal with that for now.&lt;/p&gt;
-
-&lt;h2 id=&quot;p2p-network-and-blockchain&quot;&gt;P2P Network and Blockchain&lt;/h2&gt;
-
-&lt;p&gt;Though blockchain is a hot technology in recent years, I’ve researched little on it. But something happened recently makes me take a serious thought on it. To be more specificly, it makes me think about the decenterlized Internet, not just blockchain. But the blockchain is the technology I didn’t familar with in the past.&lt;/p&gt;
-
-&lt;p&gt;The cause is the couplet AI I’ve built. I built a trending module that let users vote the best couplets generated from the AI. And there are some couplets related to politics on that. So my Weibo account is deactived by the Chinese goverment and the couplet AI website is blocked by GFW. There are many memories and contacts in my Weibo account. That’s the time I realized how important it is to have a decenterlized Internet, which one can control his own data and no one can modify or delete it.&lt;/p&gt;
-
-&lt;p&gt;That’s also the time when the 19th CPC National Congress just concluded. And some other things happend in Beijing and in my life makes me think how AI will affect goverment and big companies’ power. At past, I didn’t care about it and just wanted to build something fun. But now I realize with the goverment’s administrative power and the big companies’ monopoly power, they can gather more data and use more computation power than the ordinary beings. And data is the key. In the past days, without the advanced AI technologies, thay can find little useful things from it because the data is too big. No one can read and analysis all of it. But with developing of AI, they can get more and more useful informations from it: the bussiness secret, your habit, your property and so on. If we cannot own ourself’s data and keep it secret, we will become the new slaves, being exploited even we are not aware of it.&lt;/p&gt;
-
-&lt;p&gt;Then I found the project &lt;a href=&quot;https://blockstack.org/&quot;&gt;BlockStack&lt;/a&gt;. It is not perfect but gives me a clue on how to build the decenterlized softwares. Maybe I will not have the time to research on that deeply in the new year, but it definitely worth to do so.&lt;/p&gt;
-
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-
-&lt;p&gt;So this is 2017 for me. Not perfect, not great. I’ve felt lots of confused, pain and pressure in the last year. But that’s not a bad thing. It gives me a chance to think the things and opportunities that I’ve never thought of. Maybe that’s the feeling of growth.&lt;/p&gt;</content><author><name></name></author><category term="thoughs" /><category term="life" /><summary type="html">When I open my blog, I suddenly realized that I haven’t even writen one blog in 2017. I’ve tried to write some blogs about technology but it spent too much time and energy so I gave up at last. There happens a lot of things on me in 2017. So I must write something while the next year is beginning. Things have changed both on my life and my work. I don’t want to write too many details on my personal life, so I will just record some work related things.</summary></entry></feed>
+&lt;/table&gt;</content><author><name></name></author><category term="Technical" /><category term="database" /><category term="technology" /><category term="distributed system" /><summary type="html">When Spanner paper was published, the use of synced clock to implement globally distributed database attracted a lot of attentions. After these years, Google have put Spanner on its cloud to make everyone be able to use it. And there are also some open source implementations of Spanner in these years. In this article, I’d like to write about how synced clock makes Spanner special, some notes of using it and how others implement it without special hardware clock.</summary></entry></feed>
