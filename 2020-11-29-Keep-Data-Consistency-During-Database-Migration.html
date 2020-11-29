@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Keep Data Consistency During Database Migration |  Bin Wang - My Personal Blog</title>
+    <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-52904500-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+  </head>
+
+  <body>
+    <header id="page_header">
+      <nav id="page_nav">
+        <ul>
+             <li><a href="/">Home</a></li>
+             <li><a href="/snippets">Snippets</a></li>
+             <li><a href="https://www.goodreads.com/review/list/103708630" target="_blank">Read</a></li>
+             <li><a href="/travel.html">Travel</a></li>
+             <li><a href="/search.html">Search</a></li>
+             <li><a href="/about.html">About</a></li>
+             <li><a href="/feed.xml">RSS</a></li>
+       </ul>
+      </nav>
+
+    </header>
+
+    <section id="page_content">
+      <div id="content_table">
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#requirements">Requirements</a></li><li><a href="#steps">Steps</a></li></ol>
+</div>
+
+<div id="article_content" class="">
+<article id="post">
+  <header>
+    <h1>Keep Data Consistency During Database Migration</h1>
+    
+      <p class="description">Posted on 29 Nov 2020, tagged <code>database</code><code>distributed system</code><code>consistency</code></p>
+    
+  </header>
+
+  <p>When a system has been live for a long time, it’s not rare to use newer technologies to improve performance, maintainability, or add new features. One of such changes can be which database to use. This can be the most difficult kind of change. During the migration, there are two data sources, which makes it a distributed system. Make data consistent under a distributed system is very hard and can easily go wrong. In this article, we will explore a way to keep the data consistent during the migration, and maintain a low downtime at the same time.</p>
+
+<h2 id="requirements">Requirements</h2>
+
+<p>There are some requirements in order to use the way described in this article:</p>
+
+<ul>
+  <li>The source database support capture data change (CDC) method like MySQL bin log.</li>
+  <li>The source database can be dumped with a consistent view and mark the position in data change logs.</li>
+  <li>The target database support ACID transactions.</li>
+  <li>Both source and target database support read and write permission control.</li>
+</ul>
+
+<h2 id="steps">Steps</h2>
+
+<p>There are two basic ideas behind the steps:</p>
+
+<ol>
+  <li>The clients only write to one of the databases at a given time. So we can avoid distributed transaction which is error prone and slow.</li>
+  <li>We make the switch of database by setup the database permissions. It’s faster than switch from client code and easier to make sure to switch all the clients.</li>
+</ol>
+
+<p>Here are the detailed steps:</p>
+
+<h3 id="1-dump-the-source-database-to-target-database">1. Dump the source database to target database</h3>
+
+<p>First, we need to dump the source database with a consistent view. And mark the position we’ve dumped. For example, in MySQL, you can use <code>mysqldump</code> with <code>--master-data</code> to dump the database with a bin log position. (<a href="https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html#option_mysqldump_master-data">Document about the usage</a>). After we get all the data from source database, we can insert them into the target database.</p>
+
+<p>Since this is the first step, it’s very easy to handle failure: just start again from beginning. So it’s very important to capture any error while import the dumped data.</p>
+
+<h3 id="2-capture-changes-from-source-to-target">2. Capture changes from source to target</h3>
+
+<p>The next step is to use the capture data changes from the source database. For example, in MySQL, you can use <a href="https://dev.mysql.com/doc/refman/8.0/en/binary-log.html">bin log</a> to capture the changes and insert them to the target database. Since we have the start position from last step, we know where to start parse and import the changes.</p>
+
+<p>It’s very important to keep order of the changes while importing. So it’s better to use only one process to parse and import the changes. This part is challenging: the performance matters here. <strong>The time to sync all the changes is the downtime we need for migration</strong>.</p>
+
+<p>We also need to make sure we don’t miss any changes or import any changes multiple times even there are system failures. So it’s very important to record the change log position. It’s convenience to write the position into the target database with the same transaction that imports the data. So the position will be synced with the data we imported.</p>
+
+<h3 id="3-deny-writes-to-the-target-database-from-clients">3. Deny writes to the target database from clients</h3>
+
+<p>The easy way to keep data consistency is to have a single source of truth. Until now, we are using the source database as the source of truth and sync changes to the target database. We don’t want to mess up the target database with other writes. So we need to setup the target database permission to deny all the writes from clients. For example, in MySQL, you can grant only <code>select</code> permission to the table for the clients and deny other operations. We allow the read permission so that we can compare the read results at the next step.</p>
+
+<h3 id="4-modify-the-clients-to-read-and-write-both-databases">4. Modify the clients to read and write both databases</h3>
+
+<p>The next step is to make the clients to read and write both source and target databases.</p>
+
+<p>We want to read/write source database first. Use this result if there is no permission error, use the read/write result from target database otherwise.</p>
+
+<p>The read/write to target database has two purposes:</p>
+
+<ol>
+  <li>Before switch to the target database, we can verify the target database works as expected by compare read results and write operations. Note that the target database may have lag to sync up, so the results may not always the same. But we can have an understanding of the correctness based on the percentage of same results.</li>
+  <li>After we switch to the target database, the read/write results will be used as the real results.</li>
+</ol>
+
+<p><strong>If you want to make sure the target database can handle the load, it’s a good idea to allow read/write to the target database for a while .But it’s just as a verification, the data in the target database will not be consistent after that. So after we verify the target database can handle the traffic, we need to cleanup the target database and start from step 1 again.</strong> (We don’t need to modify the client code during the steps).</p>
+
+<p>For the error handling, there are two key points:</p>
+
+<ol>
+  <li>Only use target database result if there is permission error from source database. Throw other errors from source database.</li>
+  <li>Ignore errors for the target database if the result is not used but make sure to log them, so that it will not affect the current operation while also make sure we don’t have errors before the switch.</li>
+</ol>
+
+<p>The client code would be like this:</p>
+
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>db_operation() {
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  try {
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>    source_result = source_db_operation()
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  } catch (PermissionException e) {
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    return target_db_operation()
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  }
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  async {
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    // do the following things async so it will not impact the performance
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>    try {
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>      target_result = target_db_operation()
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>      compare_result(source_result, target_result)
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>    } catch (Exception e) {
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>      log_error(e)
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>    }
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span>  }
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>  return source_result
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span>}
+</pre></div>
+</div>
+</div>
+
+<h3 id="5-deny-access-to-the-source-database-from-clients-and-wait-for-changes-to-by-synced">5. Deny access to the source database from clients and wait for changes to by synced</h3>
+
+<p>After we are confident with the read and write to the target database, we can make the switch. We switch the database by change the database permissions. First, we deny all the access to the source database from clients. Then we wait for the changes to be full synced to the target database. During this time, the system is down. So how fast the changes are synced from source database to target database determines how much down time it will be.</p>
+
+<h3 id="6-allow-write-to-target-database">6. Allow write to target database</h3>
+
+<p>After the target database is fully synced, we can enable the target database permission for all the clients. After this, the system should be online again and the database is fully switched over.</p>
+
+<h3 id="7-optional-fallback-to-source-database-if-anything-goes-wrong">7. Optional: Fallback to source database if anything goes wrong</h3>
+
+<p>It’s good if everything works well so far. But that may not always the case. Maybe the target database cannot handle the new traffic (that’s why it’s important to test it in step 4). In this case, we need fallback to the source database.</p>
+
+<p>If it’s fine to lost committed data during the migration time, it would be relatively easy to fallback:</p>
+
+<ol>
+  <li>Allow access to the source database. After this, the clients should be using the source database again.</li>
+  <li>Cleanup the target database and start from the beginning.</li>
+</ol>
+
+<p>If it’s critical to save the committed data and make sure they are consistent, then before step 5, we should setup a mechanism to capture changes from target database to source database, and mark the change position after step 6. Then the fallback steps would be:</p>
+
+<ol>
+  <li>Deny all the writes to target database.</li>
+  <li>Sync from target database to source database (make sure to stop it after fully synced).</li>
+  <li>Allow access to the source database.</li>
+  <li>Cleanup the target database and start from the beginning again.</li>
+</ol>
+
+<p>The sync from target database to source database is very dangerous and hard to test, so it’s really important to test the target database can handle the operations in step 4.</p>
+
+<h3 id="8-cleanup-client-code">8. Cleanup client code</h3>
+
+<p>Once the database is switched to the target database, we can cleanup the code that access the source database. Then the database is fully migrated and you can enjoin it!</p>
+
+</article>
+
+<footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2020-11-08-DNS-Resolving-Bug-in-iOS-14.html">Prev: DNS Resolving Bug in iOS 14</a></td>
+    
+    
+  </tr></table>
+</footer>
+
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+
+<!-- MathJax -->
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+</div>
+
+    </section>
+
+    <footer id="page_footer">
+      Copyright @ 2008 - 2020 Bin Wang
+      <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
+    </footer>
+  </body>
+</html>

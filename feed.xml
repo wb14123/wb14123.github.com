@@ -1,4 +1,124 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2020-11-08T11:31:59-05:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">DNS Resolving Bug in iOS 14</title><link href="https://www.binwang.me/2020-11-08-DNS-Resolving-Bug-in-iOS-14.html" rel="alternate" type="text/html" title="DNS Resolving Bug in iOS 14" /><published>2020-11-08T00:00:00-05:00</published><updated>2020-11-08T00:00:00-05:00</updated><id>https://www.binwang.me/DNS-Resolving-Bug-in-iOS-14</id><content type="html" xml:base="https://www.binwang.me/2020-11-08-DNS-Resolving-Bug-in-iOS-14.html">&lt;h2 id=&quot;the-bug-description&quot;&gt;The Bug Description&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2020-11-29T18:41:19-05:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Keep Data Consistency During Database Migration</title><link href="https://www.binwang.me/2020-11-29-Keep-Data-Consistency-During-Database-Migration.html" rel="alternate" type="text/html" title="Keep Data Consistency During Database Migration" /><published>2020-11-29T00:00:00-05:00</published><updated>2020-11-29T00:00:00-05:00</updated><id>https://www.binwang.me/Keep-Data-Consistency-During-Database-Migration</id><content type="html" xml:base="https://www.binwang.me/2020-11-29-Keep-Data-Consistency-During-Database-Migration.html">&lt;p&gt;When a system has been live for a long time, it’s not rare to use newer technologies to improve performance, maintainability, or add new features. One of such changes can be which database to use. This can be the most difficult kind of change. During the migration, there are two data sources, which makes it a distributed system. Make data consistent under a distributed system is very hard and can easily go wrong. In this article, we will explore a way to keep the data consistent during the migration, and maintain a low downtime at the same time.&lt;/p&gt;
+
+&lt;h2 id=&quot;requirements&quot;&gt;Requirements&lt;/h2&gt;
+
+&lt;p&gt;There are some requirements in order to use the way described in this article:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The source database support capture data change (CDC) method like MySQL bin log.&lt;/li&gt;
+  &lt;li&gt;The source database can be dumped with a consistent view and mark the position in data change logs.&lt;/li&gt;
+  &lt;li&gt;The target database support ACID transactions.&lt;/li&gt;
+  &lt;li&gt;Both source and target database support read and write permission control.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;steps&quot;&gt;Steps&lt;/h2&gt;
+
+&lt;p&gt;There are two basic ideas behind the steps:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The clients only write to one of the databases at a given time. So we can avoid distributed transaction which is error prone and slow.&lt;/li&gt;
+  &lt;li&gt;We make the switch of database by setup the database permissions. It’s faster than switch from client code and easier to make sure to switch all the clients.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Here are the detailed steps:&lt;/p&gt;
+
+&lt;h3 id=&quot;1-dump-the-source-database-to-target-database&quot;&gt;1. Dump the source database to target database&lt;/h3&gt;
+
+&lt;p&gt;First, we need to dump the source database with a consistent view. And mark the position we’ve dumped. For example, in MySQL, you can use &lt;code&gt;mysqldump&lt;/code&gt; with &lt;code&gt;--master-data&lt;/code&gt; to dump the database with a bin log position. (&lt;a href=&quot;https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html#option_mysqldump_master-data&quot;&gt;Document about the usage&lt;/a&gt;). After we get all the data from source database, we can insert them into the target database.&lt;/p&gt;
+
+&lt;p&gt;Since this is the first step, it’s very easy to handle failure: just start again from beginning. So it’s very important to capture any error while import the dumped data.&lt;/p&gt;
+
+&lt;h3 id=&quot;2-capture-changes-from-source-to-target&quot;&gt;2. Capture changes from source to target&lt;/h3&gt;
+
+&lt;p&gt;The next step is to use the capture data changes from the source database. For example, in MySQL, you can use &lt;a href=&quot;https://dev.mysql.com/doc/refman/8.0/en/binary-log.html&quot;&gt;bin log&lt;/a&gt; to capture the changes and insert them to the target database. Since we have the start position from last step, we know where to start parse and import the changes.&lt;/p&gt;
+
+&lt;p&gt;It’s very important to keep order of the changes while importing. So it’s better to use only one process to parse and import the changes. This part is challenging: the performance matters here. &lt;strong&gt;The time to sync all the changes is the downtime we need for migration&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;We also need to make sure we don’t miss any changes or import any changes multiple times even there are system failures. So it’s very important to record the change log position. It’s convenience to write the position into the target database with the same transaction that imports the data. So the position will be synced with the data we imported.&lt;/p&gt;
+
+&lt;h3 id=&quot;3-deny-writes-to-the-target-database-from-clients&quot;&gt;3. Deny writes to the target database from clients&lt;/h3&gt;
+
+&lt;p&gt;The easy way to keep data consistency is to have a single source of truth. Until now, we are using the source database as the source of truth and sync changes to the target database. We don’t want to mess up the target database with other writes. So we need to setup the target database permission to deny all the writes from clients. For example, in MySQL, you can grant only &lt;code&gt;select&lt;/code&gt; permission to the table for the clients and deny other operations. We allow the read permission so that we can compare the read results at the next step.&lt;/p&gt;
+
+&lt;h3 id=&quot;4-modify-the-clients-to-read-and-write-both-databases&quot;&gt;4. Modify the clients to read and write both databases&lt;/h3&gt;
+
+&lt;p&gt;The next step is to make the clients to read and write both source and target databases.&lt;/p&gt;
+
+&lt;p&gt;We want to read/write source database first. Use this result if there is no permission error, use the read/write result from target database otherwise.&lt;/p&gt;
+
+&lt;p&gt;The read/write to target database has two purposes:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Before switch to the target database, we can verify the target database works as expected by compare read results and write operations. Note that the target database may have lag to sync up, so the results may not always the same. But we can have an understanding of the correctness based on the percentage of same results.&lt;/li&gt;
+  &lt;li&gt;After we switch to the target database, the read/write results will be used as the real results.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;If you want to make sure the target database can handle the load, it’s a good idea to allow read/write to the target database for a while .But it’s just as a verification, the data in the target database will not be consistent after that. So after we verify the target database can handle the traffic, we need to cleanup the target database and start from step 1 again.&lt;/strong&gt; (We don’t need to modify the client code during the steps).&lt;/p&gt;
+
+&lt;p&gt;For the error handling, there are two key points:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Only use target database result if there is permission error from source database. Throw other errors from source database.&lt;/li&gt;
+  &lt;li&gt;Ignore errors for the target database if the result is not used but make sure to log them, so that it will not affect the current operation while also make sure we don’t have errors before the switch.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The client code would be like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;db_operation() {
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;  try {
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;    source_result = source_db_operation()
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;  } catch (PermissionException e) {
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;    return target_db_operation()
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;  }
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;  async {
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;    // do the following things async so it will not impact the performance
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;    try {
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;      target_result = target_db_operation()
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;      compare_result(source_result, target_result)
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;    } catch (Exception e) {
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt;      log_error(e)
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n14&quot; name=&quot;n14&quot;&gt;14&lt;/a&gt;&lt;/span&gt;    }
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n15&quot; name=&quot;n15&quot;&gt;15&lt;/a&gt;&lt;/span&gt;  }
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n16&quot; name=&quot;n16&quot;&gt;16&lt;/a&gt;&lt;/span&gt;  return source_result
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n17&quot; name=&quot;n17&quot;&gt;17&lt;/a&gt;&lt;/span&gt;}
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;5-deny-access-to-the-source-database-from-clients-and-wait-for-changes-to-by-synced&quot;&gt;5. Deny access to the source database from clients and wait for changes to by synced&lt;/h3&gt;
+
+&lt;p&gt;After we are confident with the read and write to the target database, we can make the switch. We switch the database by change the database permissions. First, we deny all the access to the source database from clients. Then we wait for the changes to be full synced to the target database. During this time, the system is down. So how fast the changes are synced from source database to target database determines how much down time it will be.&lt;/p&gt;
+
+&lt;h3 id=&quot;6-allow-write-to-target-database&quot;&gt;6. Allow write to target database&lt;/h3&gt;
+
+&lt;p&gt;After the target database is fully synced, we can enable the target database permission for all the clients. After this, the system should be online again and the database is fully switched over.&lt;/p&gt;
+
+&lt;h3 id=&quot;7-optional-fallback-to-source-database-if-anything-goes-wrong&quot;&gt;7. Optional: Fallback to source database if anything goes wrong&lt;/h3&gt;
+
+&lt;p&gt;It’s good if everything works well so far. But that may not always the case. Maybe the target database cannot handle the new traffic (that’s why it’s important to test it in step 4). In this case, we need fallback to the source database.&lt;/p&gt;
+
+&lt;p&gt;If it’s fine to lost committed data during the migration time, it would be relatively easy to fallback:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Allow access to the source database. After this, the clients should be using the source database again.&lt;/li&gt;
+  &lt;li&gt;Cleanup the target database and start from the beginning.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;If it’s critical to save the committed data and make sure they are consistent, then before step 5, we should setup a mechanism to capture changes from target database to source database, and mark the change position after step 6. Then the fallback steps would be:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Deny all the writes to target database.&lt;/li&gt;
+  &lt;li&gt;Sync from target database to source database (make sure to stop it after fully synced).&lt;/li&gt;
+  &lt;li&gt;Allow access to the source database.&lt;/li&gt;
+  &lt;li&gt;Cleanup the target database and start from the beginning again.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The sync from target database to source database is very dangerous and hard to test, so it’s really important to test the target database can handle the operations in step 4.&lt;/p&gt;
+
+&lt;h3 id=&quot;8-cleanup-client-code&quot;&gt;8. Cleanup client code&lt;/h3&gt;
+
+&lt;p&gt;Once the database is switched to the target database, we can cleanup the code that access the source database. Then the database is fully migrated and you can enjoin it!&lt;/p&gt;</content><author><name></name></author><category term="database" /><category term="distributed system" /><category term="consistency" /><summary type="html">When a system has been live for a long time, it’s not rare to use newer technologies to improve performance, maintainability, or add new features. One of such changes can be which database to use. This can be the most difficult kind of change. During the migration, there are two data sources, which makes it a distributed system. Make data consistent under a distributed system is very hard and can easily go wrong. In this article, we will explore a way to keep the data consistent during the migration, and maintain a low downtime at the same time.</summary></entry><entry><title type="html">DNS Resolving Bug in iOS 14</title><link href="https://www.binwang.me/2020-11-08-DNS-Resolving-Bug-in-iOS-14.html" rel="alternate" type="text/html" title="DNS Resolving Bug in iOS 14" /><published>2020-11-08T00:00:00-05:00</published><updated>2020-11-08T00:00:00-05:00</updated><id>https://www.binwang.me/DNS-Resolving-Bug-in-iOS-14</id><content type="html" xml:base="https://www.binwang.me/2020-11-08-DNS-Resolving-Bug-in-iOS-14.html">&lt;h2 id=&quot;the-bug-description&quot;&gt;The Bug Description&lt;/h2&gt;
 
 &lt;p&gt;iOS 14 has a bug for DNS resolving under this circumstances:&lt;/p&gt;
 
@@ -1232,171 +1352,4 @@
 
 &lt;p&gt;I think these are both design failures of Sentry. For the first one, if a system changed so much, at least you need to change a big version and highlight it in document. Like Python 2 and Python 3.&lt;/p&gt;
 
-&lt;p&gt;For the second one, it is really strange to doesn’t have a way to configure and view the policies through Sentry service. If user still need to configure the permissions separately for each system, it is a little point-less to use a centralized authorization service. Unless the permission model is the same or similar, like Hive and Impala basicly use the same permission model, so if you configure the permissions in Hive, Impala can use it. But the situation like that is rare. And I don’t think it would be difficult to provide a CLI tool to configure and view Sentry policy.&lt;/p&gt;</content><author><name></name></author><category term="Sentry" /><category term="Hadoop" /><category term="Cloudera" /><category term="security" /><category term="Splice Machine" /><summary type="html">For the last few days, I was working on integrating Apache Sentry into our database product Splice Machine. And when doing that, I found the document of Sentry is awful. It takes me much time to figure out what’s the role of Sentry and how to configure it. So in this article, I’d like to write some really important things to help understanding Sentry.</summary></entry><entry><title type="html">Spanner and Open Source Implementations</title><link href="https://www.binwang.me/2018-07-29-A-Review-on-Spanner-and-Open-Source-Implementations.html" rel="alternate" type="text/html" title="Spanner and Open Source Implementations" /><published>2018-07-29T00:00:00-04:00</published><updated>2018-07-29T00:00:00-04:00</updated><id>https://www.binwang.me/A-Review-on-Spanner-and-Open-Source-Implementations</id><content type="html" xml:base="https://www.binwang.me/2018-07-29-A-Review-on-Spanner-and-Open-Source-Implementations.html">&lt;p&gt;When &lt;a href=&quot;https://ai.google/research/pubs/pub39966&quot;&gt;Spanner paper&lt;/a&gt; was published, the use of synced clock to implement globally distributed database attracted a lot of attentions. After these years, Google have put Spanner on its cloud to make everyone be able to use it. And there are also some open source implementations of Spanner in these years. In this article, I’d like to write about how synced clock makes Spanner special, some notes of using it and how others implement it without special hardware clock.&lt;/p&gt;
-
-&lt;h2 id=&quot;1-clock-is-not-trustable&quot;&gt;1. Clock Is Not Trustable&lt;/h2&gt;
-
-&lt;p&gt;Almost every computer has a clock on nowadays. A surprising fact is, the clock is not really accurate and normally we cannot even know the upper bound of the error. There are some reasons for this:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Normally the clock is synced with a remote server using NTP. But the network delay upper bound is unknown.&lt;/li&gt;
-  &lt;li&gt;Even the local clock is synced accurately once, the hardware in normal computer makes it inaccuracy when time passes. The error is depends on the temperature and so on.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;For more details, you can read the section “Unreliable Clocks” in Chapter 8 of the book &lt;a href=&quot;http://shop.oreilly.com/product/0636920032175.do&quot;&gt;
-Designing Data-Intensive Applications&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;It is not a big deal in normal life to have an unreliable clock, but it is a big deal when your consistency algorithm relies on it. We can see the details in the next section.&lt;/p&gt;
-
-&lt;h2 id=&quot;2-what-is-truetime-api&quot;&gt;2. What is TrueTime API?&lt;/h2&gt;
-
-&lt;p&gt;In order to get rid of the unreliable of clocks, Google use some special hardware like atomic clock to make it reliable. The time which can get from each server is still inaccurate, but the error has a known upper bound. Specifically, these APIs are provided:&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Method&lt;/th&gt;
-      &lt;th&gt;Returns&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;TT.now()&lt;/td&gt;
-      &lt;td&gt;A time interval: [earliest, latest]&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;TT.after(t)&lt;/td&gt;
-      &lt;td&gt;true if &lt;code&gt;t&lt;/code&gt; has definitely passed&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;TT.before(t)&lt;/td&gt;
-      &lt;td&gt;true if &lt;code&gt;t&lt;/code&gt; has definitely not arrived&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;As we can see later, the error upper bound will effect the latency of each transaction. Google said they normally maintain it under 7ms and with an average value of 4ms in their Spanner paper.&lt;/p&gt;
-
-&lt;h2 id=&quot;3-what-truetime-api-gives-spanner&quot;&gt;3. What TrueTime API Gives Spanner?&lt;/h2&gt;
-
-&lt;p&gt;What makes Spanner special is how it uses TrueTime API to do concurrency control. Spanner can guarantee external consistency, which is the most strong concurrency model. It means Spanner is both serializable and linearizable, which makes it very easy for application to avoid concurrency bugs. Serializable isolation can be found in many databases, but usually they are single leader databases, or have a centralized server. This makes it very slow if the database is globally distributed, since the network delay between data centers is large and unstable. If every transaction needs communicate with a centralized server, the transactions will be very slow and unstable.&lt;/p&gt;
-
-&lt;p&gt;Before understanding how Spanner can do this, let’s first look at how serialization transaction can be implemented in a centralized way. The simplest way is let a transaction grant a lock if it want’s to read or write a row, so that this row cannot be modified or read at the same time by another transactions. This is a relatively strong restraint, it will give us bad performance since every transaction excludes each other. We can have a better solution: for read only transactions, serializable isolation is the same as snapshot isolation. So we can implement snapshot isolation for read only transactions in order to have better performance.&lt;/p&gt;
-
-&lt;p&gt;Here is how snapshot isolation works: for every row of data, database stores not only the data, but also a version with it. When a transaction starts, it will only read data earlier than it. Normally we assign an id for each transaction and use it as the version. So here is the key: transaction id needs to be monotone increasing so that a later transaction can only read earlier data. Make a globally monotone increasing sequence is very straightforward and easy for a single machine, but it is very hard in a distributed environment without a centralized server.&lt;/p&gt;
-
-&lt;p&gt;Ordering transactions is complex but can be done without a clock. For example, the vector clock algorithm can do this. But this will not guarantee the accurate order of transaction. For example, if T1 commits before T2 start and they are operating on different partitions, the database may order T2 before T1. An implementation of Spanner Cockroachdb uses algorithms like this. We will analysis the problem of it in Section 6.2.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;So what TrueTime API really gives Spanner is generating monotone increasing transaction ID and guarantee external consistency ( or linearizability) at the same time&lt;/strong&gt;: if T1 commits before T2 start, then T1’s transaction ID is always smaller than T2’s transaction ID. Spanner implement this by getting a timestamp from TrueTime API that absolutely passed the current time, and wait to commit until currrent time absolutely passed the timestamp. In Spanner’s paper, there is a proof that this can garantee external consistency:&lt;/p&gt;
-
-&lt;p&gt;\(s_1 &amp;lt; t_{abs}(e_1^{commit})\) (commit wait)&lt;/p&gt;
-
-&lt;p&gt;\(t_{abs}(e_1^{commit}) &amp;lt; t_{abs}(e_2^{start})\) (assumption)&lt;/p&gt;
-
-&lt;p&gt;\(t_{abs}(e_2^{start}) \leq t_{abs}(e_2^{server})\) (causality)&lt;/p&gt;
-
-&lt;p&gt;\(t_{abs}(e_2^{server}) \leq s_2\) (start)&lt;/p&gt;
-
-&lt;p&gt;\(s_1 &amp;lt; s_2\) (transitivity)&lt;/p&gt;
-
-&lt;p&gt;There are also other parts of Spanner that use TrueTime API, for example, the Paxos implementation uses TrueTime API for leader lease. But it is just a implement optimization which can be done in other ways, too.&lt;/p&gt;
-
-&lt;h2 id=&quot;4-the-myth-of-spanner&quot;&gt;4. The Myth of Spanner&lt;/h2&gt;
-
-&lt;p&gt;There are some myth and hyper for Spanner. In this section, I will highlight the weakness of Spanner. I call it “weakness” not because other databases are doing better, but because they are not as good as people may thought. And they are not necessary bad things. It depends on how you understand and use it. If you don’t understand it correctly and thinks all the things are done perfectly and magically, you may run into some problems.&lt;/p&gt;
-
-&lt;p&gt;Many people think when using Spanner, reads can go to a replica closest to the client in most of the time, so the communication between data centers are avoid. But this is not true. In fact, &lt;strong&gt;all the serializable transactions, which includes read-write transactions and read only transactions that wants to read the most recently data, must communicate with the partition leader.&lt;/strong&gt; The theory is in the Spanner paper and there is also an explicit description on &lt;a href=&quot;https://cloud.google.com/spanner/docs/replication&quot;&gt;Spanner Cloud’s document&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Let’s first look at the read-write transaction. Since read-write transaction will write Paxos log, it is straightforward to understand it must involves the leader. And more, it must waits for the major of replicas to confirm the writes in order to make sure the write will not lost when leader fails.&lt;/p&gt;
-
-&lt;p&gt;Then let’s look at the read-only transactions. In Spanner, every replica keeps a timestamp \(t_{safe}\). And if a read-only want’s to read the data at timestamp \(t\) and if \(t \leq t_{safe}\), it is safe to read data from that replica. \(t_{safe}\) will be minimal one between the lastest commit timestamp and the timestamp it generates for a 2PC prepare step (if it has one). There are two situations based on how \(t\) is chosen:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;If the transaction only involves one partition, it is chosen to be the last commit time of the partition. And in order tot get the last commit time, it needs to ask the leader of this partition.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;If the transaction involves multiple partition, it would be expensive and complex to get a last commit time. So using &lt;code&gt;TT.now().lastest&lt;/code&gt; as \(t\) can garantee it will read a version more recently than current time. And replica will not store \(t_{safe} \geq TT.now().lastest\) since the lastest commit timestamp must be earlier than current, so it needs to ask the leader to confirm whether there are new writes.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;5-how-to-avoid-the-weakness&quot;&gt;5. How to Avoid the Weakness&lt;/h2&gt;
-
-&lt;p&gt;From the last section, we find Spanner cannot avoid the communication between data centers. So why Spanner is still a big deal? We must look into real world problems. In real world, the weakness could be avoid if you understand it. Here is some suggestions when designing your application.&lt;/p&gt;
-
-&lt;h3 id=&quot;51-partition-database-based-on-location&quot;&gt;5.1 Partition Database Based on Location&lt;/h3&gt;
-
-&lt;p&gt;A common pattern for globally distributed business is most transactions are happened only on the data in a limited location. For example, in the businesses like event booking, online ridesharing,  Groupon or some online market, the clients and the data are basically in the same city. So in these business, you can partition the data based on location, and put the leader of each partition on that location.&lt;/p&gt;
-
-&lt;p&gt;In this setting, most of the requests can be done in closed data centers while transactions that involve multiple data centers can also be done which guarantees external consistency.&lt;/p&gt;
-
-&lt;p&gt;Another interesting implementation detail about Spanner is it have three &lt;a href=&quot;https://cloud.google.com/spanner/docs/replication&quot;&gt;kinds of replica&lt;/a&gt;: the read-write replica, read only replica and witness replica. Carefully plan these replicas based on the business and location can make most transactions operate on nearby data centers.&lt;/p&gt;
-
-&lt;h3 id=&quot;52-no-need-to-always-avoid-stale-read&quot;&gt;5.2 No Need to Always Avoid Stale Read&lt;/h3&gt;
-
-&lt;p&gt;Serializable transactions make sure you cannot read old values. But in many cases, you may not need such guarantee. Spanner have an API to let the client specify a time interval, and let Spanner to guarantee it will not read older data that this time. For example, I can request some data no older than 10 seconds ago. When do we only need such a guarantee? I can give some examples here:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;If you are using Twitter or Facebook, the count of likes doesn’t need to be in real time. A delay around 10 seconds is acceptable. So when user request a Tweet’s like count, he can read a snapshot on the past.&lt;/li&gt;
-  &lt;li&gt;If you update your configurations in platforms like Google AdWords, the configuration need not take effect in real time. So when each device read the AdWords configuration, it can read on a past snapshot.&lt;/li&gt;
-  &lt;li&gt;When generate a report, like how many user views for each webpage, the result need not to be in real time, either.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;So what’s the benefits to allow stale read? It turns out Spanner will sync up the data and safe time to all the replica. So if the time you specify is a relatively long interval, e.g. 10 seconds, you can read from a closest server and avoid all the communication between data centers, which will make the read fast.&lt;/p&gt;
-
-&lt;h2 id=&quot;6-open-source-implementations&quot;&gt;6. Open Source Implementations&lt;/h2&gt;
-
-&lt;p&gt;Google have released Spanner on Google Cloud, which makes it possible for everyone (with money (and not behind GFW)) to use. But if you don’t want to stuck on one provider or interested in more implementation details, you may want to look into some open source ones.&lt;/p&gt;
-
-&lt;p&gt;In general, if we know the theory behind a software, we can hope there are some open source implementations. The quality of these open source software is only a matter of time and focus. However, in Spanner’s case, a hardware clock is needed, which is rare for normal users. So the open source implementations are a little different from Spanner’s original one. Let’s take a look at two popular implementations and see how they get rid of the lack of hardware clock and how the implementation effect the result.&lt;/p&gt;
-
-&lt;h3 id=&quot;61-tidb&quot;&gt;6.1 TiDB&lt;/h3&gt;
-
-&lt;p&gt;TiDB uses a single time server to generate the transaction ID in order to make it monotone increasing. This is simple and they claim the throughput of the time server is very high and can be deployed in an HA way. But the down side is also very obvious: the latency would be high if you have data centers around the world. This doesn’t only effect the read-write transactions, but will effect all the requests: include the read-only ones with snapshot isolation: since when doing readonly transaction, the client’s timestamp is not trustable, it can only get a trustable timestamp from the time server. Of course client can cache some timestamps returned from the server and maintain them to use in the future requests, but it would be complex and error-prone. In fact, TiDB’s developer recommends the network delay between the servers under 5ms in the section “What’s the recommended solution for the deployment of three geo-distributed data centers?” of &lt;a href=&quot;https://github.com/pingcap/docs/blob/master/FAQ.md&quot;&gt;their FAQ&lt;/a&gt;. Considering light still needs about 6ms to travel from Beijing to Guangzhou and needs about 12ms from New York to San Francisco, the requirements is not possible to reach in a real globally distributed cluster. And maintain a stable latency in a globally scale is hard and expensive, too.&lt;/p&gt;
-
-&lt;p&gt;Since the most highlight part of Spanner is globally distributed, the down side of TiDB is really a big deal. But the good part of TiDB is it compatible with MySQL protocol, which makes it to be a very easy solution if you want to scale out your old MySQL database.&lt;/p&gt;
-
-&lt;p&gt;And another different between TiDB and Spanner is TiDB only supports isolation level up to repeatable reads (or snapshot isolation), which is a weaker level than Spanner’s serializable isolation.&lt;/p&gt;
-
-&lt;h3 id=&quot;62-cockroachdb&quot;&gt;6.2 CockroachDB&lt;/h3&gt;
-
-&lt;p&gt;CockroachDB uses another approach to solve the lack of TrueTime API. The algorithm is a little complex. You can refer to &lt;a href=&quot;https://www.cockroachlabs.com/blog/living-without-atomic-clocks/&quot;&gt;their blog&lt;/a&gt; and the &lt;a href=&quot;https://cse.buffalo.edu/tech-reports/2014-04.pdf&quot;&gt;HLC paper&lt;/a&gt; for details.&lt;/p&gt;
-
-&lt;p&gt;The most obviously problem of this implementation is it lacks linearizability. To see what will happen when lacking linearizability, the “Comments” section of &lt;a href=&quot;https://jepsen.io/analyses/cockroachdb-beta-20160829&quot;&gt;Jepsen test for Cockroachdb&lt;/a&gt; explains it very clearly.&lt;/p&gt;
-
-&lt;h3 id=&quot;63-conclusion&quot;&gt;6.3 Conclusion&lt;/h3&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Database&lt;/th&gt;
-      &lt;th&gt;Special Hardware&lt;/th&gt;
-      &lt;th&gt;Isolation Level&lt;/th&gt;
-      &lt;th&gt;Consistency Level&lt;/th&gt;
-      &lt;th&gt;Centralized Time Server&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Spanner&lt;/td&gt;
-      &lt;td&gt;Yes&lt;/td&gt;
-      &lt;td&gt;Serializable&lt;/td&gt;
-      &lt;td&gt;Linearizable&lt;/td&gt;
-      &lt;td&gt;No&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;TiDB&lt;/td&gt;
-      &lt;td&gt;No&lt;/td&gt;
-      &lt;td&gt;Repeatable Reads&lt;/td&gt;
-      &lt;td&gt;Linearizable&lt;/td&gt;
-      &lt;td&gt;Yes&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Cockroachdb&lt;/td&gt;
-      &lt;td&gt;No&lt;/td&gt;
-      &lt;td&gt;Serializable&lt;/td&gt;
-      &lt;td&gt;Causal Consistency&lt;/td&gt;
-      &lt;td&gt;No&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;</content><author><name></name></author><category term="Technical" /><category term="database" /><category term="technology" /><category term="distributed system" /><summary type="html">When Spanner paper was published, the use of synced clock to implement globally distributed database attracted a lot of attentions. After these years, Google have put Spanner on its cloud to make everyone be able to use it. And there are also some open source implementations of Spanner in these years. In this article, I’d like to write about how synced clock makes Spanner special, some notes of using it and how others implement it without special hardware clock.</summary></entry></feed>
+&lt;p&gt;For the second one, it is really strange to doesn’t have a way to configure and view the policies through Sentry service. If user still need to configure the permissions separately for each system, it is a little point-less to use a centralized authorization service. Unless the permission model is the same or similar, like Hive and Impala basicly use the same permission model, so if you configure the permissions in Hive, Impala can use it. But the situation like that is rare. And I don’t think it would be difficult to provide a CLI tool to configure and view Sentry policy.&lt;/p&gt;</content><author><name></name></author><category term="Sentry" /><category term="Hadoop" /><category term="Cloudera" /><category term="security" /><category term="Splice Machine" /><summary type="html">For the last few days, I was working on integrating Apache Sentry into our database product Splice Machine. And when doing that, I found the document of Sentry is awful. It takes me much time to figure out what’s the role of Sentry and how to configure it. So in this article, I’d like to write some really important things to help understanding Sentry.</summary></entry></feed>
