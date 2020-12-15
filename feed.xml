@@ -1,4 +1,63 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2020-11-29T18:41:19-05:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Keep Data Consistency During Database Migration</title><link href="https://www.binwang.me/2020-11-29-Keep-Data-Consistency-During-Database-Migration.html" rel="alternate" type="text/html" title="Keep Data Consistency During Database Migration" /><published>2020-11-29T00:00:00-05:00</published><updated>2020-11-29T00:00:00-05:00</updated><id>https://www.binwang.me/Keep-Data-Consistency-During-Database-Migration</id><content type="html" xml:base="https://www.binwang.me/2020-11-29-Keep-Data-Consistency-During-Database-Migration.html">&lt;p&gt;When a system has been live for a long time, it’s not rare to use newer technologies to improve performance, maintainability, or add new features. One of such changes can be which database to use. This can be the most difficult kind of change. During the migration, there are two data sources, which makes it a distributed system. Make data consistent under a distributed system is very hard and can easily go wrong. In this article, we will explore a way to keep the data consistent during the migration, and maintain a low downtime at the same time.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2020-12-15T00:04:15-05:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Redis Implementation for Cache and Database Consistency</title><link href="https://www.binwang.me/2020-12-14-Redis-Implementation-for-Cache-and-Database-Consistency.html" rel="alternate" type="text/html" title="Redis Implementation for Cache and Database Consistency" /><published>2020-12-14T00:00:00-05:00</published><updated>2020-12-14T00:00:00-05:00</updated><id>https://www.binwang.me/Redis-Implementation-for-Cache-and-Database-Consistency</id><content type="html" xml:base="https://www.binwang.me/2020-12-14-Redis-Implementation-for-Cache-and-Database-Consistency.html">&lt;p&gt;&lt;em&gt;This article belongs to a series of articles about caching. The code in this article can be found at &lt;a href=&quot;https://github.com/wb14123/redis_lease&quot;&gt;my Github repo&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;/2020-11-02-Use-TLA+-to-Verify-Cache-Consistency.html&quot;&gt;Use TLA+ to Verify Cache Consistency&lt;/a&gt;.&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;Redis Implementation for Cache and Database Consistency. (This one)&lt;/em&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;In the &lt;a href=&quot;/2020-11-02-Use-TLA+-to-Verify-Cache-Consistency.html&quot;&gt;last article&lt;/a&gt;, we introduced an algorithm (described in paper &lt;a href=&quot;https://pdos.csail.mit.edu/6.824/papers/memcache-fb.pdf&quot;&gt;Scaling Memcache at Facebook&lt;/a&gt;) that can do a better job to maintain the data consistency between cache and database. We also used TLA+ to model the algorithm and verified it. In this article, we are going to implement the algorithm in real world for Redis. The implementation is very simple and doesn’t need to change Redis itself. It’s implemented it by using Redis script. However, it’s much harder to verify the correctness. In order to do it, I used &lt;a href=&quot;https://jepsen.io/&quot;&gt;Jepsen&lt;/a&gt; to test it. If you look at the language analysis for the Github repo, you can see most of them are tests. The Redis script implementation, which is written in Lua, is only 5.1% of the project.&lt;/p&gt;
+
+&lt;h2 id=&quot;algorithm-description&quot;&gt;Algorithm Description&lt;/h2&gt;
+
+&lt;p&gt;We’ve described the algorithm in the previous article and even write a TLA+ model for it. But just make it easier for the readers, I’ll briefly describe the algorithm here again. Basically, whenever the client get a value from cache, it will be assigned a unique ID (lease) for the key. When the client writes back a new value, it needs to provide the  key’s newest lease ID. And delete the key will also invalidate all its leases.&lt;/p&gt;
+
+&lt;h2 id=&quot;implementation&quot;&gt;Implementation&lt;/h2&gt;
+
+&lt;p&gt;The implementation uses &lt;a href=&quot;https://redis.io/commands/eval&quot;&gt;Redis script&lt;/a&gt;, which is written in Lua. It can implement multiple operations and make them atomic. In theory, this can also be done by client, but Redis script provides a consistent implementation across different clients and makes it easier to use. The algorithm is easy, so the implementation is also straight forward. The implementations are under &lt;a href=&quot;https://github.com/wb14123/redis_lease/tree/master/scripts&quot;&gt;scripts directory of the repo&lt;/a&gt;. These scripts also works for Redis cluster (but I didn’t use Jepsen to test it under cluster mode). Here is an example implementation for get:&lt;/p&gt;
+
+&lt;div class=&quot;language-lua highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;local&lt;/span&gt; &lt;span style=&quot;color:#950&quot;&gt;key&lt;/span&gt; = &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;..KEYS[&lt;span style=&quot;color:#00D&quot;&gt;1&lt;/span&gt;]..&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;}&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;local&lt;/span&gt; &lt;span style=&quot;color:#950&quot;&gt;token&lt;/span&gt; = ARGV[&lt;span style=&quot;color:#00D&quot;&gt;1&lt;/span&gt;]
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;local&lt;/span&gt; &lt;span style=&quot;color:#950&quot;&gt;value&lt;/span&gt; = redis.call(&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;get&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;, key)
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;if&lt;/span&gt; &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;not&lt;/span&gt; value &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;then&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;    redis.replicate_commands()
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;local&lt;/span&gt; &lt;span style=&quot;color:#950&quot;&gt;lease_key&lt;/span&gt; = &lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;lease:&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;..key
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;    redis.call(&lt;span style=&quot;background-color:hsla(0,100%,50%,0.05)&quot;&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;span style=&quot;color:#D20&quot;&gt;set&lt;/span&gt;&lt;span style=&quot;color:#710&quot;&gt;'&lt;/span&gt;&lt;/span&gt;, lease_key, token)
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;    &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;return&lt;/span&gt; &lt;span style=&quot;background-color:hsla(200,100%,50%,0.06)&quot;&gt;&lt;span style=&quot;color:#40A&quot;&gt;{&lt;/span&gt;&lt;span style=&quot;color:#069&quot;&gt;false&lt;/span&gt;, token&lt;span style=&quot;color:#40A&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;else&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;    &lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;return&lt;/span&gt; &lt;span style=&quot;background-color:hsla(200,100%,50%,0.06)&quot;&gt;&lt;span style=&quot;color:#40A&quot;&gt;{&lt;/span&gt;value, &lt;span style=&quot;color:#069&quot;&gt;false&lt;/span&gt;&lt;span style=&quot;color:#40A&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;&lt;span style=&quot;color:#080;font-weight:bold&quot;&gt;end&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;After load the script, you can use it like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;redis-cli evalsha &amp;lt;script_sha1&amp;gt; 1 &amp;lt;key&amp;gt; &amp;lt;uniq_id&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;It will return &lt;code&gt;value, nil&lt;/code&gt; if there is value for the key, or &lt;code&gt;nil, lease&lt;/code&gt; if there is no value.&lt;/p&gt;
+
+&lt;p&gt;One optimization here is, if we have value for the key, we will not store the lease. That’s because in our use case, if we can get the value, we will not get it from database and write back to the cache. This avoids a lot of memory overhead.&lt;/p&gt;
+
+&lt;p&gt;Another important decision I made is, when get the value, the client needs to provide a unique ID instead of let Redis provide one. This is because I cannot find a good way to generate unique ID in Redis cluster. In a single instance, it’s easy: just use a key and inc the value each time. You can still generate unique IDs for different keys on a cluster, but it adds a lot of memory overhead. So I decided to let clients provide it. Luckily, it’s not hard, basically every language has UUID implementation and that’s good enough.&lt;/p&gt;
+
+&lt;h2 id=&quot;testing&quot;&gt;Testing&lt;/h2&gt;
+
+&lt;p&gt;It’s easy to implement something, but very hard to make sure it’s correct. We can use TLA+ to model the algorithm and explore the state space, or use mathematical method to proof the correctness in theory. But once we implement the algorithm, it’s something different. We cannot make sure it’s exactly the same as what we’ve proofed. That’s why I find using Coq to implement, proof and generate real code is fantastic. But in this case, it’s not implemented in Coq, so we must find some other way to test it. By testing, we still cannot make sure it’s 100% correct, we can just explore as many situations as we can and make sure the system doesn’t behaves in a way we don’t expect.&lt;/p&gt;
+
+&lt;p&gt;The tool we use here is &lt;a href=&quot;https://jepsen.io/&quot;&gt;Jepsen&lt;/a&gt;. It provides lots of tools to make it easy to test distributed systems. It can generate many concurrent requests, import different kinds of failures (host down, network partition, clock drift, and so on) to the system, record all the requests and responses, and check the history at the end.&lt;/p&gt;
+
+&lt;p&gt;Here is the test case I write: for each client, generate random read and write operations. For read operation, read from cache first, if the value is not found, read from database and write back to the data. For write operations, write to the database and delete the key from cache. Then after all the read and write operations, check whether the data in cache and database are the same. The test case is very simple, it implemented the way we would use the cache.&lt;/p&gt;
+
+&lt;p&gt;By providing different arguments to the test command, you can run the test case with raw Redis get/set/del operations, or use get/set/del operation implemented by the scripts. You can also import cache failure during the test.&lt;/p&gt;
+
+&lt;p&gt;If we run the test with raw Redis operations, we can find the test is failed. In the last article, we discussed that using plain get/set/del cache operations cannot guarantee cache consistency, so this is expected. If we run the test with our scripts, we can find the test passed. If we run the test with cache system failure, we can see the test failed, which is also expected from last article. The inconsistent because of cache failure can be resolved by clean up cache data after restart. But if the client is failed, it will have the same problem (I didn’t write the test case for this because it’s hard to test client failure in Jepsen), but it’s not a very good idea to cleanup cache in this case. Because client fails all the time, cleanup cache will make operations slow. The best way might be to setup an expire time so the data can be consistent after the key is expired.&lt;/p&gt;
+
+&lt;p&gt;Even though all the test result is expected, it doesn’t make sure the implementation is correct, since there are still many situation I didn’t test, like Redis cluster, network partition, database failure and so on. So welcome to add new test cases and break the system!&lt;/p&gt;</content><author><name></name></author><category term="Redis" /><category term="database" /><category term="consistency" /><category term="Jepsen" /><category term="distributed system" /><summary type="html">This article belongs to a series of articles about caching. The code in this article can be found at my Github repo.</summary></entry><entry><title type="html">Keep Data Consistency During Database Migration</title><link href="https://www.binwang.me/2020-11-29-Keep-Data-Consistency-During-Database-Migration.html" rel="alternate" type="text/html" title="Keep Data Consistency During Database Migration" /><published>2020-11-29T00:00:00-05:00</published><updated>2020-11-29T00:00:00-05:00</updated><id>https://www.binwang.me/Keep-Data-Consistency-During-Database-Migration</id><content type="html" xml:base="https://www.binwang.me/2020-11-29-Keep-Data-Consistency-During-Database-Migration.html">&lt;p&gt;When a system has been live for a long time, it’s not rare to use newer technologies to improve performance, maintainability, or add new features. One of such changes can be which database to use. This can be the most difficult kind of change. During the migration, there are two data sources, which makes it a distributed system. Make data consistent under a distributed system is very hard and can easily go wrong. In this article, we will explore a way to keep the data consistent during the migration, and maintain a low downtime at the same time.&lt;/p&gt;
 
 &lt;h2 id=&quot;requirements&quot;&gt;Requirements&lt;/h2&gt;
 
@@ -233,6 +292,13 @@
 
   &lt;p&gt;– Phil Karlton&lt;/p&gt;
 &lt;/blockquote&gt;
+
+&lt;p&gt;&lt;em&gt;This article belongs to a series of articles about caching.&lt;/em&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;em&gt;Use TLA+ to Verify Cache Consistency (This one)&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;2020-12-14-Redis-Implementation-for-Cache-and-Database-Consistency.html&quot;&gt;Redis Implementation for Cache and Database Consistency&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ol&gt;
 
 &lt;p&gt;During web service development, it’s very usual to use a cache before the database. It’s so common that almost becomes the default solution whenever there is a performance issue. But a lot of people don’t really think about the consistency between database and cache. A main reason is it’s so hard to reason about the consistency under a distributed system. So in this article, I will explore how to use TLA+ to specify different cache algorithms and use TLC to check whether it will keep the data consistency between cache and database. All the code in this article is available at &lt;a href=&quot;https://github.com/wb14123/tla-cache&quot;&gt;my Github repo&lt;/a&gt;. The code may be updated after this article is published.&lt;/p&gt;
 
@@ -1277,79 +1343,4 @@
 
 &lt;p&gt;Since I’m in China behind the GFW, I also installed ShadowSocks in order to watch YouTube. It is easy to use as on phone, but may need a mouse the config it.&lt;/p&gt;
 
-&lt;p&gt;So here are all the things, happy hacking the device!&lt;/p&gt;</content><author><name></name></author><category term="Android" /><category term="Android TV" /><category term="MiBox" /><summary type="html">I’ve bought a MiBox 3S to watch TV and video for a long time. These days I’ve done lots of things to security my digital life and privacy, like change my Email to Proton Mail, change the search engine to DuckDuckGo, use Authy to enable 2FA when possible, and so on. So I didn’t turn on the MiBox for a long time since I don’t feel security to let a XiaoMi device running all the time in my LAN. The business model of XiaoMi is to sell cheap device and push ads to you. So it definitely collects your data. But I do need a device to watch TV or video on a big screen, so I decide to root and clean it to make it more security. Here is how I do it:</summary></entry><entry><title type="html">The Things You Need to Know When Using Apache Sentry</title><link href="https://www.binwang.me/2018-09-02-The-Things-You-Need-to-Know-When-Using-Apache-Sentry.html" rel="alternate" type="text/html" title="The Things You Need to Know When Using Apache Sentry" /><published>2018-09-02T00:00:00-04:00</published><updated>2018-09-02T00:00:00-04:00</updated><id>https://www.binwang.me/The-Things-You-Need-to-Know-When-Using-Apache-Sentry</id><content type="html" xml:base="https://www.binwang.me/2018-09-02-The-Things-You-Need-to-Know-When-Using-Apache-Sentry.html">&lt;p&gt;For the last few days, I was working on integrating &lt;a href=&quot;https://sentry.apache.org&quot;&gt;Apache Sentry&lt;/a&gt; into our database product Splice Machine. And when doing that, I found the document of Sentry is awful. It takes me much time to figure out what’s the role of Sentry and how to configure it. So in this article, I’d like to write some really important things to help understanding Sentry.&lt;/p&gt;
-
-&lt;h2 id=&quot;the-basic&quot;&gt;The Basic&lt;/h2&gt;
-
-&lt;p&gt;From the &lt;a href=&quot;https://sentry.apache.org/&quot;&gt;official website&lt;/a&gt;, Apache Sentry is a system for enforcing fine grained role based authorization to data and metadata stored on a Hadoop cluster. The services in Hadoop can integrate Sentry so that they can use Sentry to manage authorization. You may think this implies that Sentry is a centralized authorization system and you can configure the authorization polices through Sentry, then all the services can use these polices. This is only half true: Sentry is a centralized authorization service but you may not have a centralized place to configure polices or use that policy for all Hadoop services. Let’s see the details.&lt;/p&gt;
-
-&lt;h2 id=&quot;how-to-configure-sentry-policy&quot;&gt;How to Configure Sentry Policy&lt;/h2&gt;
-
-&lt;p&gt;When I start learning to use Sentry, the configuration of authorization policy confused me a log. I thought it would be like &lt;a href=&quot;https://ranger.apache.org/&quot;&gt;Apache Ranger&lt;/a&gt; to have a centralized web UI or at least provide some CLI tool. But it turns out that’s not the case. And more confusing, there are two ways to configure Sentry polices: one is file based, which is like a centralized way to configure Sentry policy but is deprecated. Another way is to configure polices from other service, which you will not even notice the exist of Sentry.&lt;/p&gt;
-
-&lt;h3 id=&quot;use-policy-file&quot;&gt;Use Policy File&lt;/h3&gt;
-
-&lt;p&gt;Let’s start with the old and deprecated way: using the policy files. The policy file approach is more straightforward: you write a file to define the authorization policies. The file is usually on HDFS so that every node can access it. You tell the service where to find the file. Then the service will use Sentry library to parse the policy file and get the permissions for every user. So in this way, there is no Sentry service, just policy files and Sentry library to parse the files.&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;          --------
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;          | User |
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;          --------
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;             |
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;             | &amp;lt;-- Write Policy Files
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;             V
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;    ------------------------
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;    | Sentry Files on HDFS |
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;    ------------------------
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;             ^
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;             | &amp;lt;-- Read and Parse with Sentry Library
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;             |
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt;    ------------------------
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n14&quot; name=&quot;n14&quot;&gt;14&lt;/a&gt;&lt;/span&gt;    | Hive/Impala/Solr ... |
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n15&quot; name=&quot;n15&quot;&gt;15&lt;/a&gt;&lt;/span&gt;    ------------------------
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n16&quot; name=&quot;n16&quot;&gt;16&lt;/a&gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;p&gt;For more details like how to configure the services to use Sentry policy file and how to write policy files, you can refer the &lt;a href=&quot;https://www.cloudera.com/documentation/enterprise/5-10-x/topics/cdh_sg_sentry.html&quot;&gt;Cloudera document&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3 id=&quot;use-sentry-service&quot;&gt;Use Sentry Service&lt;/h3&gt;
-
-&lt;p&gt;Sentry service is a centralized service that other systems can use RPC to request the permissions of a user. If a system is integrated with Sentry service, there is no need to write policy files. However, the system needs to provide methods to configure the policies and save them to Sentry.&lt;/p&gt;
-
-&lt;p&gt;For example, Hive and Impala allow user to use &lt;code&gt;GRANT&lt;/code&gt; and &lt;code&gt;REVOKE&lt;/code&gt; to configure permissions and it will save the permissions into Sentry service. Then when you query from Hive and Impala, it will ask Sentry service to see if you have the permission. Solr provides a tool to let you define the policies and save to Sentry service, too.&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;               --------
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;               | User |
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;               --------
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;                 |  |
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;       Query --&amp;gt; |  | &amp;lt;-- Grant Permission
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;                 V  V
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;         ------------------------
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;         | Hive/Impala/Solr ... |
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;         ------------------------
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;                 ^  |
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;  Request    --&amp;gt; |  | &amp;lt;-- Save Permissions
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;  Permission     |  |
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt;                 |  V
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n14&quot; name=&quot;n14&quot;&gt;14&lt;/a&gt;&lt;/span&gt;          -------------------
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n15&quot; name=&quot;n15&quot;&gt;15&lt;/a&gt;&lt;/span&gt;          | Sentry Service  |
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n16&quot; name=&quot;n16&quot;&gt;16&lt;/a&gt;&lt;/span&gt;          -------------------
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-
-&lt;p&gt;So there are two things that confused me a lot and I’d like to highlight here:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;There are two ways to configure Sentry policies. The are not related and a little like different systems.&lt;/li&gt;
-  &lt;li&gt;For the Sentry service, there is no way to configure policies through Sentry service directly.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;I think these are both design failures of Sentry. For the first one, if a system changed so much, at least you need to change a big version and highlight it in document. Like Python 2 and Python 3.&lt;/p&gt;
-
-&lt;p&gt;For the second one, it is really strange to doesn’t have a way to configure and view the policies through Sentry service. If user still need to configure the permissions separately for each system, it is a little point-less to use a centralized authorization service. Unless the permission model is the same or similar, like Hive and Impala basicly use the same permission model, so if you configure the permissions in Hive, Impala can use it. But the situation like that is rare. And I don’t think it would be difficult to provide a CLI tool to configure and view Sentry policy.&lt;/p&gt;</content><author><name></name></author><category term="Sentry" /><category term="Hadoop" /><category term="Cloudera" /><category term="security" /><category term="Splice Machine" /><summary type="html">For the last few days, I was working on integrating Apache Sentry into our database product Splice Machine. And when doing that, I found the document of Sentry is awful. It takes me much time to figure out what’s the role of Sentry and how to configure it. So in this article, I’d like to write some really important things to help understanding Sentry.</summary></entry></feed>
+&lt;p&gt;So here are all the things, happy hacking the device!&lt;/p&gt;</content><author><name></name></author><category term="Android" /><category term="Android TV" /><category term="MiBox" /><summary type="html">I’ve bought a MiBox 3S to watch TV and video for a long time. These days I’ve done lots of things to security my digital life and privacy, like change my Email to Proton Mail, change the search engine to DuckDuckGo, use Authy to enable 2FA when possible, and so on. So I didn’t turn on the MiBox for a long time since I don’t feel security to let a XiaoMi device running all the time in my LAN. The business model of XiaoMi is to sell cheap device and push ads to you. So it definitely collects your data. But I do need a device to watch TV or video on a big screen, so I decide to root and clean it to make it more security. Here is how I do it:</summary></entry></feed>
