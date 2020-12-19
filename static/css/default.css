@@ -17,6 +17,13 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: customcursive;
+  src: local('cursive'), url('Eutemia.ttf');
+  font-display: swap;
+}
+
+
 
 
 body{
@@ -196,11 +203,13 @@ blockquote {
   padding: 30px 30px 30px 30px;
   border: 1px solid #EAEAEA;
   margin-left: 0px;
-  font-family: cursive;
+  font-family: customcursive;
+  font-size: 22px;
 }
 
 .zh blockquote {
   font-family: fangzhengkaiti;
+  font-size: 18px;
 }
 
 #article_content img {
