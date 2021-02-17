@@ -36,7 +36,7 @@
 
     <section id="page_content">
       <div id="content_table">
-  <h3>Table of Contents</h3><ol class="toc"><li><a href="#generate-openssh-hardware-token">Generate OpenSSH Hardware Token</a></li><li><a href="#use-pam">Use PAM</a></li></ol>
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#generate-openssh-hardware-token">Generate OpenSSH Hardware Token</a></li><li></li></ol>
 </div>
 
 <div id="article_content" class="">
@@ -48,7 +48,7 @@
     
   </header>
 
-  <p><a href="https://www.yubico.com/">YubiKey</a> is a kind of hardware security token. The idea is to authenticate a person not only based on something he knows (password), but also on something he owns. It can be a digital file, but a more secure option would be a hardware token like Yubikey since no one can steal it without physical access. I use it for a lot of services. Not surprisingly, it can also be used in ssh authentication. But the official Yubikey tutorials are not very straightforward and the Archlinux wiki pages are more generic instead of Yubikey specific. So in this article, I’ll introduce how to setup ssh to include Yubikey in the authentication process. The operating system I’m using is Arch Linux, but the process for other Linux systems should be very similar.</p>
+  <p><a href="https://www.yubico.com/">YubiKey</a> is a kind of hardware security token. The idea is to authenticate a person not only based on something he knows (password), but also on something he owns. It can be a digital file, but a more secure option would be a hardware token like Yubikey since no one can steal it without physical access. I use it for a lot of services. Not surprisingly, it can also be used in ssh authentication. But the official Yubikey tutorials are not very straightforward and the <del>Archlinux wiki pages are more generic instead of Yubikey specific</del>. So in this article, I’ll introduce how to setup ssh to include Yubikey in the authentication process. The operating system I’m using is Arch Linux, but the process for other Linux systems should be very similar.</p>
 
 <h2 id="generate-openssh-hardware-token">Generate OpenSSH Hardware Token</h2>
 
@@ -61,7 +61,9 @@
 
 <p>Then you can use the generated ssh key like other key files with <code>-i</code> option. After type in the login command, you need to touch Yubikey for a few seconds, then you should be able to login.</p>
 
-<h2 id="use-pam">Use PAM</h2>
+<h2 id="use-pam"><del>Use PAM</del></h2>
+
+<p><strong>Update: this way only works while the key is plugged into the ssh host, which makes it useless for SSH. However, it’s still useful for things like local login.</strong></p>
 
 <p>A more generic way is to use <a href="https://en.wikipedia.org/wiki/Linux_PAM">PAM</a> with Yubikey. It’s a modular authentication mechanism not only for SSH, but also for lots of other things like local login.</p>
 
