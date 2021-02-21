@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Define Infrastructure as Code |  Bin Wang - My Personal Blog</title>
+    <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-52904500-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+  </head>
+
+  <body>
+    <header id="page_header">
+      <nav id="page_nav">
+        <ul>
+             <li><a href="/">Home</a></li>
+             <li><a href="/snippets">Snippets</a></li>
+             <li><a href="https://www.goodreads.com/review/list/103708630" target="_blank">Read</a></li>
+             <li><a href="/travel.html">Travel</a></li>
+             <li><a href="/search.html">Search</a></li>
+             <li><a href="/about.html">About</a></li>
+             <li><a href="/feed.xml">RSS</a></li>
+       </ul>
+      </nav>
+
+    </header>
+
+    <section id="page_content">
+      <div id="content_table">
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#why-define-infrastructure-as-code">Why Define Infrastructure as Code?</a></li><li><a href="#define-operating-system">Define Operating System</a></li><li><a href="#define-hardware-resource-and-cluster-structure">Define Hardware Resource and Cluster Structure</a></li><li><a href="#use-code-instead-of-configuration-files">Use Code Instead of Configuration Files</a></li></ol>
+</div>
+
+<div id="article_content" class="">
+<article id="post">
+  <header>
+    <h1>Define Infrastructure as Code</h1>
+    
+      <p class="description">Posted on 21 Feb 2021, tagged <code>cloud</code><code>docker</code><code>aws</code><code>cdk</code><code>technology</code><code>programming</code></p>
+    
+  </header>
+
+  <p>I’m using a lot of <a href="https://aws.amazon.com/cdk/">CDK</a> at work recently. So in this article, I want to talk about defining infrastructure as code.</p>
+
+<h2 id="why-define-infrastructure-as-code">Why Define Infrastructure as Code?</h2>
+
+<p>Why do we want to define infrastructure as code? The most important reason is we can make the progress automatic. After all, that’s the purpose of programming. Normally, there are many manual steps to setup the infrastructure, like buying the machine, installing OS, setting up the network and so on. Luckily, with the cloud providers to provide the hardware, and with technologies like Docker and Kubernetes, it’s possible to make more and more steps automatic.</p>
+
+<p>But it’s not always easier to automatically do things than manually do it. Another useful feature of code is it can be the source of truth and make the process reproducible. It’s like the document, but more precise and complete. If you have the code, you can build all the systems from scratch without rely on other people’s undocumented knowledge. It can make sure what you have is a clean system, without random things that people did and forgot. And since it’s reproducible, you can improve the process and know whether it’s better or worse.</p>
+
+<p>The third advantage is you can use version control to manage the infrastructures. You can rollback to a good state. You can also see what has been changed from beginning, which is like an even better document.</p>
+
+<h2 id="define-operating-system">Define Operating System</h2>
+
+<p>For a software, the most related infrastructure is the operating system and the dependencies it needs on the operating system. Traditionally, while using physical machine, the operating system can be automatically installed by PXE through network booting. But it’s hard to setup and test: you need a physical machine to do that.</p>
+
+<p>After virtualization and cloud is popular, it’s easier to build operating system images and test them. Since it’s virtual machine, you can test it at your own development desktop and things will be the same while it’s running on production. There are some tools like <a href="https://www.vagrantup.com/">Vagrant</a> to do it. But it also has it’s own disadvantage: it’s hard to track what you really did in the image. It’s true there are some tools to build the image with code, but I don’t find it to be a normal practise.</p>
+
+<p>Then there comes Docker and it makes defining operation system as code much easier. There are multiple reasons: it’s command line by default so it’s easier to write script. And it’s normal practise to build image with Dockerfile instead of manually doing things in the image and save it. It’s even easier to test it since it’s more lightweight. It also has version number in it’s image format, which makes people have version control in mind.</p>
+
+<h2 id="define-hardware-resource-and-cluster-structure">Define Hardware Resource and Cluster Structure</h2>
+
+<p>On some level, Docker can define the hardware resource, like how much CPU and memory to use, file volumes and local network. But it can only define these at local machine level. When you want to run the service on a cluster and talk to other services, you need more powerful tool. There are many container orchestration tools but after these years it seems Kubernetes has become the standard. With Kubernetes, the things beyond operating system, like network structure, service structure and so on, can also be defined within yaml files.</p>
+
+<p>The feature is not only available in container world. Even before containers are popular, lots of cloud providers have the ability to use code define the resources. It can not only define the hardware resource and network structure, but also for basically every service the cloud provides, like hosted database, logging management and so on.</p>
+
+<h2 id="use-code-instead-of-configuration-files">Use Code Instead of Configuration Files</h2>
+
+<p>For tools like Kubernetes which can use yaml configuration files to define infrastructures, it’s trivial to use code generate the configuration files. Why we want to use code instead of using configuration files directly? Because sometimes there are something can be reused, or some logic depends on different situations.</p>
+
+<p>Of course most tools include Kubernetes also provide API that you can call with code. But I think the better way is to generate configuration file about what you want, and let the tool to do all the actual work. It’s like declarative programming and functional programming. Infrastructure creation is very complex and error-phone: the things can go wrong include how to safely change from one state to another one, failure handling, resource cleanup, rollback, rolling upgrade and so on. It’s better to just describe what’s the desired state and let the tools to do the actual work. It also makes it easier to optimize the workflow to make it faster.</p>
+
+<p>CDK is such a tool that supports lots of programming languages. After run the code it can generate AWS Cloud Formation and run it. Unfortunately it’s from AWS which means you are basically locked into AWS if you choose to use it. Though there is a project <a href="https://cdk8s.io/">cdk8s</a> tries to support Kubernetes for CDK, I’m not sure if it gets the first level support. I really hope there would be an open source project like CDK that supports major cloud solutions.</p>
+
+</article>
+
+<footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2021-02-12-Setup-SSH-Authentication-with-YubiKey.html">Prev: Setup SSH Authentication with YubiKey</a></td>
+    
+    
+  </tr></table>
+</footer>
+
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+
+<!-- MathJax -->
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+</div>
+
+    </section>
+
+    <footer id="page_footer">
+      Copyright @ 2008 - 2020 Bin Wang
+      <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
+    </footer>
+  </body>
+</html>
