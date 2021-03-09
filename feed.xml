@@ -1,4 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2021-02-21T11:19:30-05:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Define Infrastructure as Code</title><link href="https://www.binwang.me/2021-02-21-Define-Infrastructure-as-Code.html" rel="alternate" type="text/html" title="Define Infrastructure as Code" /><published>2021-02-21T00:00:00-05:00</published><updated>2021-02-21T00:00:00-05:00</updated><id>https://www.binwang.me/Define-Infrastructure-as-Code</id><content type="html" xml:base="https://www.binwang.me/2021-02-21-Define-Infrastructure-as-Code.html">&lt;p&gt;I’m using a lot of &lt;a href=&quot;https://aws.amazon.com/cdk/&quot;&gt;CDK&lt;/a&gt; at work recently. So in this article, I want to talk about defining infrastructure as code.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2021-03-08T22:59:40-05:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">In Defence of Disabling Swap</title><link href="https://www.binwang.me/2021-03-08-In-Defence-of-Disabling-Swap.html" rel="alternate" type="text/html" title="In Defence of Disabling Swap" /><published>2021-03-08T00:00:00-05:00</published><updated>2021-03-08T00:00:00-05:00</updated><id>https://www.binwang.me/In-Defence-of-Disabling-Swap</id><content type="html" xml:base="https://www.binwang.me/2021-03-08-In-Defence-of-Disabling-Swap.html">&lt;p&gt;Recently, I read an article &lt;a href=&quot;https://chrisdown.name/2018/01/02/in-defence-of-swap.html&quot;&gt;&lt;em&gt;In Defence of Swap&lt;/em&gt;&lt;/a&gt; that talks about memory swap in Linux. I happened to see some problems at work related to it as well. So in this article, I’ll talk about swap and why we want to disable it.&lt;/p&gt;
+
+&lt;p&gt;In the article above, the author recommends to use swap because it makes the memory reclamation more efficient. Which means the OS can swap out the memory that allocated by the program, so that more physical memory can be used for file page to improve cache hit. The author thinks a lot of people don’t like swap because they don’t understand how swap works. But I think it’s quite the opposite: most people with experience understand that, and that’s exactly one of the reasons that they want to disable swap.&lt;/p&gt;
+
+&lt;p&gt;The first and biggest reason of disabling swap is transparency. Programmers have some expectations about data access latency while writing the program: if they access it from memory, it will be faster; if access from file, it will be slower. When the program put something into memory, it maybe rarely used. But when it needs to be used, it is expected to be accessed fast. When the program access data from file with swap disabled, it maybe slower because there are less memory for file cache, but it’s okay because it’s expected. So yes, swap can sometimes make memory usage more efficient, but that’s in exchange of the stability. It’s probably okay for desktop users, but not for servers. If you really need efficiency, you need to manage cache by yourself. For example, if some data is really barely used and the latency doesn’t matter, the program can optimize it by putting the data into file or database instead of hand over the control to OS, because the OS doesn’t really know which part of memory is important – less often used memory doesn’t mean less important memory. It’s much harder to optimize the program while the memory management is complex and a black box. Another advantage to manage the memory by itself is, we can add metrics about cache misses and so on, so when there is a performance problem it’s easier to trace down what’s happening.&lt;/p&gt;
+
+&lt;p&gt;The second reason is OOM killer. This reason applies when the system is running in high load. Swap get its bad reputation mostly because of the very slow response when memory is not enough, and it’s fair in my opinion. Even for a desktop, it’s better to kill the program instead of letting the whole system to be slow. For an online service, you may think it’s better to handle requests slow rather than completely down. It’s true if your service only has one node, but it’s barely the case for web services. It’s better to let the node down, so you know something is wrong. If there is memory leak, kill the service and restart it can normally solve the problem and you can resolve the root cause later. If there are more requests than the service can handle, it’s better to detect that and scale up or limit requests accordingly. Both cases are better than running the node in an unknown state.&lt;/p&gt;
+
+&lt;p&gt;So in conclusion, whether a feature is good depends on real world use cases rather than how the designer imagine it will be used. There is a reason when disabling a feature becomes normal practice for some use cases. Maybe it’s out of topic, but as developers, we must always keep the real world use cases in mind instead of resolving hypothetical problems.&lt;/p&gt;</content><author><name></name></author><category term="Linux" /><category term="swap" /><category term="memory" /><category term="technology" /><summary type="html">Recently, I read an article In Defence of Swap that talks about memory swap in Linux. I happened to see some problems at work related to it as well. So in this article, I’ll talk about swap and why we want to disable it.</summary></entry><entry><title type="html">Define Infrastructure as Code</title><link href="https://www.binwang.me/2021-02-21-Define-Infrastructure-as-Code.html" rel="alternate" type="text/html" title="Define Infrastructure as Code" /><published>2021-02-21T00:00:00-05:00</published><updated>2021-02-21T00:00:00-05:00</updated><id>https://www.binwang.me/Define-Infrastructure-as-Code</id><content type="html" xml:base="https://www.binwang.me/2021-02-21-Define-Infrastructure-as-Code.html">&lt;p&gt;I’m using a lot of &lt;a href=&quot;https://aws.amazon.com/cdk/&quot;&gt;CDK&lt;/a&gt; at work recently. So in this article, I want to talk about defining infrastructure as code.&lt;/p&gt;
 
 &lt;h2 id=&quot;why-define-infrastructure-as-code&quot;&gt;Why Define Infrastructure as Code?&lt;/h2&gt;
 
@@ -1243,115 +1251,4 @@
 
 &lt;p&gt;As I explored the formal proof, I find it has a much wider use case than I though. For example, I found &lt;a href=&quot;https://github.com/uwplse/verdi/pull/16&quot;&gt;Raft has a formal proof&lt;/a&gt;. The thing I like about programming is I can always find how it works if I spent enough time: it’s all in the code and can only be interpreted in one way. It would be so much fun if a complex theorem in distributed system can be proved in such a way: I can learn the theorem step by step and make sure I understand them correct.&lt;/p&gt;
 
-&lt;p&gt;Even though I discovered all these information 2 years ago. Only until recently I have some time to actually learn some formal proof language. There is a very good series of books called &lt;a href=&quot;https://softwarefoundations.cis.upenn.edu/&quot;&gt;Software Foundations&lt;/a&gt;, which introduces Coq, a very popular language to prove theorems. It has many exercises in the book’s source code so I can read and modify the code to do exercises. It’s really a fun experience. A lot of the concepts are not found in popular languages so it’s refreshing and challenging. I’m tracking the progress in &lt;a href=&quot;https://softwarefoundations.cis.upenn.edu/&quot;&gt;a Git repo&lt;/a&gt; and wish I can finish them all.&lt;/p&gt;</content><author><name></name></author><category term="technology" /><category term="programming language" /><category term="type system" /><category term="machine learning" /><summary type="html">This is not an article to introduce type systems. It’s only some of my experience and thoughts about it.</summary></entry><entry><title type="html">Migrate Arch Linux to ZFS</title><link href="https://www.binwang.me/2020-01-28-Migrate-Arch-Linux-to-Zfs.html" rel="alternate" type="text/html" title="Migrate Arch Linux to ZFS" /><published>2020-01-28T00:00:00-05:00</published><updated>2020-01-28T00:00:00-05:00</updated><id>https://www.binwang.me/Migrate-Arch-Linux-to-Zfs</id><content type="html" xml:base="https://www.binwang.me/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">&lt;p&gt;I migrated my Arch Linux installation to ZFS recently. This article describes why and how I did that.&lt;/p&gt;
-
-&lt;h2 id=&quot;why-zfs&quot;&gt;Why ZFS?&lt;/h2&gt;
-
-&lt;p&gt;ZFS is a very advanced file system that has many handful features. I first knew it many years ago, when I installed FreeNAS for fun. FreeNAS is an OS made for NAS based on FreeBSD. When I played with it, the features of ZFS really shocked me and let me realised what a file system can really do. I will list the features of ZFS that I’m using and not usually avaliable in traditional file systems:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Snapshot: It is really easy to take a snapshot. Because ZFS has copy-on-write feature, so a snapshot doesn’t take any space until you change some content on the file system. It makes backup way much cheaper and easier. This is the biggest feature that let me want to migrate to ZFS.&lt;/li&gt;
-  &lt;li&gt;RAIDZ: The traditional raid hides the disks from the file system. But for ZFS, you can use raidz which the file system can see the topological of disks so that it can optimize the I/O based on the information.&lt;/li&gt;
-  &lt;li&gt;Dataset: You can create many datasets in a zfs pool. Which can have different configurations based on the use case.&lt;/li&gt;
-  &lt;li&gt;L2 Cache: You can use hard disk drives as the file system and add SDD as read or write cache. Which is a very good balance between the storage space, speed and the price.&lt;/li&gt;
-  &lt;li&gt;Send/Recv: ZFS has commands to send the datasets and snapshots to another dataset or a remote machine. Which makes the offline backup much easier and cheaper.&lt;/li&gt;
-  &lt;li&gt;Compression: By compression you can save both storage space and make the read/write faster. And you can set different compression algorithm for different use cases.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;But back then ZFS is not well supported on Linux so I used ext4. Then I had an internship at Redhat and realised ext4 was really an old file system so I migrated to XFS. Until now, my storage configuration is one 128G SSD for the system (root partition). Two 2TB HDDs as a RAID1 array to store all the other data. I backup the system from SDD to HDD regularly in case of the SDD fails. And I don’t have any way to protect me from deleting files by mistake.&lt;/p&gt;
-
-&lt;h2 id=&quot;why-not-freebsd&quot;&gt;Why not FreeBSD?&lt;/h2&gt;
-
-&lt;p&gt;It is very nature to use BSD with ZFS since it is supported by deafult. With linux, you must install another kernel module which is not native supported by kernel. And Linus just said “don’t use ZFS” somedays ago. So I was seriously thinking about change my OS to FreeBSD. Compared to Arch Linux, the system is more security because all the packages are native supported by the FreeBSD developer and the port system also has a lot of softwares. But finally something stops me from migrating to FreeBSD:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;The game support. Last year, game on Linux finally breaks out because of the Poton on Steam. Though I don’t play games a lot, it’s still a pity to have no game to play.&lt;/li&gt;
-  &lt;li&gt;FreeBSD starts using ZFS on Linux as the upstream of ZFS. So with the bigger community, ZFS on Linux may has better support and more features in the future.&lt;/li&gt;
-  &lt;li&gt;It’s a risk to migrate to a new system. Arch Linux works great for me for a long time. If the new installation doesn’t work, it’s time consuming to recover the system. And it says FreeBSD doesn’t have a good support on Nvidia graphic card, which I’m currently using.&lt;/li&gt;
-  &lt;li&gt;FreeBSD’s Jails are much mature than Containers on Linux. And I really hate Docker for its deamon running as root. Docker also has bad community reputation (e.g. changing its community version’s name). Rkt from Core OS is much better but both Core OS and Rkt are dead after the acquire of Redhat. But finally I found Podman. So I can compromise at this point. Containers also has bigger community. For example, the Nextcloud I’m using has official image so I don’t need to build my own one.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;how-to-migrate-to-zfs&quot;&gt;How to Migrate to ZFS?&lt;/h2&gt;
-
-&lt;h3 id=&quot;1-backup-the-data&quot;&gt;1. Backup the Data&lt;/h3&gt;
-
-&lt;p&gt;My disks and partitions are like this before the migration:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;- SDD
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;  + / (root)
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;  + /boot
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;- RAID1 (hdd1, hdd2)
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;  + /data
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;p&gt;I only backup my data disks because I will not use my system disk for the ZFS pool at the creation time. I will use it as cache which can be added later. An important note is to &lt;strong&gt;use &lt;code&gt;tar&lt;/code&gt; or &lt;code&gt;rsync&lt;/code&gt; to backup data&lt;/strong&gt;. Don’t use &lt;code&gt;cp&lt;/code&gt;, it will break the file permissions and links.&lt;/p&gt;
-
-&lt;h3 id=&quot;2-install-zfs-kernel-modules-and-utils&quot;&gt;2. Install ZFS Kernel Modules and Utils&lt;/h3&gt;
-
-&lt;p&gt;Follow the &lt;a href=&quot;https://wiki.archlinux.org/index.php/ZFS#Installation&quot;&gt;Arch Linux’s ZFS wiki&lt;/a&gt; to do that. I also enabled the &lt;a href=&quot;https://wiki.archlinux.org/index.php/Unofficial_user_repositories#archzfs&quot;&gt;ArchZFS repo&lt;/a&gt; so I don’t need to build it from AUR. This repo is signed so it is more secure.&lt;/p&gt;
-
-&lt;h3 id=&quot;3-create-zfs-pool-and-dataset&quot;&gt;3. Create ZFS Pool and Dataset&lt;/h3&gt;
-
-&lt;p&gt;I added another HDD for the ZFS pool in order to make a raidz1 pool (like raid5), which doubles the current storage space with raid1. Then create a dataset for the new root partition. The dataset has native encryption and compression enabled.&lt;/p&gt;
-
-&lt;h3 id=&quot;4-mount-the-root-dataset-and-copy-the-root-partition&quot;&gt;4. Mount the Root Dataset and Copy the Root Partition&lt;/h3&gt;
-
-&lt;p&gt;Temparory mount the root dataset to &lt;code&gt;/mnt&lt;/code&gt;. Then follow the Arch Linux wiki about &lt;a href=&quot;https://wiki.archlinux.org/index.php/Install_Arch_Linux_from_existing_Linux#From_a_host_running_Arch_Linux&quot;&gt;installing from a host running Arch Linux&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3 id=&quot;5-make-new-boot-image-and-config-bootloader&quot;&gt;5. Make New Boot Image and Config Bootloader&lt;/h3&gt;
-
-&lt;p&gt;I was trying to install boot partition into the ZFS but failed after many attemps. At last I decide just use the old boot partition and sync them to ZFS as backup.&lt;/p&gt;
-
-&lt;p&gt;So follow &lt;a href=&quot;https://wiki.archlinux.org/index.php/Install_Arch_Linux_on_ZFS&quot;&gt;install Arch Linux on ZFS wiki&lt;/a&gt;. After the regular installation, add &lt;code&gt;zfs&lt;/code&gt; in &lt;code&gt;/etc/mkinitcpio.conf&lt;/code&gt; &lt;code&gt;HOOKS&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;HOOKS=(base udev autodetect modconf block keyboard zfs filesystems)
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Then using &lt;code&gt;mkinitcpio -p&lt;/code&gt; to make new boot image. (You may want to backup old images &lt;code&gt;/boot/initramfs-linux.img&lt;/code&gt; and &lt;code&gt;/boot/vmlinuz-linux&lt;/code&gt; before this step).&lt;/p&gt;
-
-&lt;p&gt;Then in &lt;code&gt;/boot/grub/grub.cfg&lt;/code&gt;, change the root filesystem to zfs, like this (in the menuentry):&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;linux   /vmlinuz-linux root=ZFS=zroot/root rw  loglevel=3 quiet
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Which &lt;code&gt;zroot/root&lt;/code&gt; is the root dataset.&lt;/p&gt;
-
-&lt;h3 id=&quot;6-config-mount-points&quot;&gt;6. Config Mount Points&lt;/h3&gt;
-
-&lt;p&gt;Reconfig the root dataset’s mount point to &lt;code&gt;/&lt;/code&gt; and add the configuration in &lt;code&gt;/etc/fstab&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;zroot/root / zfs defaults,noatime 0 0
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Don’t forget to set the auto import:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;systemctl enable zfs-import-cache
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;zpool set cachefile=/etc/zfs/zpool.cache &amp;lt;pool&amp;gt;
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;systemctl enable zfs-mount
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;systemctl enable zfs.target
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Also need to input the passphrase if using encryption. Follow the &lt;a href=&quot;https://wiki.archlinux.org/index.php/ZFS&quot;&gt;Arch Linux’s ZFS wiki&lt;/a&gt; to do that.&lt;/p&gt;
-
-&lt;h3 id=&quot;7-restart-and-config-new-system&quot;&gt;7. Restart and Config New System&lt;/h3&gt;
-
-&lt;p&gt;After the reboot, the system should boot into the new root. Then cleanup the old root partition and add it as the cache of the pool: &lt;code&gt;zpool add -f zroot cache &amp;lt;partition-uuid&amp;gt;&lt;/code&gt;. Then create other datasets and move back all the old data.&lt;/p&gt;
-
-&lt;p&gt;Now I can make different datasets for different purpose. For example, make a dataset for nextcloud container’s storage. Make a highly compressed dataset for backup files from other machine, and so on.&lt;/p&gt;
-
-&lt;p&gt;After the migration, the first boot is slower than before because the root system is migrated to HDD. But the most useful files will be cached into SSD and it feels the same as before after a while. Now I’m very happy with the current setup and super excited about all the advanced features of ZFS! Happy hacking!&lt;/p&gt;</content><author><name></name></author><category term="linux" /><category term="zfs" /><category term="technology" /><category term="freebsd" /><summary type="html">I migrated my Arch Linux installation to ZFS recently. This article describes why and how I did that.</summary></entry></feed>
+&lt;p&gt;Even though I discovered all these information 2 years ago. Only until recently I have some time to actually learn some formal proof language. There is a very good series of books called &lt;a href=&quot;https://softwarefoundations.cis.upenn.edu/&quot;&gt;Software Foundations&lt;/a&gt;, which introduces Coq, a very popular language to prove theorems. It has many exercises in the book’s source code so I can read and modify the code to do exercises. It’s really a fun experience. A lot of the concepts are not found in popular languages so it’s refreshing and challenging. I’m tracking the progress in &lt;a href=&quot;https://softwarefoundations.cis.upenn.edu/&quot;&gt;a Git repo&lt;/a&gt; and wish I can finish them all.&lt;/p&gt;</content><author><name></name></author><category term="technology" /><category term="programming language" /><category term="type system" /><category term="machine learning" /><summary type="html">This is not an article to introduce type systems. It’s only some of my experience and thoughts about it.</summary></entry></feed>
