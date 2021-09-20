@@ -1,4 +1,126 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2021-07-03T23:43:25-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Why Big Companies Need to Adopt Open Source</title><link href="https://www.binwang.me/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html" rel="alternate" type="text/html" title="Why Big Companies Need to Adopt Open Source" /><published>2021-06-30T00:00:00-04:00</published><updated>2021-06-30T00:00:00-04:00</updated><id>https://www.binwang.me/Why-Big-Companies-Need-to-Adopt-Open-Source</id><content type="html" xml:base="https://www.binwang.me/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html">&lt;p&gt;Recently I’m really frustrated by some internal tools in the company. Lots of people think the internal tools in big company should be much better than open source ones. Maybe that’s true in the past or in some other companies. But that’s not true in my experience. While we are seeing more and more companies adopting open source, I think it would be helpful to list some of its advantages. I know there are already lots of articles and people talking about this, but while I’m not in the position to make open source decisions for the internal tools I use, writing this article is at least what I can do.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2021-09-19T23:35:20-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Personal ZFS Offsite Backup Solution</title><link href="https://www.binwang.me/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html" rel="alternate" type="text/html" title="Personal ZFS Offsite Backup Solution" /><published>2021-09-19T00:00:00-04:00</published><updated>2021-09-19T00:00:00-04:00</updated><id>https://www.binwang.me/Personal-ZFS-Offsite-Online-Backup-Solution</id><content type="html" xml:base="https://www.binwang.me/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">&lt;p&gt;Digital data was never as important as nowadays. Not only for business, but also for every individual. And it’s challenging to make data safe. For example, we see the news about ransomware encrypted all the data of big companies, made their business suspended. We also see a lot of extreme weathers recently: fires, flood and so on, which threats the hardware that stores the data. So it’s necessary to have backups. There should be at least two kinds of backups to keep data safe: offline backup and offsite backup.&lt;/p&gt;
+
+&lt;p&gt;Offline backup means once the data is backed up, it will be isolated from the system. So it can prevent bugs and security risks of the system. How isolated the backup should be depends on the use case and threaten model. For personal usage, a removable disk that is disconnected from any machine should be good enough. It’s easy to implement, so we will not focus on it in this article.&lt;/p&gt;
+
+&lt;p&gt;Offsite backup means the backup data is in a different location. So that in the case of nature disaster, fire, flood, hardware stolen and so on, you can still recover it from a different location. Again, depends on the threaten model, this different location can be a different location in the same city, in a different city, or even in a different country or land. (By the way, I’m always confused when the characters in movies can just destroy a data center, or even a single machine in order to destroy some big plan or very important data. If the people dealing with such important data know nothing about backup, we are in bigger troubles.)&lt;/p&gt;
+
+&lt;p&gt;Offline and offsite backup are not mutually exclusive. Some kinds of backup can be both offline and offsite. For example, you can burn all the data onto CDs and mail them away every week. The CDs are both offline and offsite backup. But because of the cost and efficiency, the offsite backup is usually online so it can make backups very frequently and quickly.&lt;/p&gt;
+
+&lt;p&gt;In this article, I’ll introduce how to setup a machine used for personal offsite backup. ZFS is needed since it enables incremental encrypted backup. As we can see later, it makes our setup much easier.&lt;/p&gt;
+
+&lt;h2 id=&quot;1-goals&quot;&gt;1. Goals&lt;/h2&gt;
+
+&lt;p&gt;Let’s consider what’s the requirements of this setup solution. Data security is obviously the No. 1 requirement: nobody other than ourselves should be able to obtain the data.&lt;/p&gt;
+
+&lt;p&gt;User friendly is another big factor. Most likely we will put this backup machine to a family or friend’s place. So we want it to have very low setup and maintenance effort. Actually, with my setup bellow, the only thing needed for this machine to operate is to plugin the power and Ethernet cable, then press the power button. No monitor, keyboard, mouse, or NAT port forwarding is needed.&lt;/p&gt;
+
+&lt;h2 id=&quot;2-threaten-mode&quot;&gt;2. Threaten Mode&lt;/h2&gt;
+
+&lt;p&gt;Since data security is our No. 1 goal, let’s analysis the threaten mode in the backup system. First, think about what is trusted and what is untrusted. I divide it into three levels: fully trusted, partially trusted and untrusted.&lt;/p&gt;
+
+&lt;p&gt;Fully trusted: the environment is theoretically fully controlled by ourselves and no one else can see the data in it. I know it’s hard to be 100% safe for an environment, but how to achieve that is totally another topic. Let’s assume in this setup, the machine that holds the source data can be seen as fully trusted.&lt;/p&gt;
+
+&lt;p&gt;Partially trusted: we can trust the environment on some level but it’s still possible to be unsafe. For example, for the machine located at a different location, which can be physically accessed by other people, it’s not fully trusted. Though we can usually have high trust level for the people that manages the place, which is usually our family or friend, it’s still possible that the data on the machine can be obtained.&lt;/p&gt;
+
+&lt;p&gt;Not trusted: the parts that cannot be trusted at all. Anyone with some security background can obtain data from this part. For example, the public network is not trusted.&lt;/p&gt;
+
+&lt;p&gt;Here is a diagram about the trust levels in our system: fully trusted part is in green, partially trusted is in yellow and not trusted is in red.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/static/images/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution/2021-09-19-zfs-backup-trust-level.png&quot; alt=&quot;trust-level&quot; style=&quot;max-width: 400px;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Then let’s also analysis the parts of the system we want to keep secure. In the diagram bellow, the red part means we want 100% security. Yellow part means we want it as secure as possible, but it’s also okay if it’s not 100% secure.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/static/images/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution/2021-09-19-zfs-backup-security-level.png&quot; alt=&quot;security-level&quot; style=&quot;max-width: 400px;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So with these two graphs combined, we identified some parts we need to consider:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Network and backup data. These parts are either not trusted or partially trusted, but we want fully security for the data goes through there. So we need fully encryption on these components. Luckily it’s easy to do with ZFS: ZFS can send encrypted snapshots and receive it on another machine without ever decrypt it.&lt;/li&gt;
+  &lt;li&gt;Backup machine. It’s under partially trusted environment. We shouldn’t put any sensitive data into its system. If it’s compromised, the backup data can still be safe: no one can see the content of the backup data, but the backup process may no longer work as expected.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;With this in mind, let’s start to setup our backup machine.&lt;/p&gt;
+
+&lt;h2 id=&quot;3-backup-machine-setup&quot;&gt;3. Backup Machine Setup&lt;/h2&gt;
+
+&lt;h3 id=&quot;31-choose-the-hardware&quot;&gt;3.1 Choose the Hardware&lt;/h3&gt;
+
+&lt;p&gt;Since we need to have ZFS on this machine, we’d better to choose a x86 machine instead of an ARM one. I know ZFS has ARM builds but I’ve never tried that, and don’t know how good it is. Data safe is very important so I’d rather to use a tested solution.&lt;/p&gt;
+
+&lt;p&gt;The machine doesn’t need to be too powerful but larger than 4G memory is recommended because of ZFS. It should be able to handle two disks since it makes data recovery easier as we can see later. Considering we will place this machine to someone else’s home, it’s better to have a small form factor.&lt;/p&gt;
+
+&lt;p&gt;It’s better to have TPM as well. Otherwise we cannot setup disk encryption (other than our backup data) in a user friendly way, which means anyone with physical access to the machine can get access of system data (which is also okay since we don’t have sensitive data on system). Old machines usually has TPM 1.2 chip, which is not as secure as TPM 2.0. But it’s good enough considering our use case and the cost.&lt;/p&gt;
+
+&lt;p&gt;There are a lot of cheap choices for used machines like this. Like ThinkCentre tiny desktops, or HP EliteDesktop. The Youtube channel &lt;a href=&quot;https://www.youtube.com/c/ETAPRIME&quot;&gt;ETA Prime&lt;/a&gt; has a lot of reviews for such machines. A potential risk of buying used hardware is it may contains security backdoor, but it’s very rare if you are not targeted and you buy it from sellers with good reputation. Even it happens, as we’ve analysed above, the backup machine is not treated as fully trusted environment, so it’s fine.&lt;/p&gt;
+
+&lt;h3 id=&quot;32-secure-bios&quot;&gt;3.2 Secure BIOS&lt;/h3&gt;
+
+&lt;p&gt;The first thing we need to do is securing the BIOS, so no one else can change any configurations. If we don’t protect it, anything we do in the later steps is meaningless.&lt;/p&gt;
+
+&lt;p&gt;How to secure the BIOS depends on the manufacturer. Most likely there will be a “security” section in the BIOS, which has “password protection” option. So that you can protect the BIOS with a password.&lt;/p&gt;
+
+&lt;p&gt;Keep in mind most of the machines can reset BIOS with some hardware button or wire, thus reset the password as well. But it will also reset the TPM, which means it doesn’t expose the encryption key of our system disk, which we will setup in the next step.&lt;/p&gt;
+
+&lt;h3 id=&quot;33-setup-system-disk-encryption-with-tpm&quot;&gt;3.3 Setup System Disk Encryption with TPM&lt;/h3&gt;
+
+&lt;p&gt;I choose Arch Linux as the operating system for the backup machine. I know it’s controversial as Arch Linux is not considered as the most stable Linux distribution. But this is a personal setup and I’m using Arch Linux for all my own machines. I’m very familiar with it. It’s very stable in my experience, and I can keep the ZFS versions the same. So I’ll mainly focus on the setup for Arch Linux from here, but any main stream Linux distribution should be able to do these setups with minimal adjustment.&lt;/p&gt;
+
+&lt;p&gt;The first thing we want to do is to have disk encryption for the system. (We use another disk for ZFS and it’s already encrypted, so we don’t need worry about that one.) While installing the OS, you can choose encrypt the disks and use either a password or a key file stored at another place like a USB drive. In this way, you can input the password or plugin the key file during boot. But it needs human interactive, and we don’t want other people to have the password or key in order to boot the machine. So we will setup another key that stores in TPM and can be decrypted automatically during start up.&lt;/p&gt;
+
+&lt;p&gt;It’s very easy to setup disk encryption with TPM 2.0. Systemd has very good support for that. The steps are in the &lt;a href=&quot;https://wiki.archlinux.org/title/Trusted_Platform_Module#Using_TPM_2.0&quot;&gt;Arch wiki&lt;/a&gt;. I’ve never tried this since my backup machine only has TPM 1.2 chip, but the steps looks very straightforward.&lt;/p&gt;
+
+&lt;p&gt;With TPM 1.2, it’s much harder and took me a lot of time to figure that out. At last I found a &lt;a href=&quot;https://github.com/danielfomin96/arch-linux-luks-tpm-boot&quot;&gt;repo on Github&lt;/a&gt; and forked it with some modifications in order to support busybox initramfs, which is the default setup for Arch Linux. Here is &lt;a href=&quot;https://github.com/wb14123/arch-linux-luks-tpm-boot&quot;&gt;my updated repo&lt;/a&gt;. It’s not easy but I believe the security it adds worth the effort.&lt;/p&gt;
+
+&lt;h3 id=&quot;34-setup-secure-boot&quot;&gt;3.4 Setup Secure Boot&lt;/h3&gt;
+
+&lt;p&gt;The disk encryption above doesn’t include boot loader. In order to make the boot loader safe, we can setup secure boot, which will prevent the system from booting if the boot loader is not signed by trusted party. There is an &lt;a href=&quot;https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot#Using_your_own_keys&quot;&gt;Arch wiki&lt;/a&gt; described the steps as well. I used the option of “Using your own keys” and use &lt;a href=&quot;https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot#Fully_automated_unified_kernel_generation_and_signing_with_sbupdate&quot;&gt;sbupdate&lt;/a&gt; to automatic sign new kernels after update. Make sure to add kernel parameters, especially the parameters related to disk encryption into &lt;code&gt;CMDLINE_DEAFULT&lt;/code&gt; in &lt;code&gt;/etc/sbupdate.conf&lt;/code&gt; as mentioned in the &lt;a href=&quot;https://github.com/andreyv/sbupdate&quot;&gt;sbupdate document&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;35-setup-vpn-and-ssh&quot;&gt;3.5 Setup VPN and SSH&lt;/h3&gt;
+
+&lt;p&gt;In order to make ZFS remote backup work, we need to establish a SSH connection between the source machine which holds the data we want to backup, and the backup machine. Obviously it’s not safe to let the source machine act as the SSH server, since the backup machine is not fully trusted. But we cannot make the backup machine as a SSH server on public network either, since it needs port forwarding setup if it’s placed in a home network, which is very user unfriendly. So we need a VPN network to let the backup machine connect as a client, then it can act as a SSH server in the VPN network.&lt;/p&gt;
+
+&lt;p&gt;There are many VPN solutions out there. OpenVPN is the most popular one with lots of features. But WireGuard is newer, more efficient and easier to setup. So I choose WireGuard as my VPN solution. I setup the VPN server on my source machine and use NAT port forwarding to make it accessible from public network, so the backup machine is able to connect as a client. The setup guide can also be found in an &lt;a href=&quot;https://wiki.archlinux.org/title/WireGuard#Specific_use-case:_VPN_server&quot;&gt;Arch Wiki&lt;/a&gt;, with some additional notes:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Use DNS name for the source machine address, so that in the case of IP changes, the backup machine can still connect to the VPN automatically.&lt;/li&gt;
+  &lt;li&gt;Add &lt;code&gt;PersistentKeepalive = 1&lt;/code&gt; in the client configuration, so that the client will send a package every 1 second to keep the connection alive.&lt;/li&gt;
+  &lt;li&gt;Enable the VPN and SSH service so that the backup machine will be able to connect after reboot.&lt;/li&gt;
+  &lt;li&gt;Setup the firewall properly, since the backup machine is not trusted.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;36-install-zfs&quot;&gt;3.6 Install ZFS&lt;/h3&gt;
+
+&lt;p&gt;Finally we can install ZFS on the backup machine so it can receive ZFS datasets. Since we don’t need ZFS on the root file system, it’s very easy to do. Just follow the &lt;a href=&quot;https://wiki.archlinux.org/title/ZFS&quot;&gt;Arch Wiki for ZFS&lt;/a&gt;. I also wrote a &lt;a href=&quot;/2020-01-28-Migrate-Arch-Linux-to-Zfs.html&quot;&gt;blog post&lt;/a&gt; about it but I don’t think it’s needed for this simple setup.&lt;/p&gt;
+
+&lt;h3 id=&quot;37-conclusion&quot;&gt;3.7 Conclusion&lt;/h3&gt;
+
+&lt;p&gt;After all the setup, let’s look at what we have achieved for this backup machine.&lt;/p&gt;
+
+&lt;p&gt;From the security point of view, we make it reasonable secure: the disk is encrypted and the encryption key is stored in TPM safely. The boot loader is also prevented from modification because of secure boot. It’s not 100% secure though, for example, when the machine is powered on there are ways to freeze the memory and read the disk encryption key from it; TPM 1.2 has security risks as well. But even though there are some security risks, it’s very hard to actually compromise the system for average people. And as I’ve mentioned multiple times above, the security risks doesn’t effect the security of our backup data since the transfer and storage are all encrypted without ever exposed the encryption key.&lt;/p&gt;
+
+&lt;p&gt;From user friendly point of view, as I mentioned at the starting, the machine can be put anywhere that has a good network connection. And with just power and Ethernet cable plugged in, it would be ready to operate.&lt;/p&gt;
+
+&lt;h2 id=&quot;4-zfs-send-and-recv&quot;&gt;4. ZFS Send and Recv&lt;/h2&gt;
+
+&lt;p&gt;After the backup machine setup, we can finally backup the ZFS datasets to it. It’s very easy for ZFS to do remote backup, just make sure to use the flag &lt;code&gt;-w&lt;/code&gt; when send so it will send the encrypted ZFS dataset (given the source dataset is already encrypted). For example:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;zfs send -R -v -w zroot/root@snapshot-name | ssh &amp;lt;backup-machine-ip-in-vpn&amp;gt; sudo zfs recv -Fu zoffsite-backup/root
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;It’s also easy to send incremental back using command like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;zfs send -R -v -w -i zroot/root@from-snapshot zroot/root@to-snapshot | ssh &amp;lt;backup-machine-ip-in-vpn&amp;gt; sudo zfs recv -Fu zoffsite-backup/root
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;In my case, I don’t want to backup all the datasets since I can download some of them like Steam games from somewhere else. So I wrote a script to get all the dataset I want to backup and send them one by one without suing &lt;code&gt;-R&lt;/code&gt; flag. Anyway, with the power of ZFS you can basically backup in whatever way you want. You can put the script in cronjob or systemd timer to run it everyday for instance.&lt;/p&gt;
+
+&lt;p&gt;At last, &lt;strong&gt;there is an important note about data recovery&lt;/strong&gt;. If you ever need to recover the data, make sure don’t mount it in the backup system directly since the backup system is not trusted. Instead, get the physical backup disk, mount it on a trusted system, and recover from there.&lt;/p&gt;</content><author><name></name></author><category term="zfs" /><category term="backup" /><category term="secure boot" /><category term="linux" /><category term="tech" /><category term="vpn" /><summary type="html">Digital data was never as important as nowadays. Not only for business, but also for every individual. And it’s challenging to make data safe. For example, we see the news about ransomware encrypted all the data of big companies, made their business suspended. We also see a lot of extreme weathers recently: fires, flood and so on, which threats the hardware that stores the data. So it’s necessary to have backups. There should be at least two kinds of backups to keep data safe: offline backup and offsite backup.</summary></entry><entry><title type="html">Why Big Companies Need to Adopt Open Source</title><link href="https://www.binwang.me/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html" rel="alternate" type="text/html" title="Why Big Companies Need to Adopt Open Source" /><published>2021-06-30T00:00:00-04:00</published><updated>2021-06-30T00:00:00-04:00</updated><id>https://www.binwang.me/Why-Big-Companies-Need-to-Adopt-Open-Source</id><content type="html" xml:base="https://www.binwang.me/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html">&lt;p&gt;Recently I’m really frustrated by some internal tools in the company. Lots of people think the internal tools in big company should be much better than open source ones. Maybe that’s true in the past or in some other companies. But that’s not true in my experience. While we are seeing more and more companies adopting open source, I think it would be helpful to list some of its advantages. I know there are already lots of articles and people talking about this, but while I’m not in the position to make open source decisions for the internal tools I use, writing this article is at least what I can do.&lt;/p&gt;
 
 &lt;p&gt;Basically open source brings better developers and more users. All the benefits come from these. We will talk about these first and then the benefits they make.&lt;/p&gt;
 
@@ -1218,24 +1340,4 @@
 
 &lt;p&gt;I’m happy that more and more people are realizing this. And there are more and more people are writing software for decentralized Internet. Other than the Blog, I also host my own file sharing service with NextCloud and instant message service with &lt;a href=&quot;https://matrix.org/&quot;&gt;Matrix&lt;/a&gt;. And after I spent less time on the centralized platforms, I feel I have more control over my time, and I find more interesting people and inspiring ideas.&lt;/p&gt;
 
-&lt;p&gt;My blog still has an very important part that’s controlled by other company: the comment. It’s powered by Disqus. I’ve lost some comments when I made some changes for my blog. And it also requires login to comment. So I have plan to replace it. I’m still trying to find a good alternative for this.&lt;/p&gt;</content><author><name></name></author><category term="social network" /><category term="Twitter" /><category term="Mastodon" /><category term="technology" /><summary type="html">I’m very happy to announce that I moved to Mastodon from Twitter.</summary></entry><entry><title type="html">The Tragic Talented Programmer</title><link href="https://www.binwang.me/2020-07-21-The-Tragic-Talented-Programmer.html" rel="alternate" type="text/html" title="The Tragic Talented Programmer" /><published>2020-07-21T00:00:00-04:00</published><updated>2020-07-21T00:00:00-04:00</updated><id>https://www.binwang.me/The-Tragic-Talented-Programmer</id><content type="html" xml:base="https://www.binwang.me/2020-07-21-The-Tragic-Talented-Programmer.html">&lt;blockquote&gt;
-  &lt;p&gt;I’m king Terry…&lt;/p&gt;
-
-  &lt;p&gt;It’s good to be a king.&lt;/p&gt;
-
-  &lt;p&gt;Maybe, maybe I’m just a bizarre little person who walks back and forth.&lt;/p&gt;
-
-  &lt;p&gt;– &lt;a href=&quot;https://www.youtube.com/watch?v=oH41gGBVpkE&quot;&gt;Terry A. Davis&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Recently I watched &lt;a href=&quot;https://youtu.be/LtlyeDAJR7A&quot;&gt;a video&lt;/a&gt; from Linus Tech Tips that introduces Temple OS. I’ve heard of Temple OS (maybe on Hacker News) before. But I didn’t really get it when I looked at its official website. However, it really interests me this time. So I looked at more resources, especially another video called &lt;a href=&quot;https://youtu.be/UCgoxQCf5Jg&quot;&gt;TempleOS | Down the Rabbit Hole&lt;/a&gt; which is mentioned by Linus. This time, I known the full story about the person behind Temple OS, Terry A. Davis.&lt;/p&gt;
-
-&lt;p&gt;Temple OS is written by Terry himself. He even created a language for the OS called HolyC, and wrote the compiler by himself. However, the UI of Temple OS is so unusual that the posts by Terry that promote Temple OS either got ignored or considered as spam. And the most important, Terry had schizophrenia. His posts are often out of topic. He believed CIA is after him. And he believed he can talk with God through some random generator. That’s one of the reason he renamed the OS to Temple OS and refer it as God’s third temple. Later on, he published videos and streamed at YouTube. This time he attracted some people’s attention. But unfortunately, some people harassed him by calling his personal phone and sending trolling Emails. I think that’s one of the reasons his schizophrenia get worse. At last, he was kicked out from his home by his parents, and became a homeless. After that, he still &lt;a href=&quot;https://www.youtube.com/watch?v=DBGgi5Lqn0U&quot;&gt;wrote code in the van&lt;/a&gt;. Then he got arrested and also lost his van. He wandered to Portland at last. And finally dead at 2018 because of hitting by a train.&lt;/p&gt;
-
-&lt;p&gt;I feel so sad about this story. I downloaded Temple OS and played with it for a while. Under it’s unusual GUI, I was shocked by the OS. It’s complete, and it’s different. The whole shell is just a console of HolyC. You run the command the same way as you write the code. You can search and navigate to the source very easily. You can modify anything in the OS. And it even has fairly powerful graphic system. It’s so new and so fun to me. I cannot believe it’s all written by one person. That says how talented Terry was. I also watched some videos about he talked about HolyC, which has a lot of inspiring ideas.&lt;/p&gt;
-
-&lt;p&gt;The more I watched his videos, the more I felt empathy with him. I know a lot of people in Chinese history that are very talented but are not recognized by the sociality at the time they were living. There are a lot of poems about that. And I also had hard times personally. So I can really feel it. In Terry’s case, it’s even more tragic because of the mental illness.&lt;/p&gt;
-
-&lt;p&gt;I have been in Portland for a short period of time at 2018. Portland has highest number of homeless people in the US. And there are also a lot of homeless in Toronto. I don’t know the sociality in the north America so I usually feel uncomfortable around the homeless. Now I know not all of them are drug users. At least some of them are worth respected.&lt;/p&gt;
-
-&lt;p&gt;Luckily, Terry left a lot of videos behind him that recorded his thoughts and ideas. And most important, he left his epic work: the God’s third temple - Temple OS. A lot of people remember him, miss him and respect him because of this. In this sense, he is not really dead. I really get inspired by him. I’m also trying to left ideas and work behind me. After all, that’s the meaning of life.&lt;/p&gt;</content><author><name></name></author><category term="thoughts" /><category term="Temple OS" /><category term="programming" /><category term="technology" /><summary type="html">I’m king Terry… It’s good to be a king. Maybe, maybe I’m just a bizarre little person who walks back and forth. – Terry A. Davis</summary></entry></feed>
+&lt;p&gt;My blog still has an very important part that’s controlled by other company: the comment. It’s powered by Disqus. I’ve lost some comments when I made some changes for my blog. And it also requires login to comment. So I have plan to replace it. I’m still trying to find a good alternative for this.&lt;/p&gt;</content><author><name></name></author><category term="social network" /><category term="Twitter" /><category term="Mastodon" /><category term="technology" /><summary type="html">I’m very happy to announce that I moved to Mastodon from Twitter.</summary></entry></feed>
