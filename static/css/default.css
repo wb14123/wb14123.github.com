@@ -282,3 +282,13 @@ blockquote {
 .line-numbers {
   margin-right: 10px;
 }
+
+.index-index {
+  font-size: 22px;
+  margin-top: 10px;
+}
+
+.index-post {
+  margin-top: 10px;
+  font-size: 18px;
+}
