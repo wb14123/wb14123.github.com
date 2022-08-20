@@ -1,4 +1,204 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2022-05-02T23:29:15-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">A Library to Make It Easier to Use Scala with gRPC</title><link href="https://www.binwang.me/2022-05-02-A-Library-to-Make-It-Easier-to-Use-Scala-with-GRPC.html" rel="alternate" type="text/html" title="A Library to Make It Easier to Use Scala with gRPC" /><published>2022-05-02T00:00:00-04:00</published><updated>2022-05-02T00:00:00-04:00</updated><id>https://www.binwang.me/A-Library-to-Make-It-Easier-to-Use-Scala-with-GRPC</id><content type="html" xml:base="https://www.binwang.me/2022-05-02-A-Library-to-Make-It-Easier-to-Use-Scala-with-GRPC.html">&lt;p&gt;&lt;em&gt;This article describes why I created the library &lt;a href=&quot;https://github.com/wb14123/scala2grpc&quot;&gt;Scala2grpc&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2022-08-20T18:22:52-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Handle Apple In-App-Purchase Server Notification with Scala/Java</title><link href="https://www.binwang.me/2022-08-20-Apple-In-App-Purchase-Server-to-Server-Notification-Handling-with-Scala-Java.html" rel="alternate" type="text/html" title="Handle Apple In-App-Purchase Server Notification with Scala/Java" /><published>2022-08-20T00:00:00-04:00</published><updated>2022-08-20T00:00:00-04:00</updated><id>https://www.binwang.me/Apple-In-App-Purchase-Server-to-Server-Notification-Handling-with-Scala-Java</id><content type="html" xml:base="https://www.binwang.me/2022-08-20-Apple-In-App-Purchase-Server-to-Server-Notification-Handling-with-Scala-Java.html">&lt;p&gt;When you write an app for iOS, publish it to Apple App Store and want to sell something within it, Apple makes it mandatory to use its own in app purchase framework for non consumable items and subscriptions. If the app has a server, it’s very usual that the server wants to know the payment events and have some followup logic with them. But how to do that? There is always an option to let the app send a request to server, but anyone can use the same endpoint to make false claims. To prevent this, Apple has a server to server notification mechanism: Instead the app itself, a server from Apple will send a request to your server to notify the payment events. Since the message is signed by Apple, you can make sure no one else can fake it by verifying the signature.&lt;/p&gt;
+
+&lt;p&gt;While this framework should in theory makes developer’s life easier, the lack of documentation makes it very painful to use. There is also little and often wrong information on the Internet about how to verify the signature, especially for a server written with Java related tech stack. So in this article, I will give an example about how to decode and verify the payment notification messages sent by Apple with Scala. The library we are using is &lt;a href=&quot;https://connect2id.com/products/nimbus-jose-jwt&quot;&gt;Nimbus JOSE + JWT&lt;/a&gt; which is written in Java, so the method applies to other JVM languages as well. Hopefully this can help other developers who are facing the same problem.&lt;/p&gt;
+
+&lt;h2 id=&quot;1-how-to-trigger-a-server-notification&quot;&gt;1. How to Trigger a Server Notification&lt;/h2&gt;
+
+&lt;p&gt;Needless to say, to receive a payment notification you must initiate a payment from the app. There are various ways to do it and we will not discuss it in this article. But be aware there are two ways to test the in app payment: create a &lt;a href=&quot;https://developer.apple.com/documentation/xcode/setting-up-storekit-testing-in-xcode&quot;&gt;StoreKit configuration in Xcode&lt;/a&gt; or &lt;a href=&quot;https://developer.apple.com/documentation/storekit/in-app_purchase/testing_in-app_purchases_with_sandbox&quot;&gt;use a sandbox environment&lt;/a&gt;. Only the later one will trigger a server to server notification.&lt;/p&gt;
+
+&lt;p&gt;Another requirement is to set up the notification endpoint in Apple Connection settings. The endpoint is a https URL that Apple will send a http post request to. &lt;a href=&quot;https://developer.apple.com/documentation/storekit/in-app_purchase/original_api_for_in-app_purchase/subscriptions_and_offers/enabling_app_store_server_notifications&quot;&gt;Here&lt;/a&gt; is the Apple document about how to do it.&lt;/p&gt;
+
+&lt;h2 id=&quot;2-server-notification-workflow&quot;&gt;2. Server Notification Workflow&lt;/h2&gt;
+
+&lt;p&gt;In order to better understand how to handle the notification message, let’s take a look at the server notification workflow first.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/static/images/2022-08-20-Apple-In-App-Purchase-Server-to-Server-Notification-Handling-with-Scala-Java/iap-server-notification.png&quot; alt=&quot;iap-server-notification&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;When Apple receives some payment information, whether it’s from the app, or from subscription renew, or subscription expiration or other events, it will try to send the event to your server by sending an http POST request. In order to make sure no other people can fake a request to the same http endpoint, Apple signs the request payload with a private key that only Apple has access, so that when your server received the message, you can verify it by Apple’s public key.&lt;/p&gt;
+
+&lt;p&gt;The way Apple signs the message is using a standard called &lt;a href=&quot;https://www.rfc-editor.org/rfc/rfc7515.html&quot;&gt;JWS&lt;/a&gt;. This is a complex standard with multiple implementation options. To fully understand it you also need to know things like &lt;a href=&quot;https://www.rfc-editor.org/rfc/rfc7518.html&quot;&gt;JWA&lt;/a&gt; and &lt;a href=&quot;https://www.rfc-editor.org/rfc/rfc7517&quot;&gt;JWK&lt;/a&gt;. Apple has very little document about how to decode its own message other than throw this RFC page into the document. Even in support forums, their response is like “use your favourite crypto library”, which doesn’t really help anything.&lt;/p&gt;
+
+&lt;h3 id=&quot;3-jws-overview&quot;&gt;3. JWS Overview&lt;/h3&gt;
+
+&lt;p&gt;To make it easy, I will give a very simple overview of JWS, JWS has three parts: a header that contains metadata like keys and algorithm to use, the actual payload, and a signature:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;header (metadata)
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;-----------
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;payload (actual message we want, base64 encoded JSON)
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;-----------
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;signature (generated by applying crypto algrithm on payload with keys in header)
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;So in order to make sure the whole message is actually sent by Apple, we need to verify:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The signature is generated by the keys in header and the payload.&lt;/li&gt;
+  &lt;li&gt;The keys in header is generated by Apple.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Since the payload is only base64 encoded, for a developer that is not familiar with JWS, even with the help of a JWS library, both verification steps can be easily missed since it only affects the verification, not the decoding of the message.&lt;/p&gt;
+
+&lt;p&gt;In the section next, we will have an example about how to decode the message while really verify the message is sent by Apple as well.&lt;/p&gt;
+
+&lt;h2 id=&quot;4-decode-and-verify-notification&quot;&gt;4. Decode and Verify Notification&lt;/h2&gt;
+
+&lt;p&gt;Here we are using &lt;a href=&quot;https://developer.apple.com/documentation/appstoreservernotifications/app_store_server_notifications_v2&quot;&gt;App Store server notifications v2&lt;/a&gt;. Let’s say you’ve already got the http POST body from your configured endpoint:&lt;/p&gt;
+
+&lt;div class=&quot;language-Scala highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;val responseBodyV2Str: String = ... // your code to get POST body from HTTP request
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;code&gt;responseBodyV2Str&lt;/code&gt; itself is not a JWS object but a JSON string like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;{&amp;quot;signedPayload&amp;quot;:&amp;quot;eyJhbGciOiJFUzI1NiIsIng1YyI6WyJNSUlFTU....&amp;quot;}
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The value of &lt;code&gt;signedPayload&lt;/code&gt; is the encoded JWS string we want to parse. So we need to get that value first. I’m using &lt;a href=&quot;https://circe.github.io/circe/&quot;&gt;circe&lt;/a&gt; to parse the JSON string, but any method that can parse it and get the value is fine. In my case, I defined some classes based on the JSON structures so that we can parse them in a more type safe way.&lt;/p&gt;
+
+&lt;div class=&quot;language-Scala highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;import io.circe.generic.extras._
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;import io.circe.parser
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;object ApplePaymentService {
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;  implicit val config: Configuration = Configuration.default.withDefaults
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;  @ConfiguredJsonCodec case class AppleResponseBodyV2(
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;    signedPayload: String,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;  )
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt;  @ConfiguredJsonCodec case class AppleResponseBodyV2DecodedPayload(
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n14&quot; name=&quot;n14&quot;&gt;14&lt;/a&gt;&lt;/span&gt;    notificationType: String,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n15&quot; name=&quot;n15&quot;&gt;15&lt;/a&gt;&lt;/span&gt;    subtype: Option[String],
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n16&quot; name=&quot;n16&quot;&gt;16&lt;/a&gt;&lt;/span&gt;    data: ApplePayloadData,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n17&quot; name=&quot;n17&quot;&gt;17&lt;/a&gt;&lt;/span&gt;  )
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n18&quot; name=&quot;n18&quot;&gt;18&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n19&quot; name=&quot;n19&quot;&gt;19&lt;/a&gt;&lt;/span&gt;  @ConfiguredJsonCodec case class ApplePayloadData(
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n20&quot; name=&quot;n20&quot;&gt;20&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;    appAppleId: Option[String],
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n21&quot; name=&quot;n21&quot;&gt;21&lt;/a&gt;&lt;/span&gt;    bundleId: String,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n22&quot; name=&quot;n22&quot;&gt;22&lt;/a&gt;&lt;/span&gt;    bundleVersion: String,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n23&quot; name=&quot;n23&quot;&gt;23&lt;/a&gt;&lt;/span&gt;    environment: String,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n24&quot; name=&quot;n24&quot;&gt;24&lt;/a&gt;&lt;/span&gt;    signedRenewalInfo: String,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n25&quot; name=&quot;n25&quot;&gt;25&lt;/a&gt;&lt;/span&gt;    signedTransactionInfo: String,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n26&quot; name=&quot;n26&quot;&gt;26&lt;/a&gt;&lt;/span&gt;  )
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n27&quot; name=&quot;n27&quot;&gt;27&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n28&quot; name=&quot;n28&quot;&gt;28&lt;/a&gt;&lt;/span&gt;  @ConfiguredJsonCodec case class AppleJWSTransactionDecodedPayload(
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n29&quot; name=&quot;n29&quot;&gt;29&lt;/a&gt;&lt;/span&gt;    appAccountToken: String,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n30&quot; name=&quot;n30&quot;&gt;30&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;    bundleId: String,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n31&quot; name=&quot;n31&quot;&gt;31&lt;/a&gt;&lt;/span&gt;    environment: String,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n32&quot; name=&quot;n32&quot;&gt;32&lt;/a&gt;&lt;/span&gt;    expiresDate: Long, // timestamp in ms
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n33&quot; name=&quot;n33&quot;&gt;33&lt;/a&gt;&lt;/span&gt;    inAppOwnershipType: String,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n34&quot; name=&quot;n34&quot;&gt;34&lt;/a&gt;&lt;/span&gt;    originalPurchaseDate: Long, // timestamp in ms
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n35&quot; name=&quot;n35&quot;&gt;35&lt;/a&gt;&lt;/span&gt;    originalTransactionId: String,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n36&quot; name=&quot;n36&quot;&gt;36&lt;/a&gt;&lt;/span&gt;    productId: String,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n37&quot; name=&quot;n37&quot;&gt;37&lt;/a&gt;&lt;/span&gt;    purchaseDate: Long, // timestamp in ms
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n38&quot; name=&quot;n38&quot;&gt;38&lt;/a&gt;&lt;/span&gt;    quantity: Int,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n39&quot; name=&quot;n39&quot;&gt;39&lt;/a&gt;&lt;/span&gt;    transactionId: String,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n40&quot; name=&quot;n40&quot;&gt;40&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;    `type`: String,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n41&quot; name=&quot;n41&quot;&gt;41&lt;/a&gt;&lt;/span&gt;    webOrderLineItemId: String,
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n42&quot; name=&quot;n42&quot;&gt;42&lt;/a&gt;&lt;/span&gt;  )
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n43&quot; name=&quot;n43&quot;&gt;43&lt;/a&gt;&lt;/span&gt;}
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;With the help with the classes and JSON parser, we can get the value of &lt;code&gt;signedPayload&lt;/code&gt;. (I removed &lt;code&gt;\n&lt;/code&gt; from the JSON string since it’s not valid to have newlines in JSON string, not sure why Apple’s request body has newline in it):&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;val responseBodyV2 = parser.parse(responseBodyV2Str.replace(&amp;quot;\n&amp;quot;, &amp;quot;&amp;quot;)).flatMap(_.as[AppleResponseBodyV2]).toTry.get
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;After get the JWS string, we can parse it with &lt;a href=&quot;https://connect2id.com/products/nimbus-jose-jwt/examples&quot;&gt;Numbus Jose + JWT&lt;/a&gt; (follow the document to add this dependency into your project first):&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;import com.nimbusds.jose.JWSObject
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;import com.nimbusds.jose.crypto.ECDSAVerifier
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;import com.nimbusds.jose.crypto.bc.BouncyCastleProviderSingleton
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;import com.nimbusds.jose.jwk.ECKey
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;import com.nimbusds.jose.util.X509CertUtils
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;val jwsObject = JWSObject.parse(responseBodyV2.signedPayload)
+&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;val jwsCerts = jwsObject.getHeader.getX509CertChain.asScala.map(c =&amp;gt; X509CertUtils.parse(c.decode()))
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;41-verify-keys-in-jws-header-is-signed-by-apple&quot;&gt;4.1 Verify keys in JWS header is signed by Apple&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;jwsCerts&lt;/code&gt; is a list of &lt;code&gt;X509Certificate&lt;/code&gt;, which is the key chain in JWS header. A cert in the list can be verified by the cert behind it. And the last cert should be verified by Apple’s public key so that we can make sure the whole key chain is signed by Apple.&lt;/p&gt;
+
+&lt;p&gt;So let’s first get the root cert of Apple first: download &lt;a href=&quot;https://www.apple.com/certificateauthority/AppleRootCA-G3.cer&quot;&gt;Apple Root CA - G3 Root&lt;/a&gt; from &lt;a href=&quot;https://www.apple.com/certificateauthority/&quot;&gt;Apple PKI website&lt;/a&gt; and put it under your project’s &lt;code&gt;src/resources/certs&lt;/code&gt; (or any where the program can read, we are just using it as an example here). Then we can read the Apple root cert with this code:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;val appleRootCa = X509CertUtils.parse(getClass.getResourceAsStream(&amp;quot;/certs/AppleRootCA-G3.cer&amp;quot;).readAllBytes())
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;With both the key chain and root cert, we can verify the key chain is both valid and signed by Apple:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;jwsCerts.sliding(2).foreach { x =&amp;gt;
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;  x.head.verify(x.last.getPublicKey)
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;}
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;jwsCerts.last.verify(appleRootCa.getPublicKey)
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;It will throw exception if the verify doesn’t pass.&lt;/p&gt;
+
+&lt;h3 id=&quot;42-verify-jws-is-signed-by-keys-in-jws-header&quot;&gt;4.2 Verify JWS is signed by keys in JWS header&lt;/h3&gt;
+
+&lt;p&gt;Once we verified the keys in JWS header is signed by Apple, we need to verify JWS itself is signed by these keys. Since the &lt;code&gt;alg&lt;/code&gt; field in this JWS header is &lt;code&gt;ES256&lt;/code&gt;, we will use &lt;code&gt;ECDSAVerifier&lt;/code&gt; to verify it:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;val jwk = ECKey.parse(jwsCerts.head)
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;val jwsVerifier = new ECDSAVerifier(jwk)
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;if (!jwsObject.verify(jwsVerifier)) {
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;  throw new RuntimeException(&amp;quot;Apple JWS object cannot be verified&amp;quot;)
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;}
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;43-parse-the-payload&quot;&gt;4.3 Parse the payload&lt;/h3&gt;
+
+&lt;p&gt;After verify the JWS is valid, we can start to parse the payload. I’m using the JSON parser and the structure I defined above. Please refer to Apple’s document about the actual fields in the payload:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;val responseBodyV2Payload = jwsObject.getPayload.toString
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;val responseBodyV2DecodedPayload = parser.parse(responseBodyV2Payload).flatMap(_.as[AppleResponseBodyV2DecodedPayload]).toTry.get
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;val transactionPayload = responseBodyV2DecodedPayload.data.signedTransactionInfo
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;val transactionDecodedPayloadStr = JWSObject.parse(transactionPayload).getPayload.toString
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;val transactionDecodedPayload = parser.parse(transactionDecodedPayloadStr).flatMap(_.as[AppleJWSTransactionDecodedPayload]).toTry.get
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Here we have the detailed transaction information in &lt;code&gt;transactionDecodedPayload&lt;/code&gt; and can hand it with our business logic.&lt;/p&gt;
+
+&lt;p&gt;There is an interesting thing: &lt;code&gt;signedRenewInfo&lt;/code&gt; and &lt;code&gt;signedTrasactionInfo&lt;/code&gt; are both encoded with JWS again in payload data. I don’t know why: since we’ve already verified the whole payload is signed by Apple, all the content in it should already be valid as well, what’s the point to sign the fields again? I just decoded the fields with &lt;code&gt;JWSObject.parse&lt;/code&gt; but you can always verify it with the same method above just to be safe.&lt;/p&gt;
+
+&lt;h2 id=&quot;5-other-thoughts&quot;&gt;5. Other Thoughts&lt;/h2&gt;
+
+&lt;p&gt;As I said about a &lt;a href=&quot;/2020-11-08-DNS-Resolving-Bug-in-iOS-14.html&quot;&gt;previous blog about an iOS bug&lt;/a&gt;, I really hate Apple’s close ecosystem. But Apple’s hardware is good and has a large user space, so we cannot avoid it. Hopefully Android can be better at permission management and other mobile OS can also catch up.&lt;/p&gt;</content><author><name></name></author><category term="iOS" /><category term="Apple" /><category term="In App Purchase" /><category term="Scala" /><category term="Java" /><category term="Programming" /><summary type="html">When you write an app for iOS, publish it to Apple App Store and want to sell something within it, Apple makes it mandatory to use its own in app purchase framework for non consumable items and subscriptions. If the app has a server, it’s very usual that the server wants to know the payment events and have some followup logic with them. But how to do that? There is always an option to let the app send a request to server, but anyone can use the same endpoint to make false claims. To prevent this, Apple has a server to server notification mechanism: Instead the app itself, a server from Apple will send a request to your server to notify the payment events. Since the message is signed by Apple, you can make sure no one else can fake it by verifying the signature.</summary></entry><entry><title type="html">A Library to Make It Easier to Use Scala with gRPC</title><link href="https://www.binwang.me/2022-05-02-A-Library-to-Make-It-Easier-to-Use-Scala-with-GRPC.html" rel="alternate" type="text/html" title="A Library to Make It Easier to Use Scala with gRPC" /><published>2022-05-02T00:00:00-04:00</published><updated>2022-05-02T00:00:00-04:00</updated><id>https://www.binwang.me/A-Library-to-Make-It-Easier-to-Use-Scala-with-GRPC</id><content type="html" xml:base="https://www.binwang.me/2022-05-02-A-Library-to-Make-It-Easier-to-Use-Scala-with-GRPC.html">&lt;p&gt;&lt;em&gt;This article describes why I created the library &lt;a href=&quot;https://github.com/wb14123/scala2grpc&quot;&gt;Scala2grpc&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://grpc.io/&quot;&gt;gPRC&lt;/a&gt; is a Remote Procedure Call (RPC) framework made by Google. It uses a domain specific language (DSL) to define the APIs, and provides tools for lots of languages to generate code for both servers and clients. The generated code includes models and API interfaces. The developer can create a gRPC server by implementing the generated interfaces. There are lots of examples in the official document so I’ll not spend more time on the details.&lt;/p&gt;
 
@@ -1426,46 +1626,4 @@
 
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
-&lt;p&gt;We had an overview of the Internet censorship methods in China. I believe it will get back fired once the restrictions are more and more strict and ridiculous. In the next article, we will explore how to deploy an IM server in such environment and make it as convenience as possible for end users.&lt;/p&gt;</content><author><name></name></author><category term="technology" /><category term="GFW" /><category term="China" /><category term="Internet" /><summary type="html">Updated at sep 6, 2020: change the title and add other articles in this series.</summary></entry><entry><title type="html">Matrix: A Self Hosted Instant Messaging Solution with End to End Encryption</title><link href="https://www.binwang.me/2020-08-23-Build-An-Instant_Messaging-System-without-Censorship-Choose-the-right-technology.html" rel="alternate" type="text/html" title="Matrix: A Self Hosted Instant Messaging Solution with End to End Encryption" /><published>2020-08-23T00:00:00-04:00</published><updated>2020-08-23T00:00:00-04:00</updated><id>https://www.binwang.me/Build-An-Instant_Messaging-System-without-Censorship-Choose-the-right-technology</id><content type="html" xml:base="https://www.binwang.me/2020-08-23-Build-An-Instant_Messaging-System-without-Censorship-Choose-the-right-technology.html">&lt;p&gt;&lt;em&gt;Updated at sep 6, 2020: change the title and add other articles in this series.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;This article belongs of a series of articles that talk about how to build an instant messaging system without censorship:&lt;/em&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;/2020-08-23-Build-An-Instant_Messaging-System-without-Censorship-Choose-the-right-technology.html&quot;&gt;Matrix: A Self Hosted Instant Messaging Solution with End to End Encryption&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;/2020-08-29-Build-An-Instant_Messaging-System-without-Censorship-Choose-An-Overview-of-Chinese-Internet-Censorship-Strategy.html&quot;&gt;Overview of China’s Internet censorship strategy&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;/2020-09-08-Build-An-Instant-Messaging-System-without-Censorship-Deployment-Options.html&quot;&gt;Deploy Matrix for Users in China&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Instant messaging (IM) software maybe the most commonly used type of software. Privacy is especially important for instant messaging apps. No one wants to be eavesdropped when talking with friends and family. However, most of the instant messaging applications don’t have end to end encryption, which means the service provider can see all the messages. This information is much more sensitive than financial information, yet we have regulations for banks but have basically zero regulation for instant messaging providers. Sometimes it’s even worse while having regulations: Chinese government can require the provider to hand over server data &lt;a href=&quot;http://www.cac.gov.cn/2016-11/07/c_1119867116_2.htm&quot;&gt;by law&lt;/a&gt; (Ironically, the offical website of Cyberspace Administration of China doesn’t even have https). That’s why TikTok is such a hot topic recently. And while Tencent saying they never look at the messages in WeChat, I never trust them. There are even &lt;a href=&quot;https://news.qq.com/a/20151012/010241.htm#p=4&quot;&gt;news&lt;/a&gt; that showing QQ (another IM software provided by Tencent that is very similar with WeChat) messages helped the police to find criminals. Even if the providers don’t look at the data as they declared, as long as they store the data, it becomes permanent record. You don’t know who will use that data on what purpose in the future.&lt;/p&gt;
-
-&lt;p&gt;There are a few IM software that have end to end encryption built in. However, each of them has some shortcomings which prevent them to be truly secure. For example, &lt;a href=&quot;https://www.signal.org/&quot;&gt;Signal&lt;/a&gt; is considered as the most secure one, but it needs a phone number and use it as verification sometimes. As we all know, text message is very easy to be hacked. While the hacker cannot view the message history in Signal, it may makes the account disappear. (The technology details behind this is complex, I may write another article to explain this in the future). WhatsApp is another popular one. But it’s not open sourced so it’s hard to tell if it’s doing something secretly or really implementing the end to end algorithm correctly. Most important of all, end to end encryption doesn’t mean decentralize. They all have centralized servers. And unfortunately, the servers are all blocked by China.&lt;/p&gt;
-
-&lt;p&gt;There are also some P2P IM software. I tried a lot of them. Most of them don’t have end to end encryption. And they are all too slow to have a good user experience.&lt;/p&gt;
-
-&lt;p&gt;So the ideal solution would be deploying an instance messaging system with end to end encryption by myself. Signal is open sourced. The server code is clean and easy to deploy. But as I said before, I don’t like the use of phone number. And because it’s not designed for decentralized deployment, the iOS and Android client needs to be modified to bind push keys from Apple and Google in order to have notifications. Downloading a customized version of client is not very user friendly.&lt;/p&gt;
-
-&lt;p&gt;Then I found &lt;a href=&quot;https://matrix.org/&quot;&gt;Matrix&lt;/a&gt;, an open standard for instant messaging. It’s decentralized by design. People can have different service providers like Email. People can speak with other persons on other server. The servers talk with each other to deliver messages. The username of Matrix contains the server name, so the servers can tell where to deliver messages. The diagram below shows how user1 on &lt;code&gt;server1.com&lt;/code&gt; talks with user2 on &lt;code&gt;server2.com&lt;/code&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt; User: @user1:server1.com
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;          |    ^
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;          |    |
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;          V    |
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt; Server: server1.com
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;          |    ^
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;          |    |
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;          V    |
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt; Server: server2.com
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;          |    ^
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;          |    |
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt;          V    |
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n14&quot; name=&quot;n14&quot;&gt;14&lt;/a&gt;&lt;/span&gt; User: @user2:server2.com
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n15&quot; name=&quot;n15&quot;&gt;15&lt;/a&gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;p&gt;While it has a lot of &lt;a href=&quot;https://matrix.org/clients-matrix/&quot;&gt;clients&lt;/a&gt;, the most popular one is &lt;a href=&quot;https://element.io/&quot;&gt;Element&lt;/a&gt;(used to be named Riot). The most popular server is &lt;a href=&quot;https://github.com/matrix-org/synapse&quot;&gt;Synapse&lt;/a&gt;. The authentication server is separated from the messaging server. &lt;a href=&quot;https://github.com/matrix-org/sydent&quot;&gt;Sydent&lt;/a&gt; is a one of the implementations. Synapse and Sydent are both written in Python. While it takes some efforts to deploy it, they are both well documented and shouldn’t be too hard for someone with server admin experience.&lt;/p&gt;
-
-&lt;p&gt;It would be much easier if we live in a world without Internet censorship. However, Chinese government built powerful tools and strict policies around it. In the future articles of this series, I will give a brief overview of Chinese goverment Internet censorship strategies, and some options to deploy Matrix servers with such restrictions.&lt;/p&gt;</content><author><name></name></author><category term="technology" /><category term="Matrix" /><category term="instant messaging" /><category term="censorship" /><summary type="html">Updated at sep 6, 2020: change the title and add other articles in this series.</summary></entry></feed>
+&lt;p&gt;We had an overview of the Internet censorship methods in China. I believe it will get back fired once the restrictions are more and more strict and ridiculous. In the next article, we will explore how to deploy an IM server in such environment and make it as convenience as possible for end users.&lt;/p&gt;</content><author><name></name></author><category term="technology" /><category term="GFW" /><category term="China" /><category term="Internet" /><summary type="html">Updated at sep 6, 2020: change the title and add other articles in this series.</summary></entry></feed>
