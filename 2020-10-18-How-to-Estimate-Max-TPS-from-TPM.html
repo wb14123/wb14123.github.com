@@ -55,7 +55,7 @@
 
 <p>With this assumption in mind, we can use <a href="https://en.wikipedia.org/wiki/Poisson_distribution">Poisson distribution</a> to solve this problem. The probability of how many times the event occurs in the interval of time can be solved by this:</p>
 
-<p><span>\(P(TPS=k) =  \frac{\lambda^k e^{-k}}{k!}\)</span></p>
+<p><span>\(P(TPS=k) =  \frac{\lambda^k e^{-\lambda}}{k!}\)</span></p>
 
 <p><span>\(k\)</span> means how many times the event happens in the interval of time. <span>\(\lambda\)</span> means the average of times that the event will occur in the interval.</p>
 
@@ -63,7 +63,7 @@
 
 <p>So we have the probability of the TPS. But what we want is the max TPS. If we want to know what’s the probability of max TPS equals n, we can add all the probabilities of TPS under n:</p>
 
-<p><span>\(P(max TPS = n) = \sum_{k=0}^{n} P(TPS=k) = \sum_{k=0}^{n} \frac{\lambda^k e^{-k}}{k!}\)</span></p>
+<p><span>\(P(max TPS = n) = \sum_{k=0}^{n} P(TPS=k) = \sum_{k=0}^{n} \frac{\lambda^k e^{-\lambda}}{k!}\)</span></p>
 
 <p>Then we can draw a graph of this function and select n that makes the probability almost to 1. I recommend <a href="https://www.wolframalpha.com">Wolfram Alpha</a> to draw the graph. Though it needs paid version to show a more clear graph, the free version is enough for our use case.</p>
 
@@ -80,6 +80,8 @@
 <p>From the graph, we can see max transactions per 100ms would be more like 36. And when we provide a target throttling TPS, we should multiply this by 10 which is 360, a lot higher than 260.</p>
 
 <p>The calculation above also applies when it count throttling number independently on multiple hosts. (Again, it should have a better throttling counting mechanism). For example, if the dependency service has 10 hosts and it chooses random host to handle the request, then we should count max TPS per host. Which <span>\(\lambda\)</span> is also 20 and target TPS configuration should be 360 instead of 260.</p>
+
+<p><em>Update at Sep 22, 2022: Fix the formular from <span>\(e^{-k}\)</span> to <span>\(e^{-\lambda}\)</span>. The graphs and results were computed with <span>\(e{-\lambda}\)</span> so they are still correct.</em></p>
 
 </article>
 
