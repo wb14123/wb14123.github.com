@@ -1,4 +1,78 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2022-09-22T08:12:46-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Handle Apple In-App-Purchase Server Notification with Scala/Java</title><link href="https://www.binwang.me/2022-08-20-Apple-In-App-Purchase-Server-to-Server-Notification-Handling-with-Scala-Java.html" rel="alternate" type="text/html" title="Handle Apple In-App-Purchase Server Notification with Scala/Java" /><published>2022-08-20T00:00:00-04:00</published><updated>2022-08-20T00:00:00-04:00</updated><id>https://www.binwang.me/Apple-In-App-Purchase-Server-to-Server-Notification-Handling-with-Scala-Java</id><content type="html" xml:base="https://www.binwang.me/2022-08-20-Apple-In-App-Purchase-Server-to-Server-Notification-Handling-with-Scala-Java.html">&lt;p&gt;When you write an app for iOS, publish it to Apple App Store and want to sell something within it, Apple makes it mandatory to use its own in app purchase framework for non consumable items and subscriptions. If the app has a server, it’s very usual that the server wants to know the payment events and have some followup logic with them. But how to do that? There is always an option to let the app send a request to server, but anyone can use the same endpoint to make false claims. To prevent this, Apple has a server to server notification mechanism: Instead the app itself, a server from Apple will send a request to your server to notify the payment events. Since the message is signed by Apple, you can make sure no one else can fake it by verifying the signature.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2022-10-29T13:04:30-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">RSS Brain: Yet Another RSS Reader, With More Features</title><link href="https://www.binwang.me/2022-10-29-RSS-Brain-Yet-Another-RSS-Reader-With-More-Features.html" rel="alternate" type="text/html" title="RSS Brain: Yet Another RSS Reader, With More Features" /><published>2022-10-29T00:00:00-04:00</published><updated>2022-10-29T00:00:00-04:00</updated><id>https://www.binwang.me/RSS-Brain-Yet-Another-RSS-Reader-With-More-Features</id><content type="html" xml:base="https://www.binwang.me/2022-10-29-RSS-Brain-Yet-Another-RSS-Reader-With-More-Features.html">&lt;p&gt;I’ve written yet another RSS Reader called RSS Brain recently. If you just want to take a quick look at the main features and try it, &lt;a href=&quot;https://rssbrain.com/&quot;&gt;the official website&lt;/a&gt; is the best place to start. Though most of the main features are already finished and I’ve used it personally for a few months, be aware it’s still in beta stage and hasn’t been tested by a larger group yet. So please let me know if you run into any issues. I will open source it as well in the future (for non commercial usage) but it’s not ready yet for now.&lt;/p&gt;
+
+&lt;p&gt;In this article, I’ll give an introduction to the motivation behind it. You may have a better reason to try it after read this.&lt;/p&gt;
+
+&lt;p&gt;RSS is just a protocol to aggregate news. But how to organize them depends on the RSS reader.  While lots of RSS readers have the basic organization features like folders to manage the feeds, it is not enough. Not a lot of them have taken new technologies from fields like information retrieval and machine learning. Even a few them have done that, they are using some complex and black box algorithms which we don’t know what is going on behind the sense. I’ve written &lt;a href=&quot;/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html&quot;&gt;an article&lt;/a&gt; that talks about the harm of letting black box algorithm decide what we read. So in RSS Brain, I use transparent algorithms to help organize the feeds and articles without use clicks or read time as the optimization target, so that we can have a good understanding about why it behaves in that way, in that way we can decide whether it’s good for us or not.&lt;/p&gt;
+
+&lt;p&gt;Here are some pain points in the traditional RSS readers and how I solve them in RSS Brain with transparent algorithms.&lt;/p&gt;
+
+&lt;h2 id=&quot;1-traditional-rss-readers-dont-rank-articles-by-weight&quot;&gt;1. Traditional RSS Readers Don’t Rank Articles by Weight&lt;/h2&gt;
+
+&lt;p&gt;The mainstream RSS protocol don’t have a field to indicate how important an article is in a feed. It is very different from news papers or news websites, which have head line for the most important news. When it comes to RSS, there is no difference between the importance of the articles. It is a smaller problem when there are not so many articles in a feed, but for feeds that have lots of articles, or forums like Reddit and Hacker News, that is a very big problem.&lt;/p&gt;
+
+&lt;p&gt;Reddit and Hacker News sort the articles by both votes and timeline. The algorithm is relatively transparent (although less and less transparent in the case of Reddit). Some people don’t want the rank to be effected by other users at all, but I’m okay for other this kind of ranking for these reasons:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The posts are just too many to read them all without some kind of priority.&lt;/li&gt;
+  &lt;li&gt;The community is part of the forum. If I like a subreddit, it means I trust the community and mods to promote high quality posts. Otherwise I will just not subscribe to it.&lt;/li&gt;
+  &lt;li&gt;If you think about it, the traditional media also rank news for you, even khough it is selected by more professional people. But like I said in point 2, if you trust the community of a subreddit, then it doesn’t make a big difference.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;11-ranking-algorithm&quot;&gt;1.1 Ranking Algorithm&lt;/h3&gt;
+
+&lt;p&gt;Some readers have ranking algorithms to sort the articles for you, but those are mostly black box algorithms, which is harmful like I said before. In RSS Brain, we will take the votes from the source, and sort it with an algorithm that is similar to Reddit:&lt;/p&gt;
+
+\[S_{vote} = log_{10}v\]
+
+\[S_{time} = { time \over C }\]
+
+\[S = S_{vote} + S_{time}\]
+
+&lt;p&gt;Which &lt;code&gt;v&lt;/code&gt; means how many votes this article has. &lt;code&gt;time&lt;/code&gt; means when this article is posted. &lt;code&gt;C&lt;/code&gt; is a constant number that indicate how much wait time contributes to the whole score. I’m using 12.5 hours in my implementation.&lt;/p&gt;
+
+&lt;p&gt;For \(S_{vote}\), it means the first 10 votes will get the most weights, the next 100 votes has the same weight as the first 10 votes, and so on. It’s not a perfect algorithm but works good enough, and is easy to implement. Most importantly it’s very easy to be understood.&lt;/p&gt;
+
+&lt;p&gt;Once you have the score, you have the option to sort the articles in a folder or feed based on score instead of time.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://www.rssbrain.com/images/sort_post.png&quot; alt=&quot;ranking&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;12-data-source&quot;&gt;1.2 Data Source&lt;/h3&gt;
+
+&lt;p&gt;Another obvious problem is how to get the votes. The traditional RSS protocols don’t have a specific field for vote count, luckily atom protocol has the ability to extend it with custom tags. So RSS Brain will parse these tags in &lt;code&gt;&amp;lt;entry&amp;gt;&lt;/code&gt; tag if exists: &lt;code&gt;&amp;lt;*:comments&amp;gt;&lt;/code&gt;, &lt;code&gt;&amp;lt;*:upvotes&amp;gt;&lt;/code&gt;, &lt;code&gt;&amp;lt;*:downvotes&amp;gt;&lt;/code&gt;. &lt;code&gt;*&lt;/code&gt; can be any namespace. I’ve added &lt;a href=&quot;https://docs.rsshub.app/en/joinus/quick-start.html#submit-new-rss-rule-code-the-script-produce-rss-feed-interactions&quot;&gt;these fields&lt;/a&gt; to a very popular RSS generator &lt;a href=&quot;https://rsshub.app/&quot;&gt;RSSHub&lt;/a&gt; in namespace &lt;code&gt;RSSHub&lt;/code&gt;. So if someone include these fields when implement a RSS, RSS Brain will be able to parse it and use &lt;code&gt;upvotes - downvotes&lt;/code&gt; as the votes. If they are not available, RSS Brain will try to use &lt;code&gt;comments&lt;/code&gt; instead.&lt;/p&gt;
+
+&lt;p&gt;Reddit and HackerNews are two of my main daily reading websites, and I believe it’s the same for many other people, so I also included an implementation to fetch the posts from Reddit and HackerNews JSON API. You can just input HackerNews or subreddit URL when add a new source, it will has an option to use the JSON feed when it tries to find the feeds. I know it’s not a very standard way, but it’s easier for me to implement rather than do it in RSSHub. Once there is a RSS implementation that contains the fields above, you have no trouble to use the RSS feed.&lt;/p&gt;
+
+&lt;p&gt;Since RSS Brain is parsing the tags in the RSS feed, for data sources other than forum, the RSS generator can also try to generate the votes in some way if necessary. For example, some score based on the article position of the website, the font size and so on. I haven’t done any experiment with it yet but I think it’s an interesting idea to explore.&lt;/p&gt;
+
+&lt;h2 id=&quot;2-filter-articles-with-search-terms&quot;&gt;2. Filter Articles With Search Terms&lt;/h2&gt;
+
+&lt;p&gt;Ranking the articles is one way to get the interested aritcles pop up. Another way is to filter the articles: sometimes we only care about a topic in a feed. In traditional RSS readers, there is no easy way to filter the topic out if there is no feed for that topic. In RSS Brain, you can define a search term on a folder, so that when you check the articles in this folder, it will only show the articles that matches the search term.&lt;/p&gt;
+
+&lt;p&gt;For example, you’ve got a few news feed, but only care reports about the war between Ukraine and Russia, then you can just set the search term as &lt;code&gt;&quot;Ukraine&quot; AND &quot;Russia&quot;&lt;/code&gt; on the folder and enable search filter. After that, when you click on the folder to see articles, it will only show the articles about those news.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://www.rssbrain.com/images/filter_folder.png&quot; alt=&quot;filter folder&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;By the way, you can also just search in a folder or source. This is very useful for me to search some news, since the search quality of search engineers for some news is very bad, especially for Chinese news, which very suspicious news agencies are always shown in the top results.&lt;/p&gt;
+
+&lt;h2 id=&quot;3-show-related-articles&quot;&gt;3. Show Related Articles&lt;/h2&gt;
+
+&lt;p&gt;This is a feature I found to be pretty interesting while Google News included it. But Google News selects the news source for you. In RSS Brain, you get get related articles from the feeds you subscribed, so that you can decide which sources are valuable to you instead of letting a big corp decide that.&lt;/p&gt;
+
+&lt;p&gt;Currently the implementation only has the ability to select from all your subscribed feeds. But even with this implementation, I find it is very useful in some ways:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;When I check the news, the related articles will show a post related to this in forums like Reddit and HackerNews, so that I can check other people’s opinion.&lt;/li&gt;
+  &lt;li&gt;I can compare the report coverage from both left and right news agencies, to get a whole picture. I don’t use this feature a lot myself, but I know a lot of people like that and there are some popular apps do just that.&lt;/li&gt;
+  &lt;li&gt;I usually read news from a high quality source. But if I find some news to be interesting, I’d like to read more coverage on that. Those coverage doesn’t need to be high quality but might have more details.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I have plan to extend this feature. It will be much better after that: RSS Brain will support related articles groups, so that you can show related articles not only from all the subscriptions, but also from the folders of your choice. So you can configure it to show related forum posts in one group, left/right news coverage on another group, and so on. I’ll also implement a feature to show related articles from a time range, so that it can filter the matches based on time, to make the news more related if you want.&lt;/p&gt;
+
+&lt;h2 id=&quot;4-just-want-to-write-something&quot;&gt;4. Just Want to Write Something&lt;/h2&gt;
+
+&lt;p&gt;Last but not least, I just want to write something and feel the happiness of coding. I really enjoy myself a lot while writing this project: coding, choosing the tech stack to use, setting up high availability cluster and database, and so on. Everything is so elegant because I can decide how to do it.&lt;/p&gt;
+
+&lt;p&gt;While enjoy myself during the development of the project, I find the product is pretty useful as well. So I decided to share it, and if it benefits more people I’m happier. As I said at the beginning of the article, I’ll open source the whole project and allow non commercial usages when it’s ready. But at the mean time, you can pay a monthly fee to use the software. The reason of this payment mode is two fold: I don’t want this software to be flooded with terrible ads, but I still need some revenue to keep the infrastructure running (for both hardware cost and my time). So I want to set some barriers at first to limit the user base, so that the users can have a better experience. Hope you enjoy this app and let me know if you run into any issues or have any question.&lt;/p&gt;</content><author><name></name></author><category term="RSS" /><category term="project" /><category term="RSS Brain" /><category term="digital life" /><category term="news" /><summary type="html">I’ve written yet another RSS Reader called RSS Brain recently. If you just want to take a quick look at the main features and try it, the official website is the best place to start. Though most of the main features are already finished and I’ve used it personally for a few months, be aware it’s still in beta stage and hasn’t been tested by a larger group yet. So please let me know if you run into any issues. I will open source it as well in the future (for non commercial usage) but it’s not ready yet for now.</summary></entry><entry><title type="html">Handle Apple In-App-Purchase Server Notification with Scala/Java</title><link href="https://www.binwang.me/2022-08-20-Apple-In-App-Purchase-Server-to-Server-Notification-Handling-with-Scala-Java.html" rel="alternate" type="text/html" title="Handle Apple In-App-Purchase Server Notification with Scala/Java" /><published>2022-08-20T00:00:00-04:00</published><updated>2022-08-20T00:00:00-04:00</updated><id>https://www.binwang.me/Apple-In-App-Purchase-Server-to-Server-Notification-Handling-with-Scala-Java</id><content type="html" xml:base="https://www.binwang.me/2022-08-20-Apple-In-App-Purchase-Server-to-Server-Notification-Handling-with-Scala-Java.html">&lt;p&gt;When you write an app for iOS, publish it to Apple App Store and want to sell something within it, Apple makes it mandatory to use its own in app purchase framework for non consumable items and subscriptions. If the app has a server, it’s very usual that the server wants to know the payment events and have some followup logic with them. But how to do that? There is always an option to let the app send a request to server, but anyone can use the same endpoint to make false claims. To prevent this, Apple has a server to server notification mechanism: Instead the app itself, a server from Apple will send a request to your server to notify the payment events. Since the message is signed by Apple, you can make sure no one else can fake it by verifying the signature.&lt;/p&gt;
 
 &lt;p&gt;While this framework should in theory makes developer’s life easier, the lack of documentation makes it very painful to use. There is also little and often wrong information on the Internet about how to verify the signature, especially for a server written with Java related tech stack. So in this article, I will give an example about how to decode and verify the payment notification messages sent by Apple with Scala. The library we are using is &lt;a href=&quot;https://connect2id.com/products/nimbus-jose-jwt&quot;&gt;Nimbus JOSE + JWT&lt;/a&gt; which is written in Java, so the method applies to other JVM languages as well. Hopefully this can help other developers who are facing the same problem.&lt;/p&gt;
 
@@ -1579,53 +1653,4 @@
   &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;p&gt;I believe the world will be a better place if everyone can communicate with each other freely. But it’s never easy. Even though we can deploy the services and make it accessible from China, the most popular Matrix client Element (Riot) is banned in China. There is a long way to go. I hope I can help even a little bit by sharing some technical information here.&lt;/p&gt;</content><author><name></name></author><category term="technology" /><category term="Matrix" /><category term="instant messaging" /><summary type="html">This article belongs of a series of articles that talk about how to build an instant messaging system without censorship:</summary></entry><entry><title type="html">An Overview of China’s Internet Censorship Strategy</title><link href="https://www.binwang.me/2020-08-29-Build-An-Instant_Messaging-System-without-Censorship-Choose-An-Overview-of-Chinese-Internet-Censorship-Strategy.html" rel="alternate" type="text/html" title="An Overview of China’s Internet Censorship Strategy" /><published>2020-08-29T00:00:00-04:00</published><updated>2020-08-29T00:00:00-04:00</updated><id>https://www.binwang.me/Build-An-Instant_Messaging-System-without-Censorship-Choose-An-Overview-of-Chinese-Internet-Censorship-Strategy</id><content type="html" xml:base="https://www.binwang.me/2020-08-29-Build-An-Instant_Messaging-System-without-Censorship-Choose-An-Overview-of-Chinese-Internet-Censorship-Strategy.html">&lt;p&gt;&lt;em&gt;Updated at sep 6, 2020: change the title and add other articles in this series.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;This article belongs of a series of articles that talk about how to build an instant messaging system without censorship:&lt;/em&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;/2020-08-23-Build-An-Instant_Messaging-System-without-Censorship-Choose-the-right-technology.html&quot;&gt;Matrix: A Self Hosted Instant Messaging Solution with End to End Encryption&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;/2020-08-29-Build-An-Instant_Messaging-System-without-Censorship-Choose-An-Overview-of-Chinese-Internet-Censorship-Strategy.html&quot;&gt;Overview of China’s Internet censorship strategy&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;/2020-09-08-Build-An-Instant-Messaging-System-without-Censorship-Deployment-Options.html&quot;&gt;Deploy Matrix for Users in China&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;There are two parts of Internet censorship in China:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Intra country network traffic: the sender and the receiver are all located in China.&lt;/li&gt;
-  &lt;li&gt;Inter country network traffic: sender or receiver is in China, and another one is outside China.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;The difference is because Chinese government has more control if all the devices within the network traffic are in China. It can make rules, and force ISP, IDC, cloud providers and service providers to follow. Otherwise, it can only uses some technical methods to block traffic.&lt;/p&gt;
-
-&lt;h2 id=&quot;intra-country-traffic&quot;&gt;Intra Country Traffic&lt;/h2&gt;
-
-&lt;p&gt;Let’s first talk about the censorship strategy for the network traffic inside China. It’s done by mapping the instances on Internet to real persons and organizations.&lt;/p&gt;
-
-&lt;p&gt;For the online service consumers, which are usually individuals, it’s done by mapping the personal ID to Internet instances like IP addresses and service accounts. An ID is required when apply for Internet access from ISP and when apply for a phone number. When register an account for any online service, a phone number is needed. So it can map network information in these ways:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;If you are using a home Internet, it can map from IP address to ID.&lt;/li&gt;
-  &lt;li&gt;If you are using a mobile network, it can map from IP address to phone number to ID.&lt;/li&gt;
-  &lt;li&gt;If you are using any online account, it can map from account to phone number to ID.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;For the online service providers, it’s done by licensing. For anyone who wants to provide Internet service, they must apply for a license from government. In order to get a license, you need to provide the hosts IP addresses, domain names, ID, personal photo and the business purpose. The government will store all the information and may request the provider to hand over information as needed.&lt;/p&gt;
-
-&lt;p&gt;In China, without a license, the network ports like 53 (DNS), 80 (HTTP) and 443 (HTTPS) are blocked by ISP for all devices. Cloud providers and IDC will also block hosts if they find any DNS without license is resolved to them. Home internet providers will not check DNS resolving, but it’s impractical to host any serious business on home Internet: it would be too slow for people using other ISP.&lt;/p&gt;
-
-&lt;h2 id=&quot;inter-country-traffic&quot;&gt;Inter Country Traffic&lt;/h2&gt;
-
-&lt;p&gt;The censorship of inter country traffic is mainly done by &lt;a href=&quot;https://en.wikipedia.org/wiki/Great_Firewall#Blocking_methods&quot;&gt;Great Fire Wall&lt;/a&gt; (GFW). It’s built by Chinese government that filters and blocks the network traffics between China and other countries. It uses a lot of university resources, and is widely known even there is no official acknowledgement of its existence. As a victim of it for many years, I know it just too well. It has mainly these technologies to block traffics:&lt;/p&gt;
-
-&lt;p&gt;First of all, DNS records pollution. DNS server is used to resolve domain name to IP address. ISP usually provide DNS server. The devices will use that by default to have the best speed. So if the government wants to block some service, it will change DNS records on DNS servers in China. Usually it’s the first method to use. It’s also the easiest to fix: just change to another DNS server. Usually a good DNS server outside China is blocked by IP (another blocking method we will talk below). Even it’s illegal to host custom DNS server, you can still change the DNS records on home router or on the personal computer. However, it can be tricky for mobile phones.&lt;/p&gt;
-
-&lt;p&gt;Another straightforward blocking method is to block the IP addresses. It’s not the most reliable method because the IP addresses can change. So normally it will block a range of IP addresses. But it’s also dangerous because of the popularity of cloud services. The range of IP may belongs to the cloud provider instead of the service provider. So it may block more IP addresses than needed. It can accidentally block other important foreign services. So the government used to use this method carefully, but I feel it doesn’t care to block innocent IPs recently. For example, a lot of CDN and small websites are not useable because of this. If the IP is blocked, the only way to access it is using a proxy.&lt;/p&gt;
-
-&lt;p&gt;After people start using proxy to access the blocked hosts, GFW develops new methods to block proxies. At first it’s easy, because the proxy methods like VPN is very easy to identify. (Because VPN also has legit usages, the government also starts to require license for VPN). After people start developing proxy software specific to bypass GFW, GFW starts to detect patterns to identify and block these proxies. It’s very hard to detect patterns with 100% accuracy, so it needs to choose either to miss some of the proxies or block some of the legit usages. And recently it tends to choose the later one more and more.&lt;/p&gt;
-
-&lt;p&gt;However, in the latest case, it has an exception. For the hosts provided by IDC or cloud services, it tends to have a looser restriction. For example, if I ssh to a personal computer in China from Canada, the connection will usually be disconnected after some time. But if I ssh to a server in China, it’s usually very stable. It probably considers these hosts have more serious business purpose.&lt;/p&gt;
-
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-
-&lt;p&gt;We had an overview of the Internet censorship methods in China. I believe it will get back fired once the restrictions are more and more strict and ridiculous. In the next article, we will explore how to deploy an IM server in such environment and make it as convenience as possible for end users.&lt;/p&gt;</content><author><name></name></author><category term="technology" /><category term="GFW" /><category term="China" /><category term="Internet" /><summary type="html">Updated at sep 6, 2020: change the title and add other articles in this series.</summary></entry></feed>
+&lt;p&gt;I believe the world will be a better place if everyone can communicate with each other freely. But it’s never easy. Even though we can deploy the services and make it accessible from China, the most popular Matrix client Element (Riot) is banned in China. There is a long way to go. I hope I can help even a little bit by sharing some technical information here.&lt;/p&gt;</content><author><name></name></author><category term="technology" /><category term="Matrix" /><category term="instant messaging" /><summary type="html">This article belongs of a series of articles that talk about how to build an instant messaging system without censorship:</summary></entry></feed>
