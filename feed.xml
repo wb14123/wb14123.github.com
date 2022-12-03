@@ -1,4 +1,57 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2022-10-29T13:04:30-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">RSS Brain: Yet Another RSS Reader, With More Features</title><link href="https://www.binwang.me/2022-10-29-RSS-Brain-Yet-Another-RSS-Reader-With-More-Features.html" rel="alternate" type="text/html" title="RSS Brain: Yet Another RSS Reader, With More Features" /><published>2022-10-29T00:00:00-04:00</published><updated>2022-10-29T00:00:00-04:00</updated><id>https://www.binwang.me/RSS-Brain-Yet-Another-RSS-Reader-With-More-Features</id><content type="html" xml:base="https://www.binwang.me/2022-10-29-RSS-Brain-Yet-Another-RSS-Reader-With-More-Features.html">&lt;p&gt;I’ve written yet another RSS Reader called RSS Brain recently. If you just want to take a quick look at the main features and try it, &lt;a href=&quot;https://rssbrain.com/&quot;&gt;the official website&lt;/a&gt; is the best place to start. Though most of the main features are already finished and I’ve used it personally for a few months, be aware it’s still in beta stage and hasn’t been tested by a larger group yet. So please let me know if you run into any issues. I will open source it as well in the future (for non commercial usage) but it’s not ready yet for now.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2022-12-03T10:53:08-05:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">How RSS Brain Shows Related Articles</title><link href="https://www.binwang.me/2022-12-03-How-RSS-Brain-Shows-Related-Articles.html" rel="alternate" type="text/html" title="How RSS Brain Shows Related Articles" /><published>2022-12-03T00:00:00-05:00</published><updated>2022-12-03T00:00:00-05:00</updated><id>https://www.binwang.me/How-RSS-Brain-Shows-Related-Articles</id><content type="html" xml:base="https://www.binwang.me/2022-12-03-How-RSS-Brain-Shows-Related-Articles.html">&lt;p&gt;In the new version of &lt;a href=&quot;https://rssbrain.com&quot;&gt;RSS Brain&lt;/a&gt;, I added a new feature to show related articles from folders or feeds of your choice, instead of only show related articles from all feeds.&lt;/p&gt;
+
+&lt;p&gt;I have mentioned this feature in the &lt;a href=&quot;/2022-10-29-RSS-Brain-Yet-Another-RSS-Reader-With-More-Features.html&quot;&gt;previous blog post&lt;/a&gt;. I also mentioned the algorithms in RSS Brain will be transparent. So in this article, I will talk about the details of this feature, how it can be used, the algorithm that backs it and how RSS Brain implements it.&lt;/p&gt;
+
+&lt;h2 id=&quot;what-is-the-feature&quot;&gt;What is the Feature&lt;/h2&gt;
+
+&lt;p&gt;The feature is very straightforward: when you are reading an article from a feed, RSS Brain will show related articles at the end. It’s a very common feature. What makes RSS Brain different are two things:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;You can configure where the related articles come from.&lt;/li&gt;
+  &lt;li&gt;The implementation is transparent. That includes both the algorithm, which I will introduce in this article, and the code, which I will open source it in the future.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;How do you configure the related articles? By default, there will be no recommended articles. But there is a button to let you add a recommendation section at the end of an article:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/static/images/2022-11-27-How-RSS-Brain-Show-Related-Articles/screenshot_add_section.png&quot; alt=&quot;screenshot-add-section&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Once you click the “Add More” button, it will show all your folders and feeds, with another “All Subscriptions” option. If you select “All Subscriptions”, this recommendation section will find related articles from all your subscriptions. If you select a folder or feed, it will find them from the folder or feed of your choice.&lt;/p&gt;
+
+&lt;p&gt;You can add multiple recommendation sections. After that, each recommendation section will be shown after the article. The screenshot below is an example that has a section that shows related articles from a folder called “local-form”, and another section that shows related articles from all the user’s subscriptions.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://rssbrain.com/images/screenshot_multi_recommend.png&quot; alt=&quot;screenshot-sections&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The recommendation configuration is attached to the feed that this article belongs. So if you read another article from the same feed, it will show related articles from the same recommendation sections.&lt;/p&gt;
+
+&lt;h2 id=&quot;why-the-feature-is-useful&quot;&gt;Why the Feature is Useful&lt;/h2&gt;
+
+&lt;p&gt;The first way I use it is to find more discussions about this article. For example, you can configure it to show related articles from Hacker News, some Twitter account or from a sub Reddit. So that you know what other people think about this article, or about this topic.&lt;/p&gt;
+
+&lt;p&gt;Another way to use it is to check the coverage from different sources. For example, you can add a recommendation section that contains left wing media and another section that has right wing media, so that you can compare the coverage and get a whole picture.&lt;/p&gt;
+
+&lt;p&gt;Last but not least, the recommendation is useful in its traditional way: just show related articles about the same topic so that you can read more details about the same topic. I often just read folders that has high quality sources, and when I want to know more, I will add a recommendation section that has more sources and find articles to read from there.&lt;/p&gt;
+
+&lt;h2 id=&quot;how-the-feature-is-implemented&quot;&gt;How the Feature is Implemented&lt;/h2&gt;
+
+&lt;p&gt;The algorithm to find recommended feature is content based instead of user based. RSS Brain doesn’t collect any user’s information in order to make personalized recommendation. It just find the related articles by how similar they are.&lt;/p&gt;
+
+&lt;p&gt;Each of the article can be represented by a term vector. The values in this vector are scores of the terms. For example, if article A has the content of “apple boy cat” and article B has the content of “apple boy dog”, the term vectors for each of the articles can be:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
+  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;   apple, boy, cat, dog
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;A: [0.5,  0.5,   1,   0]
+&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;B: [0.5,  0.5,   0,   1]
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The score is computed by &lt;a href=&quot;https://en.wikipedia.org/wiki/Tf%E2%80%93idf&quot;&gt;tf-idf&lt;/a&gt;, which is basically a score considers both the frequent of the term in this article, and the frequent in all the articles: the more frequent it is in this article, the bigger the score since it can better represent the article. However the more frequent it is in all the articles, the score should be smaller since it’s not unique enough to represent the feature of this article. Once we have a term vector for each of the article, we can find the similarity by counting the distance between these vectors.&lt;/p&gt;
+
+&lt;p&gt;So we have the algorithm, how RSS Brain implements it in the code? We are using &lt;a href=&quot;https://www.elastic.co/&quot;&gt;ElasticSearch&lt;/a&gt; under the hood. It’s widely used and open source. So for the APIs that RSS Brain is using, you can check the code for implementation details if you want. It has &lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-termvectors.html&quot;&gt;an API to find the term vector&lt;/a&gt; for an article, and we use the scores in the term vector to do a &lt;a href=&quot;https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-boosting-query.html&quot;&gt;boosting query&lt;/a&gt;, which means do a search with different weights for each query term. For example, in the example above, if we want to find related articles for article A, we would find its term vector first, then convert the term vector into a boosting query that searches related articles by the query &lt;code&gt;apple^0.5 boy^0.5 cat^1&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;There are more details in this implementation, like adding filter on feed or folder in the query, limiting the term vector size and so on. The details can be found in the code once it’s open sourced. But the main idea doesn’t change.&lt;/p&gt;
+
+&lt;p&gt;With this simple and content based recommendation algorithm, instead of letting a black box AI decides what content are shown to you, I believe users can understand why an article is recommended, and judge whether the recommendation can benefit them or not.&lt;/p&gt;</content><author><name></name></author><category term="RSS" /><category term="project" /><category term="RSS Brain" /><category term="digital life" /><summary type="html">In the new version of RSS Brain, I added a new feature to show related articles from folders or feeds of your choice, instead of only show related articles from all feeds.</summary></entry><entry><title type="html">RSS Brain: Yet Another RSS Reader, With More Features</title><link href="https://www.binwang.me/2022-10-29-RSS-Brain-Yet-Another-RSS-Reader-With-More-Features.html" rel="alternate" type="text/html" title="RSS Brain: Yet Another RSS Reader, With More Features" /><published>2022-10-29T00:00:00-04:00</published><updated>2022-10-29T00:00:00-04:00</updated><id>https://www.binwang.me/RSS-Brain-Yet-Another-RSS-Reader-With-More-Features</id><content type="html" xml:base="https://www.binwang.me/2022-10-29-RSS-Brain-Yet-Another-RSS-Reader-With-More-Features.html">&lt;p&gt;I’ve written yet another RSS Reader called RSS Brain recently. If you just want to take a quick look at the main features and try it, &lt;a href=&quot;https://rssbrain.com/&quot;&gt;the official website&lt;/a&gt; is the best place to start. Though most of the main features are already finished and I’ve used it personally for a few months, be aware it’s still in beta stage and hasn’t been tested by a larger group yet. So please let me know if you run into any issues. I will open source it as well in the future (for non commercial usage) but it’s not ready yet for now.&lt;/p&gt;
 
 &lt;p&gt;In this article, I’ll give an introduction to the motivation behind it. You may have a better reason to try it after read this.&lt;/p&gt;
 
@@ -66,7 +119,7 @@
   &lt;li&gt;I usually read news from a high quality source. But if I find some news to be interesting, I’d like to read more coverage on that. Those coverage doesn’t need to be high quality but might have more details.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;I have plan to extend this feature. It will be much better after that: RSS Brain will support related articles groups, so that you can show related articles not only from all the subscriptions, but also from the folders of your choice. So you can configure it to show related forum posts in one group, left/right news coverage on another group, and so on. I’ll also implement a feature to show related articles from a time range, so that it can filter the matches based on time, to make the news more related if you want.&lt;/p&gt;
+&lt;p&gt;I have plan to extend this feature. (&lt;em&gt;Update: this feature has been implemented. Check the &lt;a href=&quot;/2022-12-03-How-RSS-Brain-Shows-Related-Articles.html&quot;&gt;blog post here&lt;/a&gt;.&lt;/em&gt;) It will be much better after that: RSS Brain will support related articles groups, so that you can show related articles not only from all the subscriptions, but also from the folders of your choice. So you can configure it to show related forum posts in one group, left/right news coverage on another group, and so on. I’ll also implement a feature to show related articles from a time range, so that it can filter the matches based on time, to make the news more related if you want.&lt;/p&gt;
 
 &lt;h2 id=&quot;4-just-want-to-write-something&quot;&gt;4. Just Want to Write Something&lt;/h2&gt;
 
@@ -1478,179 +1531,4 @@
   &lt;li&gt;When storage node writing data, the write is considered successful as long as the WAL log is persistent. It can process the logs and write buffers and pages in the background.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;System designs are trade-offs. I’m not a fan of sacrificing data consistency for performance: people don’t always make right assumption about consistency requirement. Aurora doesn’t do that. Instead, it builds a single master system with multiple slave nodes that connected by low latency network. I think Aurora did a great job to get the sweet spot between availability and performance.&lt;/p&gt;</content><author><name></name></author><category term="Aurora" /><category term="distributed system" /><category term="database" /><category term="2PC" /><summary type="html">I’m very interested in databases and distributed systems. It’s shocking that how less in depth articles about databases are on the Internet. I wrote an article about Spanner before and I’m very satisfied with that. So recently, I’m looking at another interesting database Aurora. This article is about it.</summary></entry><entry><title type="html">Deploy Matrix for Users in China</title><link href="https://www.binwang.me/2020-09-08-Build-An-Instant-Messaging-System-without-Censorship-Deployment-Options.html" rel="alternate" type="text/html" title="Deploy Matrix for Users in China" /><published>2020-09-08T00:00:00-04:00</published><updated>2020-09-08T00:00:00-04:00</updated><id>https://www.binwang.me/Build-An-Instant-Messaging-System-without-Censorship-Deployment-Options</id><content type="html" xml:base="https://www.binwang.me/2020-09-08-Build-An-Instant-Messaging-System-without-Censorship-Deployment-Options.html">&lt;p&gt;&lt;em&gt;This article belongs of a series of articles that talk about how to build an instant messaging system without censorship:&lt;/em&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;/2020-08-23-Build-An-Instant_Messaging-System-without-Censorship-Choose-the-right-technology.html&quot;&gt;Matrix: A Self Hosted Instant Messaging Solution with End to End Encryption&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;/2020-08-29-Build-An-Instant_Messaging-System-without-Censorship-Choose-An-Overview-of-Chinese-Internet-Censorship-Strategy.html&quot;&gt;Overview of China’s Internet censorship strategy&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;&lt;a href=&quot;/2020-09-08-Build-An-Instant-Messaging-System-without-Censorship-Deployment-Options.html&quot;&gt;Deploy Matrix for Users in China&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;In the previous articles, we chose Matrix as our IM service solution. We also discussed how the Internet is censored in China. In this article, we will discuss multiple ways to deploy Matrix service. The goals are providing the best user experience while avoiding the censorship. Specifically, we want to meet these requirements:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Avoid the government censorship.&lt;/li&gt;
-  &lt;li&gt;Make the latency between users and server as low as possible.&lt;/li&gt;
-  &lt;li&gt;Make it easy for end users to setup.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;We will explore the deployment options. And compare them at the end.&lt;/p&gt;
-
-&lt;h2 id=&quot;1-deploy-a-single-im-server-outside-china&quot;&gt;1. Deploy A Single IM Server Outside China&lt;/h2&gt;
-
-&lt;p&gt;The easiest solution would be deploying a single Matrix server. There are a lot of requirements to deploy a server in China, so it would be better to deploy a server outside China:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;   Users in China
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;           ^
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;           |
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;           V
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;        Server
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;           ^
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;           |
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;           V
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt; Users outside China
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;p&gt;But as we discussed in the previous article, the latency for users in China will be high. Sometimes, GFW may completely block the server so that the users cannot connect at all.&lt;/p&gt;
-
-&lt;p&gt;Matrix is a distributed protocol, so we can deploy multiple servers to give the best experience for all users. From here, we will explore the options with multiple servers: a server outside China and at least one server in China.&lt;/p&gt;
-
-&lt;h2 id=&quot;2-deploy-a-server-in-china-with-license&quot;&gt;2. Deploy A Server in China with License&lt;/h2&gt;
-
-&lt;p&gt;The most regular way to deploy a service in China is to get all the required licenses. Then the users in China can connect to this server:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;   Users in China
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;           ^
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;           |
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;           V
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;   Server in China  &amp;lt;----- Public DNS Record
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;           ^
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;           |
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;           V
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt; Server outside China
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;           ^
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;           |
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;           V
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt; Users outside China
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n14&quot; name=&quot;n14&quot;&gt;14&lt;/a&gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;p&gt;The shortcomings are also obvious:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;It needs some work to get a license. Especially it would be hard for an individual to get a license for IM service. It’s possible to hide the business purpose while applying, but there are risks.&lt;/li&gt;
-  &lt;li&gt;Once the service is on government’s record, government can track it and require information from the server. Even the messages are end to end encrypted, some information on the server can still be sensitive.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&quot;3-deploy-a-server-in-china-without-dns-resolving&quot;&gt;3. Deploy A Server in China without DNS Resolving&lt;/h2&gt;
-
-&lt;p&gt;The main reason we need a license to deploy a server in China is because the IDC and cloud providers may block the server if a domain without license is resolving to it. So one way to avoid the blocking is, don’t bind a domain name to the server. But we cannot use IP address directly either: we need HTTPS to encrypt the traffic. And the communications between servers also depends on domain names.&lt;/p&gt;
-
-&lt;p&gt;So we need to find a way to resolve domain name without public DNS server. Though it’s hard, it’s not impossible. For example, you can change the DNS record on the computer by modifying the hosts file. Or you can create a DNS server on the home router. For the mobile phones, it’s much harder. But I believe there are apps can do that.&lt;/p&gt;
-
-&lt;p&gt;So this solution is don’t register the domain name in public DNS servers. Instead, add the records on end user devices:&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;   Users in China
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;   (Add DNS record)
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;           ^
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;           |
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;           V
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;   Server in China
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;           ^
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;           |
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;           V
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt; Server outside China
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;   (Add DNS record)
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;           ^
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt;           |
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n14&quot; name=&quot;n14&quot;&gt;14&lt;/a&gt;&lt;/span&gt;           V
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n15&quot; name=&quot;n15&quot;&gt;15&lt;/a&gt;&lt;/span&gt; Users outside China
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n16&quot; name=&quot;n16&quot;&gt;16&lt;/a&gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&quot;4-deploy-another-server-in-china-with-personal-internet&quot;&gt;4. Deploy Another Server in China with Personal Internet&lt;/h2&gt;
-
-&lt;p&gt;As we mentioned in the last article, while cloud providers and IDC block servers, ISP doesn’t block high number ports. So if we can deploy another server at home and point the domain name to this server, the end user doesn’t need to setup custom DNS records. We will still keep the other server in cloud/IDC for the stable connection between servers.&lt;/p&gt;
-
-&lt;p&gt;For the two servers in China, only one of them needs to host the IM service. The other one can just be a proxy.&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-coderay&quot;&gt;&lt;div class=&quot;CodeRay&quot;&gt;
-  &lt;div class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n1&quot; name=&quot;n1&quot;&gt;1&lt;/a&gt;&lt;/span&gt;        Users in China
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n2&quot; name=&quot;n2&quot;&gt;2&lt;/a&gt;&lt;/span&gt;              ^
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n3&quot; name=&quot;n3&quot;&gt;3&lt;/a&gt;&lt;/span&gt;              |
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n4&quot; name=&quot;n4&quot;&gt;4&lt;/a&gt;&lt;/span&gt;              V
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n5&quot; name=&quot;n5&quot;&gt;5&lt;/a&gt;&lt;/span&gt;      Proxy server in China    &amp;lt;----- Public DNS Record
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n6&quot; name=&quot;n6&quot;&gt;6&lt;/a&gt;&lt;/span&gt;        (Home Internet)
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n7&quot; name=&quot;n7&quot;&gt;7&lt;/a&gt;&lt;/span&gt;              ^
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n8&quot; name=&quot;n8&quot;&gt;8&lt;/a&gt;&lt;/span&gt;              |
-&lt;span class=&quot;line-numbers&quot;&gt; &lt;a href=&quot;#n9&quot; name=&quot;n9&quot;&gt;9&lt;/a&gt;&lt;/span&gt;              V
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n10&quot; name=&quot;n10&quot;&gt;10&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;      IM Server in China
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n11&quot; name=&quot;n11&quot;&gt;11&lt;/a&gt;&lt;/span&gt;         (Cloud/IDC)
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n12&quot; name=&quot;n12&quot;&gt;12&lt;/a&gt;&lt;/span&gt;              ^
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n13&quot; name=&quot;n13&quot;&gt;13&lt;/a&gt;&lt;/span&gt;              |
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n14&quot; name=&quot;n14&quot;&gt;14&lt;/a&gt;&lt;/span&gt;              V
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n15&quot; name=&quot;n15&quot;&gt;15&lt;/a&gt;&lt;/span&gt;     Server outside China
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n16&quot; name=&quot;n16&quot;&gt;16&lt;/a&gt;&lt;/span&gt;(Add DNS record that resolves domain
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n17&quot; name=&quot;n17&quot;&gt;17&lt;/a&gt;&lt;/span&gt;  name to server on Cloud/IDC)
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n18&quot; name=&quot;n18&quot;&gt;18&lt;/a&gt;&lt;/span&gt;              ^
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n19&quot; name=&quot;n19&quot;&gt;19&lt;/a&gt;&lt;/span&gt;              |
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;strong&gt;&lt;a href=&quot;#n20&quot; name=&quot;n20&quot;&gt;20&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;              V
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n21&quot; name=&quot;n21&quot;&gt;21&lt;/a&gt;&lt;/span&gt;    Users outside China
-&lt;span class=&quot;line-numbers&quot;&gt;&lt;a href=&quot;#n22&quot; name=&quot;n22&quot;&gt;22&lt;/a&gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;p&gt;There are also disadvantages for this solution: other than we need another server, the home Internet may not be able to provide the best speed for users in China.&lt;/p&gt;
-
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-
-&lt;p&gt;In the table below, we can compare them by the censorship circumvention, service speed and end user setup easiness:&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th style=&quot;text-align: left&quot;&gt;Deployment Option&lt;/th&gt;
-      &lt;th style=&quot;text-align: left&quot;&gt;Censorship Circumvention&lt;/th&gt;
-      &lt;th style=&quot;text-align: left&quot;&gt;Service Speed&lt;/th&gt;
-      &lt;th style=&quot;text-align: left&quot;&gt;End User Setup Easiness&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;1&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;3 stars&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;1 star&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;3 stars&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;2&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;1 star&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;3 stars&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;3 stars&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;3&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;2 stars&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;3 stars&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;1 star&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;4&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;2 stars&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;2 stars&lt;/td&gt;
-      &lt;td style=&quot;text-align: left&quot;&gt;3 stars&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;I believe the world will be a better place if everyone can communicate with each other freely. But it’s never easy. Even though we can deploy the services and make it accessible from China, the most popular Matrix client Element (Riot) is banned in China. There is a long way to go. I hope I can help even a little bit by sharing some technical information here.&lt;/p&gt;</content><author><name></name></author><category term="technology" /><category term="Matrix" /><category term="instant messaging" /><summary type="html">This article belongs of a series of articles that talk about how to build an instant messaging system without censorship:</summary></entry></feed>
+&lt;p&gt;System designs are trade-offs. I’m not a fan of sacrificing data consistency for performance: people don’t always make right assumption about consistency requirement. Aurora doesn’t do that. Instead, it builds a single master system with multiple slave nodes that connected by low latency network. I think Aurora did a great job to get the sweet spot between availability and performance.&lt;/p&gt;</content><author><name></name></author><category term="Aurora" /><category term="distributed system" /><category term="database" /><category term="2PC" /><summary type="html">I’m very interested in databases and distributed systems. It’s shocking that how less in depth articles about databases are on the Internet. I wrote an article about Spanner before and I’m very satisfied with that. So recently, I’m looking at another interesting database Aurora. This article is about it.</summary></entry></feed>

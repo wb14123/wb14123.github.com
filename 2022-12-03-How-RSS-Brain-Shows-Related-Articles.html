@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> How RSS Brain Shows Related Articles |  Bin Wang - My Personal Blog</title>
+    <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-52904500-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+  </head>
+
+  <body>
+    <header id="page_header">
+      <nav id="page_nav">
+        <ul>
+             <li><a href="/">Home</a></li>
+             <li><a href="/index_page.html">Index</a></li>
+             <li><a href="/snippets">Snippets</a></li>
+             <li><a href="https://www.goodreads.com/review/list/103708630-bin?shelf=read" target="_blank">Read</a></li>
+             <li><a href="/travel.html">Travel</a></li>
+             <li><a href="/search.html">Search</a></li>
+             <li><a href="/about.html">About</a></li>
+             <li><a href="/feed.xml">RSS</a></li>
+       </ul>
+      </nav>
+
+    </header>
+
+    <section id="page_content">
+      <div id="content_table">
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#what-is-the-feature">What is the Feature</a></li><li><a href="#why-the-feature-is-useful">Why the Feature is Useful</a></li><li><a href="#how-the-feature-is-implemented">How the Feature is Implemented</a></li></ol>
+</div>
+
+<div id="article_content" class="">
+<article id="post">
+  <header>
+    <h1>How RSS Brain Shows Related Articles</h1>
+    
+      <p class="description">Posted on 03 Dec 2022, tagged <code>RSS</code><code>project</code><code>RSS Brain</code><code>digital life</code></p>
+    
+  </header>
+
+  <p>In the new version of <a href="https://rssbrain.com">RSS Brain</a>, I added a new feature to show related articles from folders or feeds of your choice, instead of only show related articles from all feeds.</p>
+
+<p>I have mentioned this feature in the <a href="/2022-10-29-RSS-Brain-Yet-Another-RSS-Reader-With-More-Features.html">previous blog post</a>. I also mentioned the algorithms in RSS Brain will be transparent. So in this article, I will talk about the details of this feature, how it can be used, the algorithm that backs it and how RSS Brain implements it.</p>
+
+<h2 id="what-is-the-feature">What is the Feature</h2>
+
+<p>The feature is very straightforward: when you are reading an article from a feed, RSS Brain will show related articles at the end. It’s a very common feature. What makes RSS Brain different are two things:</p>
+
+<ol>
+  <li>You can configure where the related articles come from.</li>
+  <li>The implementation is transparent. That includes both the algorithm, which I will introduce in this article, and the code, which I will open source it in the future.</li>
+</ol>
+
+<p>How do you configure the related articles? By default, there will be no recommended articles. But there is a button to let you add a recommendation section at the end of an article:</p>
+
+<p><img src="/static/images/2022-11-27-How-RSS-Brain-Show-Related-Articles/screenshot_add_section.png" alt="screenshot-add-section" /></p>
+
+<p>Once you click the “Add More” button, it will show all your folders and feeds, with another “All Subscriptions” option. If you select “All Subscriptions”, this recommendation section will find related articles from all your subscriptions. If you select a folder or feed, it will find them from the folder or feed of your choice.</p>
+
+<p>You can add multiple recommendation sections. After that, each recommendation section will be shown after the article. The screenshot below is an example that has a section that shows related articles from a folder called “local-form”, and another section that shows related articles from all the user’s subscriptions.</p>
+
+<p><img src="https://rssbrain.com/images/screenshot_multi_recommend.png" alt="screenshot-sections" /></p>
+
+<p>The recommendation configuration is attached to the feed that this article belongs. So if you read another article from the same feed, it will show related articles from the same recommendation sections.</p>
+
+<h2 id="why-the-feature-is-useful">Why the Feature is Useful</h2>
+
+<p>The first way I use it is to find more discussions about this article. For example, you can configure it to show related articles from Hacker News, some Twitter account or from a sub Reddit. So that you know what other people think about this article, or about this topic.</p>
+
+<p>Another way to use it is to check the coverage from different sources. For example, you can add a recommendation section that contains left wing media and another section that has right wing media, so that you can compare the coverage and get a whole picture.</p>
+
+<p>Last but not least, the recommendation is useful in its traditional way: just show related articles about the same topic so that you can read more details about the same topic. I often just read folders that has high quality sources, and when I want to know more, I will add a recommendation section that has more sources and find articles to read from there.</p>
+
+<h2 id="how-the-feature-is-implemented">How the Feature is Implemented</h2>
+
+<p>The algorithm to find recommended feature is content based instead of user based. RSS Brain doesn’t collect any user’s information in order to make personalized recommendation. It just find the related articles by how similar they are.</p>
+
+<p>Each of the article can be represented by a term vector. The values in this vector are scores of the terms. For example, if article A has the content of “apple boy cat” and article B has the content of “apple boy dog”, the term vectors for each of the articles can be:</p>
+
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>   apple, boy, cat, dog
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>A: [0.5,  0.5,   1,   0]
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>B: [0.5,  0.5,   0,   1]
+</pre></div>
+</div>
+</div>
+
+<p>The score is computed by <a href="https://en.wikipedia.org/wiki/Tf%E2%80%93idf">tf-idf</a>, which is basically a score considers both the frequent of the term in this article, and the frequent in all the articles: the more frequent it is in this article, the bigger the score since it can better represent the article. However the more frequent it is in all the articles, the score should be smaller since it’s not unique enough to represent the feature of this article. Once we have a term vector for each of the article, we can find the similarity by counting the distance between these vectors.</p>
+
+<p>So we have the algorithm, how RSS Brain implements it in the code? We are using <a href="https://www.elastic.co/">ElasticSearch</a> under the hood. It’s widely used and open source. So for the APIs that RSS Brain is using, you can check the code for implementation details if you want. It has <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-termvectors.html">an API to find the term vector</a> for an article, and we use the scores in the term vector to do a <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-boosting-query.html">boosting query</a>, which means do a search with different weights for each query term. For example, in the example above, if we want to find related articles for article A, we would find its term vector first, then convert the term vector into a boosting query that searches related articles by the query <code>apple^0.5 boy^0.5 cat^1</code>.</p>
+
+<p>There are more details in this implementation, like adding filter on feed or folder in the query, limiting the term vector size and so on. The details can be found in the code once it’s open sourced. But the main idea doesn’t change.</p>
+
+<p>With this simple and content based recommendation algorithm, instead of letting a black box AI decides what content are shown to you, I believe users can understand why an article is recommended, and judge whether the recommendation can benefit them or not.</p>
+
+</article>
+
+<footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2022-10-29-RSS-Brain-Yet-Another-RSS-Reader-With-More-Features.html">Prev: RSS Brain: Yet Another RSS Reader, With More Features</a></td>
+    
+    
+  </tr></table>
+</footer>
+
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+
+<!-- MathJax -->
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+</div>
+
+    </section>
+
+    <footer id="page_footer">
+      Copyright @ 2008 - 2022 Bin Wang
+      <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
+    </footer>
+  </body>
+</html>
