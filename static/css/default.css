@@ -201,16 +201,17 @@ footer#page_footer{
 }
 
 blockquote {
-  padding: 30px 30px 30px 30px;
+  padding: 10px 20px 10px 20px;
   border: 1px solid #EAEAEA;
   margin-left: 0px;
-  font-family: customcursive;
-  font-size: 22px;
+  font-family: Times;
+  font-size: 18px;
 }
 
 .zh blockquote {
   font-family: fangzhengkaiti;
   font-size: 18px;
+  font-style: normal !important;
 }
 
 #article_content img {
