@@ -2,6 +2,15 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.binwang.me/2023-08-27-Compare-Task-Processing-Approaches-in-Scala.html</loc>
+    
+    <lastmod>2023-08-27T00:00:00-04:00</lastmod>
+    
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <url>
     <loc>https://www.binwang.me/2023-05-22-Upgrade-Kubernetes-from-1.23-to-1.24.html</loc>
     
     <lastmod>2023-05-22T00:00:00-04:00</lastmod>
