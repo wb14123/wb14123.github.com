@@ -1,4 +1,100 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2023-08-27T11:46:36-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Compare Task Processing Approaches in Scala</title><link href="https://www.binwang.me/2023-08-27-Compare-Task-Processing-Approaches-in-Scala.html" rel="alternate" type="text/html" title="Compare Task Processing Approaches in Scala" /><published>2023-08-27T00:00:00-04:00</published><updated>2023-08-27T00:00:00-04:00</updated><id>https://www.binwang.me/Compare-Task-Processing-Approaches-in-Scala</id><content type="html" xml:base="https://www.binwang.me/2023-08-27-Compare-Task-Processing-Approaches-in-Scala.html"><![CDATA[<p><em>All the source code mentioned in this blog can be found in <a href="https://github.com/wb14123/scala-stream-demo">my Github repo</a>.</em></p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2023-09-01T12:02:54-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Build a Linux Virtual Machine for Windows Apps</title><link href="https://www.binwang.me/2023-09-01-Build-a-Linux-Virtual-Machine-for-Windows-Apps.html" rel="alternate" type="text/html" title="Build a Linux Virtual Machine for Windows Apps" /><published>2023-09-01T00:00:00-04:00</published><updated>2023-09-01T00:00:00-04:00</updated><id>https://www.binwang.me/Build-a-Linux-Virtual-Machine-for-Windows-Apps</id><content type="html" xml:base="https://www.binwang.me/2023-09-01-Build-a-Linux-Virtual-Machine-for-Windows-Apps.html"><![CDATA[<h2 id="background">Background</h2>
+
+<p>Linux is great. However sometimes you just need to run some Windows only applications to collaborate with other people, especially if it’s impossible to let the other party to change the software. Luckily I rarely run into that situation in the past 10+ years. The only recent exceptions I can remember are filling some government forms (which uses pdf with XFA form. Yes Firefox can fill that now but it’s still incompatible with Adobe Reader from time to time), use IM and video meeting software with a previous Chinese client for some consultant work.</p>
+
+<p>Even it’s rarely used, it’s handy to have a VM to run Windows applications. But Windows is becoming more and more bloat, adding more and more tracking and ads, basically more holistic to users. The only good parts in Windows XP and Windows 7 have long gone. Currently I have a Windows 10 VM, but I’m not sure if I ever want to login to Windows 11 if Windows 10’s life is end. So it’s good to have a backup plan to run Windows apps without Windows. Practise reasons aside, it’s just fun to play with Linux distros. Linux and its desktop environments are so diverse and configurable, I spent such a great time to explore what are the possibilities.</p>
+
+<p>There is <a href="https://www.winehq.org/">Wine</a> to run Windows applications on Linux. It’s not perfect. Some apps need to be tweaked a lot in order to run with wine and some are just nearly impossible. Even the software can be run with wine, I don’t want to run it on my OS since wine is just a compatibility layer, not a sandbox. Which means the typical malware like behaviours in Windows applications are still effective under Wine. So I need to run it in a virtual machine. It also gives us an opportunity to select a distro to focus more on this specific task.</p>
+
+<p>I have tried a few distros in the last few days. At the end I find <a href="https://www.deepin.org">Deepin Linux</a> is the best one for this use case. Especially you want to run Chinese Windows apps.</p>
+
+<h2 id="a-little-history-of-deepin">A Little History of Deepin</h2>
+
+<p>Deepin’s root is in Windows. It first started as a Windows online forum and then started to customize and piracy Windows XP. The year was 2006. Almost no one bought Windows in China back in the days. I don’t know if business or even Universities ever bought Windows licenses or not, but even they do, it’s a very common practise to install piracy Windows in those environment because the popular ones are so user friendly. Computer sellers would ask the buyers if they want to change the stock Windows to a piracy one, and most of the time they do. Ironically, the only time I’ve inputted a (legitimately obtained) Windows key is when I was working at Redhat and setting up a Windows server for testing Samba and nfs. The popular piracy versions are really impressive: the installation is fast and easy, they are more beautiful, they include things like system backup and recovery, they have common drivers pre-installed and application to find drivers (not like the driver finder on Windows, this one actually works), the system was cut down to a very small size and so on. However, if it sounds sketchy to you, you are not wrong. Even though the user experience maybe superior, there is no shortage of back doors and things like that. The popular versions even have their own more sketchy piracy versions. However, that era is wild west for computer security and just one more vulnerability didn’t really matter that much in my mind.</p>
+
+<p>Anyway, Deepin was one of the most popular among them. But things didn’t last for long. Around 2008, the year China hosted its first Olympic Game, the person behind a popular piracy version got arrested. Even the common practise of using piracy Windows in China lasted a long time after that, the big ones felt the risk and stopped making them. Some of them started to make Linux distros instead. Again, Deepin became one of the most popular. <a href="https://en.wikipedia.org/wiki/YLMF_Computer_Technology_Co.,_Ltd.">雨林沐风 (YLMF)</a> is another very popular one which is in famous of its clean and beautify theme in the Windows piracy era. It started to make Linux distro (<a href="https://en.wikipedia.org/wiki/StartOS">YLMF OS</a>) around the same time. It is the first Linux distro I’ve ever used and introduced the whole world of Linux to me.</p>
+
+<p>It’s no wonder Deepin Linux has good support for Windows applications: Windows users are its earliest user base. It’s still true nowadays: even with some failed attempts, Chinese government never stopped exploring to use Linux instead of Windows on government devices. After these years, because of factors like applications are more web based instead of native, and the better experience of Linux desktop, Chinese government actually replaced a large amount of their devices with Linux. From what I know, they are using <a href="https://en.wikipedia.org/wiki/Ubuntu_Kylin">Ubuntu Kylin</a> instead of Deepin or UOS (commercial version of Deepin), but the market is large enough to motivate Deepin to continue maintaining Windows app supports.</p>
+
+<h2 id="deepin-linux-101">Deepin Linux 101</h2>
+
+<p>We’ve talked enough history. Let’s look at Deepin Linux at nowadays. It has it’s own desktop environment called DDE and includes lots of its own apps like browser, video player, mail client and so on. But it’s not my taste and the DE is pretty resource hungry on my machine. Luckily, Deepin is based on Debian stable, so you can basically customize to whatever you like using Debian packages, which we will do later.</p>
+
+<p>The main thing we want in Deepin Linux is its app store. It has lots of Windows applications supported by default. Deepin actually has its own wine version deepin-wine to support those Windows apps better. No matter what tweaks we are going to do with the system, make sure app store works after that.</p>
+
+<p>It also ships with Android support with UEngine, which is a fork of Anbox. There are some officially supported Android apps in the package repo but seems they are not findable in app store. You can use <code>apt search uengine</code> to find them in terminal. I’ve never had good experience with Android in VM and this time it’s no exception: I tried to install an app from apt and it couldn’t start because of uengine startup timeout. I’m not sure if it will be better on a physical machine but I don’t bother to try it.</p>
+
+<p>Overall, I have double feelings about Deepin. On one hand, it’s pretty impressive on the technical side about what they have done and the community they’ve built. On the other hand, it always feels a little bit sketchy. Even after the Windows piracy era, the Linux distro is still less trustworthy in my mind because of some telemetry its app store collects, not straightforward removable stock apps, the connection (or the intention to connect) with Chinese government and so on. In addition of all the Windows apps I’m going to install, I will not have any personal or important data on it.</p>
+
+<p>After understanding the basics of Deepin Linux, let’s go ahead to install and tweak it. To have a taste of what it will look like, let me show a screenshot of my setup:</p>
+
+<p><img src="/static/images/2023-08-31-Build-a-Linux-VM-for-Windows-Apps/screenshot.png" alt="screnshot" /></p>
+
+<h2 id="installation">Installation</h2>
+
+<p>The installation is pretty straightforward, but make sure to make these tweaks:</p>
+
+<ul>
+  <li>During the installation, it will detect that you are in a VM and prompt to use “performance” mode. Make sure to select it so that it will be faster. Even though we will replace the DE later so I don’t think it matters that much, but it doesn’t hurt anyway.</li>
+  <li>By default it will create a recovery partition, which is a waste of storage since we are using a VM. We can take snapshots through the VM software if we backup and recovery. So make sure to manually partition the file system and not using recovery partition.</li>
+</ul>
+
+<h2 id="replace-dde-with-xfce">Replace DDE with XFCE</h2>
+
+<p>As I said, I don’t like the default DDE Deepin ships. And with limited time I don’t find it’s very configurable as well. So we will replace it with the less resource hungry and highly customizable XFCE. In order to install XFCE, run this in the terminal:</p>
+
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>sudo apt install xfce4 xfce4-goodies
+</pre></div>
+</div>
+</div>
+
+<p>Then logout and select <code>xfce</code> in the login screen.</p>
+
+<h2 id="configure-lightdm">Configure lightdm</h2>
+
+<p>Deepin is using <code>lightdm</code> as its display manager. To match our simple xfce feeling, I’d like to change the login screen to a simpler and reto look. Open <code>/etc/ligthdm/lightdm.conf</code> and apply these changes:</p>
+
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>- greeter-session=lightdm-deepin-greeter
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>+ greeter-session=lightdm-gtk-greeter
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>- user-session=deepin
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>+ user-sesion=xfce
+</pre></div>
+</div>
+</div>
+
+<h2 id="install-windows-95-theme">Install Windows 95 theme</h2>
+
+<p>Another important reason of choosing XFCE the <a href="https://github.com/grassmunk/Chicago95">Chicago95 theme</a>, which makes XFCE looks like Windows 95. If we are having an OS for running Windows programs, what’s a better look than Windows 95/98/2000 era theme?</p>
+
+<p>Go to <a href="https://github.com/grassmunk/Chicago95">Chicago95’s Github repo</a> and follow the instructions to install it. Since it’s made for XUbuntu, which is based on Ubuntu which is in turn based on Debian, the installation script works perfectly. After installation, read the popped up txt file so tweak remaining things to make it more Windows 95 like if you want.</p>
+
+<p>If you also want to make the login screen Windows 95 like, you need to use <code>lightdm-webkit-greeter</code> instead of the <code>lightdm-gtk-greeter</code> above and change the theme. See <a href="https://github.com/grassmunk/Chicago95/tree/5670fde8ce33b33d37622b888278aa9cdbe5eea2/Lightdm/Chicago95">the doc</a> for more details. However, <code>lightdm-webkit-greeter</code> is not in Debian or Deepin’s package repo by default and I find the trouble to install it manually doesn’t worth it, so I didn’t make the change.</p>
+
+<p>For Firefox, there is a <a href="https://addons.mozilla.org/en-US/firefox/addon/windows-98-se/?utm_source=addons.mozilla.org&amp;utm_medium=referral&amp;utm_content=search">Windows 98 SE</a> theme I find fit into the system theme the best.</p>
+
+<h2 id="other-xfce-tweaks">Other XFCE tweaks</h2>
+
+<ul>
+  <li>Disable compositor in Settings -&gt; Window Manager Tweaks -&gt; Compositor. Some windows will have a black frame after this, so enable/disable it based on your preference.</li>
+  <li>I’d also like to disable auto session save:
+    <ul>
+      <li>Uncheck all the boxes in Settings -&gt; Session and Startup -&gt; General (I find it doesn’t prompt and auto save if <code>prompt on logout</code> is checked)</li>
+      <li>Remove all the existing sessions: <code>rm -r ~/.cache/sessions/*</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="remove-stock-deepin-apps">Remove Stock Deepin Apps</h2>
+
+<p>There are lots of stock apps made by Deepin. Even though I like the effort, I still prefer the familiar ones and the ones XFCE has. So I need to uninstall the stock apps. However, you cannot uninstall them through Deepin’s app store, so we need to use <code>apt</code> to find and remove them.</p>
+
+<p>Use <code>apt search deepin | grep installed</code> to find installed deepin packages and remove the ones you don’t want. Then use <code>sudo apt autoremove</code> and <code>sudo apt autoclean</code> to cleanup the not needed dependencies. Make sure app store is still working after this since it’s the whole point of using Deepin.</p>
+
+<h2 id="disable-deepin-services">Disable Deepin Services</h2>
+
+<p>I didn’t remove all the deepin related packages since some of them are needed by the App Store. However, I don’t think some of them are needed to run as deamon even if I left them on the machine. So type <code>systemctl status deepin-</code> and press tab for autocomplete to see the systemd services related to deepin, and use <code>systemctl disable &lt;service&gt;</code> to disable the ones you don’t need.</p>]]></content><author><name></name></author><category term="Linux" /><category term="Windows" /><category term="Virtual Machine" /><category term="Deepin" /><category term="Wine" /><summary type="html"><![CDATA[Background]]></summary></entry><entry><title type="html">Compare Task Processing Approaches in Scala</title><link href="https://www.binwang.me/2023-08-27-Compare-Task-Processing-Approaches-in-Scala.html" rel="alternate" type="text/html" title="Compare Task Processing Approaches in Scala" /><published>2023-08-27T00:00:00-04:00</published><updated>2023-08-27T00:00:00-04:00</updated><id>https://www.binwang.me/Compare-Task-Processing-Approaches-in-Scala</id><content type="html" xml:base="https://www.binwang.me/2023-08-27-Compare-Task-Processing-Approaches-in-Scala.html"><![CDATA[<p><em>All the source code mentioned in this blog can be found in <a href="https://github.com/wb14123/scala-stream-demo">my Github repo</a>.</em></p>
 
 <h2 id="task-processing">Task Processing</h2>
 
@@ -1604,114 +1700,4 @@ You may want to run Nginx or HAProxy in the Kubernetes cluster, use it as a reve
 
 <h3 id="8-cleanup-client-code">8. Cleanup client code</h3>
 
-<p>Once the database is switched to the target database, we can cleanup the code that access the source database. Then the database is fully migrated and you can enjoin it!</p>]]></content><author><name></name></author><category term="database" /><category term="distributed system" /><category term="consistency" /><summary type="html"><![CDATA[When a system has been live for a long time, it’s not rare to use newer technologies to improve performance, maintainability, or add new features. One of such changes can be which database to use. This can be the most difficult kind of change. During the migration, there are two data sources, which makes it a distributed system. Make data consistent under a distributed system is very hard and can easily go wrong. In this article, we will explore a way to keep the data consistent during the migration, and maintain a low downtime at the same time.]]></summary></entry><entry><title type="html">DNS Resolving Bug in iOS 14</title><link href="https://www.binwang.me/2020-11-08-DNS-Resolving-Bug-in-iOS-14.html" rel="alternate" type="text/html" title="DNS Resolving Bug in iOS 14" /><published>2020-11-08T00:00:00-05:00</published><updated>2020-11-08T00:00:00-05:00</updated><id>https://www.binwang.me/DNS-Resolving-Bug-in-iOS-14</id><content type="html" xml:base="https://www.binwang.me/2020-11-08-DNS-Resolving-Bug-in-iOS-14.html"><![CDATA[<h2 id="the-bug-description">The Bug Description</h2>
-
-<p>iOS 14 has a bug for DNS resolving under this circumstances:</p>
-
-<ul>
-  <li>Manually specify a custom DNS server for a WiFi network.</li>
-  <li>For a domain, this custom DNS server has different DNS record than the default public DNS server.</li>
-  <li>The DNS record type of this domain is CNAME on public DNS server.</li>
-</ul>
-
-<p>Under this setup, after connecting to WiFi with custom DNS, iOS 14 should get the IP for this domain according the record on custom DNS server. However, it still gets the IP that’s on public DNS server.</p>
-
-<p>Here is an example. The table below shows the DNS records on public DNS servers:</p>
-
-<table>
-  <thead>
-    <tr>
-      <th style="text-align: left">Domain</th>
-      <th style="text-align: left">DNS Record Type</th>
-      <th style="text-align: left">Value</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: left">domain-1</td>
-      <td style="text-align: left">CNAME</td>
-      <td style="text-align: left">domain-2</td>
-    </tr>
-    <tr>
-      <td style="text-align: left">domain-2</td>
-      <td style="text-align: left">A</td>
-      <td style="text-align: left">1.1.1.1</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>So <code>domain-1</code> will be resolved to <code>1.1.1.1</code> by using the default public DNS server.</p>
-
-<p>Then we have a custom DNS server, which modifies record for <code>domain-1</code>. For other records, it uses the upstream ones:</p>
-
-<table>
-  <thead>
-    <tr>
-      <th style="text-align: left">Domain</th>
-      <th style="text-align: left">DNS Record Type</th>
-      <th style="text-align: left">Value</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: left">domain-1</td>
-      <td style="text-align: left">A</td>
-      <td style="text-align: left">2.2.2.2</td>
-    </tr>
-    <tr>
-      <td style="text-align: left">domain-2</td>
-      <td style="text-align: left">A</td>
-      <td style="text-align: left">1.1.1.1</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>So if you use the custom DNS server, <code>domain-1</code> should be resolved to <code>2.2.2.2</code>.</p>
-
-<p>However in iOS 14, even if you manually specify the custom DNS server for the WiFi network, <code>domain-1</code> is still resolved to <code>1.1.1.1</code>.</p>
-
-<p>I guess this is because of DNS cache problem. I tried to clean up the DNS cache by changing my device to airplane mode, reboot the device, or stay in the WiFi with custom DNS for days. Despite all the attempts, the problem still exists.</p>
-
-<p>I filled a bug report to Apple but didn’t get any response after almost one month. So I think I can share it here so it may help someone else with the same problem.</p>
-
-<h2 id="how-do-i-know-its-not-the-problem-of-my-dns-setup">How Do I know It’s not the Problem of My DNS Setup</h2>
-
-<p>The setup above works on every other devices I have (Linux devices, MacOS devices). It also works on the same iOS device before I upgraded it to iOS 14. I also installed the app <a href="https://apps.apple.com/us/app/network-analyzer-pro/id557405467">Network Analyzer Pro</a> to debug the setup. In Network Analyzer Pro, if I use the DNS resolving tool with the custom DNS server, it can resolve the right IP address. But if I ping the domain directly, it resolved to the wrong IP. So there is something wrong at the system level of iOS 14.</p>
-
-<h2 id="workaround">Workaround</h2>
-
-<p>This bug is very frustrating. I spent lots of time to identify what’s the issue: for the application, to the permission setup (iOS 14 has a new local network permission), to the system. And finally found it’s iOS system DNS resolving problem and found a workaround.</p>
-
-<p>The workaround is to add a DNS record for the domain behind CNAME (in this case <code>domain-2</code>) into the custom DNS server:</p>
-
-<table>
-  <thead>
-    <tr>
-      <th style="text-align: left">Domain</th>
-      <th style="text-align: left">DNS Record Type</th>
-      <th style="text-align: left">Value</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: left">domain-1</td>
-      <td style="text-align: left">A</td>
-      <td style="text-align: left">2.2.2.2</td>
-    </tr>
-    <tr>
-      <td style="text-align: left">domain-2</td>
-      <td style="text-align: left">A</td>
-      <td style="text-align: left">2.2.2.2</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>However, if you have multiple domains point to <code>domain-2</code> and don’t want to change IP addresses for those domains, this workaround may not be able to support that use case.</p>
-
-<h2 id="a-little-more-story">A Little More Story</h2>
-
-<p>It may looks weird that I have a DNS setup like this. I host some services on my desktop machine. Because of my home router provided by ISP disabled NAT loopback (which means the router denies all the traffic that comes from itself), I must use the IP address in local network to access the services if my devices are in the same network. So I setup a custom DNS server that resolves the service domains to my desktop’s internal IP address, and use this DNS server when I’m using home WiFi.</p>
-
-<p>I depend on this workflow heavily. Everything worked smoothly until I upgraded to iOS 14. For more than 1 month, under the home WiFi connection (which is most of the time because of CoVID-19), I cannot sync my calendar or notes, or fetch an E-Book from my collections to iPad, or upload my photos automatically, or chat with my friends on phone, and so on. It’s very frustrating and is still not fixed after two version upgrades of iOS 14.</p>
-
-<p>After my previous Android phone broken, I decided to buy an old generation iPhone. One big reason is it’s really cheap with the carrier contract. I’m trying to reduce my time on phones so an old generate is more than enough. In many ways it’s much better than an Android phone: for an Android phone, I need so many tweaks to make sure it respects my privacy and apps not running at background all the time. And after that, many apps are not usable or don’t have proper notifications. On contrast, Apple controls the ecosystem strongly to make sure the developers don’t abuse the system. But on the other hand, Apple also controls the users strongly. It’s hard to downgrade the system. It’s hard to debug the system. It’s even hard to submit a bug report: you need to enroll Beta profile and use an app to submit it. (I’m not sure if there are other ways but it’s the suggested way on Apple’s website). With an Apple mobile device, I feel more like renting it instead of owning it. I really hope one day there is a device that’s both open to users and have a strong permission management to limit the app behaviors (including the apps owned by device provider). It must be hard based on the user base, but doesn’t hurt to have some hopes.</p>]]></content><author><name></name></author><category term="DNS" /><category term="iOS" /><category term="technology" /><category term="self hosted" /><summary type="html"><![CDATA[The Bug Description]]></summary></entry></feed>
+<p>Once the database is switched to the target database, we can cleanup the code that access the source database. Then the database is fully migrated and you can enjoin it!</p>]]></content><author><name></name></author><category term="database" /><category term="distributed system" /><category term="consistency" /><summary type="html"><![CDATA[When a system has been live for a long time, it’s not rare to use newer technologies to improve performance, maintainability, or add new features. One of such changes can be which database to use. This can be the most difficult kind of change. During the migration, there are two data sources, which makes it a distributed system. Make data consistent under a distributed system is very hard and can easily go wrong. In this article, we will explore a way to keep the data consistent during the migration, and maintain a low downtime at the same time.]]></summary></entry></feed>
