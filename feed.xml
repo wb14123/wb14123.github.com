@@ -1,4 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2023-09-01T12:02:54-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Build a Linux Virtual Machine for Windows Apps</title><link href="https://www.binwang.me/2023-09-01-Build-a-Linux-Virtual-Machine-for-Windows-Apps.html" rel="alternate" type="text/html" title="Build a Linux Virtual Machine for Windows Apps" /><published>2023-09-01T00:00:00-04:00</published><updated>2023-09-01T00:00:00-04:00</updated><id>https://www.binwang.me/Build-a-Linux-Virtual-Machine-for-Windows-Apps</id><content type="html" xml:base="https://www.binwang.me/2023-09-01-Build-a-Linux-Virtual-Machine-for-Windows-Apps.html"><![CDATA[<h2 id="background">Background</h2>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2023-09-23T12:25:32-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Migrate Scala2grpc to Cats Effect 3</title><link href="https://www.binwang.me/2023-09-23-Migrate-Scala2Grpc-to-Cats-Effect-3.html" rel="alternate" type="text/html" title="Migrate Scala2grpc to Cats Effect 3" /><published>2023-09-23T00:00:00-04:00</published><updated>2023-09-23T00:00:00-04:00</updated><id>https://www.binwang.me/Migrate-Scala2Grpc-to-Cats-Effect-3</id><content type="html" xml:base="https://www.binwang.me/2023-09-23-Migrate-Scala2Grpc-to-Cats-Effect-3.html"><![CDATA[<p><a href="https://github.com/wb14123/scala2grpc">Scala2grpc</a> is a library and SBT plugin I wrote so that you can integrate gRPC to Scala code in a non-invasive way. In a previous <a href="/2022-05-02-A-Library-to-Make-It-Easier-to-Use-Scala-with-GRPC.html">blog post</a>, I talked about the motivation behind it.</p>
+
+<p>The library requires each service method to return Cats Effect’s <code>IO</code> or fs2 stream. However, it’s still using Cats Effect 2.x version. There are big changes in Cats Effect 3 and almost all up to date libraries already support it. So it’s time to migrate it to Cats Effect 3 as well.</p>
+
+<h2 id="replace-akka-grpc-with-fs2-grpc">Replace Akka gRPC with fs2-grpc</h2>
+
+<p>This library was using <a href="https://doc.akka.io/docs/akka-grpc/current/index.html">akka-grpc</a>. But I want to replace it for a few reasons:</p>
+
+<ul>
+  <li>It uses <a href="https://github.com/krasserm/streamz">streamz</a> to convert between Akka streams and fs2 streams. This library doesn’t support Cats Effect 3 and hasn’t been updated for a while. This is the biggest reason that I need to migrate from akka immediately.</li>
+  <li>Akka changed its open source license to a very expensive one which I didn’t know at the time writing this library. Even the license doesn’t cost anything if the revenue doesn’t reach a certain point, I don’t want it to be a liability.</li>
+  <li>It’s good to have a gRPC library that supports for Cats Effect and fs2 streams natively.</li>
+</ul>
+
+<p>So in the newer version, I replaced Akka gRPC with <a href="https://github.com/typelevel/fs2-grpc">fs2-grpc</a>, a library under Typelevel umbrella and natively supports Cats Effect and fs2. The document is not as good and I spent quite some time to figure out how to actually use it, but I’m happy it finally worked out.</p>
+
+<h2 id="add-hooks-to-grpc-calls">Add Hooks to gRPC Calls</h2>
+
+<p>In the previous version of Scala2grpc, there is a feature to log every request. But it is a pretty hacky implementation: I just throw the logging logic into the generated code. Since this version is a breaking change, it’s a good opportunity to revisit the approach and see how to add generic hooks before and after each gRPC calls.</p>
+
+<p>My implementation wraps the gRPC response into a context in the generated code. The context includes the response with type of <code>IO</code> or <code>fs2.Stream</code>. Because of the referential transparency, you can take the response and add hooks before or after it. More detailed document is in <a href="https://github.com/wb14123/scala2grpc#4-optional-define-custom-grpc-hook">this section of readme</a>.</p>
+
+<h2 id="non-invasive-nature-of-the-library">Non-invasive Nature of the Library</h2>
+
+<p>The migration brings lots of breaking changes, so it is a good test for the non-invasive nature of the library. I have 2 side projects that are using this library and I migrated one of them recently. Since it’s also using Cats Effect, there are some migration steps unrelated to this library. But regarding of the related parts, the migration process is very smooth: I don’t need to change any implementation code of the services. The generated gPRC protocol files are also not changed either. The only thing I need to change is the single object that implements <code>GRPCGenerator</code> to <a href="https://github.com/wb14123/scala2grpc#2-create-an-object-to-implement-grpcgenerator">pass in some new parameters</a>. It is impossible if I used akka gRPC directly and changed it to fs2-grpc since their interface are all different.</p>
+
+<p>I’m so happy with the result: it adds gRPC to pure Scala code so easily without ever touch it. It saves me so much time to build a service and keeps the code clean at the same time. It continue to be a must have for my future Scala gRPC projects.</p>]]></content><author><name></name></author><category term="Programming" /><category term="Scala" /><category term="gRPC" /><category term="Cats" /><category term="Functional Programming" /><summary type="html"><![CDATA[Scala2grpc is a library and SBT plugin I wrote so that you can integrate gRPC to Scala code in a non-invasive way. In a previous blog post, I talked about the motivation behind it.]]></summary></entry><entry><title type="html">Build a Linux Virtual Machine for Windows Apps</title><link href="https://www.binwang.me/2023-09-01-Build-a-Linux-Virtual-Machine-for-Windows-Apps.html" rel="alternate" type="text/html" title="Build a Linux Virtual Machine for Windows Apps" /><published>2023-09-01T00:00:00-04:00</published><updated>2023-09-01T00:00:00-04:00</updated><id>https://www.binwang.me/Build-a-Linux-Virtual-Machine-for-Windows-Apps</id><content type="html" xml:base="https://www.binwang.me/2023-09-01-Build-a-Linux-Virtual-Machine-for-Windows-Apps.html"><![CDATA[<h2 id="background">Background</h2>
 
 <p>Linux is great. However sometimes you just need to run some Windows only applications to collaborate with other people, especially if it’s impossible to let the other party to change the software. Luckily I rarely run into that situation in the past 10+ years. The only recent exceptions I can remember are filling some government forms (which uses pdf with XFA form. Yes Firefox can fill that now but it’s still incompatible with Adobe Reader from time to time), use IM and video meeting software with a previous Chinese client for some consultant work.</p>
 
@@ -1580,124 +1606,4 @@ You may want to run Nginx or HAProxy in the Kubernetes cluster, use it as a reve
 
 <p>If we run the test with raw Redis operations, we can find the test is failed. In the last article, we discussed that using plain get/set/del cache operations cannot guarantee cache consistency, so this is expected. If we run the test with our scripts, we can find the test passed. If we run the test with cache system failure, we can see the test failed, which is also expected from last article. The inconsistent because of cache failure can be resolved by clean up cache data after restart. But if the client is failed, it will have the same problem (I didn’t write the test case for this because it’s hard to test client failure in Jepsen), but it’s not a very good idea to cleanup cache in this case. Because client fails all the time, cleanup cache will make operations slow. The best way might be to setup an expire time so the data can be consistent after the key is expired.</p>
 
-<p>Even though all the test result is expected, it doesn’t make sure the implementation is correct, since there are still many situation I didn’t test, like Redis cluster, network partition, database failure and so on. So welcome to add new test cases and break the system!</p>]]></content><author><name></name></author><category term="Redis" /><category term="database" /><category term="consistency" /><category term="Jepsen" /><category term="distributed system" /><summary type="html"><![CDATA[This article belongs to a series of articles about caching. The code in this article can be found at my Github repo.]]></summary></entry><entry><title type="html">Keep Data Consistency During Database Migration</title><link href="https://www.binwang.me/2020-11-29-Keep-Data-Consistency-During-Database-Migration.html" rel="alternate" type="text/html" title="Keep Data Consistency During Database Migration" /><published>2020-11-29T00:00:00-05:00</published><updated>2020-11-29T00:00:00-05:00</updated><id>https://www.binwang.me/Keep-Data-Consistency-During-Database-Migration</id><content type="html" xml:base="https://www.binwang.me/2020-11-29-Keep-Data-Consistency-During-Database-Migration.html"><![CDATA[<p>When a system has been live for a long time, it’s not rare to use newer technologies to improve performance, maintainability, or add new features. One of such changes can be which database to use. This can be the most difficult kind of change. During the migration, there are two data sources, which makes it a distributed system. Make data consistent under a distributed system is very hard and can easily go wrong. In this article, we will explore a way to keep the data consistent during the migration, and maintain a low downtime at the same time.</p>
-
-<h2 id="requirements">Requirements</h2>
-
-<p>There are some requirements in order to use the way described in this article:</p>
-
-<ul>
-  <li>The source database support capture data change (CDC) method like MySQL bin log.</li>
-  <li>The source database can be dumped with a consistent view and mark the position in data change logs.</li>
-  <li>The target database support ACID transactions.</li>
-  <li>Both source and target database support read and write permission control.</li>
-</ul>
-
-<h2 id="steps">Steps</h2>
-
-<p>There are two basic ideas behind the steps:</p>
-
-<ol>
-  <li>The clients only write to one of the databases at a given time. So we can avoid distributed transaction which is error prone and slow.</li>
-  <li>We make the switch of database by setup the database permissions. It’s faster than switch from client code and easier to make sure to switch all the clients.</li>
-</ol>
-
-<p>Here are the detailed steps:</p>
-
-<h3 id="1-dump-the-source-database-to-target-database">1. Dump the source database to target database</h3>
-
-<p>First, we need to dump the source database with a consistent view. And mark the position we’ve dumped. For example, in MySQL, you can use <code>mysqldump</code> with <code>--master-data</code> to dump the database with a bin log position. (<a href="https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html#option_mysqldump_master-data">Document about the usage</a>). After we get all the data from source database, we can insert them into the target database.</p>
-
-<p>Since this is the first step, it’s very easy to handle failure: just start again from beginning. So it’s very important to capture any error while import the dumped data.</p>
-
-<h3 id="2-capture-changes-from-source-to-target">2. Capture changes from source to target</h3>
-
-<p>The next step is to use the capture data changes from the source database. For example, in MySQL, you can use <a href="https://dev.mysql.com/doc/refman/8.0/en/binary-log.html">bin log</a> to capture the changes and insert them to the target database. Since we have the start position from last step, we know where to start parse and import the changes.</p>
-
-<p>It’s very important to keep order of the changes while importing. So it’s better to use only one process to parse and import the changes. This part is challenging: the performance matters here. <strong>The time to sync all the changes is the downtime we need for migration</strong>.</p>
-
-<p>We also need to make sure we don’t miss any changes or import any changes multiple times even there are system failures. So it’s very important to record the change log position. It’s convenience to write the position into the target database with the same transaction that imports the data. So the position will be synced with the data we imported.</p>
-
-<h3 id="3-deny-writes-to-the-target-database-from-clients">3. Deny writes to the target database from clients</h3>
-
-<p>The easy way to keep data consistency is to have a single source of truth. Until now, we are using the source database as the source of truth and sync changes to the target database. We don’t want to mess up the target database with other writes. So we need to setup the target database permission to deny all the writes from clients. For example, in MySQL, you can grant only <code>select</code> permission to the table for the clients and deny other operations. We allow the read permission so that we can compare the read results at the next step.</p>
-
-<h3 id="4-modify-the-clients-to-read-and-write-both-databases">4. Modify the clients to read and write both databases</h3>
-
-<p>The next step is to make the clients to read and write both source and target databases.</p>
-
-<p>We want to read/write source database first. Use this result if there is no permission error, use the read/write result from target database otherwise.</p>
-
-<p>The read/write to target database has two purposes:</p>
-
-<ol>
-  <li>Before switch to the target database, we can verify the target database works as expected by compare read results and write operations. Note that the target database may have lag to sync up, so the results may not always the same. But we can have an understanding of the correctness based on the percentage of same results.</li>
-  <li>After we switch to the target database, the read/write results will be used as the real results.</li>
-</ol>
-
-<p><strong>If you want to make sure the target database can handle the load, it’s a good idea to allow read/write to the target database for a while .But it’s just as a verification, the data in the target database will not be consistent after that. So after we verify the target database can handle the traffic, we need to cleanup the target database and start from step 1 again.</strong> (We don’t need to modify the client code during the steps).</p>
-
-<p>For the error handling, there are two key points:</p>
-
-<ol>
-  <li>Only use target database result if there is permission error from source database. Throw other errors from source database.</li>
-  <li>Ignore errors for the target database if the result is not used but make sure to log them, so that it will not affect the current operation while also make sure we don’t have errors before the switch.</li>
-</ol>
-
-<p>The client code would be like this:</p>
-
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>db_operation() {
-<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  try {
-<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>    source_result = source_db_operation()
-<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  } catch (PermissionException e) {
-<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    return target_db_operation()
-<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  }
-<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  async {
-<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    // do the following things async so it will not impact the performance
-<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>    try {
-<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>      target_result = target_db_operation()
-<span class="line-numbers"><a href="#n11" name="n11">11</a></span>      compare_result(source_result, target_result)
-<span class="line-numbers"><a href="#n12" name="n12">12</a></span>    } catch (Exception e) {
-<span class="line-numbers"><a href="#n13" name="n13">13</a></span>      log_error(e)
-<span class="line-numbers"><a href="#n14" name="n14">14</a></span>    }
-<span class="line-numbers"><a href="#n15" name="n15">15</a></span>  }
-<span class="line-numbers"><a href="#n16" name="n16">16</a></span>  return source_result
-<span class="line-numbers"><a href="#n17" name="n17">17</a></span>}
-</pre></div>
-</div>
-</div>
-
-<h3 id="5-deny-access-to-the-source-database-from-clients-and-wait-for-changes-to-by-synced">5. Deny access to the source database from clients and wait for changes to by synced</h3>
-
-<p>After we are confident with the read and write to the target database, we can make the switch. We switch the database by change the database permissions. First, we deny all the access to the source database from clients. Then we wait for the changes to be full synced to the target database. During this time, the system is down. So how fast the changes are synced from source database to target database determines how much down time it will be.</p>
-
-<h3 id="6-allow-write-to-target-database">6. Allow write to target database</h3>
-
-<p>After the target database is fully synced, we can enable the target database permission for all the clients. After this, the system should be online again and the database is fully switched over.</p>
-
-<h3 id="7-optional-fallback-to-source-database-if-anything-goes-wrong">7. Optional: Fallback to source database if anything goes wrong</h3>
-
-<p>It’s good if everything works well so far. But that may not always the case. Maybe the target database cannot handle the new traffic (that’s why it’s important to test it in step 4). In this case, we need fallback to the source database.</p>
-
-<p>If it’s fine to lost committed data during the migration time, it would be relatively easy to fallback:</p>
-
-<ol>
-  <li>Allow access to the source database. After this, the clients should be using the source database again.</li>
-  <li>Cleanup the target database and start from the beginning.</li>
-</ol>
-
-<p>If it’s critical to save the committed data and make sure they are consistent, then before step 5, we should setup a mechanism to capture changes from target database to source database, and mark the change position after step 6. Then the fallback steps would be:</p>
-
-<ol>
-  <li>Deny all the writes to target database.</li>
-  <li>Sync from target database to source database (make sure to stop it after fully synced).</li>
-  <li>Allow access to the source database.</li>
-  <li>Cleanup the target database and start from the beginning again.</li>
-</ol>
-
-<p>The sync from target database to source database is very dangerous and hard to test, so it’s really important to test the target database can handle the operations in step 4.</p>
-
-<h3 id="8-cleanup-client-code">8. Cleanup client code</h3>
-
-<p>Once the database is switched to the target database, we can cleanup the code that access the source database. Then the database is fully migrated and you can enjoin it!</p>]]></content><author><name></name></author><category term="database" /><category term="distributed system" /><category term="consistency" /><summary type="html"><![CDATA[When a system has been live for a long time, it’s not rare to use newer technologies to improve performance, maintainability, or add new features. One of such changes can be which database to use. This can be the most difficult kind of change. During the migration, there are two data sources, which makes it a distributed system. Make data consistent under a distributed system is very hard and can easily go wrong. In this article, we will explore a way to keep the data consistent during the migration, and maintain a low downtime at the same time.]]></summary></entry></feed>
+<p>Even though all the test result is expected, it doesn’t make sure the implementation is correct, since there are still many situation I didn’t test, like Redis cluster, network partition, database failure and so on. So welcome to add new test cases and break the system!</p>]]></content><author><name></name></author><category term="Redis" /><category term="database" /><category term="consistency" /><category term="Jepsen" /><category term="distributed system" /><summary type="html"><![CDATA[This article belongs to a series of articles about caching. The code in this article can be found at my Github repo.]]></summary></entry></feed>
