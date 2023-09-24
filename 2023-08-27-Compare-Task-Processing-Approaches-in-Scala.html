@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title> Compare Task Processing Approaches in Scala |  Bin Wang - My Personal Blog</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
+    <link rel="stylesheet" href="/static/css/asciinema-player.css" type="text/css" />
 
 		<!--
     <script>
@@ -198,9 +199,11 @@
 </div>
 </div>
 
-<p>However, this only makes a batch of tasks run in parallel. It needs to wait the whole batch to be finished in order to start next batch. This is very obvious when we run this approach and see the output of characters (download <a href="https://github.com/wb14123/scala-stream-demo">Github repo</a> and run <code>sbt run "-n BatchIOApp"</code>). See how it paused after each batch even when consumer is slower than producer:</p>
+<p>However, this only makes a batch of tasks run in parallel. It needs to wait the whole batch to be finished in order to start next batch. This is very obvious when we run this approach and see the output of characters (download <a href="https://github.com/wb14123/scala-stream-demo">Github repo</a> and run <code>sbt "run -n BatchIOApp"</code>). See how it paused after each batch even when consumer is slower than producer:</p>
 
-<script async="" id="asciicast-P2ZX0r2VYaMXCVjrJCoJ0Y3DS" src="https://asciinema.org/a/P2ZX0r2VYaMXCVjrJCoJ0Y3DS.js" data-rows="10"></script>
+<div id="cast-tmpg4x5_bn7-ascii"></div>
+<script src="/static/js/asciinema-player.min.js"></script>
+<script>AsciinemaPlayer.create('/static/asciicasts/tmpg4x5_bn7-ascii.cast', document.getElementById('cast-tmpg4x5_bn7-ascii'), {rows: 10, autoPlay: true});</script>
 
 <h2 id="approach-2-use-blocking-queue-to-buffer-tasks">Approach 2: Use Blocking Queue to Buffer Tasks</h2>
 
@@ -231,7 +234,9 @@
 
 <p>When run it with <code>sbt "run -n BlockingQueueApp"</code>, we can see it’s much faster when the consumer is faster or has the same speed as the producer. Especially when the consumer is slow, it prints multiple <code>P</code> at first, which means the producers doesn’t wait all the consumers to finish in order to produce tasks.</p>
 
-<script async="" id="asciicast-gWC18DjuVT1v6sDaf2HJJerq6" src="https://asciinema.org/a/gWC18DjuVT1v6sDaf2HJJerq6.js" data-rows="10"></script>
+<div id="cast-tmp6dx2heu_-ascii"></div>
+<script src="/static/js/asciinema-player.min.js"></script>
+<script>AsciinemaPlayer.create('/static/asciicasts/tmp6dx2heu_-ascii.cast', document.getElementById('cast-tmp6dx2heu_-ascii'), {rows: 10, autoPlay: true});</script>
 
 <p>Back to the blocking the whole thread problem: it doesn’t seem to be a problem in this case, right? It’s only because we are lucky! In this setup, we are using two fixed threads as the thread pool of running IO in <code>Main.scala</code>:</p>
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2023-09-23T12:25:32-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Migrate Scala2grpc to Cats Effect 3</title><link href="https://www.binwang.me/2023-09-23-Migrate-Scala2Grpc-to-Cats-Effect-3.html" rel="alternate" type="text/html" title="Migrate Scala2grpc to Cats Effect 3" /><published>2023-09-23T00:00:00-04:00</published><updated>2023-09-23T00:00:00-04:00</updated><id>https://www.binwang.me/Migrate-Scala2Grpc-to-Cats-Effect-3</id><content type="html" xml:base="https://www.binwang.me/2023-09-23-Migrate-Scala2Grpc-to-Cats-Effect-3.html"><![CDATA[<p><a href="https://github.com/wb14123/scala2grpc">Scala2grpc</a> is a library and SBT plugin I wrote so that you can integrate gRPC to Scala code in a non-invasive way. In a previous <a href="/2022-05-02-A-Library-to-Make-It-Easier-to-Use-Scala-with-GRPC.html">blog post</a>, I talked about the motivation behind it.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2023-09-23T23:53:15-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Migrate Scala2grpc to Cats Effect 3</title><link href="https://www.binwang.me/2023-09-23-Migrate-Scala2Grpc-to-Cats-Effect-3.html" rel="alternate" type="text/html" title="Migrate Scala2grpc to Cats Effect 3" /><published>2023-09-23T00:00:00-04:00</published><updated>2023-09-23T00:00:00-04:00</updated><id>https://www.binwang.me/Migrate-Scala2Grpc-to-Cats-Effect-3</id><content type="html" xml:base="https://www.binwang.me/2023-09-23-Migrate-Scala2Grpc-to-Cats-Effect-3.html"><![CDATA[<p><a href="https://github.com/wb14123/scala2grpc">Scala2grpc</a> is a library and SBT plugin I wrote so that you can integrate gRPC to Scala code in a non-invasive way. In a previous <a href="/2022-05-02-A-Library-to-Make-It-Easier-to-Use-Scala-with-GRPC.html">blog post</a>, I talked about the motivation behind it.</p>
 
 <p>The library requires each service method to return Cats Effect’s <code>IO</code> or fs2 stream. However, it’s still using Cats Effect 2.x version. There are big changes in Cats Effect 3 and almost all up to date libraries already support it. So it’s time to migrate it to Cats Effect 3 as well.</p>
 
@@ -250,9 +250,11 @@
 </div>
 </div>
 
-<p>However, this only makes a batch of tasks run in parallel. It needs to wait the whole batch to be finished in order to start next batch. This is very obvious when we run this approach and see the output of characters (download <a href="https://github.com/wb14123/scala-stream-demo">Github repo</a> and run <code>sbt run "-n BatchIOApp"</code>). See how it paused after each batch even when consumer is slower than producer:</p>
+<p>However, this only makes a batch of tasks run in parallel. It needs to wait the whole batch to be finished in order to start next batch. This is very obvious when we run this approach and see the output of characters (download <a href="https://github.com/wb14123/scala-stream-demo">Github repo</a> and run <code>sbt "run -n BatchIOApp"</code>). See how it paused after each batch even when consumer is slower than producer:</p>
 
-<script async="" id="asciicast-P2ZX0r2VYaMXCVjrJCoJ0Y3DS" src="https://asciinema.org/a/P2ZX0r2VYaMXCVjrJCoJ0Y3DS.js" data-rows="10"></script>
+<div id="cast-tmpg4x5_bn7-ascii"></div>
+<script src="/static/js/asciinema-player.min.js"></script>
+<script>AsciinemaPlayer.create('/static/asciicasts/tmpg4x5_bn7-ascii.cast', document.getElementById('cast-tmpg4x5_bn7-ascii'), {rows: 10, autoPlay: true});</script>
 
 <h2 id="approach-2-use-blocking-queue-to-buffer-tasks">Approach 2: Use Blocking Queue to Buffer Tasks</h2>
 
@@ -283,7 +285,9 @@
 
 <p>When run it with <code>sbt "run -n BlockingQueueApp"</code>, we can see it’s much faster when the consumer is faster or has the same speed as the producer. Especially when the consumer is slow, it prints multiple <code>P</code> at first, which means the producers doesn’t wait all the consumers to finish in order to produce tasks.</p>
 
-<script async="" id="asciicast-gWC18DjuVT1v6sDaf2HJJerq6" src="https://asciinema.org/a/gWC18DjuVT1v6sDaf2HJJerq6.js" data-rows="10"></script>
+<div id="cast-tmp6dx2heu_-ascii"></div>
+<script src="/static/js/asciinema-player.min.js"></script>
+<script>AsciinemaPlayer.create('/static/asciicasts/tmp6dx2heu_-ascii.cast', document.getElementById('cast-tmp6dx2heu_-ascii'), {rows: 10, autoPlay: true});</script>
 
 <p>Back to the blocking the whole thread problem: it doesn’t seem to be a problem in this case, right? It’s only because we are lucky! In this setup, we are using two fixed threads as the thread pool of running IO in <code>Main.scala</code>:</p>
 
