@@ -1,4 +1,71 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2023-09-23T23:53:15-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Migrate Scala2grpc to Cats Effect 3</title><link href="https://www.binwang.me/2023-09-23-Migrate-Scala2Grpc-to-Cats-Effect-3.html" rel="alternate" type="text/html" title="Migrate Scala2grpc to Cats Effect 3" /><published>2023-09-23T00:00:00-04:00</published><updated>2023-09-23T00:00:00-04:00</updated><id>https://www.binwang.me/Migrate-Scala2Grpc-to-Cats-Effect-3</id><content type="html" xml:base="https://www.binwang.me/2023-09-23-Migrate-Scala2Grpc-to-Cats-Effect-3.html"><![CDATA[<p><a href="https://github.com/wb14123/scala2grpc">Scala2grpc</a> is a library and SBT plugin I wrote so that you can integrate gRPC to Scala code in a non-invasive way. In a previous <a href="/2022-05-02-A-Library-to-Make-It-Easier-to-Use-Scala-with-GRPC.html">blog post</a>, I talked about the motivation behind it.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2023-09-24T09:03:02-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Jekyll Plugin to Load Asciinema Recordings Locally</title><link href="https://www.binwang.me/2023-09-24-Jekyll-Plugin-to-Load-Asciicast-Locally.html" rel="alternate" type="text/html" title="Jekyll Plugin to Load Asciinema Recordings Locally" /><published>2023-09-24T00:00:00-04:00</published><updated>2023-09-24T00:00:00-04:00</updated><id>https://www.binwang.me/Jekyll-Plugin-to-Load-Asciicast-Locally</id><content type="html" xml:base="https://www.binwang.me/2023-09-24-Jekyll-Plugin-to-Load-Asciicast-Locally.html"><![CDATA[<p><a href="https://asciinema.org/">Asciinema</a> is a wonderful tool to record Linux terminal. It saves the records as a text format called Asciicast. However, it has a strong integration with its website. Especially if you want to embed the recordings into the web page use some simple JS code like this:</p>
+
+<div class="language-html highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#070;font-weight:bold">&lt;script</span> <span style="color:#b48">src</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">https://asciinema.org/a/14.js</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">id</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">asciicast-14</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">async</span><span style="color:#070;font-weight:bold">&gt;</span><span style="color:#070;font-weight:bold">&lt;/script&gt;</span>
+</pre></div>
+</div>
+</div>
+
+<p>You need to share the recordings to Asciinema’s website and need to link an account with the recordings, otherwise they will be deleted after 7 days, which I just found out yesterday. I don’t want my blog to rely on some third party website for core content, so I need a way to load the recordings from my website itself.</p>
+
+<p>Lucky, the <a href="https://github.com/asciinema/asciinema-player">Asciinema Javascript player</a> is open source and support to load recordings from a url out of box. First you need to import the CSS:</p>
+
+<div class="language-html highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#070;font-weight:bold">&lt;link</span> <span style="color:#b48">rel</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">stylesheet</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">type</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">text/css</span><span style="color:#710">&quot;</span></span> <span style="color:#b48">href</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/asciinema-player.css</span><span style="color:#710">&quot;</span></span> <span style="color:#070;font-weight:bold">/&gt;</span>
+</pre></div>
+</div>
+</div>
+
+<p>This is no big deal since this can be put in Jekyll’s template. Then you need some JS code like this:</p>
+
+<div class="language-html highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span><span style="color:#070;font-weight:bold">&lt;div</span> <span style="color:#b48">id</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">demo</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span><span style="color:#070;font-weight:bold">&lt;/div&gt;</span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span> ...
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span><span style="color:#070;font-weight:bold">&lt;script</span> <span style="color:#b48">src</span>=<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">/asciinema-player.min.js</span><span style="color:#710">&quot;</span></span><span style="color:#070;font-weight:bold">&gt;</span><span style="color:#070;font-weight:bold">&lt;/script&gt;</span>
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span><span style="color:#070;font-weight:bold">&lt;script&gt;</span>
+<span class="line-numbers"><a href="#n5" name="n5">5</a></span><span style="background-color:hsla(0,0%,0%,0.07);color:black">  AsciinemaPlayer.create(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">/demo.cast</span><span style="color:#710">'</span></span>, document.getElementById(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">demo</span><span style="color:#710">'</span></span>));</span>
+<span class="line-numbers"><a href="#n6" name="n6">6</a></span><span style="color:#070;font-weight:bold">&lt;/script&gt;</span>
+</pre></div>
+</div>
+</div>
+
+<p>It’s a little bit too much for embedding a terminal recording in a blog. However, with the powerful Jekyll plugin system, We can write a plugin to make it simpler so that we can just use a tag to include it:</p>
+
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>{% asciicast &lt;id&gt; %}
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>
+</pre></div>
+</div>
+</div>
+
+<p>Here is the implementation, it’s also in <a href="https://github.com/wb14123/blog/blob/master/jekyll/_plugins/Asciicast.rb">my blog’s Github repo</a>:</p>
+
+<div class="language-ruby highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">module</span> <span style="color:#B06;font-weight:bold">Jekyll</span>
+<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  <span style="color:#080;font-weight:bold">class</span> <span style="color:#B06;font-weight:bold">RenderAsciicastTag</span> &lt; <span style="color:#036;font-weight:bold">Liquid</span>::<span style="color:#036;font-weight:bold">Tag</span>
+<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>
+<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>    <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">initialize</span>(tag_name, text, tokens)
+<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>      <span style="color:#080;font-weight:bold">super</span>
+<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>      <span style="color:#33B">@text</span> = text.strip
+<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>    <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
+<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>    <span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">render</span>(context)
+<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>      <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">&lt;div id=</span><span style="color:#b0b">\&quot;</span><span style="color:#D20">cast-</span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span><span style="color:#33B">@text</span><span style="font-weight:bold;color:#666">}</span></span><span style="color:#b0b">\&quot;</span><span style="color:#D20">&gt;&lt;/div&gt;</span><span style="color:#710">&quot;</span></span> \
+<span class="line-numbers"><a href="#n11" name="n11">11</a></span>      <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">&lt;script src=&quot;/static/js/asciinema-player.min.js&quot;&gt;&lt;/script&gt;</span><span style="color:#710">'</span></span> \
+<span class="line-numbers"><a href="#n12" name="n12">12</a></span>      <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">&lt;script&gt;AsciinemaPlayer.create('/static/asciicasts/</span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span><span style="color:#33B">@text</span><span style="font-weight:bold;color:#666">}</span></span><span style="color:#D20">.cast', document.getElementById('cast-</span><span style="background-color:hsla(0,0%,0%,0.07);color:black"><span style="font-weight:bold;color:#666">#{</span><span style="color:#33B">@text</span><span style="font-weight:bold;color:#666">}</span></span><span style="color:#D20">'), {rows: 10, autoPlay: true});&lt;/script&gt;</span><span style="color:#710">&quot;</span></span>
+<span class="line-numbers"><a href="#n13" name="n13">13</a></span>    <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n14" name="n14">14</a></span>  <span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n15" name="n15">15</a></span><span style="color:#080;font-weight:bold">end</span>
+<span class="line-numbers"><a href="#n16" name="n16">16</a></span>
+<span class="line-numbers"><a href="#n17" name="n17">17</a></span><span style="color:#036;font-weight:bold">Liquid</span>::<span style="color:#036;font-weight:bold">Template</span>.register_tag(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">asciicast</span><span style="color:#710">'</span></span>, <span style="color:#036;font-weight:bold">Jekyll</span>::<span style="color:#036;font-weight:bold">RenderAsciicastTag</span>)
+</pre></div>
+</div>
+</div>
+
+<p>It will find the recordings under <code>/static/asciicasts/{id}.cast</code> and load from there.</p>
+
+<p>Put this file under <code>_plugins</code> and happy hacking!</p>]]></content><author><name></name></author><category term="Jekyll" /><category term="Blog" /><category term="command line" /><category term="Asciicast" /><summary type="html"><![CDATA[Asciinema is a wonderful tool to record Linux terminal. It saves the records as a text format called Asciicast. However, it has a strong integration with its website. Especially if you want to embed the recordings into the web page use some simple JS code like this:]]></summary></entry><entry><title type="html">Migrate Scala2grpc to Cats Effect 3</title><link href="https://www.binwang.me/2023-09-23-Migrate-Scala2Grpc-to-Cats-Effect-3.html" rel="alternate" type="text/html" title="Migrate Scala2grpc to Cats Effect 3" /><published>2023-09-23T00:00:00-04:00</published><updated>2023-09-23T00:00:00-04:00</updated><id>https://www.binwang.me/Migrate-Scala2Grpc-to-Cats-Effect-3</id><content type="html" xml:base="https://www.binwang.me/2023-09-23-Migrate-Scala2Grpc-to-Cats-Effect-3.html"><![CDATA[<p><a href="https://github.com/wb14123/scala2grpc">Scala2grpc</a> is a library and SBT plugin I wrote so that you can integrate gRPC to Scala code in a non-invasive way. In a previous <a href="/2022-05-02-A-Library-to-Make-It-Easier-to-Use-Scala-with-GRPC.html">blog post</a>, I talked about the motivation behind it.</p>
 
 <p>The library requires each service method to return Cats Effect’s <code>IO</code> or fs2 stream. However, it’s still using Cats Effect 2.x version. There are big changes in Cats Effect 3 and almost all up to date libraries already support it. So it’s time to migrate it to Cats Effect 3 as well.</p>
 
@@ -1551,63 +1618,4 @@ You may want to run Nginx or HAProxy in the Kubernetes cluster, use it as a reve
 
 <p>So in order to not be rusty, I started to write a side project for fun during part time. I had lots of side projects before. Though one of them gained some popularity, most of them are not finished. Unlike others, I started this project to use all my preferred technicals, best practices and open source tools that I don’t have opportunity to use at work. There is no deadline, no debate in order to restructure the code or choose some tech stacks. I feel very good about it. Maybe it will not be finished at last either, but I find the joys I had when I first started programming.</p>
 
-<p>I also started to write articles on my blog in a higher frequency. I posted 2 to 3 articles per month in average at the second half of 2020. The quality of articles also improved. It helps me to practice English, forces me to learn and have a deeper understand by writing things down. Most importantly, as I said above about the power of words, it makes moments in my life not just slip away. I hope I can continue this in the new year. I feel on some level, it makes part of me eternal.</p>]]></content><author><name></name></author><category term="life" /><summary type="html"><![CDATA[2020 is a special year to everyone because of Covid-19. It’s special to me not only because of it, but also because of a big change in my life. I moved from China to Canada at November 2019. I cannot review my life in 2020 without mention that part, so this article is more like 2019 and 2020 in review.]]></summary></entry><entry><title type="html">Redis Implementation for Cache and Database Consistency</title><link href="https://www.binwang.me/2020-12-14-Redis-Implementation-for-Cache-and-Database-Consistency.html" rel="alternate" type="text/html" title="Redis Implementation for Cache and Database Consistency" /><published>2020-12-14T00:00:00-05:00</published><updated>2020-12-14T00:00:00-05:00</updated><id>https://www.binwang.me/Redis-Implementation-for-Cache-and-Database-Consistency</id><content type="html" xml:base="https://www.binwang.me/2020-12-14-Redis-Implementation-for-Cache-and-Database-Consistency.html"><![CDATA[<p><em>This article belongs to a series of articles about caching. The code in this article can be found at <a href="https://github.com/wb14123/redis_lease">my Github repo</a>.</em></p>
-
-<ol>
-  <li><em><a href="/2020-11-02-Use-TLA+-to-Verify-Cache-Consistency.html">Use TLA+ to Verify Cache Consistency</a>.</em></li>
-  <li><em>Redis Implementation for Cache and Database Consistency. (This one)</em></li>
-</ol>
-
-<p>In the <a href="/2020-11-02-Use-TLA+-to-Verify-Cache-Consistency.html">last article</a>, we introduced an algorithm (described in paper <a href="https://pdos.csail.mit.edu/6.824/papers/memcache-fb.pdf">Scaling Memcache at Facebook</a>) that can do a better job to maintain the data consistency between cache and database. We also used TLA+ to model the algorithm and verified it. In this article, we are going to implement the algorithm in real world for Redis. The implementation is very simple and doesn’t need to change Redis itself. It’s implemented it by using Redis script. However, it’s much harder to verify the correctness. In order to do it, I used <a href="https://jepsen.io/">Jepsen</a> to test it. If you look at the language analysis for the Github repo, you can see most of them are tests. The Redis script implementation, which is written in Lua, is only 5.1% of the project.</p>
-
-<h2 id="algorithm-description">Algorithm Description</h2>
-
-<p>We’ve described the algorithm in the previous article and even write a TLA+ model for it. But just make it easier for the readers, I’ll briefly describe the algorithm here again. Basically, whenever the client get a value from cache, it will be assigned a unique ID (lease) for the key. When the client writes back a new value, it needs to provide the  key’s newest lease ID. And delete the key will also invalidate all its leases.</p>
-
-<h2 id="implementation">Implementation</h2>
-
-<p>The implementation uses <a href="https://redis.io/commands/eval">Redis script</a>, which is written in Lua. It can implement multiple operations and make them atomic. In theory, this can also be done by client, but Redis script provides a consistent implementation across different clients and makes it easier to use. The algorithm is easy, so the implementation is also straight forward. The implementations are under <a href="https://github.com/wb14123/redis_lease/tree/master/scripts">scripts directory of the repo</a>. These scripts also works for Redis cluster (but I didn’t use Jepsen to test it under cluster mode). Here is an example implementation for get:</p>
-
-<div class="language-lua highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">local</span> <span style="color:#950">key</span> = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">{</span><span style="color:#710">'</span></span>..KEYS[<span style="color:#00D">1</span>]..<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">}</span><span style="color:#710">'</span></span>
-<span class="line-numbers"> <a href="#n2" name="n2">2</a></span><span style="color:#080;font-weight:bold">local</span> <span style="color:#950">token</span> = ARGV[<span style="color:#00D">1</span>]
-<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">local</span> <span style="color:#950">value</span> = redis.call(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">get</span><span style="color:#710">'</span></span>, key)
-<span class="line-numbers"> <a href="#n4" name="n4">4</a></span><span style="color:#080;font-weight:bold">if</span> <span style="color:#080;font-weight:bold">not</span> value <span style="color:#080;font-weight:bold">then</span>
-<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    redis.replicate_commands()
-<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>    <span style="color:#080;font-weight:bold">local</span> <span style="color:#950">lease_key</span> = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">lease:</span><span style="color:#710">'</span></span>..key
-<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>    redis.call(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">set</span><span style="color:#710">'</span></span>, lease_key, token)
-<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    <span style="color:#080;font-weight:bold">return</span> <span style="background-color:hsla(200,100%,50%,0.06)"><span style="color:#40A">{</span><span style="color:#069">false</span>, token<span style="color:#40A">}</span></span>
-<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="color:#080;font-weight:bold">else</span>
-<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    <span style="color:#080;font-weight:bold">return</span> <span style="background-color:hsla(200,100%,50%,0.06)"><span style="color:#40A">{</span>value, <span style="color:#069">false</span><span style="color:#40A">}</span></span>
-<span class="line-numbers"><a href="#n11" name="n11">11</a></span><span style="color:#080;font-weight:bold">end</span>
-</pre></div>
-</div>
-</div>
-
-<p>After load the script, you can use it like this:</p>
-
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>redis-cli evalsha &lt;script_sha1&gt; 1 &lt;key&gt; &lt;uniq_id&gt;
-</pre></div>
-</div>
-</div>
-
-<p>It will return <code>value, nil</code> if there is value for the key, or <code>nil, lease</code> if there is no value.</p>
-
-<p>One optimization here is, if we have value for the key, we will not store the lease. That’s because in our use case, if we can get the value, we will not get it from database and write back to the cache. This avoids a lot of memory overhead.</p>
-
-<p>Another important decision I made is, when get the value, the client needs to provide a unique ID instead of let Redis provide one. This is because I cannot find a good way to generate unique ID in Redis cluster. In a single instance, it’s easy: just use a key and inc the value each time. You can still generate unique IDs for different keys on a cluster, but it adds a lot of memory overhead. So I decided to let clients provide it. Luckily, it’s not hard, basically every language has UUID implementation and that’s good enough.</p>
-
-<h2 id="testing">Testing</h2>
-
-<p>It’s easy to implement something, but very hard to make sure it’s correct. We can use TLA+ to model the algorithm and explore the state space, or use mathematical method to proof the correctness in theory. But once we implement the algorithm, it’s something different. We cannot make sure it’s exactly the same as what we’ve proofed. That’s why I find using Coq to implement, proof and generate real code is fantastic. But in this case, it’s not implemented in Coq, so we must find some other way to test it. By testing, we still cannot make sure it’s 100% correct, we can just explore as many situations as we can and make sure the system doesn’t behaves in a way we don’t expect.</p>
-
-<p>The tool we use here is <a href="https://jepsen.io/">Jepsen</a>. It provides lots of tools to make it easy to test distributed systems. It can generate many concurrent requests, import different kinds of failures (host down, network partition, clock drift, and so on) to the system, record all the requests and responses, and check the history at the end.</p>
-
-<p>Here is the test case I write: for each client, generate random read and write operations. For read operation, read from cache first, if the value is not found, read from database and write back to the data. For write operations, write to the database and delete the key from cache. Then after all the read and write operations, check whether the data in cache and database are the same. The test case is very simple, it implemented the way we would use the cache.</p>
-
-<p>By providing different arguments to the test command, you can run the test case with raw Redis get/set/del operations, or use get/set/del operation implemented by the scripts. You can also import cache failure during the test.</p>
-
-<p>If we run the test with raw Redis operations, we can find the test is failed. In the last article, we discussed that using plain get/set/del cache operations cannot guarantee cache consistency, so this is expected. If we run the test with our scripts, we can find the test passed. If we run the test with cache system failure, we can see the test failed, which is also expected from last article. The inconsistent because of cache failure can be resolved by clean up cache data after restart. But if the client is failed, it will have the same problem (I didn’t write the test case for this because it’s hard to test client failure in Jepsen), but it’s not a very good idea to cleanup cache in this case. Because client fails all the time, cleanup cache will make operations slow. The best way might be to setup an expire time so the data can be consistent after the key is expired.</p>
-
-<p>Even though all the test result is expected, it doesn’t make sure the implementation is correct, since there are still many situation I didn’t test, like Redis cluster, network partition, database failure and so on. So welcome to add new test cases and break the system!</p>]]></content><author><name></name></author><category term="Redis" /><category term="database" /><category term="consistency" /><category term="Jepsen" /><category term="distributed system" /><summary type="html"><![CDATA[This article belongs to a series of articles about caching. The code in this article can be found at my Github repo.]]></summary></entry></feed>
+<p>I also started to write articles on my blog in a higher frequency. I posted 2 to 3 articles per month in average at the second half of 2020. The quality of articles also improved. It helps me to practice English, forces me to learn and have a deeper understand by writing things down. Most importantly, as I said above about the power of words, it makes moments in my life not just slip away. I hope I can continue this in the new year. I feel on some level, it makes part of me eternal.</p>]]></content><author><name></name></author><category term="life" /><summary type="html"><![CDATA[2020 is a special year to everyone because of Covid-19. It’s special to me not only because of it, but also because of a big change in my life. I moved from China to Canada at November 2019. I cannot review my life in 2020 without mention that part, so this article is more like 2019 and 2020 in review.]]></summary></entry></feed>
