@@ -1,4 +1,74 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2023-10-01T09:34:04-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">A Boring JVM Memory Profiling Story</title><link href="https://www.binwang.me/2023-09-30-A-Boring-JVM-Memory-Profiling-Story.html" rel="alternate" type="text/html" title="A Boring JVM Memory Profiling Story" /><published>2023-09-30T00:00:00-04:00</published><updated>2023-09-30T00:00:00-04:00</updated><id>https://www.binwang.me/A-Boring-JVM-Memory-Profiling-Story</id><content type="html" xml:base="https://www.binwang.me/2023-09-30-A-Boring-JVM-Memory-Profiling-Story.html"><![CDATA[<h2 id="background-of-memory-leakings">Background of Memory Leakings</h2>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2023-10-22T20:14:15-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Linux Full Disk Encryption with Yubikey</title><link href="https://www.binwang.me/2023-10-22-Full-Disk-Encryption-with-Yubikey.html" rel="alternate" type="text/html" title="Linux Full Disk Encryption with Yubikey" /><published>2023-10-22T00:00:00-04:00</published><updated>2023-10-22T00:00:00-04:00</updated><id>https://www.binwang.me/Full-Disk-Encryption-with-Yubikey</id><content type="html" xml:base="https://www.binwang.me/2023-10-22-Full-Disk-Encryption-with-Yubikey.html"><![CDATA[<h2 id="background">Background</h2>
+
+<p>As mentioned in a previous blog <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability</a>, I’ve setup a high available cluster that has 3 machines. But one of them is on my laptop. I feel like I need a dedicated machine for my personal usage, especially I’m planning some travels. So I need to remove the laptop from the cluster. Its disk space is also very limited. With migrating Gluster to Ceph (more blogs to come on that) and not be able to use a disk partition with Ceph’s encryption, I need another machine with more disks. So I repurposed another small form factor machine to join the cluster.</p>
+
+<p>I want full disk encryption on it but I don’t want to input password every time it boots: this machine is put into a closet and it’s very inconvenient to plug/unplug keyboard and monitor. In another blog <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution</a>, I talked about a solution to boot encrypted Linxu without input password by setting up TPM. However, old machines only have TPM 1.x chips instead of newer TPM 2.0 chips, which is very tricky to setup and  with very limited support from Linux distros. I don’t want to do it again if not necessary. The thread model is also different since this machine is supposed to be at my home all the time. So this time, I found a new solution to use Yubikey to decrypt disks: I just need to keep Yubikey plugged in during the boot process and press it at the proper time. I can also fallback to the password method if there is anything wrong with Yubikey decryption.</p>
+
+<p>There are some great tutorials and wiki pages describe how to do it. I must give the credit to <a href="https://0pointer.net/blog/unlocking-luks2-volumes-with-tpm2-fido2-pkcs11-security-hardware-on-systemd-248.html">this article</a> that helped me a lot. But all of them are missing some details so I though it would be great to write down my setup so that it may help someone else. My setup is on Arch Linux but the steps should be portable to other Linux distros.</p>
+
+<p><strong>Warning: the steps may make your system not be able to boot if not setup properly. Make sure to back it up or have a recovery CD available to fix it if things went south.</strong></p>
+
+<h2 id="install-linux-with-luks2">Install Linux with LUKS2</h2>
+
+<p>First we need to install Linux with our root partition encrypted. If you are using an installer, most likely there is an option to encryption the disk. If so, select that option and input a passphrase for it. Even though we are using Yubikey to decrypt the disks, it’s always good to have a passphrase to decrypt it in case something goes wrong. However, if your threat model needs a solution that doesn’t involve a passphrase, I believe you can remove it later after setup Yubikey, though I’ve never tried it myself.</p>
+
+<p>Some installers will use LUKS1 instead of LUKS2 to encrypt the disk. Don’t worry, use <code>cryptsetup convert --type=LUKS2 &lt;device&gt;</code> to convert it to a LUKS2 setup after the OS is installed.</p>
+
+<p>Note: do not encrypt boot partition. It usually doesn’t have sensitive information and encrypting it doesn’t prevent evil maid attack anyway. If you want it to be more secure, considering setup secure boot, which is also mentioned in my previous blog <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution</a>.</p>
+
+<h2 id="enroll-yubikey-to-key-slot">Enroll Yubikey to Key Slot</h2>
+
+<p>We can enroll a FIDO2 (which is a protocol Yubikey supports) device by using <code>systemd-cryptenroll</code>.</p>
+
+<p>Plug in the Yubikey. You can use this command first to list all the FIDO2 devices to make sure the Yubikey is recognized:</p>
+
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>systemd-cryptenroll --fido2-device=auto list
+</pre></div>
+</div>
+</div>
+
+<p>Note: You may need to install <code>libfido2</code>.</p>
+
+<p>After confirm the Yubikey is recognized, use this command to enroll it:</p>
+
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>systemd-cryptenroll --fido2-device=auto &lt;disk-device&gt;
+</pre></div>
+</div>
+</div>
+
+<p>It will show hint about you may need to press the Yubikey during the process. So <strong>watch the Yubikey: when its LED flashes, press it to continue.</strong></p>
+
+<h2 id="setup-crypttab">Setup crypttab</h2>
+
+<p>Put a line like this into <code>/etc/crypttab.initramfs</code>. It will be copied to initramfs by mkinitcpio as <code>/etc/crypttab</code> so that your root partition can be decrypted before it is mounted:</p>
+
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>myvolume &lt;disk-device&gt; - fido2-device=auto
+</pre></div>
+</div>
+</div>
+
+<p><code>&lt;disk-device&gt;</code> can be something like <code>/dev/sda1</code> or using UUID format <code>UUID=&lt;disk-uuid&gt;</code>.</p>
+
+<p>If it’s not root partition, you can put it in <code>/etc/crypttab</code> so it will be used after root partition is mounted.</p>
+
+<h2 id="setup-mkinitcpio">Setup mkinitcpio</h2>
+
+<p><code>mkinitcpio</code> is a tool to generate initramfs. <code>/etc/crypttab.initramfs</code> only works with it. So if your distro comes with other tools like <code>dracut</code>, you may need to uninstall it and install <code>mkinitcpio</code> instead.</p>
+
+<p>Once making sure <code>mkinitcpio</code> is installed, we need to configure the hooks to make it read <code>crypttab</code> to decrypt the disks. We also need to make sure we are using systemd init instead of busybox init.</p>
+
+<p>Open <code>/etc/mkinitcpio.conf</code>, and find the line with <code>HOOKS=(...)</code>. Refer to <a href="https://wiki.archlinux.org/title/Mkinitcpio#Common_hooks">this wiki page</a> about the common hooks and replace busybox hooks with systemd ones. For example, in my setup, I replaced <code>udev</code> with <code>systemd</code> and <code>keymap</code> with <code>sd-vconsole</code>. Then add <code>sd-encrypt</code> to the hooks. The order matters: usually it comes after <code>sd-vconsole</code>.</p>
+
+<p>Then use <code>mkinitcpio -P</code> to regenerate initramfs images.</p>
+
+<h2 id="test-and-finish">Test and Finish!</h2>
+
+<p>Okay, now we have already setup everything. We can boot the system and test. Make sure Yubikey is plugged in before the boot. And watch for its LED light to flash and press it when it does! This little detail spent me lots of time to figure it out.</p>
+
+<p>You can also use password to decrypt the disk <strong>without Yubikey plugged in</strong>. Wait it for 30 seconds and it will prompt you to input the password. The time can be configured in <code>/etc/crypttab</code> (or <code>/etc/crypttab.initramfs</code>) by setting up <a href="https://man.archlinux.org/man/crypttab.5">token-timeout=</a>.</p>]]></content><author><name></name></author><category term="Yubikey" /><category term="Linux" /><category term="Encryption" /><summary type="html"><![CDATA[Background]]></summary></entry><entry><title type="html">A Boring JVM Memory Profiling Story</title><link href="https://www.binwang.me/2023-09-30-A-Boring-JVM-Memory-Profiling-Story.html" rel="alternate" type="text/html" title="A Boring JVM Memory Profiling Story" /><published>2023-09-30T00:00:00-04:00</published><updated>2023-09-30T00:00:00-04:00</updated><id>https://www.binwang.me/A-Boring-JVM-Memory-Profiling-Story</id><content type="html" xml:base="https://www.binwang.me/2023-09-30-A-Boring-JVM-Memory-Profiling-Story.html"><![CDATA[<h2 id="background-of-memory-leakings">Background of Memory Leakings</h2>
 
 <p>I encountered another memory leak problem recently. I’ve debugged a few of memory leak problems in the past, including <a href="https://github.com/splicemachine/spliceengine/pull/2260">the one</a> in Splice Machine, an open source distributed SQL engine based on HBase but was sadly discontinued. The memory leak problems are interesting because it’s challenging to find the root cause. However, I’ve never written a blog about it. Memory leak problems are not so usual, so when I encountered a new one, I kind of need to remember what tools I’ve used. So this time, even though not as interesting as some other memory leak problems I’ve debugged in the past, I decide to write it down as a note for my own reference in the future. The tool set I used this time is relatively simple. I guess I can write more when I use others in the future. This is more like a dev log instead of a tutorial. The “boring” in the title means it’s a pretty standard process and the problem is not that hard to find this time.</p>
 
@@ -1672,78 +1742,4 @@ You may want to run Nginx or HAProxy in the Kubernetes cluster, use it as a reve
 
 <p>Of course most tools include Kubernetes also provide API that you can call with code. But I think the better way is to generate configuration file about what you want, and let the tool to do all the actual work. It’s like declarative programming and functional programming. Infrastructure creation is very complex and error-phone: the things can go wrong include how to safely change from one state to another one, failure handling, resource cleanup, rollback, rolling upgrade and so on. It’s better to just describe what’s the desired state and let the tools to do the actual work. It also makes it easier to optimize the workflow to make it faster.</p>
 
-<p>CDK is such a tool that supports lots of programming languages. After run the code it can generate AWS Cloud Formation and run it. Unfortunately it’s from AWS which means you are basically locked into AWS if you choose to use it. Though there is a project <a href="https://cdk8s.io/">cdk8s</a> tries to support Kubernetes for CDK, I’m not sure if it gets the first level support. I really hope there would be an open source project like CDK that supports major cloud solutions.</p>]]></content><author><name></name></author><category term="cloud" /><category term="docker" /><category term="aws" /><category term="cdk" /><category term="technology" /><category term="programming" /><summary type="html"><![CDATA[I’m using a lot of CDK at work recently. So in this article, I want to talk about defining infrastructure as code.]]></summary></entry><entry><title type="html">Setup SSH Authentication with YubiKey</title><link href="https://www.binwang.me/2021-02-12-Setup-SSH-Authentication-with-YubiKey.html" rel="alternate" type="text/html" title="Setup SSH Authentication with YubiKey" /><published>2021-02-12T00:00:00-05:00</published><updated>2021-02-12T00:00:00-05:00</updated><id>https://www.binwang.me/Setup-SSH-Authentication-with-YubiKey</id><content type="html" xml:base="https://www.binwang.me/2021-02-12-Setup-SSH-Authentication-with-YubiKey.html"><![CDATA[<p><a href="https://www.yubico.com/">YubiKey</a> is a kind of hardware security token. The idea is to authenticate a person not only based on something he knows (password), but also on something he owns. It can be a digital file, but a more secure option would be a hardware token like Yubikey since no one can steal it without physical access. I use it for a lot of services. Not surprisingly, it can also be used in ssh authentication. But the official Yubikey tutorials are not very straightforward and the <del>Archlinux wiki pages are more generic instead of Yubikey specific</del>. So in this article, I’ll introduce how to setup ssh to include Yubikey in the authentication process. The operating system I’m using is Arch Linux, but the process for other Linux systems should be very similar.</p>
-
-<h2 id="generate-openssh-hardware-token">Generate OpenSSH Hardware Token</h2>
-
-<p>The most easy way is to generate a ssh key file based on Yubikey. OpenSSH supports this since 8.2.</p>
-
-<ol>
-  <li>Run <code>ssh-keygen -t ecdsa-sk</code></li>
-  <li>Touch the Yubikey for a few seconds.</li>
-</ol>
-
-<p>Then you can use the generated ssh key like other key files with <code>-i</code> option. After type in the login command, you need to touch Yubikey for a few seconds, then you should be able to login.</p>
-
-<h2 id="use-pam"><del>Use PAM</del></h2>
-
-<p><strong>Update: this way only works while the key is plugged into the ssh host, which makes it useless for SSH. However, it’s still useful for things like local login.</strong></p>
-
-<p>A more generic way is to use <a href="https://en.wikipedia.org/wiki/Linux_PAM">PAM</a> with Yubikey. It’s a modular authentication mechanism not only for SSH, but also for lots of other things like local login.</p>
-
-<h3 id="1-install-packages">1. Install packages</h3>
-
-<p>PAM should be installed by default for Archlinux. So the only package we need to install is the PAM module for Yubikey <code>pam-u2f</code>:</p>
-
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>sudo pacman -S pam-u2f
-</pre></div>
-</div>
-</div>
-
-<h3 id="2-generate-u2f-mapping-file">2. Generate u2f mapping file</h3>
-
-<p>Run this command first:</p>
-
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>pamu2fcfg -u&lt;username&gt; # Replace &lt;username&gt; by your username
-</pre></div>
-</div>
-</div>
-
-<p>Touch your Yubikey for a few seconds and save the command result to a configuration file, for example, <code>/etc/u2f_mappings</code>.</p>
-
-<h3 id="3-config-pam-for-ssh">3. Config PAM for SSH</h3>
-
-<p>The PAM config file for ssh is located at <code>/etc/pam.d/sshd</code>. In order to add Yubikey as part of the authentication, add this line to the file:</p>
-
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>auth required pam_u2f.so authfile=/etc/u2f_mappings
-</pre></div>
-</div>
-</div>
-
-<p><code>required</code> means Yubikey authentication is necessary. The other options are <code>requisite</code>, <code>sufficient</code> and <code>optional</code>. Refer to <a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/system-level_authentication_guide/pam_configuration_files">Redhat document</a> for more details.</p>
-
-<p>The parts after <code>pam_u2f.so</code> are the parameters. <code>authfile</code> is one of them. For all the supported parameters, refer to <a href="https://developers.yubico.com/pam-u2f/">Yubico pam-u2f document</a>.</p>
-
-<h3 id="4-config-ssh-to-include-password-authentication">4. Config SSH to include password authentication</h3>
-
-<p>In order to actually use PAM in ssh, ssh server needs to include password as part of authorization methods. The configuration is <code>AuthenticationMethods</code> in <code>sshd_config</code>. For example, if you want to use password + Yubikey + ssh key file, you can config it like this:</p>
-
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>AuthenticationMethods &quot;publickey,password&quot;
-</pre></div>
-</div>
-</div>
-
-<p>And make sure <code>PasswordAuthentication</code> and <code>ChallengeResponseAuthentication</code> are both <code>yes</code>:</p>
-
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>PasswordAuthentication Yes
-<span class="line-numbers"><a href="#n2" name="n2">2</a></span>ChallengeResponseAuthentication Yes
-</pre></div>
-</div>
-</div>
-
-<p>After this, restart sshd then you can login with Yubikey authentication: type in ssh login command, input user password and press enter, touch the Yubikey for a few seconds, then you should be able to login!</p>]]></content><author><name></name></author><category term="linux" /><category term="ssh" /><category term="security" /><category term="yubikey" /><category term="yubico" /><category term="pam" /><category term="pam-u2f" /><summary type="html"><![CDATA[YubiKey is a kind of hardware security token. The idea is to authenticate a person not only based on something he knows (password), but also on something he owns. It can be a digital file, but a more secure option would be a hardware token like Yubikey since no one can steal it without physical access. I use it for a lot of services. Not surprisingly, it can also be used in ssh authentication. But the official Yubikey tutorials are not very straightforward and the Archlinux wiki pages are more generic instead of Yubikey specific. So in this article, I’ll introduce how to setup ssh to include Yubikey in the authentication process. The operating system I’m using is Arch Linux, but the process for other Linux systems should be very similar.]]></summary></entry></feed>
+<p>CDK is such a tool that supports lots of programming languages. After run the code it can generate AWS Cloud Formation and run it. Unfortunately it’s from AWS which means you are basically locked into AWS if you choose to use it. Though there is a project <a href="https://cdk8s.io/">cdk8s</a> tries to support Kubernetes for CDK, I’m not sure if it gets the first level support. I really hope there would be an open source project like CDK that supports major cloud solutions.</p>]]></content><author><name></name></author><category term="cloud" /><category term="docker" /><category term="aws" /><category term="cdk" /><category term="technology" /><category term="programming" /><summary type="html"><![CDATA[I’m using a lot of CDK at work recently. So in this article, I want to talk about defining infrastructure as code.]]></summary></entry></feed>

@@ -2,6 +2,15 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.binwang.me/2023-10-22-Full-Disk-Encryption-with-Yubikey.html</loc>
+    
+    <lastmod>2023-10-22T00:00:00-04:00</lastmod>
+    
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <url>
     <loc>https://www.binwang.me/2023-09-30-A-Boring-JVM-Memory-Profiling-Story.html</loc>
     
     <lastmod>2023-09-30T00:00:00-04:00</lastmod>
@@ -945,6 +954,8 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+  
+  
   
   
   
