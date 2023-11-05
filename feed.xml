@@ -1,4 +1,46 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2023-10-22T20:14:15-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Linux Full Disk Encryption with Yubikey</title><link href="https://www.binwang.me/2023-10-22-Full-Disk-Encryption-with-Yubikey.html" rel="alternate" type="text/html" title="Linux Full Disk Encryption with Yubikey" /><published>2023-10-22T00:00:00-04:00</published><updated>2023-10-22T00:00:00-04:00</updated><id>https://www.binwang.me/Full-Disk-Encryption-with-Yubikey</id><content type="html" xml:base="https://www.binwang.me/2023-10-22-Full-Disk-Encryption-with-Yubikey.html"><![CDATA[<h2 id="background">Background</h2>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2023-11-04T23:21:42-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">How to Cleanup Ceph Filesystem for Deleted Kubernetes Persistent Volume</title><link href="https://www.binwang.me/2023-11-04-How-to-Cleanup-Ceph-Filesystem-for-Deleted-Kubernetes-Persistent-Volume.html" rel="alternate" type="text/html" title="How to Cleanup Ceph Filesystem for Deleted Kubernetes Persistent Volume" /><published>2023-11-04T00:00:00-04:00</published><updated>2023-11-04T00:00:00-04:00</updated><id>https://www.binwang.me/How-to-Cleanup-Ceph-Filesystem-for-Deleted-Kubernetes-Persistent-Volume</id><content type="html" xml:base="https://www.binwang.me/2023-11-04-How-to-Cleanup-Ceph-Filesystem-for-Deleted-Kubernetes-Persistent-Volume.html"><![CDATA[<p><a href="https://docs.ceph.com">Ceph</a> is a distributed file system. <a href="https://rook.io/">Rook</a> is a project to deploy it with Kubernetes. I recently replaced GlusterFS in my Kubernetes cluster with Ceph. I will write a blog (or a series of blogs) for the migration. But in this article, I will just talk about a problem I encountered, just in case I forget it.</p>
+
+<p>Once Rook is deployed in Kubernetes, you can create a <a href="https://rook.io/docs/rook/v1.11/Storage-Configuration/Shared-Filesystem-CephFS/filesystem-storage/">Ceph Filesystem</a> and use it to <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes">persistent volume (PV)</a>. Each PV’s data will be stored in a folder in the filesystem. If the PV’s reclaiming policy is set to <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#retain">retain</a>, the data will not be deleted after the persistent volume is manually deleted. It’s safer in this way. But what could you do if you want to cleanup the data? Normally you should change the PV’s reclaim policy before you delete the PV, then Rook’s operator will auto reclaim the storage in Ceph. But what if you forget or didn’t know that (like me), and want to cleanup the data after?</p>
+
+<p>First, we need to the folder/subvolume names in Ceph that store’s each PV’s data. We an get that by using <code>kubectl describe pv &lt;pv-name&gt;</code> and look for the field <code>subvolumeName</code>. But since the PV is deleted, we need to find the mappings for existing PVs and compare that with the folders/subvolumes in Ceph. This is the command to show all of the existing ones:</p>
+
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>kubectl get pv -o yaml | grep subvolumeName  | sort
+</pre></div>
+</div>
+</div>
+
+<p>Then we need to find all the existing folders/subvolumes in Ceph’s filesystem: Start a Ceph toolbox pod based on the <a href="https://rook.github.io/docs/rook/v1.11/Troubleshooting/ceph-toolbox/?h=toolbox">doc</a>. Then go into the pod and find the filesystem’s name first:</p>
+
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>ceph fs ls
+</pre></div>
+</div>
+</div>
+
+<p>After getting the filesystem’s name, get all the subvolumegroup from it:</p>
+
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>ceph fs subvolume ls &lt;fs-name&gt; csi | grep 'name' | sort
+</pre></div>
+</div>
+</div>
+
+<p>Compare this list with the list above, you should be able to find a subvolume that exists in Ceph but not shown in Kubernetes’ PV mapping. Use this command to check its info:</p>
+
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>ceph fs subvolume info &lt;fs-name&gt; &lt;subvolume-name&gt; csi
+</pre></div>
+</div>
+</div>
+
+<p>If you are sure this is the folder you want to delete, use this command to delete it:</p>
+
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>ceph fs subvolume rm &lt;fs-name&gt; &lt;subvolume-name&gt; csi
+</pre></div>
+</div>
+</div>]]></content><author><name></name></author><category term="/Computer Science/Distributed System Infrastructure" /><summary type="html"><![CDATA[Ceph is a distributed file system. Rook is a project to deploy it with Kubernetes. I recently replaced GlusterFS in my Kubernetes cluster with Ceph. I will write a blog (or a series of blogs) for the migration. But in this article, I will just talk about a problem I encountered, just in case I forget it.]]></summary></entry><entry><title type="html">Linux Full Disk Encryption with Yubikey</title><link href="https://www.binwang.me/2023-10-22-Full-Disk-Encryption-with-Yubikey.html" rel="alternate" type="text/html" title="Linux Full Disk Encryption with Yubikey" /><published>2023-10-22T00:00:00-04:00</published><updated>2023-10-22T00:00:00-04:00</updated><id>https://www.binwang.me/Full-Disk-Encryption-with-Yubikey</id><content type="html" xml:base="https://www.binwang.me/2023-10-22-Full-Disk-Encryption-with-Yubikey.html"><![CDATA[<h2 id="background">Background</h2>
 
 <p>As mentioned in a previous blog <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability</a>, I’ve setup a high available cluster that has 3 machines. But one of them is on my laptop. I feel like I need a dedicated machine for my personal usage, especially I’m planning some travels. So I need to remove the laptop from the cluster. Its disk space is also very limited. With migrating Gluster to Ceph (more blogs to come on that) and not be able to use a disk partition with Ceph’s encryption, I need another machine with more disks. So I repurposed another small form factor machine to join the cluster.</p>
 
@@ -1712,34 +1754,4 @@ You may want to run Nginx or HAProxy in the Kubernetes cluster, use it as a reve
 
 <p>The second reason is OOM killer. This reason applies when the system is running in high load. Swap get its bad reputation mostly because of the very slow response when memory is not enough, and it’s fair in my opinion. Even for a desktop, it’s better to kill the program instead of letting the whole system to be slow. For an online service, you may think it’s better to handle requests slow rather than completely down. It’s true if your service only has one node, but it’s barely the case for web services. It’s better to let the node down, so you know something is wrong. If there is memory leak, kill the service and restart it can normally solve the problem and you can resolve the root cause later. If there are more requests than the service can handle, it’s better to detect that and scale up or limit requests accordingly. Both cases are better than running the node in an unknown state.</p>
 
-<p>So in conclusion, whether a feature is good depends on real world use cases rather than how the designer imagine it will be used. There is a reason when disabling a feature becomes normal practice for some use cases. Maybe it’s out of topic, but as developers, we must always keep the real world use cases in mind instead of resolving hypothetical problems.</p>]]></content><author><name></name></author><category term="Linux" /><category term="swap" /><category term="memory" /><category term="technology" /><summary type="html"><![CDATA[Recently, I read an article In Defence of Swap that talks about memory swap in Linux. I happened to see some problems at work related to it as well. So in this article, I’ll talk about swap and why we want to disable it.]]></summary></entry><entry><title type="html">Define Infrastructure as Code</title><link href="https://www.binwang.me/2021-02-21-Define-Infrastructure-as-Code.html" rel="alternate" type="text/html" title="Define Infrastructure as Code" /><published>2021-02-21T00:00:00-05:00</published><updated>2021-02-21T00:00:00-05:00</updated><id>https://www.binwang.me/Define-Infrastructure-as-Code</id><content type="html" xml:base="https://www.binwang.me/2021-02-21-Define-Infrastructure-as-Code.html"><![CDATA[<p>I’m using a lot of <a href="https://aws.amazon.com/cdk/">CDK</a> at work recently. So in this article, I want to talk about defining infrastructure as code.</p>
-
-<h2 id="why-define-infrastructure-as-code">Why Define Infrastructure as Code?</h2>
-
-<p>Why do we want to define infrastructure as code? The most important reason is we can make the progress automatic. After all, that’s the purpose of programming. Normally, there are many manual steps to setup the infrastructure, like buying the machine, installing OS, setting up the network and so on. Luckily, with the cloud providers to provide the hardware, and with technologies like Docker and Kubernetes, it’s possible to make more and more steps automatic.</p>
-
-<p>But it’s not always easier to automatically do things than manually do it. Another useful feature of code is it can be the source of truth and make the process reproducible. It’s like the document, but more precise and complete. If you have the code, you can build all the systems from scratch without rely on other people’s undocumented knowledge. It can make sure what you have is a clean system, without random things that people did and forgot. And since it’s reproducible, you can improve the process and know whether it’s better or worse.</p>
-
-<p>The third advantage is you can use version control to manage the infrastructures. You can rollback to a good state. You can also see what has been changed from beginning, which is like an even better document.</p>
-
-<h2 id="define-operating-system">Define Operating System</h2>
-
-<p>For a software, the most related infrastructure is the operating system and the dependencies it needs on the operating system. Traditionally, while using physical machine, the operating system can be automatically installed by PXE through network booting. But it’s hard to setup and test: you need a physical machine to do that.</p>
-
-<p>After virtualization and cloud is popular, it’s easier to build operating system images and test them. Since it’s virtual machine, you can test it at your own development desktop and things will be the same while it’s running on production. There are some tools like <a href="https://www.vagrantup.com/">Vagrant</a> to do it. But it also has it’s own disadvantage: it’s hard to track what you really did in the image. It’s true there are some tools to build the image with code, but I don’t find it to be a normal practise.</p>
-
-<p>Then there comes Docker and it makes defining operation system as code much easier. There are multiple reasons: it’s command line by default so it’s easier to write script. And it’s normal practise to build image with Dockerfile instead of manually doing things in the image and save it. It’s even easier to test it since it’s more lightweight. It also has version number in it’s image format, which makes people have version control in mind.</p>
-
-<h2 id="define-hardware-resource-and-cluster-structure">Define Hardware Resource and Cluster Structure</h2>
-
-<p>On some level, Docker can define the hardware resource, like how much CPU and memory to use, file volumes and local network. But it can only define these at local machine level. When you want to run the service on a cluster and talk to other services, you need more powerful tool. There are many container orchestration tools but after these years it seems Kubernetes has become the standard. With Kubernetes, the things beyond operating system, like network structure, service structure and so on, can also be defined within yaml files.</p>
-
-<p>The feature is not only available in container world. Even before containers are popular, lots of cloud providers have the ability to use code define the resources. It can not only define the hardware resource and network structure, but also for basically every service the cloud provides, like hosted database, logging management and so on.</p>
-
-<h2 id="use-code-instead-of-configuration-files">Use Code Instead of Configuration Files</h2>
-
-<p>For tools like Kubernetes which can use yaml configuration files to define infrastructures, it’s trivial to use code generate the configuration files. Why we want to use code instead of using configuration files directly? Because sometimes there are something can be reused, or some logic depends on different situations.</p>
-
-<p>Of course most tools include Kubernetes also provide API that you can call with code. But I think the better way is to generate configuration file about what you want, and let the tool to do all the actual work. It’s like declarative programming and functional programming. Infrastructure creation is very complex and error-phone: the things can go wrong include how to safely change from one state to another one, failure handling, resource cleanup, rollback, rolling upgrade and so on. It’s better to just describe what’s the desired state and let the tools to do the actual work. It also makes it easier to optimize the workflow to make it faster.</p>
-
-<p>CDK is such a tool that supports lots of programming languages. After run the code it can generate AWS Cloud Formation and run it. Unfortunately it’s from AWS which means you are basically locked into AWS if you choose to use it. Though there is a project <a href="https://cdk8s.io/">cdk8s</a> tries to support Kubernetes for CDK, I’m not sure if it gets the first level support. I really hope there would be an open source project like CDK that supports major cloud solutions.</p>]]></content><author><name></name></author><category term="cloud" /><category term="docker" /><category term="aws" /><category term="cdk" /><category term="technology" /><category term="programming" /><summary type="html"><![CDATA[I’m using a lot of CDK at work recently. So in this article, I want to talk about defining infrastructure as code.]]></summary></entry></feed>
+<p>So in conclusion, whether a feature is good depends on real world use cases rather than how the designer imagine it will be used. There is a reason when disabling a feature becomes normal practice for some use cases. Maybe it’s out of topic, but as developers, we must always keep the real world use cases in mind instead of resolving hypothetical problems.</p>]]></content><author><name></name></author><category term="Linux" /><category term="swap" /><category term="memory" /><category term="technology" /><summary type="html"><![CDATA[Recently, I read an article In Defence of Swap that talks about memory swap in Linux. I happened to see some problems at work related to it as well. So in this article, I’ll talk about swap and why we want to disable it.]]></summary></entry></feed>
