@@ -27,13 +27,15 @@
 
 
 body{
-  width:90%;
-  margin:15px auto;
-  padding: 0% 5% 5% 5%;
+  max-width: 1400px;
+  margin: 0 auto;
   font-family: mixFont,Georgia,serif;
   font-size: 20px;
   color:  #111111;
   background-color: #FFFCF4;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
 }
 
 code{
@@ -107,6 +109,11 @@ a:hover{
 header#page_header{
   text-align: right;
   width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
 }
 
 header#page_header nav ul{
@@ -118,6 +125,33 @@ header#page_header nav ul{
   padding: 0;
   margin: 0 20px 0 0;
   display: inline;
+}
+
+#menu-button a {
+  display: none;
+  font-size: 48px;
+}
+
+#index_menu {
+  padding: 10px 10px 10px 10px;
+  width: 400px;
+  height: 96vh;
+  overflow-y: scroll;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+}
+
+#main_content {
+  padding: 10px 10px 10px 10px;
+  margin: 0 auto;
+  max-width: 960px;
+  flex-grow: 2;
+  flex-shrink: 100;
+}
+
+#page_content {
+  margin: 0 auto;
 }
 
 #post-pagination {
@@ -144,7 +178,7 @@ footer#page_footer{
   display: block;
   text-align: center;
   padding: 20px 0 0 0;
-  font-size: small; 
+  font-size: small;
 }
 
 .description {
@@ -227,16 +261,19 @@ blockquote {
     display: inline;
   }
 }
-@media screen and (min-width:1060px){
-  #post_list {
-    width: 960px;
-    margin: auto;
+@media screen and (max-width:1060px) {
+  #index_menu {
+    display: none;
   }
 
-  #article_content{
-    width: 960px;
-    margin: auto;
+  #menu-button a {
+    display: inline;
   }
+
+  #main_content {
+    max-width: 96vw;
+  }
+
 }
 
 .category_desc {
@@ -285,12 +322,32 @@ blockquote {
   margin-right: 10px;
 }
 
-.index-index {
-  font-size: 22px;
+.index-entry {
+  font-size: 18px;
   margin-top: 10px;
 }
 
-.index-post {
-  margin-top: 10px;
-  font-size: 18px;
+.index-intend {
+  margin-left: 20px;
 }
+
+.index-index a {
+  font-weight: bold;
+  color: black;
+  
+}
+
+.index-post {
+  font-size: 17px;
+}
+
+
+.index-post a {
+  color: rgb(20, 20, 20);
+  font-weight: lighter;
+}
+
+.index-selected {
+  color: blue;
+}
+
