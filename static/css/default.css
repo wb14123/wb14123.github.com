@@ -324,18 +324,18 @@ blockquote {
 }
 
 .index-entry {
+  padding-top: 10px;
   font-size: 18px;
-  margin-top: 10px;
 }
 
 .index-intend {
-  margin-left: 20px;
+  padding-left: 22px;
+  border-left: solid 1px #dddada;
 }
 
 .index-index a {
   font-weight: bold;
   color: black;
-  
 }
 
 .index-post {
