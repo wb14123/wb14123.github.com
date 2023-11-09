@@ -148,6 +148,7 @@ header#page_header nav ul{
   max-width: 960px;
   flex-grow: 2;
   flex-shrink: 100;
+  overflow: auto;
 }
 
 #page_content {
