@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> Install BLAS Library for MXNet |  Bin Wang - My Personal Blog</title>
+    <title> Add Index Sidebar to My Blog |  Bin Wang - My Personal Blog</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
     <link rel="stylesheet" href="/static/css/asciinema-player.css" type="text/css" />
 
@@ -785,7 +785,7 @@
     <div class="index-entry index-post">
       
         
-        <div class="index-selected">Install BLAS Library for MXNet <span class="publish-year">(2015)</span></div>
+        <a href="/2015-11-08-Install-BLAS-Library-for-MXNet.html">Install BLAS Library for MXNet <span class="publish-year">(2015)</span></a>
         
       
 
@@ -2829,7 +2829,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2023-11-10-Index-Sidebar-on-My-Blog.html">Add Index Sidebar to My Blog <span class="publish-year">(2023)</span></a>
+        <div class="index-selected">Add Index Sidebar to My Blog <span class="publish-year">(2023)</span></div>
         
       
 
@@ -3450,46 +3450,45 @@
 <div id="article_content" class="">
 <article id="post">
   <header>
-    <h1>Install BLAS Library for MXNet</h1>
+    <h1>Add Index Sidebar to My Blog</h1>
     
-      <p class="description">Posted on 08 Nov 2015, tagged <code>deep learning</code><code>programming</code><code>mxnet</code><code>mac os x</code></p>
+      <p class="description">Posted on 10 Nov 2023, tagged <code>blog</code><code>Jekyll</code><code>Javascript</code><code>desgin</code></p>
     
   </header>
 
-  <p><a href="https://github.com/dmlc/mxnet">MXNet</a> is a deep learning library. I read its doc and some of its source code. It looks very good. So I’d like to install and try it. While I’m following the <a href="https://mxnet.readthedocs.org/en/latest/build.html#build-mxnet-library">installing guide</a> to install it on Mac OS X, it failed to compile with the error <code>cblas.h</code> not found. The message pointed out I may miss the BLAS library.</p>
+  <p>In a previous blog <a href="/2021-10-31-Add-Index-to-My-Blog.html">Add Index to My Blog</a>, I talked about how I added an index page to my blog that put all the articles into categories. I always wanted the index to be a sidebar instead of a single page, but I guess I didn’t wrap my head around about how to implement so I gave up at last. But recently, when I started to use <a href="https://obsidian.md/">Obsidian</a> and checked some demos of <a href="https://obsidian.md/publish">Obsidian Publish</a>, I found having a sidebar is so useful and beautiful so I decide I should implement it.</p>
 
-<p>After some search, I find Mac OS X seems to come with its default BLAS library. But I cannot find its headers. And as an article said, the default BLAS library may not as fast as some third party ones. So I install <code>OpenBLAS</code> with homebrew:</p>
+<p>You can see the result right now: if you are on a big screen device, the index is on the left side of the page. If you are on a small screen device like a mobile phone, it will show a menu button at the top left corner instead. Clicking it will take you to the index.</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>brew install openblas
-</pre></div>
-</div>
-</div>
+<p>When I implement it, I want to keep it simple and stupid. That means:</p>
 
-<p>It is installed under <code>/usr/local/opt/openblas</code>, so we need to change these lines in the MXNet’s <code>config.mk</code> (it should be copied from <code>make/osx.mk</code> as the installing guide specified) :</p>
+<ul>
+  <li>I want to be as simple as possible as long as it has the function: show articles in nested categories.</li>
+  <li>I want to use as little Javascript as possible so people can still use it with Javascript disabled.</li>
+</ul>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span># the additional link flags you want to add
-<span class="line-numbers"><a href="#n2" name="n2">2</a></span>ADD_LDFLAGS = '-L/usr/local/opt/openblas/lib'
-<span class="line-numbers"><a href="#n3" name="n3">3</a></span>
-<span class="line-numbers"><a href="#n4" name="n4">4</a></span># the additional compile flags you want to add
-<span class="line-numbers"><a href="#n5" name="n5">5</a></span>ADD_CFLAGS = '-I/usr/local/opt/openblas/include'
-</pre></div>
-</div>
-</div>
+<p>I found the design of Obsidian Publish is very good. So I copied lots of details from them with some modifications: I didn’t implement showing/hiding sub items when click on the index entry since I think it’s not necessary, and I like how it looks when all the articles are listed there: feels like I’ve written lots of things. The categories are sorted by alphabet order and the posts are ordered by publish date. I also added the publish year for each article entry: some articles can look outdated but if people noticed the published year they can understand the context.</p>
 
-<p>Then the compile should pass.</p>
+<p>Since I’m using Jeykyll, I can generate plain HTML when possible to avoid the usage of Javascript. So the sidebar is generated for each page instead of using Javascript to keep the sidebar and replace the article content on the fly. Javascript is only used for 2 features:</p>
 
+<ol>
+  <li>Remember the position of the sidebar when jump pages.</li>
+  <li>Scroll the sidebar to show the entry for the current page if it’s not in the viewpoint.</li>
+</ol>
+
+<p>Both of the features are not that important so the sidebar is still usable without Javascript. Even for the menu button on small screens, it’s not popping up a dialog. It just jumps to a new static page that has all the index so no Javascript is needed.</p>
+
+<p>The previous implementation of the index page uses recursive templates: Since the nested index is a tree, rendering the content in a recursive manner is a nature thought. However, I made that mistake to put the complex logic into the template engine. So this time, I traverse the tree with Ruby code and generates a list for the template to render. It has all the information like entry type, the depth of the entry and so on. It makes the template code much simpler so it’s easier to implement other features on top of it.</p>
+
+<p>If you want to checkout the detailed implementation, go to my <a href="https://github.com/wb14123/blog">Github repo for the blog</a> and check <a href="https://github.com/wb14123/blog/blob/master/jekyll/_plugins/Index.rb"><code>jekyll/_plugins/Index.rb</code></a> and <a href="https://github.com/wb14123/blog/blob/master/jekyll/_includes/index_menu.html"><code>jekyll/_includes/index_menu.html</code></a>.</p>
 
 </article>
 
 <footer id="post_footer">
   <table><tr>
     
-      <td id="prev"><a href="/2015-11-04-The-Life-of-Hermit-without-Materially.html">Prev: 摒弃现代科技的隐士生活</a></td>
+      <td id="prev"><a href="/2023-11-04-How-to-Cleanup-Ceph-Filesystem-for-Deleted-Kubernetes-Persistent-Volume.html">Prev: How to Cleanup Ceph Filesystem for Deleted Kubernetes Persistent Volume</a></td>
     
-    
-      <td id="next"><a href="/2015-11-22-Use-Redis-Instead-of-Spark-Streaming-to-Count-Statistics.html" id="next">Next: Use Redis Instead of Spark Streaming to Count Statistics</a></td>
     
   </tr></table>
 </footer>
