@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> 也谈C++ |  Bin Wang - My Personal Blog</title>
+    <title> Update on RSS Brain to Find Related Articles with Machine Learning |  Bin Wang - My Personal Blog</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
     <link rel="stylesheet" href="/static/css/asciinema-player.css" type="text/css" />
 
@@ -1559,7 +1559,7 @@
     <div class="index-entry index-post">
       
         
-        <div class="index-selected">也谈C++ <span class="publish-year">(2012)</span></div>
+        <a href="/2012-02-11-cplusplus.html">也谈C++ <span class="publish-year">(2012)</span></a>
         
       
 
@@ -2919,7 +2919,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2023-11-14-Update-On-RSS-Brain-to-Find-Related-Articles-with-Machine-Learning.html">Update on RSS Brain to Find Related Articles with Machine Learning <span class="publish-year">(2023)</span></a>
+        <div class="index-selected">Update on RSS Brain to Find Related Articles with Machine Learning <span class="publish-year">(2023)</span></div>
         
       
 
@@ -3468,67 +3468,89 @@
 
     <section id="page_content">
         <div id="content_table">
-  <h3>Table of Contents</h3><ol class="toc"><li><a href="#一运行性能问题">一、运行性能问题</a></li><li><a href="#二c的抽象能力">二、C++的抽象能力</a></li><li><a href="#三结论">三、结论</a></li></ol>
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#the-disadvantages-of-previous-algorithm">The Disadvantages of Previous Algorithm</a></li><li><a href="#word-and-document-embeddings">Word and Document Embeddings</a></li><li><a href="#select-a-model-to-use">Select a Model to Use</a></li><li><a href="#implementation-details-for-model-server">Implementation Details for Model Server</a></li><li><a href="#database-to-store-and-query-embeddings">Database to Store and Query Embeddings</a></li><li><a href="#result">Result</a></li></ol>
 </div>
 
-<div id="article_content" class="zh">
+<div id="article_content" class="">
 <article id="post">
   <header>
-    <h1>也谈C++</h1>
+    <h1>Update on RSS Brain to Find Related Articles with Machine Learning</h1>
     
-      <p class="description">Posted on 11 Feb 2012, tagged <code>c++</code><code>programming</code></p>
+      <p class="description">Posted on 14 Nov 2023, tagged <code>RSS Brain</code><code>Machine Learning</code><code>Nerual Network</code><code>Embeddings</code><code>Python</code></p>
     
   </header>
 
-  <p>近段时间有不少谈及C++的文章，其中酷壳的陈皓写了一篇《Why C++？王者归来》，介绍了Herb的一个演讲，说到语言的下一个时期又将是C++的时期。但是对于这些，我却是不甚同意。关于语言的战争从来没有停止过，这里只是我自己的想法，欢迎大家一起讨论。</p>
+  <p>In the previous blog about RSS, <a href="/2022-12-03-How-RSS-Brain-Shows-Related-Articles.html">How RSS Brain Shows Related Articles</a>, I talked about how RSS Brain finds the related articles. I’ve updated the algorithm recently. This blog is about the details about the update. The basic idea is to replace tf-idf algorithm with text embeddings to represent the articles as vectors, and use ElastcSearch to store and query those vectors.</p>
 
-<h2 id="一运行性能问题">一、运行性能问题</h2>
+<h2 id="the-disadvantages-of-previous-algorithm">The Disadvantages of Previous Algorithm</h2>
 
-<h3 id="1性能真的那么重要吗">1.性能真的那么重要吗？</h3>
+<p>First let’s do a quick revisit on the algorithm before the update: it’s using tf-idf algorithm. Which is basically an algorithm to represent each document as a vector by using the words’ frequency in it. It’s an algorithm that is easy to understand, and works well enough in practice to power lots of searching engines for a long time. However, it has a few shortcomings:</p>
 
-<p>文中所提到的一个使用C++的主要理由，就是语言在机器上运行的性能问题。其实若论性能，非汇编莫属。但是由于汇编语言的晦涩，和硬件的关联紧密所造成的不可移植性，使得现在使用汇编的场合是非常之少，除非是极其追求性能的地方。由此我们不由想到，难道语言的运行效率真的那么重要吗？</p>
+<p>First, it doesn’t understand the meaning of the word. A word can mean different things based on context, order, combinations and so on. Different words can also have the same meaning. Word frequency along doesn’t catch that.</p>
 
-<p>现在的硬件性能每几个月就翻一番，现在一部普通的智能手机的运算速度，已经可以赶上十几年前的几台电脑加一起。有编写和调试C++代码的时间，也许更快的机器都已经出来了。所以性能问题，不能一概而论，需要性能的时候着重考虑性能问题，而当性能不是那么重要的时候，也许开发的效率才是考虑的主要问题。</p>
+<p>Second, “word” needs to be defined. Which is a relatively easy task for languages like English, since it has a built-in word separator character (space). However, for languages like Chinese, there is no obvious way to separate the words. The performance of tf-idf algorithm largely depends on the performance of word separating algorithm, which itself is much more complex than tf-idf and often involves machine learning as well. Even for languages like English, in order to minimize the first disadvantage above, the words are usually broke down so that some similar words can be matched.</p>
 
-<p>说到效率，文中说到了手机平台，那么我这里也说一下手机平台吧。一直发展迅猛，把曾经的霸主塞班系统拉下马，现在和ios平分天下的手机系统是什么？Android系统。而众所周知，Android系统的架构就是中间有一层Java虚拟机，而Android系统上大部分应用，也都是用Java开发的。其实一个平台能迅猛发展非常重要的一点是什么？就是这个平台上的应用。ios就是凭借着其优秀的游戏应用起家。而Android作为后来者，能快速开发应用的能力是必不可少的，因此使用Java这种能快速开发的语言，可以说是一个明智之举。虽然Android也有C和C++的接口，但是我们日常使用的大部分应用都是Java开发的，有谁觉得性能很差吗？</p>
+<p>Last, which is an extension of the first disadvantage: it’s hard to do multi language matches. Word frequency along doesn’t know that different words in different languages can mean the same thing. Of course you can translate the document to other languages and index the translated documents, but it doesn’t scale well when you need to support more and more languages. And translation algorithms are usually much more complex than tf-idf, and mostly use machine learning too.</p>
 
-<p>其实很多程序员都信奉这样一条准则：“宁花机器十分钟，不花程序员一分钟。”程序员的时间是宝贵的，逻辑、架构、规划都是从程序员的脑子中出来的，而一些无聊的工作，完全可以交给机器去实现。把程序员从繁重的工作中解脱出来，让机器做机器应该做的事情，才是正确的做法。</p>
+<h2 id="word-and-document-embeddings">Word and Document Embeddings</h2>
 
-<p>但是，无可避免的，在一些地方确实需要考虑到效率问题，然而，C++的效率真的高吗？</p>
+<p>With the advancement of machine learning, a new method to represent words as vectors has been developed in the paper <a href="https://arxiv.org/abs/1301.3781">Efficient Estimation of Word Representations in Vector Space</a>. The vector is called word embedding. Then based on the idea, <a href="https://arxiv.org/abs/1405.4053">Distributed Representations of Sentences and Documents</a> explores representing paragraphs as a vectors. Without go into the details, the basic idea is to get a layer from neural network for a NLP task.</p>
 
-<h3 id="2c的运行性能">2.C++的运行性能</h3>
+<p>For example, if we have a neural network to predict the nth word given previous words, then we may have a neural network like this:</p>
 
-<p>说到运行性能，现在首先想到的肯定是C语言。虽然很多人认为C语言晦涩，但是我一直觉得C语言是一个很优秀的语言。C语言和硬件的结合可以说是在高级语言里最紧密的了。开发很多嵌入式的设备，人们第一个想到的就是C语言，可没谁会说去用C++吧。</p>
+<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>word[1]   --&gt; vector[1]
+<span class="line-numbers"><a href="#n2" name="n2">2</a></span>word[2]   --&gt; vector[2]    --&gt; layer2 --&gt; ... -&gt; classifier -&gt; output
+<span class="line-numbers"><a href="#n3" name="n3">3</a></span>...
+<span class="line-numbers"><a href="#n4" name="n4">4</a></span>word[n-1] --&gt; vector[n-1]
+</pre></div>
+</div>
+</div>
 
-<p>有人说正因为C语言太晦涩，为了解决这个问题，再加上面向对象的思想，所以有了C++。然而相对于庞杂的C++来说，C语言反而是简单的。并且，完全的面向对象思想，也不一定适用于所有场合。现在有很多对C++不是很精通的程序员，对STL和泛型的滥用，不仅造成代码的质量低下，而且阅读起来也有一定的困难。一个用C++写的程序，绝对不会有一个用纯C写的程序一样的效率，也不一定有用C语言好写，这个问题在Linus的几封邮件里，有着直言不讳的叙述。</p>
+<p>Words are mapped to vectors at the first layer, with something like</p>
 
-<h2 id="二c的抽象能力">二、C++的抽象能力</h2>
+\[v = w * W + b\]
 
-<p>上面说到了，C++的运行效率肯定是不如C语言的。原作者认为C++会流行的主要原因，就是C++比C语言有着更多的抽象能力。那么我们不如就比一下抽象的能力，包括C语言这种比较低级的语言，和Python、Perl这种比较高级的脚本语言。</p>
+<p>Which \(v\) is the vector, \(w\) is the one-hot encoded word. And matrix \(W\) and \(b\) is the trained parameters. There are many other parameters in the later layers of the neural network but we don’t care. We only take \(W\) and \(b\) so that we can compute the vector for any word. With this method, the represented vectors can measure similarities between words by computing similarity of the vectors. Also surprisingly, quoted from the paper <a href="https://arxiv.org/abs/1301.3781">Efficient Estimation of Word Representations in Vector Space</a>: “To find a word that is similar to small in the same sense as biggest is similar to big, we can simply compute vector \(X = vector(biggest) − vector(big) + vector(small)\).” What a beautiful result!</p>
 
-<h3 id="1和c语言比较">1.和C语言比较</h3>
+<p>I was aware of this research not long after it came out. I believe some commercial search engines started to use it since then. But the ecosystem like models, tools, databases really picked up since GPT3 came out. So recently, I decided to use it in RSS Brain because how easy to do it nowadays.</p>
 
-<p>C++能做到的C语言真的做不到吗？答案是否定的。很多开源软件都是用纯C写出来的，若是有兴趣，不妨去看看他们是怎么写的，其中的模块化，丝毫不逊于C++写出来的东西，而且比C++要透明、简洁很多。</p>
+<h2 id="select-a-model-to-use">Select a Model to Use</h2>
 
-<h3 id="2和pythonperl等脚本语言的比较">2.和Python、Perl等脚本语言的比较</h3>
+<p>The first step is to select a model to use. I think OpenAI may have the best model that is available to public. You cannot access the real model but there are APIs you can call to use the model. But I don’t like it for 2 reasons: First, I don’t like OpenAI as a company: it presents itself as a non-profit organization first with the goal to make AI accessible to everyone, then stopped publish models or even the algorithm details. Second, I don’t want vendor lock-in.</p>
 
-<p>类似于Python的高级语言类库丰富，支持动态类型、垃圾回收等高级特性，因而省去了程序员很多的麻烦。对于C++来说，这些东西都是需要自己去做的。另外，对于可以解释执行的语言，我们可以快速写一些东西来检测自己的一些想法。也许大公司都喜欢先写规划啊，什么都计划好，然后再写代码，可是对于很多黑客和高手来说，一边想一边写一边检测，才是最喜欢的编码方式。</p>
+<p>There is also Llama. But it’s not really a multilingual model. I see some attempts to train it on some other languages, but the result are not that good in my experience. The license of the model is not commercial friendly as well. And there is no easy to use API to get the embeddings.</p>
 
-<h2 id="三结论">三、结论</h2>
+<p>At the end I found <a href="https://www.sbert.net/index.html">SentenceTransformers</a>. There are lots of <a href="https://www.sbert.net/docs/pretrained_models.html in the project">pretrained models</a>. After all I selected the model <code>paraphrase-multilingual-mpnet-base-v2</code> since it’s a multilingual model. But it’s called “sentence” transformers for a reason: there is a size limit on the length of document that you can feed in to the models. I ended up to just get the embeddings for the article title. I think it’s a good enough for my use case.</p>
 
-<p>综合上面的考虑，C++和C语言比起来，只是多了很多面向对象的东西，相对于添加的这点功能而言，我觉得是得不偿失的，这使语言变得更混乱。可以说C++的初衷是好的，希望功能强大，什么都可以做。然而一个语言，如果能够专心做好一件事情，有时候是更值得使用的。</p>
+<h2 id="implementation-details-for-model-server">Implementation Details for Model Server</h2>
 
-<p>上面所说的，也不能完全否定C++的优点。例如在桌面环境这种天生就比较适合面向对象的思维的应用来所。然而在追求效率的地方，C语言则更加合适，在效率不是那么重要的地方，使用其它高级语言来节省程序员的时间才是更好的做法。</p>
+<p>The library SentenceTransformer is very easy to use. However it’s implemented in Python so it needs a way to communicate with RSS Brain server, which is written in Scala. Since this is a computation heavy task, the first though is to have a buffer queue in between so that the Python program can process the articles in a speed it can handle. Kafka is a good choice for external task queue but I don’t think it worth the complexity to import another component into the system. So I created buffer queue at both end to avoid creating too many requests while maintain some parallelism. Here is what the whole architecture looks like:</p>
+
+<p><img src="/static/images/2023-11-14-Update-On-RSS-Brain-to-Find-Related-Articles-with-Machine-Learning/article-embedding-arch.png" alt="embedding-arch" /></p>
+
+<p>The green parts in the diagram means the workers in them can work concurrently. On the Scala side, it follows the pattern I experimented in <a href="/2023-08-27-Compare-Task-Processing-Approaches-in-Scala.html">Compare Task Processing Approaches in Scala</a>. On the Python side, it’s more tricky since Python’s async handling is far worth than Scala’s plain old Future, not to mention effect systems like Cats Effect. I may write another blog in the future about it.</p>
+
+<p>The reason I go great detail into this relatively simple problem is that it represents a category of problems: problems that need Python to do some async work because of the library supports. For example, in the future, Python server may have more features like fetching Youtube transcriptions. The architecture to integrate it into RSS Brain would be the same.</p>
+
+<h2 id="database-to-store-and-query-embeddings">Database to Store and Query Embeddings</h2>
+
+<p>There are a few vector databases that can store vectors and query nearest vectors if given one. ElasticSearch added vector fields support at 7.0 and approximate nearest neighbor search (ANN) at 8.0. Since RSS Brain is already using ElasticSearch heavily for searching, I can just use it without add another database into the dependency. It also supports machine learning models so that you don’t need to insert the embedding vectors from the outside world, but I find it’s not as flexible.</p>
+
+<p>Once the vectors are inserted into ElastiSearch, it’s just an API call to get the most similar documents. The details of vector insert and query are in the <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/knn-search.html">ElasticSearch KNN search document</a>. One tricky part is that even though ElasticSearch supports <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/knn-search.html#_combine_approximate_knn_with_other_features">combining ANN search with other features like term searches (tf-idf algorithm)</a> by using a boost factor, it doesn’t work well unless you are willing to tune it. That’s because the embedding vector and term vector mean different things, and the similarity score is not really comparable. So I ended up enable vector search only for finding related articles, instead of combining with term searches.</p>
+
+<h2 id="result">Result</h2>
+
+<p>It’s actually hard to have some metrics for the performance of finding related articles. I don’t believe metrics like click rate, since it doesn’t necessarily show the articles are related. I think the only way for me is to review the results manually and compute the score based on it. But I don’t think it has much value since supporting multiple language along would make it much better than the previous algorithm. But if you are using RSS Brain, you can see the results yourself and let me know what you think about the new algorithm!</p>
+
 
 </article>
 
 <footer id="post_footer">
   <table><tr>
     
-      <td id="prev"><a href="/2012-01-27-sicp30.html">Prev: SICP第三章总结（上）——可变量与环境</a></td>
+      <td id="prev"><a href="/2023-11-10-Index-Sidebar-on-My-Blog.html">Prev: Add Index Sidebar to My Blog</a></td>
     
-    
-      <td id="next"><a href="/2012-02-29-tizen.html" id="next">Next: Tizen，加油</a></td>
     
   </tr></table>
 </footer>
