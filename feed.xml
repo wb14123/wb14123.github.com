@@ -1,4 +1,73 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2023-11-25T22:57:39-05:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Update on RSS Brain to Find Related Articles with Machine Learning</title><link href="https://www.binwang.me/2023-11-14-Update-On-RSS-Brain-to-Find-Related-Articles-with-Machine-Learning.html" rel="alternate" type="text/html" title="Update on RSS Brain to Find Related Articles with Machine Learning" /><published>2023-11-14T00:00:00-05:00</published><updated>2023-11-14T00:00:00-05:00</updated><id>https://www.binwang.me/Update-On-RSS-Brain-to-Find-Related-Articles-with-Machine-Learning</id><content type="html" xml:base="https://www.binwang.me/2023-11-14-Update-On-RSS-Brain-to-Find-Related-Articles-with-Machine-Learning.html"><![CDATA[<p>In the previous blog about RSS, <a href="/2022-12-03-How-RSS-Brain-Shows-Related-Articles.html">How RSS Brain Shows Related Articles</a>, I talked about how RSS Brain finds the related articles. I’ve updated the algorithm recently. This blog is about the details about the update. The basic idea is to replace tf-idf algorithm with text embeddings to represent the articles as vectors, and use ElastcSearch to store and query those vectors.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2023-11-28T20:05:21-05:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster</title><link href="https://www.binwang.me/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html" rel="alternate" type="text/html" title="Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster" /><published>2023-11-28T00:00:00-05:00</published><updated>2023-11-28T00:00:00-05:00</updated><id>https://www.binwang.me/Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster</id><content type="html" xml:base="https://www.binwang.me/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html"><![CDATA[<p>In a previous blog <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability</a>, I talked about how I setup a cluster infrastructure for high availability applications. I have made a few changes since then. This blog is to talk about them in details.</p>
+
+<h2 id="updated-architecture-overview">Updated Architecture Overview</h2>
+
+<p><img src="/static/images/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster/ha-cluster-infrastructure-k3s.png" alt="arch-diagram" /></p>
+
+<p>Comparing the diagram with the one in <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability</a>, the overall structure remains the same, with a few modifications:</p>
+
+<ul>
+  <li>Not shown in the graph, but replaced official Kubernetes with K3s.</li>
+  <li>Replaced GlusterFS with CephFS.</li>
+  <li>Included cert-manager to get SSL certificates.</li>
+  <li>Replaced Keepalived on each node with MetalLB.</li>
+</ul>
+
+<h2 id="replace-kubernetes-with-k3s">Replace Kubernetes with K3s</h2>
+
+<p>I didn’t know <a href="https://k3s.io/">K3s</a> back when I setup my Kubernetes cluster for the first time. But since then I heard a lot of good things about it at various places. However, the complexity of migration and its installation method through a script from Internet instead of an OS package made me think twice before adopt it. But after I watched the video <a href="https://www.youtube.com/watch?v=k58WnbKmjdA">Talk About K3s Internals from Darren Shepherd</a>, I realized how simple k3s is compared to Kubernetes. I highly recommend everyone who is interested in K3s watch this video.</p>
+
+<p>In short, K3s is a distribution of Kubernetes instead of a fork. It does these things with a few patches: combined the components of Kubernetes into one binary and process, and removed some components not needed in a bare metal environment. By doing so, it makes its binary size and memory footprint smaller than Kubernetes, and makes it easier to deploy and manage. It only needs a binary <code>k3s</code> and a configuration file under <code>/etc/rancher/k3s/config.yaml</code> to start, and all of its content is under <code>/var/lib/rancher/k3s</code>. The official install script adds a little bit more than just the binary file: it has a few scripts to kill and uninstall k3s. It also includes systemd file to start/stop k3s through systemd. So even though it’s not packaged into a standard OS package, I think the complexity is manageable so I started to experiment with it.</p>
+
+<p>It’s very easy to config K3s since all it needs is a configuration file on each machine. I created a virtual machine cluster with Vagrant in the project <a href="https://github.com/wb14123/k3s-vm-cluster">k3s-vm-cluster</a> to experiment with it. Feel free to play with it to get a feel with it before go all in. The setup is based on the official guide for <a href="https://docs.k3s.io/datastore/ha-embedded">High Availability Embedded etcd</a>. It’s the easiest way to setup a high available K3s cluster.</p>
+
+<p>No load balancer setup is needed if no external Kubernetes API server HA is needed. That means, you can access to Kubernetes API server within the cluster if any of the machine fails. But if you still want to access it outside of the cluster during a failure, check <a href="https://docs.k3s.io/datastore/cluster-loadbalancer">this doc</a>. Alternatively, I think load balancer like MentalLB can also do it, but I don’t need it so I didn’t experiment with it.</p>
+
+<h2 id="distributed-storage-system-glusterfs-to-cephfs">Distributed Storage System: GlusterFS to CephFS</h2>
+
+<p>The biggest motivation drives this migration is the deprecation of GlusterFS. I’m using distributed file system for a few use cases:</p>
+
+<ul>
+  <li>Configuration files: this can be migrated to <a href="https://kubernetes.io/docs/concepts/configuration/configmap/">Kubernetes ConfigMaps</a>.</li>
+  <li>Logs: this can be migrated to a centralized log management system like ElasticSearch. But some of them like <a href="https://grafana.com/oss/loki/">Loki</a> in turn depends on another distributed storage.</li>
+  <li>Data files: this is most complex one. Some of the services support saving files into S3 compatible systems. But some of them don’t. (I cannot control the services since I only self host them instead of developed them). One option is to not having HA and just bind those services into a specific host and use local storage.</li>
+  <li>Docker registry: this belongs to the point “Data files” above, but this is very import so I separate into another point. I’m using <a href="https://www.sonatype.com/products/sonatype-nexus-repository">Sonatype Nexus</a> as the docker registry. It supports to put packages into S3 but still pretty tricky to get rid of all the local files. This is a service that absolutely needs HA if I want to have a HA cluster. Or I can change to another Docker registry implementation, but I feel pretty comfortable using it so I don’t want to change it.</li>
+</ul>
+
+<p>So it basically comes down to these 2 options:</p>
+
+<ol>
+  <li>Use a S3 compatible storage like <a href="https://min.io/">MinIO</a> but do a lot of work to configure services to store files into that, and make services cannot do that not HA anymore.</li>
+  <li>Go ahead and uses a real distributed file system like CephFs or <a href="https://longhorn.io/">Longhorn</a>.</li>
+</ol>
+
+<p>Option 1 sounds appealing to me at first since I really don’t want to deal with the complexity of setting up CephFS. But as I go into the rabbit hole, I found configuring the services to use S3 may be a more complex process and less portable than just setup CephFS. So at the end I decide to go option 2.</p>
+
+<p>I’ve heard of CephFS long time ago but decided to use GlusterFS at previous setups because of the level of user friendly. So CephFS seems like a nature choice after GlusterFs is deprecated. Especially when I found other than the distributed block device, it also supports file system and S3 compatible storage system. It’s also easier to install than before because of <a href="https://rook.io/">Rook</a>. Longhorn is another choice I looked a little bit but because of wider adoption of CephFS and more features of it, I decide to use CephFS at the end.</p>
+
+<p>The way I use it is mainly <a href="https://rook.io/docs/rook/v1.11/Storage-Configuration/Shared-Filesystem-CephFS/filesystem-storage/">Ceph Filesystem</a>, so it’s easier to share volumes between pods. Again, the project <a href="https://github.com/wb14123/k3s-vm-cluster">k3s-vm-cluster</a> has an example about it. Try to play it if you are interested in it. Along the way I actually contributed to Rook project by improving doc (<a href="https://github.com/rook/rook/pull/13045">#13045</a>) and its error message (<a href="https://github.com/rook/rook/pull/13046">#13046</a>).</p>
+
+<h2 id="network-gateway">Network Gateway</h2>
+
+<p>In the previous article, I talked about using Cloudflare tunnel, or NodePort and Keepalived to expose services to the Internet. But there are some other things a network gateway can do other than just expose the service: it can also do things like terminate SSL encryption and so on. Cloudflare tunnel support terminate SSL at their end so I don’t need to worry about that. But for some services, I don’t want Cloudflare to see the traffic, so I need to terminate SSL and expose service by myself.</p>
+
+<p>As I said, expose service part was done by NodePort and Keepalived, which is not very elegant but works. For the terminate SSL part, I was using Nginx as reverse proxy. But updating SSL certificates is a little bit more complex. I don’t want to talk it in details here because the setup is pretty complex and explaining it will be very lengthy. The point is, with this migration, I want to revisit this part to make it simpler and more elegant.</p>
+
+<p>Kubernetes has a concept of <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/">Ingress</a>, and newer but less mature, <a href="https://gateway-api.sigs.k8s.io/">Gateway</a>. What they are doing is essentially reverse proxy like Nginx. In fact, Nginx Ingress is a thing. The advantage is that you don’t need to configure all the services in a single place like Nginx’s configuration files. You can create Kubernetes resources for each of the service. So that the deployment and configuration of each service is totally self contained. This is a very good feature, especially for a company: when I first started to use Kubernetes at 2015 in a previous company, I felt the pain of not having it. But the feature of Ingress is pretty limited. For example, it can only bind to 443. It cannot modify the http content, and so on. So that I may still need a layer of Nginx for my use cases. The design of gateway is too complex and the features don’t really meet all my requirements as well.</p>
+
+<p>There are some players like <a href="https://traefik.io/">Traefik</a>(shipped with K3s by default) and <a href="https://istio.io/">Istio</a> which overcome the limitations by having their own custom resources. But Traefik cannot get new certificates from Let’s Encrypt with a HA setup. Istio is just too complex and include features like service mesh that I don’t need. I can see how service mesh can be useful in big companies, but I prefer not to have another layer on my own service. At the end, I don’t think the complexity worth it.</p>
+
+<p>But while I exploring Traefik and Istio, I found <a href="https://cert-manager.io/">cert-manager</a>, which can be deployed into Kubernetes. It can get certificates from Let’s Encrypt and put them into Kubernetes secrets, which then can be mount into each pods. It supports Cloudflare DNS API for <a href="https://letsencrypt.org/docs/challenge-types/#dns-01-challenge">ACME DNS challenge</a>, so I don’t need to export a http service for Let’s Encrypt to verify the ownership of the domain name. With all of this features, I decided to use it and mount the certificates into Nginx pods. It resolves the problem of update certificates from Let’s Encrypt.</p>
+
+<p>For the other problem of exposing the services to Internet in a HA way, I want to use a more Kubernetes native way instead of setup Keepalived outside of the Kubernetes cluster. Kubernetes supports <a href="https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/">external load balancers</a>. But most of the load balancers it supports are from cloud. Then I found <a href="https://metallb.org/">MetalLB</a>, which supports creating a HA load balancer without special hardware in a bare metal cluster. I use it with <a href="https://metallb.org/concepts/layer2/">layer 2 mode</a>, which creates a virtual IP like keepalived and can failover to another node.</p>
+
+<h2 id="deploy-services-with-code">Deploy Services with Code</h2>
+
+<p>What I didn’t talk in the previous blog is, I define the deployment of my services as code instead yaml files. It gives lots of advantages: first, you can create models for your own deployment pattern so that you can avoid lots of redundant code. Traditionally it’s hard to define the deployment as code. There are lots of frameworks to do it but none of them is easy to use. But with Kubernetes, all you need is generating a resource object for Kubernetes to use at the end. You can construct it in any way with your favorite language, and either output a YAML or call Kubernetes API directly. It’s using a high level language instead of writing machine code directly. It’s much more elegant and the maintenance is much easier. Be aware: use a real language instead of some template language. Why limit your power to do things?</p>
+
+<p>This approach works so well especially during this migration. For example, I abstracted all the storage layer for my services, so that when I migrated from GlusterFS to CephFS, I just need to change the storage class to define the CephFS volume, and the code for services don’t need to change much.</p>
+
+<p>Hope you enjoy my experience of setting up a HA cluster. Happy hacking and have fun with your own cluster!</p>]]></content><author><name></name></author><category term="Kubernetes" /><category term="CephFS" /><category term="MetalLB" /><category term="k3s" /><category term="Infrastructure" /><category term="devops" /><summary type="html"><![CDATA[In a previous blog Infrastructure Setup for High Availability, I talked about how I setup a cluster infrastructure for high availability applications. I have made a few changes since then. This blog is to talk about them in details.]]></summary></entry><entry><title type="html">Update on RSS Brain to Find Related Articles with Machine Learning</title><link href="https://www.binwang.me/2023-11-14-Update-On-RSS-Brain-to-Find-Related-Articles-with-Machine-Learning.html" rel="alternate" type="text/html" title="Update on RSS Brain to Find Related Articles with Machine Learning" /><published>2023-11-14T00:00:00-05:00</published><updated>2023-11-14T00:00:00-05:00</updated><id>https://www.binwang.me/Update-On-RSS-Brain-to-Find-Related-Articles-with-Machine-Learning</id><content type="html" xml:base="https://www.binwang.me/2023-11-14-Update-On-RSS-Brain-to-Find-Related-Articles-with-Machine-Learning.html"><![CDATA[<p>In the previous blog about RSS, <a href="/2022-12-03-How-RSS-Brain-Shows-Related-Articles.html">How RSS Brain Shows Related Articles</a>, I talked about how RSS Brain finds the related articles. I’ve updated the algorithm recently. This blog is about the details about the update. The basic idea is to replace tf-idf algorithm with text embeddings to represent the articles as vectors, and use ElastcSearch to store and query those vectors.</p>
 
 <h2 id="the-disadvantages-of-previous-algorithm">The Disadvantages of Previous Algorithm</h2>
 
@@ -946,7 +1015,9 @@
   </li>
   <li>Follow the <a href="https://v1-24.docs.kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/">official upgrade guide</a>.</li>
   <li>After the upgrade, remember to restart Docker so that the old containers started by Docker will be stopped.</li>
-</ol>]]></content><author><name></name></author><category term="Kubernetes" /><category term="container" /><category term="Docker" /><category term="Linux" /><summary type="html"><![CDATA[In the last blog post, I introduced using Kubernetes to setup high available infrastructure. I had that setup a long time ago. I did the long overdue upgrade for Kubernetes from 1.23 to 1.24 recently. Since GlusterFS is deprecated(though not removed) in 1.25, I have no plans to continue the upgrade without exploring alternative storage options.]]></summary></entry><entry><title type="html">Infrastructure Setup for High Availability</title><link href="https://www.binwang.me/2023-03-13-Infrastructure-Setup-for-High-Availability.html" rel="alternate" type="text/html" title="Infrastructure Setup for High Availability" /><published>2023-03-13T00:00:00-04:00</published><updated>2023-03-13T00:00:00-04:00</updated><id>https://www.binwang.me/Infrastructure-Setup-for-High-Availability</id><content type="html" xml:base="https://www.binwang.me/2023-03-13-Infrastructure-Setup-for-High-Availability.html"><![CDATA[<p>Cloud is popular these days. But sometimes we just want to host something small, maybe just an open source service for family and friends, or some self-built service that we are still experimenting on. In this case, the cloud can be expensive. We can just throw a few nodes at home and run it at a very low cost. But you don’t want the service down when some nodes failed, at least the service should be available when you upgrade and reboot the nodes because it can happen very frequently. In this article, I will talk about how to build high available infrastructure so that the service can be alive even when some nodes are down.</p>
+</ol>]]></content><author><name></name></author><category term="Kubernetes" /><category term="container" /><category term="Docker" /><category term="Linux" /><summary type="html"><![CDATA[In the last blog post, I introduced using Kubernetes to setup high available infrastructure. I had that setup a long time ago. I did the long overdue upgrade for Kubernetes from 1.23 to 1.24 recently. Since GlusterFS is deprecated(though not removed) in 1.25, I have no plans to continue the upgrade without exploring alternative storage options.]]></summary></entry><entry><title type="html">Infrastructure Setup for High Availability</title><link href="https://www.binwang.me/2023-03-13-Infrastructure-Setup-for-High-Availability.html" rel="alternate" type="text/html" title="Infrastructure Setup for High Availability" /><published>2023-03-13T00:00:00-04:00</published><updated>2023-03-13T00:00:00-04:00</updated><id>https://www.binwang.me/Infrastructure-Setup-for-High-Availability</id><content type="html" xml:base="https://www.binwang.me/2023-03-13-Infrastructure-Setup-for-High-Availability.html"><![CDATA[<p><em>See <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster</a> for updates on this setup.</em></p>
+
+<p>Cloud is popular these days. But sometimes we just want to host something small, maybe just an open source service for family and friends, or some self-built service that we are still experimenting on. In this case, the cloud can be expensive. We can just throw a few nodes at home and run it at a very low cost. But you don’t want the service down when some nodes failed, at least the service should be available when you upgrade and reboot the nodes because it can happen very frequently. In this article, I will talk about how to build high available infrastructure so that the service can be alive even when some nodes are down.</p>
 
 <h2 id="what-is-high-availability">What is High Availability?</h2>
 
@@ -972,6 +1043,8 @@
 <p>Here is an overview of the setup:</p>
 
 <p><img src="/static/images/2023-03-13-Infrastructure-Setup-for-High-Availability/HA-self-hosted.png" alt="overview" /></p>
+
+<p><em>Update at 2023-11-28: updated the diagram to include Keepalived.</em></p>
 
 <p>Let’s talk about each of them in detail.</p>
 
@@ -1098,7 +1171,7 @@ You may want to run Nginx or HAProxy in the Kubernetes cluster, use it as a reve
 
 <p>The client also needs a way to find the IP address of your network. Depending on the Internet provider, the IP address can change from time to time. So we need dynamic DNS to bind the changing IP to a fixed DNS. <a href="https://github.com/ddclient/ddclient">ddclient</a> can do it automatically and supports lots of domain name providers.</p>
 
-<p>After all of this, your service is open to the public Internet and can be accessed by anyone. But if desired, you can still use Cloudflare DNS with proxy enabled, so that the client will send requests to Cloudflare first and you can get protections from Cloudflare. In this case, since the SSL is terminated inside the Kubernetes cluster, Cloudflare will not be able to see the actual payload of the traffic.</p>]]></content><author><name></name></author><category term="Kubernetes" /><category term="GlusterFS" /><category term="CockroachDB" /><category term="tech" /><category term="high availability" /><summary type="html"><![CDATA[Cloud is popular these days. But sometimes we just want to host something small, maybe just an open source service for family and friends, or some self-built service that we are still experimenting on. In this case, the cloud can be expensive. We can just throw a few nodes at home and run it at a very low cost. But you don’t want the service down when some nodes failed, at least the service should be available when you upgrade and reboot the nodes because it can happen very frequently. In this article, I will talk about how to build high available infrastructure so that the service can be alive even when some nodes are down.]]></summary></entry><entry><title type="html">My 2022 in Review</title><link href="https://www.binwang.me/2023-01-26-My-2022-in-Review.html" rel="alternate" type="text/html" title="My 2022 in Review" /><published>2023-01-26T00:00:00-05:00</published><updated>2023-01-26T00:00:00-05:00</updated><id>https://www.binwang.me/My-2022-in-Review</id><content type="html" xml:base="https://www.binwang.me/2023-01-26-My-2022-in-Review.html"><![CDATA[<p>It’s 2023 now! 2022 has ended. It has been 2 years since I wrote <a href="/2021-01-26-My-2020-in-Review.html">the last yearly review</a>. So this article would be more like 2021 and 2022 in review.</p>
+<p>After all of this, your service is open to the public Internet and can be accessed by anyone. But if desired, you can still use Cloudflare DNS with proxy enabled, so that the client will send requests to Cloudflare first and you can get protections from Cloudflare. In this case, since the SSL is terminated inside the Kubernetes cluster, Cloudflare will not be able to see the actual payload of the traffic.</p>]]></content><author><name></name></author><category term="Kubernetes" /><category term="GlusterFS" /><category term="CockroachDB" /><category term="tech" /><category term="high availability" /><summary type="html"><![CDATA[See Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster for updates on this setup.]]></summary></entry><entry><title type="html">My 2022 in Review</title><link href="https://www.binwang.me/2023-01-26-My-2022-in-Review.html" rel="alternate" type="text/html" title="My 2022 in Review" /><published>2023-01-26T00:00:00-05:00</published><updated>2023-01-26T00:00:00-05:00</updated><id>https://www.binwang.me/My-2022-in-Review</id><content type="html" xml:base="https://www.binwang.me/2023-01-26-My-2022-in-Review.html"><![CDATA[<p>It’s 2023 now! 2022 has ended. It has been 2 years since I wrote <a href="/2021-01-26-My-2020-in-Review.html">the last yearly review</a>. So this article would be more like 2021 and 2022 in review.</p>
 
 <p>There are lots of things that happened in the last two years, if not more than the two years of 2019 and 2020. That includes both my personal life and work life, both individual level and national level. So let’s talk about them one by one.</p>
 
@@ -1671,126 +1744,4 @@ You may want to run Nginx or HAProxy in the Kubernetes cluster, use it as a reve
 
 <p>UI aside, I’m much happier about the content. The index has a good structure. It shows the fields I’ve explored. It even shows a correlation between the focus and the timeline, which I never thought about before. For example, the only two posts about algorithm are published when I was in the University, when I joined some programming contest. The posts about Linux are most published at the last year of my college life, when I was in the first few years of using Linx and had an internship at Redhat. It doesn’t mean I’m not interested in Linux anymore. It’s just after so many years of using Linux, it becomes a tool that so fundamental to my work and digital life, and I don’t feel the necessary to actively learn the basic things and tune it. Data processing related topic happened most when I worked in an A/B testing company. And machine learning related topic also happened around that time, when I was most interested in neural networks, which resulted the most popular side project I’ve built. I started to post distributed system related topic after I joined a database company, and still find it’s an interesting topic thus many posts in last year. Which also remains me if I want to learn more about it I should continue to write articles about it in this and following years. But not everything is perfect, mainly because I didn’t write everything I’ve worked on my blog. One of the reason is a lot of things I’ve explored are already somewhere else and I don’t want to just copy something to my blog. The projects I’ve worked on are also not covered. I’m still thinking what’s the best way to put it into the index: either add a link to the project page, or write a blog post about each of the projects. Other than those, there is still something missing. It’s mostly because of lazy, which I should change in the future.</p>
 
-<p>So as a result, the index page achieved some of goal: covering some of my past works and thoughts, and remanding me what I should focus in the future. About the goal of benefiting the readers, you as a reader decide if it’s good or not.</p>]]></content><author><name></name></author><category term="blog" /><category term="index" /><summary type="html"><![CDATA[Update: the index page has been removed in favoer of the index sidebar. See Add Index Sidebar to My Blog for more details.]]></summary></entry><entry><title type="html">Personal ZFS Offsite Backup Solution</title><link href="https://www.binwang.me/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html" rel="alternate" type="text/html" title="Personal ZFS Offsite Backup Solution" /><published>2021-09-19T00:00:00-04:00</published><updated>2021-09-19T00:00:00-04:00</updated><id>https://www.binwang.me/Personal-ZFS-Offsite-Online-Backup-Solution</id><content type="html" xml:base="https://www.binwang.me/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html"><![CDATA[<p>Digital data was never as important as nowadays. Not only for business, but also for every individual. And it’s challenging to make data safe. For example, we see the news about ransomware encrypted all the data of big companies, made their business suspended. We also see a lot of extreme weathers recently: fires, flood and so on, which threats the hardware that stores the data. So it’s necessary to have backups. There should be at least two kinds of backups to keep data safe: offline backup and offsite backup.</p>
-
-<p>Offline backup means once the data is backed up, it will be isolated from the system. So it can prevent bugs and security risks of the system. How isolated the backup should be depends on the use case and threaten model. For personal usage, a removable disk that is disconnected from any machine should be good enough. It’s easy to implement, so we will not focus on it in this article.</p>
-
-<p>Offsite backup means the backup data is in a different location. So that in the case of nature disaster, fire, flood, hardware stolen and so on, you can still recover it from a different location. Again, depends on the threaten model, this different location can be a different location in the same city, in a different city, or even in a different country or land. (By the way, I’m always confused when the characters in movies can just destroy a data center, or even a single machine in order to destroy some big plan or very important data. If the people dealing with such important data know nothing about backup, we are in bigger troubles.)</p>
-
-<p>Offline and offsite backup are not mutually exclusive. Some kinds of backup can be both offline and offsite. For example, you can burn all the data onto CDs and mail them away every week. The CDs are both offline and offsite backup. But because of the cost and efficiency, the offsite backup is usually online so it can make backups very frequently and quickly.</p>
-
-<p>In this article, I’ll introduce how to setup a machine used for personal offsite backup. ZFS is needed since it enables incremental encrypted backup. As we can see later, it makes our setup much easier.</p>
-
-<h2 id="1-goals">1. Goals</h2>
-
-<p>Let’s consider what’s the requirements of this setup solution. Data security is obviously the No. 1 requirement: nobody other than ourselves should be able to obtain the data.</p>
-
-<p>User friendly is another big factor. Most likely we will put this backup machine to a family or friend’s place. So we want it to have very low setup and maintenance effort. Actually, with my setup bellow, the only thing needed for this machine to operate is to plugin the power and Ethernet cable, then press the power button. No monitor, keyboard, mouse, or NAT port forwarding is needed.</p>
-
-<h2 id="2-threaten-mode">2. Threaten Mode</h2>
-
-<p>Since data security is our No. 1 goal, let’s analysis the threaten mode in the backup system. First, think about what is trusted and what is untrusted. I divide it into three levels: fully trusted, partially trusted and untrusted.</p>
-
-<p>Fully trusted: the environment is theoretically fully controlled by ourselves and no one else can see the data in it. I know it’s hard to be 100% safe for an environment, but how to achieve that is totally another topic. Let’s assume in this setup, the machine that holds the source data can be seen as fully trusted.</p>
-
-<p>Partially trusted: we can trust the environment on some level but it’s still possible to be unsafe. For example, for the machine located at a different location, which can be physically accessed by other people, it’s not fully trusted. Though we can usually have high trust level for the people that manages the place, which is usually our family or friend, it’s still possible that the data on the machine can be obtained.</p>
-
-<p>Not trusted: the parts that cannot be trusted at all. Anyone with some security background can obtain data from this part. For example, the public network is not trusted.</p>
-
-<p>Here is a diagram about the trust levels in our system: fully trusted part is in green, partially trusted is in yellow and not trusted is in red.</p>
-
-<p><img src="/static/images/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution/2021-09-19-zfs-backup-trust-level.png" alt="trust-level" style="max-width: 400px;" /></p>
-
-<p>Then let’s also analysis the parts of the system we want to keep secure. In the diagram bellow, the red part means we want 100% security. Yellow part means we want it as secure as possible, but it’s also okay if it’s not 100% secure.</p>
-
-<p><img src="/static/images/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution/2021-09-19-zfs-backup-security-level.png" alt="security-level" style="max-width: 400px;" /></p>
-
-<p>So with these two graphs combined, we identified some parts we need to consider:</p>
-
-<ul>
-  <li>Network and backup data. These parts are either not trusted or partially trusted, but we want fully security for the data goes through there. So we need fully encryption on these components. Luckily it’s easy to do with ZFS: ZFS can send encrypted snapshots and receive it on another machine without ever decrypt it.</li>
-  <li>Backup machine. It’s under partially trusted environment. We shouldn’t put any sensitive data into its system. If it’s compromised, the backup data can still be safe: no one can see the content of the backup data, but the backup process may no longer work as expected.</li>
-</ul>
-
-<p>With this in mind, let’s start to setup our backup machine.</p>
-
-<h2 id="3-backup-machine-setup">3. Backup Machine Setup</h2>
-
-<h3 id="31-choose-the-hardware">3.1 Choose the Hardware</h3>
-
-<p>Since we need to have ZFS on this machine, we’d better to choose a x86 machine instead of an ARM one. I know ZFS has ARM builds but I’ve never tried that, and don’t know how good it is. Data safe is very important so I’d rather to use a tested solution.</p>
-
-<p>The machine doesn’t need to be too powerful but larger than 4G memory is recommended because of ZFS. It should be able to handle two disks since it makes data recovery easier as we can see later. Considering we will place this machine to someone else’s home, it’s better to have a small form factor.</p>
-
-<p>It’s better to have TPM as well. Otherwise we cannot setup disk encryption (other than our backup data) in a user friendly way, which means anyone with physical access to the machine can get access of system data (which is also okay since we don’t have sensitive data on system). Old machines usually has TPM 1.2 chip, which is not as secure as TPM 2.0. But it’s good enough considering our use case and the cost.</p>
-
-<p>There are a lot of cheap choices for used machines like this. Like ThinkCentre tiny desktops, or HP EliteDesktop. The Youtube channel <a href="https://www.youtube.com/c/ETAPRIME">ETA Prime</a> has a lot of reviews for such machines. A potential risk of buying used hardware is it may contains security backdoor, but it’s very rare if you are not targeted and you buy it from sellers with good reputation. Even it happens, as we’ve analysed above, the backup machine is not treated as fully trusted environment, so it’s fine.</p>
-
-<h3 id="32-secure-bios">3.2 Secure BIOS</h3>
-
-<p>The first thing we need to do is securing the BIOS, so no one else can change any configurations. If we don’t protect it, anything we do in the later steps is meaningless.</p>
-
-<p>How to secure the BIOS depends on the manufacturer. Most likely there will be a “security” section in the BIOS, which has “password protection” option. So that you can protect the BIOS with a password.</p>
-
-<p>Keep in mind most of the machines can reset BIOS with some hardware button or wire, thus reset the password as well. But it will also reset the TPM, which means it doesn’t expose the encryption key of our system disk, which we will setup in the next step.</p>
-
-<h3 id="33-setup-system-disk-encryption-with-tpm">3.3 Setup System Disk Encryption with TPM</h3>
-
-<p>I choose Arch Linux as the operating system for the backup machine. I know it’s controversial as Arch Linux is not considered as the most stable Linux distribution. But this is a personal setup and I’m using Arch Linux for all my own machines. I’m very familiar with it. It’s very stable in my experience, and I can keep the ZFS versions the same. So I’ll mainly focus on the setup for Arch Linux from here, but any main stream Linux distribution should be able to do these setups with minimal adjustment.</p>
-
-<p>The first thing we want to do is to have disk encryption for the system. (We use another disk for ZFS and it’s already encrypted, so we don’t need worry about that one.) While installing the OS, you can choose encrypt the disks and use either a password or a key file stored at another place like a USB drive. In this way, you can input the password or plugin the key file during boot. But it needs human interactive, and we don’t want other people to have the password or key in order to boot the machine. So we will setup another key that stores in TPM and can be decrypted automatically during start up.</p>
-
-<p>It’s very easy to setup disk encryption with TPM 2.0. Systemd has very good support for that. The steps are in the <a href="https://wiki.archlinux.org/title/Trusted_Platform_Module#Using_TPM_2.0">Arch wiki</a>. I’ve never tried this since my backup machine only has TPM 1.2 chip, but the steps looks very straightforward.</p>
-
-<p>With TPM 1.2, it’s much harder and took me a lot of time to figure that out. At last I found a <a href="https://github.com/danielfomin96/arch-linux-luks-tpm-boot">repo on Github</a> and forked it with some modifications in order to support busybox initramfs, which is the default setup for Arch Linux. Here is <a href="https://github.com/wb14123/arch-linux-luks-tpm-boot">my updated repo</a>. It’s not easy but I believe the security it adds worth the effort.</p>
-
-<h3 id="34-setup-secure-boot">3.4 Setup Secure Boot</h3>
-
-<p>The disk encryption above doesn’t include boot loader. In order to make the boot loader safe, we can setup secure boot, which will prevent the system from booting if the boot loader is not signed by trusted party. There is an <a href="https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot#Using_your_own_keys">Arch wiki</a> described the steps as well. I used the option of “Using your own keys” and use <a href="https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot#Fully_automated_unified_kernel_generation_and_signing_with_sbupdate">sbupdate</a> to automatic sign new kernels after update. Make sure to add kernel parameters, especially the parameters related to disk encryption into <code>CMDLINE_DEAFULT</code> in <code>/etc/sbupdate.conf</code> as mentioned in the <a href="https://github.com/andreyv/sbupdate">sbupdate document</a>.</p>
-
-<h3 id="35-setup-vpn-and-ssh">3.5 Setup VPN and SSH</h3>
-
-<p>In order to make ZFS remote backup work, we need to establish a SSH connection between the source machine which holds the data we want to backup, and the backup machine. Obviously it’s not safe to let the source machine act as the SSH server, since the backup machine is not fully trusted. But we cannot make the backup machine as a SSH server on public network either, since it needs port forwarding setup if it’s placed in a home network, which is very user unfriendly. So we need a VPN network to let the backup machine connect as a client, then it can act as a SSH server in the VPN network.</p>
-
-<p>There are many VPN solutions out there. OpenVPN is the most popular one with lots of features. But WireGuard is newer, more efficient and easier to setup. So I choose WireGuard as my VPN solution. I setup the VPN server on my source machine and use NAT port forwarding to make it accessible from public network, so the backup machine is able to connect as a client. The setup guide can also be found in an <a href="https://wiki.archlinux.org/title/WireGuard#Specific_use-case:_VPN_server">Arch Wiki</a>, with some additional notes:</p>
-
-<ul>
-  <li>Use DNS name for the source machine address, so that in the case of IP changes, the backup machine can still connect to the VPN automatically.</li>
-  <li>Add <code>PersistentKeepalive = 1</code> in the client configuration, so that the client will send a package every 1 second to keep the connection alive.</li>
-  <li>Enable the VPN and SSH service so that the backup machine will be able to connect after reboot.</li>
-  <li>Setup the firewall properly, since the backup machine is not trusted.</li>
-</ul>
-
-<h3 id="36-install-zfs">3.6 Install ZFS</h3>
-
-<p>Finally we can install ZFS on the backup machine so it can receive ZFS datasets. Since we don’t need ZFS on the root file system, it’s very easy to do. Just follow the <a href="https://wiki.archlinux.org/title/ZFS">Arch Wiki for ZFS</a>. I also wrote a <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">blog post</a> about it but I don’t think it’s needed for this simple setup.</p>
-
-<h3 id="37-conclusion">3.7 Conclusion</h3>
-
-<p>After all the setup, let’s look at what we have achieved for this backup machine.</p>
-
-<p>From the security point of view, we make it reasonable secure: the disk is encrypted and the encryption key is stored in TPM safely. The boot loader is also prevented from modification because of secure boot. It’s not 100% secure though, for example, when the machine is powered on there are ways to freeze the memory and read the disk encryption key from it; TPM 1.2 has security risks as well. But even though there are some security risks, it’s very hard to actually compromise the system for average people. And as I’ve mentioned multiple times above, the security risks doesn’t effect the security of our backup data since the transfer and storage are all encrypted without ever exposed the encryption key.</p>
-
-<p>From user friendly point of view, as I mentioned at the starting, the machine can be put anywhere that has a good network connection. And with just power and Ethernet cable plugged in, it would be ready to operate.</p>
-
-<h2 id="4-zfs-send-and-recv">4. ZFS Send and Recv</h2>
-
-<p>After the backup machine setup, we can finally backup the ZFS datasets to it. It’s very easy for ZFS to do remote backup, just make sure to use the flag <code>-w</code> when send so it will send the encrypted ZFS dataset (given the source dataset is already encrypted). For example:</p>
-
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>zfs send -R -v -w zroot/root@snapshot-name | ssh &lt;backup-machine-ip-in-vpn&gt; sudo zfs recv -Fu zoffsite-backup/root
-</pre></div>
-</div>
-</div>
-
-<p>It’s also easy to send incremental back using command like this:</p>
-
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>zfs send -R -v -w -i zroot/root@from-snapshot zroot/root@to-snapshot | ssh &lt;backup-machine-ip-in-vpn&gt; sudo zfs recv -Fu zoffsite-backup/root
-</pre></div>
-</div>
-</div>
-
-<p>In my case, I don’t want to backup all the datasets since I can download some of them like Steam games from somewhere else. So I wrote a script to get all the dataset I want to backup and send them one by one without suing <code>-R</code> flag. Anyway, with the power of ZFS you can basically backup in whatever way you want. You can put the script in cronjob or systemd timer to run it everyday for instance.</p>
-
-<p>At last, <strong>there is an important note about data recovery</strong>. If you ever need to recover the data, make sure don’t mount it in the backup system directly since the backup system is not trusted. Instead, get the physical backup disk, mount it on a trusted system, and recover from there.</p>]]></content><author><name></name></author><category term="zfs" /><category term="backup" /><category term="secure boot" /><category term="linux" /><category term="tech" /><category term="vpn" /><summary type="html"><![CDATA[Digital data was never as important as nowadays. Not only for business, but also for every individual. And it’s challenging to make data safe. For example, we see the news about ransomware encrypted all the data of big companies, made their business suspended. We also see a lot of extreme weathers recently: fires, flood and so on, which threats the hardware that stores the data. So it’s necessary to have backups. There should be at least two kinds of backups to keep data safe: offline backup and offsite backup.]]></summary></entry></feed>
+<p>So as a result, the index page achieved some of goal: covering some of my past works and thoughts, and remanding me what I should focus in the future. About the goal of benefiting the readers, you as a reader decide if it’s good or not.</p>]]></content><author><name></name></author><category term="blog" /><category term="index" /><summary type="html"><![CDATA[Update: the index page has been removed in favoer of the index sidebar. See Add Index Sidebar to My Blog for more details.]]></summary></entry></feed>

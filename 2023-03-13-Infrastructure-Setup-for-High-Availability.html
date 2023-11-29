@@ -713,6 +713,30 @@
   
     <div class="index-intend">
   
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster <span class="publish-year">(2023)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
 
     <div class="index-entry index-index">
       
@@ -3480,7 +3504,9 @@
     
   </header>
 
-  <p>Cloud is popular these days. But sometimes we just want to host something small, maybe just an open source service for family and friends, or some self-built service that we are still experimenting on. In this case, the cloud can be expensive. We can just throw a few nodes at home and run it at a very low cost. But you don’t want the service down when some nodes failed, at least the service should be available when you upgrade and reboot the nodes because it can happen very frequently. In this article, I will talk about how to build high available infrastructure so that the service can be alive even when some nodes are down.</p>
+  <p><em>See <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster</a> for updates on this setup.</em></p>
+
+<p>Cloud is popular these days. But sometimes we just want to host something small, maybe just an open source service for family and friends, or some self-built service that we are still experimenting on. In this case, the cloud can be expensive. We can just throw a few nodes at home and run it at a very low cost. But you don’t want the service down when some nodes failed, at least the service should be available when you upgrade and reboot the nodes because it can happen very frequently. In this article, I will talk about how to build high available infrastructure so that the service can be alive even when some nodes are down.</p>
 
 <h2 id="what-is-high-availability">What is High Availability?</h2>
 
@@ -3506,6 +3532,8 @@
 <p>Here is an overview of the setup:</p>
 
 <p><img src="/static/images/2023-03-13-Infrastructure-Setup-for-High-Availability/HA-self-hosted.png" alt="overview" /></p>
+
+<p><em>Update at 2023-11-28: updated the diagram to include Keepalived.</em></p>
 
 <p>Let’s talk about each of them in detail.</p>
 

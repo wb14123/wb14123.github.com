@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> Add Index Sidebar to My Blog |  Bin Wang - My Personal Blog</title>
+    <title> Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster |  Bin Wang - My Personal Blog</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
     <link rel="stylesheet" href="/static/css/asciinema-player.css" type="text/css" />
 
@@ -719,7 +719,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster <span class="publish-year">(2023)</span></a>
+        <div class="index-selected">Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster <span class="publish-year">(2023)</span></div>
         
       
 
@@ -2853,7 +2853,7 @@
     <div class="index-entry index-post">
       
         
-        <div class="index-selected">Add Index Sidebar to My Blog <span class="publish-year">(2023)</span></div>
+        <a href="/2023-11-10-Index-Sidebar-on-My-Blog.html">Add Index Sidebar to My Blog <span class="publish-year">(2023)</span></a>
         
       
 
@@ -3492,53 +3492,96 @@
 
     <section id="page_content">
         <div id="content_table">
-  
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#updated-architecture-overview">Updated Architecture Overview</a></li><li><a href="#replace-kubernetes-with-k3s">Replace Kubernetes with K3s</a></li><li><a href="#distributed-storage-system-glusterfs-to-cephfs">Distributed Storage System: GlusterFS to CephFS</a></li><li><a href="#network-gateway">Network Gateway</a></li><li><a href="#deploy-services-with-code">Deploy Services with Code</a></li></ol>
 </div>
 
 <div id="article_content" class="">
 <article id="post">
   <header>
-    <h1>Add Index Sidebar to My Blog</h1>
+    <h1>Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster</h1>
     
-      <p class="description">Posted on 10 Nov 2023, tagged <code>blog</code><code>Jekyll</code><code>Javascript</code><code>desgin</code></p>
+      <p class="description">Posted on 28 Nov 2023, tagged <code>Kubernetes</code><code>CephFS</code><code>MetalLB</code><code>k3s</code><code>Infrastructure</code><code>devops</code></p>
     
   </header>
 
-  <p>In a previous blog <a href="/2021-10-31-Add-Index-to-My-Blog.html">Add Index to My Blog</a>, I talked about how I added an index page to my blog that put all the articles into categories. I always wanted the index to be a sidebar instead of a single page, but I guess I didn’t wrap my head around about how to implement so I gave up at last. But recently, when I started to use <a href="https://obsidian.md/">Obsidian</a> and checked some demos of <a href="https://obsidian.md/publish">Obsidian Publish</a>, I found having a sidebar is so useful and beautiful so I decide I should implement it.</p>
+  <p>In a previous blog <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability</a>, I talked about how I setup a cluster infrastructure for high availability applications. I have made a few changes since then. This blog is to talk about them in details.</p>
 
-<p>You can see the result right now: if you are on a big screen device, the index is on the left side of the page. If you are on a small screen device like a mobile phone, it will show a menu button at the top left corner instead. Clicking it will take you to the index.</p>
+<h2 id="updated-architecture-overview">Updated Architecture Overview</h2>
 
-<p>When I implement it, I want to keep it simple and stupid. That means:</p>
+<p><img src="/static/images/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster/ha-cluster-infrastructure-k3s.png" alt="arch-diagram" /></p>
+
+<p>Comparing the diagram with the one in <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability</a>, the overall structure remains the same, with a few modifications:</p>
 
 <ul>
-  <li>I want to be as simple as possible as long as it has the function: show articles in nested categories.</li>
-  <li>I want to use as little Javascript as possible so people can still use it with Javascript disabled.</li>
+  <li>Not shown in the graph, but replaced official Kubernetes with K3s.</li>
+  <li>Replaced GlusterFS with CephFS.</li>
+  <li>Included cert-manager to get SSL certificates.</li>
+  <li>Replaced Keepalived on each node with MetalLB.</li>
 </ul>
 
-<p>I found the design of Obsidian Publish is very good. So I copied lots of details from them with some modifications: I didn’t implement showing/hiding sub items when click on the index entry since I think it’s not necessary, and I like how it looks when all the articles are listed there: feels like I’ve written lots of things. The categories are sorted by alphabet order and the posts are ordered by publish date. I also added the publish year for each article entry: some articles can look outdated but if people noticed the published year they can understand the context.</p>
+<h2 id="replace-kubernetes-with-k3s">Replace Kubernetes with K3s</h2>
 
-<p>Since I’m using Jeykyll, I can generate plain HTML when possible to avoid the usage of Javascript. So the sidebar is generated for each page instead of using Javascript to keep the sidebar and replace the article content on the fly. Javascript is only used for 2 features:</p>
+<p>I didn’t know <a href="https://k3s.io/">K3s</a> back when I setup my Kubernetes cluster for the first time. But since then I heard a lot of good things about it at various places. However, the complexity of migration and its installation method through a script from Internet instead of an OS package made me think twice before adopt it. But after I watched the video <a href="https://www.youtube.com/watch?v=k58WnbKmjdA">Talk About K3s Internals from Darren Shepherd</a>, I realized how simple k3s is compared to Kubernetes. I highly recommend everyone who is interested in K3s watch this video.</p>
+
+<p>In short, K3s is a distribution of Kubernetes instead of a fork. It does these things with a few patches: combined the components of Kubernetes into one binary and process, and removed some components not needed in a bare metal environment. By doing so, it makes its binary size and memory footprint smaller than Kubernetes, and makes it easier to deploy and manage. It only needs a binary <code>k3s</code> and a configuration file under <code>/etc/rancher/k3s/config.yaml</code> to start, and all of its content is under <code>/var/lib/rancher/k3s</code>. The official install script adds a little bit more than just the binary file: it has a few scripts to kill and uninstall k3s. It also includes systemd file to start/stop k3s through systemd. So even though it’s not packaged into a standard OS package, I think the complexity is manageable so I started to experiment with it.</p>
+
+<p>It’s very easy to config K3s since all it needs is a configuration file on each machine. I created a virtual machine cluster with Vagrant in the project <a href="https://github.com/wb14123/k3s-vm-cluster">k3s-vm-cluster</a> to experiment with it. Feel free to play with it to get a feel with it before go all in. The setup is based on the official guide for <a href="https://docs.k3s.io/datastore/ha-embedded">High Availability Embedded etcd</a>. It’s the easiest way to setup a high available K3s cluster.</p>
+
+<p>No load balancer setup is needed if no external Kubernetes API server HA is needed. That means, you can access to Kubernetes API server within the cluster if any of the machine fails. But if you still want to access it outside of the cluster during a failure, check <a href="https://docs.k3s.io/datastore/cluster-loadbalancer">this doc</a>. Alternatively, I think load balancer like MentalLB can also do it, but I don’t need it so I didn’t experiment with it.</p>
+
+<h2 id="distributed-storage-system-glusterfs-to-cephfs">Distributed Storage System: GlusterFS to CephFS</h2>
+
+<p>The biggest motivation drives this migration is the deprecation of GlusterFS. I’m using distributed file system for a few use cases:</p>
+
+<ul>
+  <li>Configuration files: this can be migrated to <a href="https://kubernetes.io/docs/concepts/configuration/configmap/">Kubernetes ConfigMaps</a>.</li>
+  <li>Logs: this can be migrated to a centralized log management system like ElasticSearch. But some of them like <a href="https://grafana.com/oss/loki/">Loki</a> in turn depends on another distributed storage.</li>
+  <li>Data files: this is most complex one. Some of the services support saving files into S3 compatible systems. But some of them don’t. (I cannot control the services since I only self host them instead of developed them). One option is to not having HA and just bind those services into a specific host and use local storage.</li>
+  <li>Docker registry: this belongs to the point “Data files” above, but this is very import so I separate into another point. I’m using <a href="https://www.sonatype.com/products/sonatype-nexus-repository">Sonatype Nexus</a> as the docker registry. It supports to put packages into S3 but still pretty tricky to get rid of all the local files. This is a service that absolutely needs HA if I want to have a HA cluster. Or I can change to another Docker registry implementation, but I feel pretty comfortable using it so I don’t want to change it.</li>
+</ul>
+
+<p>So it basically comes down to these 2 options:</p>
 
 <ol>
-  <li>Remember the position of the sidebar when jump pages.</li>
-  <li>Scroll the sidebar to show the entry for the current page if it’s not in the viewpoint.</li>
+  <li>Use a S3 compatible storage like <a href="https://min.io/">MinIO</a> but do a lot of work to configure services to store files into that, and make services cannot do that not HA anymore.</li>
+  <li>Go ahead and uses a real distributed file system like CephFs or <a href="https://longhorn.io/">Longhorn</a>.</li>
 </ol>
 
-<p>Both of the features are not that important so the sidebar is still usable without Javascript. Even for the menu button on small screens, it’s not popping up a dialog. It just jumps to a new static page that has all the index so no Javascript is needed.</p>
+<p>Option 1 sounds appealing to me at first since I really don’t want to deal with the complexity of setting up CephFS. But as I go into the rabbit hole, I found configuring the services to use S3 may be a more complex process and less portable than just setup CephFS. So at the end I decide to go option 2.</p>
 
-<p>The previous implementation of the index page uses recursive templates: Since the nested index is a tree, rendering the content in a recursive manner is a nature thought. However, I made that mistake to put the complex logic into the template engine. So this time, I traverse the tree with Ruby code and generates a list for the template to render. It has all the information like entry type, the depth of the entry and so on. It makes the template code much simpler so it’s easier to implement other features on top of it.</p>
+<p>I’ve heard of CephFS long time ago but decided to use GlusterFS at previous setups because of the level of user friendly. So CephFS seems like a nature choice after GlusterFs is deprecated. Especially when I found other than the distributed block device, it also supports file system and S3 compatible storage system. It’s also easier to install than before because of <a href="https://rook.io/">Rook</a>. Longhorn is another choice I looked a little bit but because of wider adoption of CephFS and more features of it, I decide to use CephFS at the end.</p>
 
-<p>If you want to checkout the detailed implementation, go to my <a href="https://github.com/wb14123/blog">Github repo for the blog</a> and check <a href="https://github.com/wb14123/blog/blob/master/jekyll/_plugins/Index.rb"><code>jekyll/_plugins/Index.rb</code></a> and <a href="https://github.com/wb14123/blog/blob/master/jekyll/_includes/index_menu.html"><code>jekyll/_includes/index_menu.html</code></a>.</p>
+<p>The way I use it is mainly <a href="https://rook.io/docs/rook/v1.11/Storage-Configuration/Shared-Filesystem-CephFS/filesystem-storage/">Ceph Filesystem</a>, so it’s easier to share volumes between pods. Again, the project <a href="https://github.com/wb14123/k3s-vm-cluster">k3s-vm-cluster</a> has an example about it. Try to play it if you are interested in it. Along the way I actually contributed to Rook project by improving doc (<a href="https://github.com/rook/rook/pull/13045">#13045</a>) and its error message (<a href="https://github.com/rook/rook/pull/13046">#13046</a>).</p>
+
+<h2 id="network-gateway">Network Gateway</h2>
+
+<p>In the previous article, I talked about using Cloudflare tunnel, or NodePort and Keepalived to expose services to the Internet. But there are some other things a network gateway can do other than just expose the service: it can also do things like terminate SSL encryption and so on. Cloudflare tunnel support terminate SSL at their end so I don’t need to worry about that. But for some services, I don’t want Cloudflare to see the traffic, so I need to terminate SSL and expose service by myself.</p>
+
+<p>As I said, expose service part was done by NodePort and Keepalived, which is not very elegant but works. For the terminate SSL part, I was using Nginx as reverse proxy. But updating SSL certificates is a little bit more complex. I don’t want to talk it in details here because the setup is pretty complex and explaining it will be very lengthy. The point is, with this migration, I want to revisit this part to make it simpler and more elegant.</p>
+
+<p>Kubernetes has a concept of <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/">Ingress</a>, and newer but less mature, <a href="https://gateway-api.sigs.k8s.io/">Gateway</a>. What they are doing is essentially reverse proxy like Nginx. In fact, Nginx Ingress is a thing. The advantage is that you don’t need to configure all the services in a single place like Nginx’s configuration files. You can create Kubernetes resources for each of the service. So that the deployment and configuration of each service is totally self contained. This is a very good feature, especially for a company: when I first started to use Kubernetes at 2015 in a previous company, I felt the pain of not having it. But the feature of Ingress is pretty limited. For example, it can only bind to 443. It cannot modify the http content, and so on. So that I may still need a layer of Nginx for my use cases. The design of gateway is too complex and the features don’t really meet all my requirements as well.</p>
+
+<p>There are some players like <a href="https://traefik.io/">Traefik</a>(shipped with K3s by default) and <a href="https://istio.io/">Istio</a> which overcome the limitations by having their own custom resources. But Traefik cannot get new certificates from Let’s Encrypt with a HA setup. Istio is just too complex and include features like service mesh that I don’t need. I can see how service mesh can be useful in big companies, but I prefer not to have another layer on my own service. At the end, I don’t think the complexity worth it.</p>
+
+<p>But while I exploring Traefik and Istio, I found <a href="https://cert-manager.io/">cert-manager</a>, which can be deployed into Kubernetes. It can get certificates from Let’s Encrypt and put them into Kubernetes secrets, which then can be mount into each pods. It supports Cloudflare DNS API for <a href="https://letsencrypt.org/docs/challenge-types/#dns-01-challenge">ACME DNS challenge</a>, so I don’t need to export a http service for Let’s Encrypt to verify the ownership of the domain name. With all of this features, I decided to use it and mount the certificates into Nginx pods. It resolves the problem of update certificates from Let’s Encrypt.</p>
+
+<p>For the other problem of exposing the services to Internet in a HA way, I want to use a more Kubernetes native way instead of setup Keepalived outside of the Kubernetes cluster. Kubernetes supports <a href="https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/">external load balancers</a>. But most of the load balancers it supports are from cloud. Then I found <a href="https://metallb.org/">MetalLB</a>, which supports creating a HA load balancer without special hardware in a bare metal cluster. I use it with <a href="https://metallb.org/concepts/layer2/">layer 2 mode</a>, which creates a virtual IP like keepalived and can failover to another node.</p>
+
+<h2 id="deploy-services-with-code">Deploy Services with Code</h2>
+
+<p>What I didn’t talk in the previous blog is, I define the deployment of my services as code instead yaml files. It gives lots of advantages: first, you can create models for your own deployment pattern so that you can avoid lots of redundant code. Traditionally it’s hard to define the deployment as code. There are lots of frameworks to do it but none of them is easy to use. But with Kubernetes, all you need is generating a resource object for Kubernetes to use at the end. You can construct it in any way with your favorite language, and either output a YAML or call Kubernetes API directly. It’s using a high level language instead of writing machine code directly. It’s much more elegant and the maintenance is much easier. Be aware: use a real language instead of some template language. Why limit your power to do things?</p>
+
+<p>This approach works so well especially during this migration. For example, I abstracted all the storage layer for my services, so that when I migrated from GlusterFS to CephFS, I just need to change the storage class to define the CephFS volume, and the code for services don’t need to change much.</p>
+
+<p>Hope you enjoy my experience of setting up a HA cluster. Happy hacking and have fun with your own cluster!</p>
 
 </article>
 
 <footer id="post_footer">
   <table><tr>
     
-      <td id="prev"><a href="/2023-11-04-How-to-Cleanup-Ceph-Filesystem-for-Deleted-Kubernetes-Persistent-Volume.html">Prev: How to Cleanup Ceph Filesystem for Deleted Kubernetes Persistent Volume</a></td>
+      <td id="prev"><a href="/2023-11-14-Update-On-RSS-Brain-to-Find-Related-Articles-with-Machine-Learning.html">Prev: Update on RSS Brain to Find Related Articles with Machine Learning</a></td>
     
-    
-      <td id="next"><a href="/2023-11-14-Update-On-RSS-Brain-to-Find-Related-Articles-with-Machine-Learning.html" id="next">Next: Update on RSS Brain to Find Related Articles with Machine Learning</a></td>
     
   </tr></table>
 </footer>
