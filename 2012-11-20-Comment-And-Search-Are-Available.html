@@ -623,30 +623,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability <span class="publish-year">(2023)</span></a>
         
       
@@ -1141,34 +1117,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2013-01-21-How-Kernel's-Makefile-Specify-Output-Directory.html">How Kernel's Makefile Specify Output Directory <span class="publish-year">(2013)</span></a>
         
       
@@ -1198,34 +1146,6 @@
       
         
         <a href="/2013-10-06-Xbmc-on-Raspberry-Pi-with-Archlinux.html">Xbmc on Raspberry Pi with Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
-        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
         
       
 
@@ -2348,6 +2268,120 @@
       
         
         <a href="/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html">Why Big Companies Need to Adopt Open Source <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      Storage
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html">ZFS Profiling on Arch Linux <span class="publish-year">(2023)</span></a>
         
       
 
@@ -3520,56 +3554,50 @@
 
 <p>update.sh: generate static site and upload to github.</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>#!/bin/bash
-<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
-<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>BASE_DIR=`pwd`
-<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>J_DIR=&quot;./jekyll&quot;
-<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>GIT_DIR=&quot;./wb14123.github.com&quot;
-<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
-<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>cd $J_DIR
-<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>jekyll
-<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>cd $BASE_DIR
-<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>rm -r $GIT_DIR/*
-<span class="line-numbers"><a href="#n11" name="n11">11</a></span>cp -r $J_DIR/_site/* $GIT_DIR/
-<span class="line-numbers"><a href="#n12" name="n12">12</a></span>cd $GIT_DIR
-<span class="line-numbers"><a href="#n13" name="n13">13</a></span>git add -A .
-<span class="line-numbers"><a href="#n14" name="n14">14</a></span>git commit -m &quot;Changed at $(date)&quot;
-<span class="line-numbers"><a href="#n15" name="n15">15</a></span>git push origin master
-<span class="line-numbers"><a href="#n16" name="n16">16</a></span>exit $?
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/bin/bash
+
+BASE_DIR=`pwd`
+J_DIR="./jekyll"
+GIT_DIR="./wb14123.github.com"
+
+cd $J_DIR
+jekyll
+cd $BASE_DIR
+rm -r $GIT_DIR/*
+cp -r $J_DIR/_site/* $GIT_DIR/
+cd $GIT_DIR
+git add -A .
+git commit -m "Changed at $(date)"
+git push origin master
+exit $?
+</code></pre></div></div>
 
 <p>newpost.sh: use vim to open a new post with current time and some meta information.</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>#!/bin/bash
-<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
-<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>if [ $# -lt 1 ]
-<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>then
-<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    echo &quot;newpost: You need to specify the post name.&quot;
-<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>    exit 1
-<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>fi
-<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
-<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>POST_NAME=$1
-<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>POST_DATE=`date +%Y-%m-%d`
-<span class="line-numbers"><a href="#n11" name="n11">11</a></span>POST_DIR=&quot;./jekyll/_posts&quot;
-<span class="line-numbers"><a href="#n12" name="n12">12</a></span>FILE_NAME=`echo &quot;$POST_DIR/$POST_DATE-$POST_NAME.md&quot; | sed &quot;s/ /-/g&quot;`
-<span class="line-numbers"><a href="#n13" name="n13">13</a></span>
-<span class="line-numbers"><a href="#n14" name="n14">14</a></span>echo &quot;
-<span class="line-numbers"><a href="#n15" name="n15">15</a></span>---
-<span class="line-numbers"><a href="#n16" name="n16">16</a></span>layout: post
-<span class="line-numbers"><a href="#n17" name="n17">17</a></span>title: $POST_NAME
-<span class="line-numbers"><a href="#n18" name="n18">18</a></span>categories: misc
-<span class="line-numbers"><a href="#n19" name="n19">19</a></span>tags: []
-<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>---
-<span class="line-numbers"><a href="#n21" name="n21">21</a></span>&quot; &gt; $FILE_NAME
-<span class="line-numbers"><a href="#n22" name="n22">22</a></span>
-<span class="line-numbers"><a href="#n23" name="n23">23</a></span>vim $FILE_NAME
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/bin/bash
+
+if [ $# -lt 1 ]
+then
+    echo "newpost: You need to specify the post name."
+    exit 1
+fi
+
+POST_NAME=$1
+POST_DATE=`date +%Y-%m-%d`
+POST_DIR="./jekyll/_posts"
+FILE_NAME=`echo "$POST_DIR/$POST_DATE-$POST_NAME.md" | sed "s/ /-/g"`
+
+echo "
+---
+layout: post
+title: $POST_NAME
+categories: misc
+tags: []
+---
+" &gt; $FILE_NAME
+
+vim $FILE_NAME
+</code></pre></div></div>
 
 
 </article>

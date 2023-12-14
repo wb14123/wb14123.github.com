@@ -623,30 +623,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability <span class="publish-year">(2023)</span></a>
         
       
@@ -1141,34 +1117,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2013-01-21-How-Kernel's-Makefile-Specify-Output-Directory.html">How Kernel's Makefile Specify Output Directory <span class="publish-year">(2013)</span></a>
         
       
@@ -1198,34 +1146,6 @@
       
         
         <a href="/2013-10-06-Xbmc-on-Raspberry-Pi-with-Archlinux.html">Xbmc on Raspberry Pi with Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
-        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
         
       
 
@@ -2348,6 +2268,120 @@
       
         
         <a href="/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html">Why Big Companies Need to Adopt Open Source <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      Storage
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html">ZFS Profiling on Arch Linux <span class="publish-year">(2023)</span></a>
         
       
 
@@ -3534,32 +3568,23 @@
 
 <p>In this case I’m using JProfiler. But as I mentioned above, VisualVM or Java Mission Control should also be able to do the job.</p>
 
-<p>JProfiler has a nice wizard to let you setup the profiler. In my case, since I run the service in Kubernetes, I need to select remote server profiling and go through the wizard. We are going to use <code>kubectl</code> to forward the debugging port to local, so that we can just use <code>localhost:8849</code> as the remote address. At the end of the setup wizard, it will prompt you to download the profiler agent and include it with a Java command line argument. Since the service is running in container, I added the following lines to the Dockerfile in order to include the agent in it:</p>
+<p>JProfiler has a nice wizard to let you setup the profiler. In my case, since I run the service in Kubernetes, I need to select remote server profiling and go through the wizard. We are going to use <code class="language-plaintext highlighter-rouge">kubectl</code> to forward the debugging port to local, so that we can just use <code class="language-plaintext highlighter-rouge">localhost:8849</code> as the remote address. At the end of the setup wizard, it will prompt you to download the profiler agent and include it with a Java command line argument. Since the service is running in container, I added the following lines to the Dockerfile in order to include the agent in it:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>RUN apt update -y &amp;&amp; apt install -y wget
-<span class="line-numbers"><a href="#n2" name="n2">2</a></span>RUN cd /opt &amp;&amp; \
-<span class="line-numbers"><a href="#n3" name="n3">3</a></span>        wget -c 'https://download.ej-technologies.com/jprofiler/jprofiler_agent_linux-x86_14_0.tar.gz' &amp;&amp; \
-<span class="line-numbers"><a href="#n4" name="n4">4</a></span>        tar -xf jprofiler_agent_linux-x86_14_0.tar.gz
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RUN apt update -y &amp;&amp; apt install -y wget
+RUN cd /opt &amp;&amp; \
+        wget -c 'https://download.ej-technologies.com/jprofiler/jprofiler_agent_linux-x86_14_0.tar.gz' &amp;&amp; \
+        tar -xf jprofiler_agent_linux-x86_14_0.tar.gz
+</code></pre></div></div>
 
 <p>Also add this flag to Java command line when starting the service:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>-agentpath:/opt/jprofiler14/bin/linux-x64/libjprofilerti.so=port=8849,nowait
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-agentpath:/opt/jprofiler14/bin/linux-x64/libjprofilerti.so=port=8849,nowait
+</code></pre></div></div>
 
 <p>After the new container is deployed, we can port forward 8849 from the service to our localhost with kubectl:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>kubectl port-forward &lt;service-pod-name&gt; 8849:8849
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl port-forward &lt;service-pod-name&gt; 8849:8849
+</code></pre></div></div>
 
 <h2 id="memory-comparison">Memory Comparison</h2>
 
@@ -3567,47 +3592,44 @@
 
 <p><img src="/static/images/2023-09-30-A-Boring-JVM-Memory-Profiling-Story/objects-start.png" alt="objects-start" /></p>
 
-<p>We can see <code>byte[]</code> takes the most memory but it doesn’t mean it’s responsible for memory leak, since we need to look at the increase of the memory.</p>
+<p>We can see <code class="language-plaintext highlighter-rouge">byte[]</code> takes the most memory but it doesn’t mean it’s responsible for memory leak, since we need to look at the increase of the memory.</p>
 
 <p>So we need to wait for a while for the memory problem starts to happen. In my case, obvious memory increase can be occurred after the JVM run for about 12 hours. Normally if this is a work related thing, I may want to make it faster by increasing the work load. In this case, the code is fetching RSS feeds, so I could make the interval shorter so that it makes more requests. But since this is only a side project, I don’t need to continues working on it, and I also don’t quite like the idea to increase the requests to target RSS websites to increase their load. So I decide just let the JVM run during the night and take another look next day:</p>
 
 <p><img src="/static/images/2023-09-30-A-Boring-JVM-Memory-Profiling-Story/objects-end.png" alt="objects-end" /></p>
 
-<p>Okay, obviously <code>scala.collection.mutable.LinkedHashMap$LinkedEntry</code> increased a lot. But is there anything else? Conveniently, JProfiler has the feature to compare 2 snapshots. Just go to “Session” -&gt; “Start Center” -&gt; “Open Snapshots” -&gt; “Compare Multiple Snapshots”. After open those 2 snapshots, select both of them on the left and then compare memory:</p>
+<p>Okay, obviously <code class="language-plaintext highlighter-rouge">scala.collection.mutable.LinkedHashMap$LinkedEntry</code> increased a lot. But is there anything else? Conveniently, JProfiler has the feature to compare 2 snapshots. Just go to “Session” -&gt; “Start Center” -&gt; “Open Snapshots” -&gt; “Compare Multiple Snapshots”. After open those 2 snapshots, select both of them on the left and then compare memory:</p>
 
 <p><img src="/static/images/2023-09-30-A-Boring-JVM-Memory-Profiling-Story/objects-compare.png" alt="objects-compare" /></p>
 
-<p>We can see <code>LinkedEntry</code> indeed increased the most by instance count. However, if we sort by size, we fill find <code>byte[]</code> increased the most by memory size.</p>
+<p>We can see <code class="language-plaintext highlighter-rouge">LinkedEntry</code> indeed increased the most by instance count. However, if we sort by size, we fill find <code class="language-plaintext highlighter-rouge">byte[]</code> increased the most by memory size.</p>
 
 <h2 id="a-false-root-cause">A False Root Cause</h2>
 
-<p>Since <code>byte[]</code> increased the most by memory size, I’d like to start there. By using “Allocation Call Tree”, we can check which code allocates <code>byte[]</code> the most. After profiling for a while, we get the following result:</p>
+<p>Since <code class="language-plaintext highlighter-rouge">byte[]</code> increased the most by memory size, I’d like to start there. By using “Allocation Call Tree”, we can check which code allocates <code class="language-plaintext highlighter-rouge">byte[]</code> the most. After profiling for a while, we get the following result:</p>
 
 <p><img src="/static/images/2023-09-30-A-Boring-JVM-Memory-Profiling-Story/allocation-tree-bytes.png" alt="allocation-tree-bytes" /></p>
 
-<p>Okay, the top allocation goes to my own code <code>me.binwang.rss.parser.SourceParser</code>. It’s the class that parse the xml from RSS feeds. So I looked into it if it has any code that can cause memory leak and I found this:</p>
+<p>Okay, the top allocation goes to my own code <code class="language-plaintext highlighter-rouge">me.binwang.rss.parser.SourceParser</code>. It’s the class that parse the xml from RSS feeds. So I looked into it if it has any code that can cause memory leak and I found this:</p>
 
-<div class="language-Scala highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>object SourceParser {
-<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
-<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>  def parse(url: String, content: Resource[IO, InputStream]): IO[(Source, Seq[Try[FullArticle]])] = {
-<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>    content.use { c =&gt;
-<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>      // ...
-<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>      throw new RuntimeException(s&quot;Error to parse source xml, unrecognized label $label&quot;)
-<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>      // ...
-<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    }
-<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>  }
-</pre></div>
-</div>
-</div>
+<pre><code class="language-Scala">object SourceParser {
 
-<p>So there is an exception thrown in a <code>Resource.use</code>. <code>Resource.use</code> makes sure to cleanup the resource when the <code>use</code> scope is over. But what will happen if it throws an example in there? I thought it will cause <code>use</code> to not handle the cleanup properly. So I changed it to use <code>IO.raiseError</code> instead of throw it directly.</p>
+  def parse(url: String, content: Resource[IO, InputStream]): IO[(Source, Seq[Try[FullArticle]])] = {
+    content.use { c =&gt;
+      // ...
+      throw new RuntimeException(s"Error to parse source xml, unrecognized label $label")
+      // ...
+    }
+  }
+</code></pre>
 
-<p>However, while I deploying the code, I thought I should really test it. So I wrote a piece of simple code to see whether <code>Resource</code> will still be cleaned up if there is any exception thrown in <code>use</code>, and the answer is yes. So this shouldn’t be the root cause. And the deployment result also confirms that: the memory kept increasing with this fix.</p>
+<p>So there is an exception thrown in a <code class="language-plaintext highlighter-rouge">Resource.use</code>. <code class="language-plaintext highlighter-rouge">Resource.use</code> makes sure to cleanup the resource when the <code class="language-plaintext highlighter-rouge">use</code> scope is over. But what will happen if it throws an example in there? I thought it will cause <code class="language-plaintext highlighter-rouge">use</code> to not handle the cleanup properly. So I changed it to use <code class="language-plaintext highlighter-rouge">IO.raiseError</code> instead of throw it directly.</p>
+
+<p>However, while I deploying the code, I thought I should really test it. So I wrote a piece of simple code to see whether <code class="language-plaintext highlighter-rouge">Resource</code> will still be cleaned up if there is any exception thrown in <code class="language-plaintext highlighter-rouge">use</code>, and the answer is yes. So this shouldn’t be the root cause. And the deployment result also confirms that: the memory kept increasing with this fix.</p>
 
 <h2 id="the-real-root-cause">The Real Root Cause</h2>
 
-<p>Maybe <code>byte[]</code> just happened to uses more memory because it’s parsing a large xml at that time. It’s okay that it isn’t the real root cause since we have another lead: <code>scala.collection.mutable.LinkedHashMap$LinkedEntry</code>. From the profiling, its allocation tree looks like this:</p>
+<p>Maybe <code class="language-plaintext highlighter-rouge">byte[]</code> just happened to uses more memory because it’s parsing a large xml at that time. It’s okay that it isn’t the real root cause since we have another lead: <code class="language-plaintext highlighter-rouge">scala.collection.mutable.LinkedHashMap$LinkedEntry</code>. From the profiling, its allocation tree looks like this:</p>
 
 <p><img src="/static/images/2023-09-30-A-Boring-JVM-Memory-Profiling-Story/allocation-tree-linkedlist.png" alt="allocation-tree-linkedlist" /></p>
 
@@ -3621,13 +3643,10 @@
 
 <p>It’s time to search the Internet to see if there is any known issue in quill about memory leak. Maybe I didn’t have the right query, I didn’t find proper results from Internet.</p>
 
-<p>After struggle for a while, I went to its Github repo to search “Memory leak” directly and found 3 issues. That’s good! And there is <a href="https://github.com/zio/zio-quill/issues/2484">one</a> describes the exact problem we have. If we see the allocation tree above, we can find there is a call from <code>NormalizeCaching</code> (at the bottom of the tree in the picture), which is the class that the issue describes. I guess I didn’t go that far enough to check this class. I’m glad someone else did and found the issue! Basically the root cause is there is a map in the caching doesn’t have any bound. So the cache triggered by dynamic queries never got expired and is growing more and more:</p>
+<p>After struggle for a while, I went to its Github repo to search “Memory leak” directly and found 3 issues. That’s good! And there is <a href="https://github.com/zio/zio-quill/issues/2484">one</a> describes the exact problem we have. If we see the allocation tree above, we can find there is a call from <code class="language-plaintext highlighter-rouge">NormalizeCaching</code> (at the bottom of the tree in the picture), which is the class that the issue describes. I guess I didn’t go that far enough to check this class. I’m glad someone else did and found the issue! Basically the root cause is there is a map in the caching doesn’t have any bound. So the cache triggered by dynamic queries never got expired and is growing more and more:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>private val cache = new ConcurrentHashMap[Ast, Ast] 
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>private val cache = new ConcurrentHashMap[Ast, Ast] 
+</code></pre></div></div>
 
 <h2 id="fix-the-memory-leak">Fix the Memory Leak</h2>
 

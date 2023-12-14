@@ -623,30 +623,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability <span class="publish-year">(2023)</span></a>
         
       
@@ -1141,34 +1117,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2013-01-21-How-Kernel's-Makefile-Specify-Output-Directory.html">How Kernel's Makefile Specify Output Directory <span class="publish-year">(2013)</span></a>
         
       
@@ -1198,34 +1146,6 @@
       
         
         <a href="/2013-10-06-Xbmc-on-Raspberry-Pi-with-Archlinux.html">Xbmc on Raspberry Pi with Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
-        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
         
       
 
@@ -2348,6 +2268,120 @@
       
         
         <a href="/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html">Why Big Companies Need to Adopt Open Source <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      Storage
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html">ZFS Profiling on Arch Linux <span class="publish-year">(2023)</span></a>
         
       
 
@@ -3524,24 +3558,21 @@
 
 <h2 id="using-spark-streaming">Using Spark Streaming</h2>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>def updateFunc(newValues: Seq[Double], oldValue: Option[Double]): Option[Double] = {
-<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  Some(newValues.sum + oldValue.getOrElse(0))
-<span class="line-numbers"><a href="#n3" name="n3">3</a></span>}
-<span class="line-numbers"><a href="#n4" name="n4">4</a></span>
-<span class="line-numbers"><a href="#n5" name="n5">5</a></span>val sumOfSquares = sc.updateStateByKey[Double](updateFunc _).map(a =&gt; a * a)
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def updateFunc(newValues: Seq[Double], oldValue: Option[Double]): Option[Double] = {
+  Some(newValues.sum + oldValue.getOrElse(0))
+}
 
-<p>The code is clean and easy to read. But there are two problems, both are about <code>updateStateByKey</code>:</p>
+val sumOfSquares = sc.updateStateByKey[Double](updateFunc _).map(a =&gt; a * a)
+</code></pre></div></div>
+
+<p>The code is clean and easy to read. But there are two problems, both are about <code class="language-plaintext highlighter-rouge">updateStateByKey</code>:</p>
 
 <ol>
   <li>
-    <p><code>updateStateByKey</code> has a state in memory, we need to enable checkpointing for it in order to support fault tolerance. And in the case of updating the code, we need to save the state by ourself, as I have specified in <a href="/2015-11-03-the-proper-way-to-use-spark-checkpoint.html">an earlier blog</a>. When the state is big, it will be very slow and complex.</p>
+    <p><code class="language-plaintext highlighter-rouge">updateStateByKey</code> has a state in memory, we need to enable checkpointing for it in order to support fault tolerance. And in the case of updating the code, we need to save the state by ourself, as I have specified in <a href="/2015-11-03-the-proper-way-to-use-spark-checkpoint.html">an earlier blog</a>. When the state is big, it will be very slow and complex.</p>
   </li>
   <li>
-    <p><code>updateStateByKey</code> is not so fast. It will run against all the elements in it every time. It is not necessary in our situation. The Spark guys seems to <a href="http://technicaltidbit.blogspot.sg/2015/11/spark-streaming-16-stop-using.html">realize this problem</a>, too.</p>
+    <p><code class="language-plaintext highlighter-rouge">updateStateByKey</code> is not so fast. It will run against all the elements in it every time. It is not necessary in our situation. The Spark guys seems to <a href="http://technicaltidbit.blogspot.sg/2015/11/spark-streaming-16-stop-using.html">realize this problem</a>, too.</p>
   </li>
 </ol>
 
@@ -3551,21 +3582,18 @@
 
 <h2 id="using-redis">Using Redis</h2>
 
-<p>We will store the whole vector into Redis: for each element in the vector, we will use <code>i</code> as the key and <span>\(a_i\)</span> as the value.  When a new element arrives in the data stream, we will update the key-valule and the sum of sqaures. Here is the code:</p>
+<p>We will store the whole vector into Redis: for each element in the vector, we will use <code class="language-plaintext highlighter-rouge">i</code> as the key and <span>\(a_i\)</span> as the value.  When a new element arrives in the data stream, we will update the key-valule and the sum of sqaures. Here is the code:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>val redis = RedisClient()
-<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>val resultKey = &quot;sum_of_squares&quot;
-<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>
-<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>stream.foreach { elem =&gt;
-<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  val newValue = redis.incrbyfloat(elem.i, elem.v).getOrElse(elem.v)
-<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  val oldValue = newValue - elem.v
-<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  val incValue = (newValue * newValue - oldValue * oldValue)
-<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  redis.incrbyfloat(resultKey, incValue)
-<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>}
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val redis = RedisClient()
+val resultKey = "sum_of_squares"
+
+stream.foreach { elem =&gt;
+  val newValue = redis.incrbyfloat(elem.i, elem.v).getOrElse(elem.v)
+  val oldValue = newValue - elem.v
+  val incValue = (newValue * newValue - oldValue * oldValue)
+  redis.incrbyfloat(resultKey, incValue)
+}
+</code></pre></div></div>
 
 <p>Comparing to the Spark version, this has been turned into a single thread program (Redis is a single thread program). But this is a realtime data stream, CPU should not be the bottleneck before IO. And this program uses no more memory than the Spark version. If the memory doesn’t fit into a single machine, we can use <a href="https://github.com/wandoulabs/codis">Codis</a> (or other Redis Cluster solutions).</p>
 

@@ -623,30 +623,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability <span class="publish-year">(2023)</span></a>
         
       
@@ -1141,34 +1117,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2013-01-21-How-Kernel's-Makefile-Specify-Output-Directory.html">How Kernel's Makefile Specify Output Directory <span class="publish-year">(2013)</span></a>
         
       
@@ -1198,34 +1146,6 @@
       
         
         <a href="/2013-10-06-Xbmc-on-Raspberry-Pi-with-Archlinux.html">Xbmc on Raspberry Pi with Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
-        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
         
       
 
@@ -2348,6 +2268,120 @@
       
         
         <a href="/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html">Why Big Companies Need to Adopt Open Source <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      Storage
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html">ZFS Profiling on Arch Linux <span class="publish-year">(2023)</span></a>
         
       
 
@@ -3510,7 +3544,7 @@
 
 <p>在说这个算法之前，我们先来复习一下快排是怎么排序的。快速排序每趟排序选出一个元素作为基准，把比它小的放在左边，比它大的放在右边。然后再对其左边和右边的部分分别递归进行这样的操作，当什么时候操作的长度为1时，就是已经排好序的了。最好的情况下，每次都把数组平分为两半，那么只需要进行logn次这样的操作就可以了。但是最坏情况下呢？每次只能分出去一个，那么需要进行n次这样的操作，每次操作需要用的时间是O(n)的，所以时间复杂度是O(n2)。所以我们要是能生成一个数组，让它每次选择基准的时候都选择最坏的情况，就可以使快排的时间复杂度趋向于最大了。我们现在就是要想个办法让每次选择的基准都是最小的。</p>
 
-<p>由于快排所进行的操作只有比较和移动，所以我们可以从这两个方面入手。因为一般排序函数的参数中都会有一个比较函数来判断按什么排序，如<code>void qsort(void *base, size_t nmemb, size_t size,int(*compar)(const void *, const void *))</code>中的compar，这使得我们可以推出相应函数内部的实现，所以我们从比较来入手，看怎样能选择出来对应版本快排的基准。</p>
+<p>由于快排所进行的操作只有比较和移动，所以我们可以从这两个方面入手。因为一般排序函数的参数中都会有一个比较函数来判断按什么排序，如<code class="language-plaintext highlighter-rouge">void qsort(void *base, size_t nmemb, size_t size,int(*compar)(const void *, const void *))</code>中的compar，这使得我们可以推出相应函数内部的实现，所以我们从比较来入手，看怎样能选择出来对应版本快排的基准。</p>
 
 <p>快排在比较的时候，几乎都是基准和另一个数进行比较的，所以当两个从未比较过的数进行比较的时候，我们可以把其中的一个数当作是基准来处理，将它变成当前的最小值，将另一个变成候选的基准。这样一来会有两种情况：第一、选择的数是基准，选对了，这样很好；第二、选择的数不是基准，但是下次比较的时候还是基准在和另一个数比较，由于我们在前一步已经把真正的基准作为候选了，所以下次再进行比较的时候就可以把它选做基准调成最小的值。这样一来，在划分的时候，最多有一个数是比基准要小的，虽然不是让基准变成最小，但是从渐进时间复杂度上来讲，依然是O(n2)的。</p>
 
@@ -3520,7 +3554,7 @@
 
 <p>由于版权关系，大家可以在这里下载到原文章去看看C语言版本的源代码，这里需要注意的是，由于那篇文章是1999年出版的，当时的qsort函数是用快排实现的，然而现在的qsort已经改为用归并排序实现了（如果数据量不是特别大），所以大家可以用自己写的快排去测试一下，或者找到glibc源代码qsort.c文件中的快排。</p>
 
-<p>下面的图像是我分别用自己写的几个版本的快排和qosrt.c中的快排进行的时间测试。其中黄色曲线是n2的函数，蓝色曲线是<code>n*logn</code>的函数，绿色曲线是快排的运行时间，可以看出，这个算法对于以时间为种子的随机快排是没有作用的。</p>
+<p>下面的图像是我分别用自己写的几个版本的快排和qosrt.c中的快排进行的时间测试。其中黄色曲线是n2的函数，蓝色曲线是<code class="language-plaintext highlighter-rouge">n*logn</code>的函数，绿色曲线是快排的运行时间，可以看出，这个算法对于以时间为种子的随机快排是没有作用的。</p>
 
 <p>（1）每次取第一个数为基准</p>
 
@@ -3530,7 +3564,7 @@
 
 <p>（4）随机快排</p>
 
-<p>后记：研究这个算法的时候走了很大的弯路。本来研究东西走点弯路也算正常，但是这回的弯路绕的很是莫名其妙并且让我纠结了好几天，这里和大家说一下：glibc(从1.04版本开始）的qsort函数实现已经不是快排了，已经被归并排序所代替。详见glibc源代码中的NEWS文件：“Mike Haertel (of GNU e?grep and malloc fame) has written a new sorting function which uses the <code>merge sort</code> algorithm, and is said to be significantly faster than the old GNU <code>qsort’ function. Merge sort is now the standard </code>qsort’ function. The new algorithm can require a lot of temporary storage; so, the old sorting function is called when the required storage is not available.”意思是说Mike用merge sort（归并排序）写了一个新的排序函数，据说比qsort快，所以代替了标准的qsort，但是由于它要求的空间比较多，当空间不够的时候就会调用原来的快排。所以Linus那句话还是很经典啊：Read the fucking source code.开源的东西就去看看源代码比什么都好。</p>
+<p>后记：研究这个算法的时候走了很大的弯路。本来研究东西走点弯路也算正常，但是这回的弯路绕的很是莫名其妙并且让我纠结了好几天，这里和大家说一下：glibc(从1.04版本开始）的qsort函数实现已经不是快排了，已经被归并排序所代替。详见glibc源代码中的NEWS文件：“Mike Haertel (of GNU e?grep and malloc fame) has written a new sorting function which uses the <code class="language-plaintext highlighter-rouge">merge sort</code> algorithm, and is said to be significantly faster than the old GNU <code class="language-plaintext highlighter-rouge">qsort’ function. Merge sort is now the standard </code>qsort’ function. The new algorithm can require a lot of temporary storage; so, the old sorting function is called when the required storage is not available.”意思是说Mike用merge sort（归并排序）写了一个新的排序函数，据说比qsort快，所以代替了标准的qsort，但是由于它要求的空间比较多，当空间不够的时候就会调用原来的快排。所以Linus那句话还是很经典啊：Read the fucking source code.开源的东西就去看看源代码比什么都好。</p>
 
 <p>参考文献：<a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.68.3649&amp;rep=rep1&amp;type=pdf">A Killer Adversary for Quicksort, M. D. M C ILROY, SOFTWARE—PRACTICE AND EXPERIENCE, VOL. 29(0), 1–4 (0 1999)</a></p>
 

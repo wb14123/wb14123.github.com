@@ -623,30 +623,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability <span class="publish-year">(2023)</span></a>
         
       
@@ -1141,34 +1117,6 @@
     <div class="index-entry index-post">
       
         
-        <div class="index-selected">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></div>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2013-01-21-How-Kernel's-Makefile-Specify-Output-Directory.html">How Kernel's Makefile Specify Output Directory <span class="publish-year">(2013)</span></a>
         
       
@@ -1198,34 +1146,6 @@
       
         
         <a href="/2013-10-06-Xbmc-on-Raspberry-Pi-with-Archlinux.html">Xbmc on Raspberry Pi with Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
-        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
         
       
 
@@ -2348,6 +2268,120 @@
       
         
         <a href="/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html">Why Big Companies Need to Adopt Open Source <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      Storage
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <div class="index-selected">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></div>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html">ZFS Profiling on Arch Linux <span class="publish-year">(2023)</span></a>
         
       
 
@@ -3508,25 +3542,19 @@
 
 <h2 id="1-make-a-xfs-partation">1. Make a xfs partation</h2>
 
-<p>Note: a xfs partation cannot be shrunk. And if you don’t have a splite boot partation, you should make one with <code>ext2</code> since grub don’t support xfs well.</p>
+<p>Note: a xfs partation cannot be shrunk. And if you don’t have a splite boot partation, you should make one with <code class="language-plaintext highlighter-rouge">ext2</code> since grub don’t support xfs well.</p>
 
 <h2 id="2-copy-files-with-tar">2. Copy files with tar</h2>
 
-<p>Copy files from origin ext4 partation to the new xfs partation with <code>tar</code>. Be careful, <em>never</em> use <code>cp</code> to backup a file system since <code>cp</code> will change the setuid bit and follow hard links. Use <code>tar</code> instead, for example:</p>
+<p>Copy files from origin ext4 partation to the new xfs partation with <code class="language-plaintext highlighter-rouge">tar</code>. Be careful, <em>never</em> use <code class="language-plaintext highlighter-rouge">cp</code> to backup a file system since <code class="language-plaintext highlighter-rouge">cp</code> will change the setuid bit and follow hard links. Use <code class="language-plaintext highlighter-rouge">tar</code> instead, for example:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>tar --exclude=proc/ --exclude=sys/ -cf - / | ( cd &lt;xfs_mount_path&gt; ; tar -xpvf - )
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tar --exclude=proc/ --exclude=sys/ -cf - / | ( cd &lt;xfs_mount_path&gt; ; tar -xpvf - )
+</code></pre></div></div>
 
-<p>I just exclude two directories for an example. You should exclude all mounted file systems (except root of cause). It is recommended to use a bootable CD or USB disk to boot your system, mount both ext4 and xfs partations, then use <code>tar</code> to copy files. In this way, you need not exclude any directory:</p>
+<p>I just exclude two directories for an example. You should exclude all mounted file systems (except root of cause). It is recommended to use a bootable CD or USB disk to boot your system, mount both ext4 and xfs partations, then use <code class="language-plaintext highlighter-rouge">tar</code> to copy files. In this way, you need not exclude any directory:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>tar  -cf - &lt;ext4_mount_path&gt; | ( cd &lt;xfs_mount_path&gt; ; tar -xpvf - )
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tar  -cf - &lt;ext4_mount_path&gt; | ( cd &lt;xfs_mount_path&gt; ; tar -xpvf - )
+</code></pre></div></div>
 
 <h2 id="3-config-grub-and-modify-fstab">3. Config grub and modify fstab</h2>
 
@@ -3536,33 +3564,24 @@
 
 <p>In the boot process, kernel use initramfs as root first, then mount the real root file system. If your initramfs don’t include support for xfs, you may see these errors during booting:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>fsck.xfs: file not found
-<span class="line-numbers"><a href="#n2" name="n2">2</a></span>mount: unknown filesystem type &quot;xfs&quot;
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fsck.xfs: file not found
+mount: unknown filesystem type "xfs"
+</code></pre></div></div>
 
 <p>In this case,  you need boot into your old ext4 root partation and modify initramfs. In archlinux, you can do it with <a href="https://wiki.archlinux.org/index.php/mkinitcpio">mkinitcpio</a>.</p>
 
-<p>Just add <code>xfs</code> to kernel modules and <code>fsck.xfs</code> to binary files in <code>/etc/mkinitcpio.conf</code>:</p>
+<p>Just add <code class="language-plaintext highlighter-rouge">xfs</code> to kernel modules and <code class="language-plaintext highlighter-rouge">fsck.xfs</code> to binary files in <code class="language-plaintext highlighter-rouge">/etc/mkinitcpio.conf</code>:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>MODULES=&quot;xfs&quot;
-<span class="line-numbers"><a href="#n2" name="n2">2</a></span>BINARIES=&quot;fsck.xfs&quot;
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>MODULES="xfs"
+BINARIES="fsck.xfs"
+</code></pre></div></div>
 
 <p>Remember to copy it to your xfs partation, too.</p>
 
 <p>Then make a initramfs:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>mkinitcpio -p linux
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkinitcpio -p linux
+</code></pre></div></div>
 
 
 </article>

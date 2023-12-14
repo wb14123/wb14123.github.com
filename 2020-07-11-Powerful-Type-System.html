@@ -623,30 +623,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability <span class="publish-year">(2023)</span></a>
         
       
@@ -1141,34 +1117,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2013-01-21-How-Kernel's-Makefile-Specify-Output-Directory.html">How Kernel's Makefile Specify Output Directory <span class="publish-year">(2013)</span></a>
         
       
@@ -1198,34 +1146,6 @@
       
         
         <a href="/2013-10-06-Xbmc-on-Raspberry-Pi-with-Archlinux.html">Xbmc on Raspberry Pi with Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
-        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
         
       
 
@@ -2348,6 +2268,120 @@
       
         
         <a href="/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html">Why Big Companies Need to Adopt Open Source <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      Storage
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html">ZFS Profiling on Arch Linux <span class="publish-year">(2023)</span></a>
         
       
 
@@ -3522,38 +3556,32 @@
 
 <h2 id="dependent-type-system">Dependent Type System</h2>
 
-<p>I was missing type system so much when I wrote machine learning program with TensorFlow. With TensorFlow, you need to construct the computing graph with some awful API (it’s before the eager execution mode), so it’s very easy to get lost what’s the type and shape of the current tensor. Though TensorFlow can actually check the correctness of shape when construct the graph, but the error message doesn’t help a lot if it has dynamic shapes. It will only report the shape as <code>?</code>. So the error messages are like “<code>?</code> doesn’t match”, but you don’t know exactly where is <code>?</code> in the shapes come from.</p>
+<p>I was missing type system so much when I wrote machine learning program with TensorFlow. With TensorFlow, you need to construct the computing graph with some awful API (it’s before the eager execution mode), so it’s very easy to get lost what’s the type and shape of the current tensor. Though TensorFlow can actually check the correctness of shape when construct the graph, but the error message doesn’t help a lot if it has dynamic shapes. It will only report the shape as <code class="language-plaintext highlighter-rouge">?</code>. So the error messages are like “<code class="language-plaintext highlighter-rouge">?</code> doesn’t match”, but you don’t know exactly where is <code class="language-plaintext highlighter-rouge">?</code> in the shapes come from.</p>
 
 <p>So at that time, I thought it would be so nice if I can annotate the shape of the tensors just like the type system. So I can know every tensor’s shape when I’m writing the code. The API will also has the more information by default. For example, imagine if we can write the code like this:</p>
 
-<div class="language-python highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>
-<span class="line-numbers"><a href="#n2" name="n2">2</a></span><span style="color:#080;font-weight:bold">def</span> <span style="color:#06B;font-weight:bold">reverseImage</span>(images: Tensor[BatchSize, ImageHeight, ImageWidth]): Tensor[BatchSize, ImageWidth, ImageHeight]:
-<span class="line-numbers"><a href="#n3" name="n3">3</a></span>  <span style="color:#080;font-weight:bold">pass</span>
-<span class="line-numbers"><a href="#n4" name="n4">4</a></span>
-</pre></div>
-</div>
-</div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">def</span> <span class="nf">reverseImage</span><span class="p">(</span><span class="n">images</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">[</span><span class="n">BatchSize</span><span class="p">,</span> <span class="n">ImageHeight</span><span class="p">,</span> <span class="n">ImageWidth</span><span class="p">]):</span> <span class="n">Tensor</span><span class="p">[</span><span class="n">BatchSize</span><span class="p">,</span> <span class="n">ImageWidth</span><span class="p">,</span> <span class="n">ImageHeight</span><span class="p">]:</span>
+  <span class="k">pass</span>
 
-<p>So that we know the what’s the meaning of each of the demission. And if we operate on the return value, we can keep track on the properties like <code>BatchSize</code>.</p>
+</code></pre></div></div>
 
-<p>But after a deeper thinking, the type system I knew at that time cannot actually handle the information like shapes. Because the shape of the tensor is dynamic and could be infinity. It’s impossible to define a type like <code>BatchSize</code>, it’s more like a variable.</p>
+<p>So that we know the what’s the meaning of each of the demission. And if we operate on the return value, we can keep track on the properties like <code class="language-plaintext highlighter-rouge">BatchSize</code>.</p>
+
+<p>But after a deeper thinking, the type system I knew at that time cannot actually handle the information like shapes. Because the shape of the tensor is dynamic and could be infinity. It’s impossible to define a type like <code class="language-plaintext highlighter-rouge">BatchSize</code>, it’s more like a variable.</p>
 
 <p>That was the time I found dependent type system. More specifically, I found a language that has dependent type system called <a href="https://www.idris-lang.org/">Idris</a>. Here is an example of how it works from <a href="https://www.idris-lang.org/pages/example.html">its official website</a>:</p>
 
-<div class="language-idris highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>app : Vect n a -&gt; Vect m a -&gt; Vect (n + m) a
-<span class="line-numbers"><a href="#n2" name="n2">2</a></span>app Nil       ys = ys
-<span class="line-numbers"><a href="#n3" name="n3">3</a></span>app (x :: xs) ys = x :: app xs ys
-</pre></div>
-</div>
-</div>
+<div class="language-idris highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">app :</span> <span class="kt">Vect</span> <span class="n">n</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">Vect</span> <span class="n">m</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">Vect</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">m</span><span class="p">)</span> <span class="n">a</span>
+<span class="n">app</span> <span class="kt">Nil</span>       <span class="n">ys</span> <span class="o">=</span> <span class="n">ys</span>
+<span class="n">app</span> <span class="p">(</span><span class="n">x</span> <span class="o">::</span> <span class="n">xs</span><span class="p">)</span> <span class="n">ys</span> <span class="o">=</span> <span class="n">x</span> <span class="o">::</span> <span class="n">app</span> <span class="n">xs</span> <span class="n">ys</span>
+</code></pre></div></div>
 
-<p>The syntax is a little like Haskell, but you get the idea: <code>Vect</code> is a type that can have it’s own properties. And the return type’s property can based on the parameter’s type: <code>n+m</code>.</p>
+<p>The syntax is a little like Haskell, but you get the idea: <code class="language-plaintext highlighter-rouge">Vect</code> is a type that can have it’s own properties. And the return type’s property can based on the parameter’s type: <code class="language-plaintext highlighter-rouge">n+m</code>.</p>
 
 <h2 id="formal-proof">Formal Proof</h2>
 
-<p>Such a powerful type system exists surprised me. Even more, Idris introduces how it can proof theorem. Normally, we will write tests for methods. But there is almost no guarantee the methods will work correctly for all cases. For example, if we write a method <code>plus(a:int, b:int)</code>, and we want to test if <code>plus(a, b) == plus(b, a)</code>. In most languages, we will only find some values for <code>a</code> and <code>b</code> to see the result. And hopefully we can find some edge cases. But with Idirs, you can actually define a theorem to declare <code>plus(a, b) == plus(b, a)</code>, and prove it with the code. If you don’t prove it the right way, the compilation will fail. This ability really opens a new world to me.</p>
+<p>Such a powerful type system exists surprised me. Even more, Idris introduces how it can proof theorem. Normally, we will write tests for methods. But there is almost no guarantee the methods will work correctly for all cases. For example, if we write a method <code class="language-plaintext highlighter-rouge">plus(a:int, b:int)</code>, and we want to test if <code class="language-plaintext highlighter-rouge">plus(a, b) == plus(b, a)</code>. In most languages, we will only find some values for <code class="language-plaintext highlighter-rouge">a</code> and <code class="language-plaintext highlighter-rouge">b</code> to see the result. And hopefully we can find some edge cases. But with Idirs, you can actually define a theorem to declare <code class="language-plaintext highlighter-rouge">plus(a, b) == plus(b, a)</code>, and prove it with the code. If you don’t prove it the right way, the compilation will fail. This ability really opens a new world to me.</p>
 
 <p>I find this ability can be very useful in machine learning. Because machine learning involves a lot of math. The model often needs to have some properties to make it work right. For example, maybe you need the function to be differentiable. To write down these theorem and prove it, makes it have the same advantages as type system: a much better documentation and make sure the program is working as intended.</p>
 

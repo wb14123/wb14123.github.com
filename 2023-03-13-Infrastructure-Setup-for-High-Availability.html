@@ -623,30 +623,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <div class="index-selected">Infrastructure Setup for High Availability <span class="publish-year">(2023)</span></div>
         
       
@@ -1141,34 +1117,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2013-01-21-How-Kernel's-Makefile-Specify-Output-Directory.html">How Kernel's Makefile Specify Output Directory <span class="publish-year">(2013)</span></a>
         
       
@@ -1198,34 +1146,6 @@
       
         
         <a href="/2013-10-06-Xbmc-on-Raspberry-Pi-with-Archlinux.html">Xbmc on Raspberry Pi with Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
-        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
         
       
 
@@ -2348,6 +2268,120 @@
       
         
         <a href="/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html">Why Big Companies Need to Adopt Open Source <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      Storage
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html">ZFS Profiling on Arch Linux <span class="publish-year">(2023)</span></a>
         
       
 
@@ -3571,11 +3605,8 @@
 
 <p>When creating a Gluster volume for use with Kubernetes, make sure to create it with at least 3 replicas so that you have HA for this volume. One of the replicas can be “<a href="https://docs.gluster.org/en/v3/Administrator%20Guide/arbiter-volumes-and-quorum/">arbiter</a>”, which means it’s only used for checking consistency and doesn’t store any actual data. So the data is only duplicated across 2 machines instead of 3 to save some space. Here is an example command to create such a volume:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>sudo gluster volume create &lt;volume-name&gt; replica 3 arbiter 1 &lt;host1&gt;:&lt;glusterfs-path&gt; &lt;host2&gt;:&lt;glusterfs-path&gt; &lt;host3&gt;:&lt;glusterfs-path&gt;
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo gluster volume create &lt;volume-name&gt; replica 3 arbiter 1 &lt;host1&gt;:&lt;glusterfs-path&gt; &lt;host2&gt;:&lt;glusterfs-path&gt; &lt;host3&gt;:&lt;glusterfs-path&gt;
+</code></pre></div></div>
 
 <h2 id="database-cockroachdb">Database: CockroachDB</h2>
 
@@ -3594,48 +3625,42 @@
 
 <p>With a setup like this, it’s like installing CockroachDB on physical nodes but managed by Kubernetes. You don’t need to worry about distributed storage. When a node fails, a CockroachDB instance will also fail. But since CockroachDB itself has HA enabled, the whole CockroachDB cluster is still alive. Here is an example of the Kubernetes resources in my setup:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span># Pods
-<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
-<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>NAME                READY   STATUS    RESTARTS   AGE
-<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>pod/cockroach01-0   1/1     Running   1          4d11h
-<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>pod/cockroach02-0   1/1     Running   5          4d11h
-<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>pod/cockroach03-0   1/1     Running   0          4d11h
-<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>
-<span class="line-numbers"> <a href="#n8" name="n8">8</a></span># StatefulSet
-<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>
-<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>NAME          READY   AGE
-<span class="line-numbers"><a href="#n11" name="n11">11</a></span>cockroach01   1/1     298d
-<span class="line-numbers"><a href="#n12" name="n12">12</a></span>cockroach02   1/1     298d
-<span class="line-numbers"><a href="#n13" name="n13">13</a></span>cockroach03   1/1     298d
-<span class="line-numbers"><a href="#n14" name="n14">14</a></span>
-<span class="line-numbers"><a href="#n15" name="n15">15</a></span># Service
-<span class="line-numbers"><a href="#n16" name="n16">16</a></span>
-<span class="line-numbers"><a href="#n17" name="n17">17</a></span>NAME                              TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)                          AGE
-<span class="line-numbers"><a href="#n18" name="n18">18</a></span>service/cockroach01-cockroachdb   ClusterIP   None           &lt;none&gt;        26257/TCP,8080/TCP               298d
-<span class="line-numbers"><a href="#n19" name="n19">19</a></span>service/cockroach02-cockroachdb   ClusterIP   None           &lt;none&gt;        26257/TCP,8080/TCP               298d
-<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>service/cockroach03-cockroachdb   ClusterIP   None           &lt;none&gt;        26257/TCP,8080/TCP               298d
-<span class="line-numbers"><a href="#n21" name="n21">21</a></span>service/cockroachdb               ClusterIP   10.96.70.142   &lt;none&gt;        26257/TCP,8080/TCP               269d
-<span class="line-numbers"><a href="#n22" name="n22">22</a></span>service/cockroachdb-public        NodePort    10.108.23.98   &lt;none&gt;        26257:30005/TCP,8080:30006/TCP   269d
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Pods
 
-<p>You can see there is a separate StatefulSet for each of the CockroachDB instances, and a service for each of them for internal communications (with the name pattern <code>cockroach**-cockroachdb</code>). Service <code>cockroachdb</code> is for the use in Kubernetes cluster, and service <code>cockroachdb-public</code> is used by the service outside of the Kubernetes cluster (can be disabled if not needed) so that you can see the dashboard from your browser.</p>
+NAME                READY   STATUS    RESTARTS   AGE
+pod/cockroach01-0   1/1     Running   1          4d11h
+pod/cockroach02-0   1/1     Running   5          4d11h
+pod/cockroach03-0   1/1     Running   0          4d11h
+
+# StatefulSet
+
+NAME          READY   AGE
+cockroach01   1/1     298d
+cockroach02   1/1     298d
+cockroach03   1/1     298d
+
+# Service
+
+NAME                              TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)                          AGE
+service/cockroach01-cockroachdb   ClusterIP   None           &lt;none&gt;        26257/TCP,8080/TCP               298d
+service/cockroach02-cockroachdb   ClusterIP   None           &lt;none&gt;        26257/TCP,8080/TCP               298d
+service/cockroach03-cockroachdb   ClusterIP   None           &lt;none&gt;        26257/TCP,8080/TCP               298d
+service/cockroachdb               ClusterIP   10.96.70.142   &lt;none&gt;        26257/TCP,8080/TCP               269d
+service/cockroachdb-public        NodePort    10.108.23.98   &lt;none&gt;        26257:30005/TCP,8080:30006/TCP   269d
+</code></pre></div></div>
+
+<p>You can see there is a separate StatefulSet for each of the CockroachDB instances, and a service for each of them for internal communications (with the name pattern <code class="language-plaintext highlighter-rouge">cockroach**-cockroachdb</code>). Service <code class="language-plaintext highlighter-rouge">cockroachdb</code> is for the use in Kubernetes cluster, and service <code class="language-plaintext highlighter-rouge">cockroachdb-public</code> is used by the service outside of the Kubernetes cluster (can be disabled if not needed) so that you can see the dashboard from your browser.</p>
 
 <p>It may seem to have more Kubernetes definitions to write with such a method. But remember, while Kubernetes accepts YAML or Json format, how to prepare the definition can be flexible: you can use your favorite programming language to construct the definition and pass it to Kubernetes with a <a href="https://kubernetes.io/docs/reference/using-api/client-libraries/">client library</a>.</p>
 
 <p>The upgrade of CockroachDB is very easy as well. Make sure to check the official release notes and upgrade guides first, but normally the upgrade is just to patch each of the StatefulSet with a newer version of Docker image, for example:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span># run this command for every stateful set
-<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
-<span class="line-numbers"><a href="#n3" name="n3">3</a></span>kubectl patch statefulset cockroach01 \
-<span class="line-numbers"><a href="#n4" name="n4">4</a></span>--type='json' \
-<span class="line-numbers"><a href="#n5" name="n5">5</a></span>-p='[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/template/spec/containers/0/image&quot;, &quot;value&quot;:&quot;cockroachdb/cockroach:v22.2.5&quot;}]'
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># run this command for every stateful set
+
+kubectl patch statefulset cockroach01 \
+--type='json' \
+-p='[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"cockroachdb/cockroach:v22.2.5"}]'
+</code></pre></div></div>
 
 <h2 id="network-ingress">Network Ingress</h2>
 

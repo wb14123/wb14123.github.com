@@ -623,30 +623,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability <span class="publish-year">(2023)</span></a>
         
       
@@ -1141,34 +1117,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2013-01-21-How-Kernel's-Makefile-Specify-Output-Directory.html">How Kernel's Makefile Specify Output Directory <span class="publish-year">(2013)</span></a>
         
       
@@ -1198,34 +1146,6 @@
       
         
         <a href="/2013-10-06-Xbmc-on-Raspberry-Pi-with-Archlinux.html">Xbmc on Raspberry Pi with Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
-        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
         
       
 
@@ -2348,6 +2268,120 @@
       
         
         <a href="/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html">Why Big Companies Need to Adopt Open Source <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      Storage
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html">ZFS Profiling on Arch Linux <span class="publish-year">(2023)</span></a>
         
       
 
@@ -3523,7 +3557,7 @@
 
 <p>I didn’t know <a href="https://k3s.io/">K3s</a> back when I setup my Kubernetes cluster for the first time. But since then I heard a lot of good things about it at various places. However, the complexity of migration and its installation method through a script from Internet instead of an OS package made me think twice before adopt it. But after I watched the video <a href="https://www.youtube.com/watch?v=k58WnbKmjdA">Talk About K3s Internals from Darren Shepherd</a>, I realized how simple k3s is compared to Kubernetes. I highly recommend everyone who is interested in K3s watch this video.</p>
 
-<p>In short, K3s is a distribution of Kubernetes instead of a fork. It does these things with a few patches: combined the components of Kubernetes into one binary and process, and removed some components not needed in a bare metal environment. By doing so, it makes its binary size and memory footprint smaller than Kubernetes, and makes it easier to deploy and manage. It only needs a binary <code>k3s</code> and a configuration file under <code>/etc/rancher/k3s/config.yaml</code> to start, and all of its content is under <code>/var/lib/rancher/k3s</code>. The official install script adds a little bit more than just the binary file: it has a few scripts to kill and uninstall k3s. It also includes systemd file to start/stop k3s through systemd. So even though it’s not packaged into a standard OS package, I think the complexity is manageable so I started to experiment with it.</p>
+<p>In short, K3s is a distribution of Kubernetes instead of a fork. It does these things with a few patches: combined the components of Kubernetes into one binary and process, and removed some components not needed in a bare metal environment. By doing so, it makes its binary size and memory footprint smaller than Kubernetes, and makes it easier to deploy and manage. It only needs a binary <code class="language-plaintext highlighter-rouge">k3s</code> and a configuration file under <code class="language-plaintext highlighter-rouge">/etc/rancher/k3s/config.yaml</code> to start, and all of its content is under <code class="language-plaintext highlighter-rouge">/var/lib/rancher/k3s</code>. The official install script adds a little bit more than just the binary file: it has a few scripts to kill and uninstall k3s. It also includes systemd file to start/stop k3s through systemd. So even though it’s not packaged into a standard OS package, I think the complexity is manageable so I started to experiment with it.</p>
 
 <p>It’s very easy to config K3s since all it needs is a configuration file on each machine. I created a virtual machine cluster with Vagrant in the project <a href="https://github.com/wb14123/k3s-vm-cluster">k3s-vm-cluster</a> to experiment with it. Feel free to play with it to get a feel with it before go all in. The setup is based on the official guide for <a href="https://docs.k3s.io/datastore/ha-embedded">High Availability Embedded etcd</a>. It’s the easiest way to setup a high available K3s cluster.</p>
 
@@ -3546,6 +3580,8 @@
   <li>Use a S3 compatible storage like <a href="https://min.io/">MinIO</a> but do a lot of work to configure services to store files into that, and make services cannot do that not HA anymore.</li>
   <li>Go ahead and uses a real distributed file system like CephFs or <a href="https://longhorn.io/">Longhorn</a>.</li>
 </ol>
+
+<p><em>Update: I also explored <a href="https://linbit.com/">LINBIT</a> which I forgot to write it here. It got more and more complex when I went into the rabbit hole. But its architecture looks very interesting to me. So I may explore it more in the future for other use cases.</em></p>
 
 <p>Option 1 sounds appealing to me at first since I really don’t want to deal with the complexity of setting up CephFS. But as I go into the rabbit hole, I found configuring the services to use S3 may be a more complex process and less portable than just setup CephFS. So at the end I decide to go option 2.</p>
 
@@ -3582,6 +3618,8 @@
     
       <td id="prev"><a href="/2023-11-14-Update-On-RSS-Brain-to-Find-Related-Articles-with-Machine-Learning.html">Prev: Update on RSS Brain to Find Related Articles with Machine Learning</a></td>
     
+    
+      <td id="next"><a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html" id="next">Next: ZFS Profiling on Arch Linux</a></td>
     
   </tr></table>
 </footer>

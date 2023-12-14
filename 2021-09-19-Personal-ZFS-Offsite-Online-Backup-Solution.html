@@ -623,30 +623,6 @@
     <div class="index-entry index-post">
       
         
-        <div class="index-selected">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></div>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability <span class="publish-year">(2023)</span></a>
         
       
@@ -1141,34 +1117,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2013-01-21-How-Kernel's-Makefile-Specify-Output-Directory.html">How Kernel's Makefile Specify Output Directory <span class="publish-year">(2013)</span></a>
         
       
@@ -1198,34 +1146,6 @@
       
         
         <a href="/2013-10-06-Xbmc-on-Raspberry-Pi-with-Archlinux.html">Xbmc on Raspberry Pi with Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
-        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
         
       
 
@@ -2348,6 +2268,120 @@
       
         
         <a href="/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html">Why Big Companies Need to Adopt Open Source <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      Storage
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <div class="index-selected">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></div>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html">ZFS Profiling on Arch Linux <span class="publish-year">(2023)</span></a>
         
       
 
@@ -3579,7 +3613,7 @@
 
 <h3 id="34-setup-secure-boot">3.4 Setup Secure Boot</h3>
 
-<p>The disk encryption above doesn’t include boot loader. In order to make the boot loader safe, we can setup secure boot, which will prevent the system from booting if the boot loader is not signed by trusted party. There is an <a href="https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot#Using_your_own_keys">Arch wiki</a> described the steps as well. I used the option of “Using your own keys” and use <a href="https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot#Fully_automated_unified_kernel_generation_and_signing_with_sbupdate">sbupdate</a> to automatic sign new kernels after update. Make sure to add kernel parameters, especially the parameters related to disk encryption into <code>CMDLINE_DEAFULT</code> in <code>/etc/sbupdate.conf</code> as mentioned in the <a href="https://github.com/andreyv/sbupdate">sbupdate document</a>.</p>
+<p>The disk encryption above doesn’t include boot loader. In order to make the boot loader safe, we can setup secure boot, which will prevent the system from booting if the boot loader is not signed by trusted party. There is an <a href="https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot#Using_your_own_keys">Arch wiki</a> described the steps as well. I used the option of “Using your own keys” and use <a href="https://wiki.archlinux.org/title/Unified_Extensible_Firmware_Interface/Secure_Boot#Fully_automated_unified_kernel_generation_and_signing_with_sbupdate">sbupdate</a> to automatic sign new kernels after update. Make sure to add kernel parameters, especially the parameters related to disk encryption into <code class="language-plaintext highlighter-rouge">CMDLINE_DEAFULT</code> in <code class="language-plaintext highlighter-rouge">/etc/sbupdate.conf</code> as mentioned in the <a href="https://github.com/andreyv/sbupdate">sbupdate document</a>.</p>
 
 <h3 id="35-setup-vpn-and-ssh">3.5 Setup VPN and SSH</h3>
 
@@ -3589,7 +3623,7 @@
 
 <ul>
   <li>Use DNS name for the source machine address, so that in the case of IP changes, the backup machine can still connect to the VPN automatically.</li>
-  <li>Add <code>PersistentKeepalive = 1</code> in the client configuration, so that the client will send a package every 1 second to keep the connection alive.</li>
+  <li>Add <code class="language-plaintext highlighter-rouge">PersistentKeepalive = 1</code> in the client configuration, so that the client will send a package every 1 second to keep the connection alive.</li>
   <li>Enable the VPN and SSH service so that the backup machine will be able to connect after reboot.</li>
   <li>Setup the firewall properly, since the backup machine is not trusted.</li>
 </ul>
@@ -3608,23 +3642,17 @@
 
 <h2 id="4-zfs-send-and-recv">4. ZFS Send and Recv</h2>
 
-<p>After the backup machine setup, we can finally backup the ZFS datasets to it. It’s very easy for ZFS to do remote backup, just make sure to use the flag <code>-w</code> when send so it will send the encrypted ZFS dataset (given the source dataset is already encrypted). For example:</p>
+<p>After the backup machine setup, we can finally backup the ZFS datasets to it. It’s very easy for ZFS to do remote backup, just make sure to use the flag <code class="language-plaintext highlighter-rouge">-w</code> when send so it will send the encrypted ZFS dataset (given the source dataset is already encrypted). For example:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>zfs send -R -v -w zroot/root@snapshot-name | ssh &lt;backup-machine-ip-in-vpn&gt; sudo zfs recv -Fu zoffsite-backup/root
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zfs send -R -v -w zroot/root@snapshot-name | ssh &lt;backup-machine-ip-in-vpn&gt; sudo zfs recv -Fu zoffsite-backup/root
+</code></pre></div></div>
 
 <p>It’s also easy to send incremental back using command like this:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>zfs send -R -v -w -i zroot/root@from-snapshot zroot/root@to-snapshot | ssh &lt;backup-machine-ip-in-vpn&gt; sudo zfs recv -Fu zoffsite-backup/root
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zfs send -R -v -w -i zroot/root@from-snapshot zroot/root@to-snapshot | ssh &lt;backup-machine-ip-in-vpn&gt; sudo zfs recv -Fu zoffsite-backup/root
+</code></pre></div></div>
 
-<p>In my case, I don’t want to backup all the datasets since I can download some of them like Steam games from somewhere else. So I wrote a script to get all the dataset I want to backup and send them one by one without suing <code>-R</code> flag. Anyway, with the power of ZFS you can basically backup in whatever way you want. You can put the script in cronjob or systemd timer to run it everyday for instance.</p>
+<p>In my case, I don’t want to backup all the datasets since I can download some of them like Steam games from somewhere else. So I wrote a script to get all the dataset I want to backup and send them one by one without suing <code class="language-plaintext highlighter-rouge">-R</code> flag. Anyway, with the power of ZFS you can basically backup in whatever way you want. You can put the script in cronjob or systemd timer to run it everyday for instance.</p>
 
 <p>At last, <strong>there is an important note about data recovery</strong>. If you ever need to recover the data, make sure don’t mount it in the backup system directly since the backup system is not trusted. Instead, get the physical backup disk, mount it on a trusted system, and recover from there.</p>
 

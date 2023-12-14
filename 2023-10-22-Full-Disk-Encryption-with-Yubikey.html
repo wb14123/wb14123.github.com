@@ -623,30 +623,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability <span class="publish-year">(2023)</span></a>
         
       
@@ -1141,34 +1117,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2013-01-21-How-Kernel's-Makefile-Specify-Output-Directory.html">How Kernel's Makefile Specify Output Directory <span class="publish-year">(2013)</span></a>
         
       
@@ -1198,34 +1146,6 @@
       
         
         <a href="/2013-10-06-Xbmc-on-Raspberry-Pi-with-Archlinux.html">Xbmc on Raspberry Pi with Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
-        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
         
       
 
@@ -2348,6 +2268,120 @@
       
         
         <a href="/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html">Why Big Companies Need to Adopt Open Source <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      Storage
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html">ZFS Profiling on Arch Linux <span class="publish-year">(2023)</span></a>
         
       
 
@@ -3518,63 +3552,54 @@
 
 <p>First we need to install Linux with our root partition encrypted. If you are using an installer, most likely there is an option to encryption the disk. If so, select that option and input a passphrase for it. Even though we are using Yubikey to decrypt the disks, it’s always good to have a passphrase to decrypt it in case something goes wrong. However, if your threat model needs a solution that doesn’t involve a passphrase, I believe you can remove it later after setup Yubikey, though I’ve never tried it myself.</p>
 
-<p>Some installers will use LUKS1 instead of LUKS2 to encrypt the disk. Don’t worry, use <code>cryptsetup convert --type=LUKS2 &lt;device&gt;</code> to convert it to a LUKS2 setup after the OS is installed.</p>
+<p>Some installers will use LUKS1 instead of LUKS2 to encrypt the disk. Don’t worry, use <code class="language-plaintext highlighter-rouge">cryptsetup convert --type=LUKS2 &lt;device&gt;</code> to convert it to a LUKS2 setup after the OS is installed.</p>
 
 <p>Note: do not encrypt boot partition. It usually doesn’t have sensitive information and encrypting it doesn’t prevent evil maid attack anyway. If you want it to be more secure, considering setup secure boot, which is also mentioned in my previous blog <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution</a>.</p>
 
 <h2 id="enroll-yubikey-to-key-slot">Enroll Yubikey to Key Slot</h2>
 
-<p>We can enroll a FIDO2 (which is a protocol Yubikey supports) device by using <code>systemd-cryptenroll</code>.</p>
+<p>We can enroll a FIDO2 (which is a protocol Yubikey supports) device by using <code class="language-plaintext highlighter-rouge">systemd-cryptenroll</code>.</p>
 
 <p>Plug in the Yubikey. You can use this command first to list all the FIDO2 devices to make sure the Yubikey is recognized:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>systemd-cryptenroll --fido2-device=auto list
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemd-cryptenroll --fido2-device=auto list
+</code></pre></div></div>
 
-<p>Note: You may need to install <code>libfido2</code>.</p>
+<p>Note: You may need to install <code class="language-plaintext highlighter-rouge">libfido2</code>.</p>
 
 <p>After confirm the Yubikey is recognized, use this command to enroll it:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>systemd-cryptenroll --fido2-device=auto &lt;disk-device&gt;
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemd-cryptenroll --fido2-device=auto &lt;disk-device&gt;
+</code></pre></div></div>
 
 <p>It will show hint about you may need to press the Yubikey during the process. So <strong>watch the Yubikey: when its LED flashes, press it to continue.</strong></p>
 
 <h2 id="setup-crypttab">Setup crypttab</h2>
 
-<p>Put a line like this into <code>/etc/crypttab.initramfs</code>. It will be copied to initramfs by mkinitcpio as <code>/etc/crypttab</code> so that your root partition can be decrypted before it is mounted:</p>
+<p>Put a line like this into <code class="language-plaintext highlighter-rouge">/etc/crypttab.initramfs</code>. It will be copied to initramfs by mkinitcpio as <code class="language-plaintext highlighter-rouge">/etc/crypttab</code> so that your root partition can be decrypted before it is mounted:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>myvolume &lt;disk-device&gt; - fido2-device=auto
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>myvolume &lt;disk-device&gt; - fido2-device=auto
+</code></pre></div></div>
 
-<p><code>&lt;disk-device&gt;</code> can be something like <code>/dev/sda1</code> or using UUID format <code>UUID=&lt;disk-uuid&gt;</code>.</p>
+<p><code class="language-plaintext highlighter-rouge">&lt;disk-device&gt;</code> can be something like <code class="language-plaintext highlighter-rouge">/dev/sda1</code> or using UUID format <code class="language-plaintext highlighter-rouge">UUID=&lt;disk-uuid&gt;</code>.</p>
 
-<p>If it’s not root partition, you can put it in <code>/etc/crypttab</code> so it will be used after root partition is mounted.</p>
+<p>If it’s not root partition, you can put it in <code class="language-plaintext highlighter-rouge">/etc/crypttab</code> so it will be used after root partition is mounted.</p>
 
 <h2 id="setup-mkinitcpio">Setup mkinitcpio</h2>
 
-<p><code>mkinitcpio</code> is a tool to generate initramfs. <code>/etc/crypttab.initramfs</code> only works with it. So if your distro comes with other tools like <code>dracut</code>, you may need to uninstall it and install <code>mkinitcpio</code> instead.</p>
+<p><code class="language-plaintext highlighter-rouge">mkinitcpio</code> is a tool to generate initramfs. <code class="language-plaintext highlighter-rouge">/etc/crypttab.initramfs</code> only works with it. So if your distro comes with other tools like <code class="language-plaintext highlighter-rouge">dracut</code>, you may need to uninstall it and install <code class="language-plaintext highlighter-rouge">mkinitcpio</code> instead.</p>
 
-<p>Once making sure <code>mkinitcpio</code> is installed, we need to configure the hooks to make it read <code>crypttab</code> to decrypt the disks. We also need to make sure we are using systemd init instead of busybox init.</p>
+<p>Once making sure <code class="language-plaintext highlighter-rouge">mkinitcpio</code> is installed, we need to configure the hooks to make it read <code class="language-plaintext highlighter-rouge">crypttab</code> to decrypt the disks. We also need to make sure we are using systemd init instead of busybox init.</p>
 
-<p>Open <code>/etc/mkinitcpio.conf</code>, and find the line with <code>HOOKS=(...)</code>. Refer to <a href="https://wiki.archlinux.org/title/Mkinitcpio#Common_hooks">this wiki page</a> about the common hooks and replace busybox hooks with systemd ones. For example, in my setup, I replaced <code>udev</code> with <code>systemd</code> and <code>keymap</code> with <code>sd-vconsole</code>. Then add <code>sd-encrypt</code> to the hooks. The order matters: usually it comes after <code>sd-vconsole</code>.</p>
+<p>Open <code class="language-plaintext highlighter-rouge">/etc/mkinitcpio.conf</code>, and find the line with <code class="language-plaintext highlighter-rouge">HOOKS=(...)</code>. Refer to <a href="https://wiki.archlinux.org/title/Mkinitcpio#Common_hooks">this wiki page</a> about the common hooks and replace busybox hooks with systemd ones. For example, in my setup, I replaced <code class="language-plaintext highlighter-rouge">udev</code> with <code class="language-plaintext highlighter-rouge">systemd</code> and <code class="language-plaintext highlighter-rouge">keymap</code> with <code class="language-plaintext highlighter-rouge">sd-vconsole</code>. Then add <code class="language-plaintext highlighter-rouge">sd-encrypt</code> to the hooks. The order matters: usually it comes after <code class="language-plaintext highlighter-rouge">sd-vconsole</code>.</p>
 
-<p>Then use <code>mkinitcpio -P</code> to regenerate initramfs images.</p>
+<p>Then use <code class="language-plaintext highlighter-rouge">mkinitcpio -P</code> to regenerate initramfs images.</p>
 
 <h2 id="test-and-finish">Test and Finish!</h2>
 
 <p>Okay, now we have already setup everything. We can boot the system and test. Make sure Yubikey is plugged in before the boot. And watch for its LED light to flash and press it when it does! This little detail spent me lots of time to figure it out.</p>
 
-<p>You can also use password to decrypt the disk <strong>without Yubikey plugged in</strong>. Wait it for 30 seconds and it will prompt you to input the password. The time can be configured in <code>/etc/crypttab</code> (or <code>/etc/crypttab.initramfs</code>) by setting up <a href="https://man.archlinux.org/man/crypttab.5">token-timeout=</a>.</p>
+<p>You can also use password to decrypt the disk <strong>without Yubikey plugged in</strong>. Wait it for 30 seconds and it will prompt you to input the password. The time can be configured in <code class="language-plaintext highlighter-rouge">/etc/crypttab</code> (or <code class="language-plaintext highlighter-rouge">/etc/crypttab.initramfs</code>) by setting up <a href="https://man.archlinux.org/man/crypttab.5">token-timeout=</a>.</p>
 
 </article>
 

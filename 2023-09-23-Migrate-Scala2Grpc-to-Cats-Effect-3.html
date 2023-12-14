@@ -623,30 +623,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability <span class="publish-year">(2023)</span></a>
         
       
@@ -1141,34 +1117,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2013-01-21-How-Kernel's-Makefile-Specify-Output-Directory.html">How Kernel's Makefile Specify Output Directory <span class="publish-year">(2013)</span></a>
         
       
@@ -1198,34 +1146,6 @@
       
         
         <a href="/2013-10-06-Xbmc-on-Raspberry-Pi-with-Archlinux.html">Xbmc on Raspberry Pi with Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
-        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
         
       
 
@@ -2348,6 +2268,120 @@
       
         
         <a href="/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html">Why Big Companies Need to Adopt Open Source <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      Storage
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html">ZFS Profiling on Arch Linux <span class="publish-year">(2023)</span></a>
         
       
 
@@ -3506,7 +3540,7 @@
 
   <p><a href="https://github.com/wb14123/scala2grpc">Scala2grpc</a> is a library and SBT plugin I wrote so that you can integrate gRPC to Scala code in a non-invasive way. In a previous <a href="/2022-05-02-A-Library-to-Make-It-Easier-to-Use-Scala-with-GRPC.html">blog post</a>, I talked about the motivation behind it.</p>
 
-<p>The library requires each service method to return Cats Effect’s <code>IO</code> or fs2 stream. However, it’s still using Cats Effect 2.x version. There are big changes in Cats Effect 3 and almost all up to date libraries already support it. So it’s time to migrate it to Cats Effect 3 as well.</p>
+<p>The library requires each service method to return Cats Effect’s <code class="language-plaintext highlighter-rouge">IO</code> or fs2 stream. However, it’s still using Cats Effect 2.x version. There are big changes in Cats Effect 3 and almost all up to date libraries already support it. So it’s time to migrate it to Cats Effect 3 as well.</p>
 
 <h2 id="replace-akka-grpc-with-fs2-grpc">Replace Akka gRPC with fs2-grpc</h2>
 
@@ -3524,11 +3558,11 @@
 
 <p>In the previous version of Scala2grpc, there is a feature to log every request. But it is a pretty hacky implementation: I just throw the logging logic into the generated code. Since this version is a breaking change, it’s a good opportunity to revisit the approach and see how to add generic hooks before and after each gRPC calls.</p>
 
-<p>My implementation wraps the gRPC response into a context in the generated code. The context includes the response with type of <code>IO</code> or <code>fs2.Stream</code>. Because of the referential transparency, you can take the response and add hooks before or after it. More detailed document is in <a href="https://github.com/wb14123/scala2grpc#4-optional-define-custom-grpc-hook">this section of readme</a>.</p>
+<p>My implementation wraps the gRPC response into a context in the generated code. The context includes the response with type of <code class="language-plaintext highlighter-rouge">IO</code> or <code class="language-plaintext highlighter-rouge">fs2.Stream</code>. Because of the referential transparency, you can take the response and add hooks before or after it. More detailed document is in <a href="https://github.com/wb14123/scala2grpc#4-optional-define-custom-grpc-hook">this section of readme</a>.</p>
 
 <h2 id="non-invasive-nature-of-the-library">Non-invasive Nature of the Library</h2>
 
-<p>The migration brings lots of breaking changes, so it is a good test for the non-invasive nature of the library. I have 2 side projects that are using this library and I migrated one of them recently. Since it’s also using Cats Effect, there are some migration steps unrelated to this library. But regarding of the related parts, the migration process is very smooth: I don’t need to change any implementation code of the services. The generated gPRC protocol files are also not changed either. The only thing I need to change is the single object that implements <code>GRPCGenerator</code> to <a href="https://github.com/wb14123/scala2grpc#2-create-an-object-to-implement-grpcgenerator">pass in some new parameters</a>. It is impossible if I used akka gRPC directly and changed it to fs2-grpc since their interface are all different.</p>
+<p>The migration brings lots of breaking changes, so it is a good test for the non-invasive nature of the library. I have 2 side projects that are using this library and I migrated one of them recently. Since it’s also using Cats Effect, there are some migration steps unrelated to this library. But regarding of the related parts, the migration process is very smooth: I don’t need to change any implementation code of the services. The generated gPRC protocol files are also not changed either. The only thing I need to change is the single object that implements <code class="language-plaintext highlighter-rouge">GRPCGenerator</code> to <a href="https://github.com/wb14123/scala2grpc#2-create-an-object-to-implement-grpcgenerator">pass in some new parameters</a>. It is impossible if I used akka gRPC directly and changed it to fs2-grpc since their interface are all different.</p>
 
 <p>I’m so happy with the result: it adds gRPC to pure Scala code so easily without ever touch it. It saves me so much time to build a service and keeps the code clean at the same time. It continue to be a must have for my future Scala gRPC projects.</p>
 

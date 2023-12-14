@@ -623,30 +623,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability <span class="publish-year">(2023)</span></a>
         
       
@@ -1141,34 +1117,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2013-01-21-How-Kernel's-Makefile-Specify-Output-Directory.html">How Kernel's Makefile Specify Output Directory <span class="publish-year">(2013)</span></a>
         
       
@@ -1198,34 +1146,6 @@
       
         
         <a href="/2013-10-06-Xbmc-on-Raspberry-Pi-with-Archlinux.html">Xbmc on Raspberry Pi with Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
-        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
         
       
 
@@ -2348,6 +2268,120 @@
       
         
         <a href="/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html">Why Big Companies Need to Adopt Open Source <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      Storage
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html">ZFS Profiling on Arch Linux <span class="publish-year">(2023)</span></a>
         
       
 
@@ -3545,17 +3579,14 @@
 
 <p>Each of the article can be represented by a term vector. The values in this vector are scores of the terms. For example, if article A has the content of “apple boy cat” and article B has the content of “apple boy dog”, the term vectors for each of the articles can be:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>   apple, boy, cat, dog
-<span class="line-numbers"><a href="#n2" name="n2">2</a></span>A: [0.5,  0.5,   1,   0]
-<span class="line-numbers"><a href="#n3" name="n3">3</a></span>B: [0.5,  0.5,   0,   1]
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   apple, boy, cat, dog
+A: [0.5,  0.5,   1,   0]
+B: [0.5,  0.5,   0,   1]
+</code></pre></div></div>
 
 <p>The score is computed by <a href="https://en.wikipedia.org/wiki/Tf%E2%80%93idf">tf-idf</a>, which is basically a score considers both the frequent of the term in this article, and the frequent in all the articles: the more frequent it is in this article, the bigger the score since it can better represent the article. However the more frequent it is in all the articles, the score should be smaller since it’s not unique enough to represent the feature of this article. Once we have a term vector for each of the article, we can find the similarity by counting the distance between these vectors.</p>
 
-<p>So we have the algorithm, how RSS Brain implements it in the code? We are using <a href="https://www.elastic.co/">ElasticSearch</a> under the hood. It’s widely used and open source. So for the APIs that RSS Brain is using, you can check the code for implementation details if you want. It has <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-termvectors.html">an API to find the term vector</a> for an article, and we use the scores in the term vector to do a <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-boosting-query.html">boosting query</a>, which means do a search with different weights for each query term. For example, in the example above, if we want to find related articles for article A, we would find its term vector first, then convert the term vector into a boosting query that searches related articles by the query <code>apple^0.5 boy^0.5 cat^1</code>.</p>
+<p>So we have the algorithm, how RSS Brain implements it in the code? We are using <a href="https://www.elastic.co/">ElasticSearch</a> under the hood. It’s widely used and open source. So for the APIs that RSS Brain is using, you can check the code for implementation details if you want. It has <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-termvectors.html">an API to find the term vector</a> for an article, and we use the scores in the term vector to do a <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-boosting-query.html">boosting query</a>, which means do a search with different weights for each query term. For example, in the example above, if we want to find related articles for article A, we would find its term vector first, then convert the term vector into a boosting query that searches related articles by the query <code class="language-plaintext highlighter-rouge">apple^0.5 boy^0.5 cat^1</code>.</p>
 
 <p>There are more details in this implementation, like adding filter on feed or folder in the query, limiting the term vector size and so on. The details can be found in the code once it’s open sourced. But the main idea doesn’t change.</p>
 

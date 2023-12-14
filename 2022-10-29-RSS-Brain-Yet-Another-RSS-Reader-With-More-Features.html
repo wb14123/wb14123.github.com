@@ -623,30 +623,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability <span class="publish-year">(2023)</span></a>
         
       
@@ -1141,34 +1117,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2013-01-21-How-Kernel's-Makefile-Specify-Output-Directory.html">How Kernel's Makefile Specify Output Directory <span class="publish-year">(2013)</span></a>
         
       
@@ -1198,34 +1146,6 @@
       
         
         <a href="/2013-10-06-Xbmc-on-Raspberry-Pi-with-Archlinux.html">Xbmc on Raspberry Pi with Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
-        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
         
       
 
@@ -2348,6 +2268,120 @@
       
         
         <a href="/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html">Why Big Companies Need to Adopt Open Source <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      Storage
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html">ZFS Profiling on Arch Linux <span class="publish-year">(2023)</span></a>
         
       
 
@@ -3534,7 +3568,7 @@
 
 \[S = S_{vote} + S_{time}\]
 
-<p>Which <code>v</code> means how many votes this article has. <code>time</code> means when this article is posted. <code>C</code> is a constant number that indicate how much wait time contributes to the whole score. I’m using 12.5 hours in my implementation.</p>
+<p>Which <code class="language-plaintext highlighter-rouge">v</code> means how many votes this article has. <code class="language-plaintext highlighter-rouge">time</code> means when this article is posted. <code class="language-plaintext highlighter-rouge">C</code> is a constant number that indicate how much wait time contributes to the whole score. I’m using 12.5 hours in my implementation.</p>
 
 <p>For \(S_{vote}\), it means the first 10 votes will get the most weights, the next 100 votes has the same weight as the first 10 votes, and so on. It’s not a perfect algorithm but works good enough, and is easy to implement. Most importantly it’s very easy to be understood.</p>
 
@@ -3544,7 +3578,7 @@
 
 <h3 id="12-data-source">1.2 Data Source</h3>
 
-<p>Another obvious problem is how to get the votes. The traditional RSS protocols don’t have a specific field for vote count, luckily atom protocol has the ability to extend it with custom tags. So RSS Brain will parse these tags in <code>&lt;entry&gt;</code> tag if exists: <code>&lt;*:comments&gt;</code>, <code>&lt;*:upvotes&gt;</code>, <code>&lt;*:downvotes&gt;</code>. <code>*</code> can be any namespace. I’ve added <a href="https://docs.rsshub.app/en/joinus/quick-start.html#submit-new-rss-rule-code-the-script-produce-rss-feed-interactions">these fields</a> to a very popular RSS generator <a href="https://rsshub.app/">RSSHub</a> in namespace <code>RSSHub</code>. So if someone include these fields when implement a RSS, RSS Brain will be able to parse it and use <code>upvotes - downvotes</code> as the votes. If they are not available, RSS Brain will try to use <code>comments</code> instead.</p>
+<p>Another obvious problem is how to get the votes. The traditional RSS protocols don’t have a specific field for vote count, luckily atom protocol has the ability to extend it with custom tags. So RSS Brain will parse these tags in <code class="language-plaintext highlighter-rouge">&lt;entry&gt;</code> tag if exists: <code class="language-plaintext highlighter-rouge">&lt;*:comments&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;*:upvotes&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;*:downvotes&gt;</code>. <code class="language-plaintext highlighter-rouge">*</code> can be any namespace. I’ve added <a href="https://docs.rsshub.app/en/joinus/quick-start.html#submit-new-rss-rule-code-the-script-produce-rss-feed-interactions">these fields</a> to a very popular RSS generator <a href="https://rsshub.app/">RSSHub</a> in namespace <code class="language-plaintext highlighter-rouge">RSSHub</code>. So if someone include these fields when implement a RSS, RSS Brain will be able to parse it and use <code class="language-plaintext highlighter-rouge">upvotes - downvotes</code> as the votes. If they are not available, RSS Brain will try to use <code class="language-plaintext highlighter-rouge">comments</code> instead.</p>
 
 <p>Reddit and HackerNews are two of my main daily reading websites, and I believe it’s the same for many other people, so I also included an implementation to fetch the posts from Reddit and HackerNews JSON API. You can just input HackerNews or subreddit URL when add a new source, it will has an option to use the JSON feed when it tries to find the feeds. I know it’s not a very standard way, but it’s easier for me to implement rather than do it in RSSHub. Once there is a RSS implementation that contains the fields above, you have no trouble to use the RSS feed.</p>
 
@@ -3554,7 +3588,7 @@
 
 <p>Ranking the articles is one way to get the interested aritcles pop up. Another way is to filter the articles: sometimes we only care about a topic in a feed. In traditional RSS readers, there is no easy way to filter the topic out if there is no feed for that topic. In RSS Brain, you can define a search term on a folder, so that when you check the articles in this folder, it will only show the articles that matches the search term.</p>
 
-<p>For example, you’ve got a few news feed, but only care reports about the war between Ukraine and Russia, then you can just set the search term as <code>"Ukraine" AND "Russia"</code> on the folder and enable search filter. After that, when you click on the folder to see articles, it will only show the articles about those news.</p>
+<p>For example, you’ve got a few news feed, but only care reports about the war between Ukraine and Russia, then you can just set the search term as <code class="language-plaintext highlighter-rouge">"Ukraine" AND "Russia"</code> on the folder and enable search filter. After that, when you click on the folder to see articles, it will only show the articles about those news.</p>
 
 <p><img src="https://www.rssbrain.com/images/filter_folder.png" alt="filter folder" /></p>
 

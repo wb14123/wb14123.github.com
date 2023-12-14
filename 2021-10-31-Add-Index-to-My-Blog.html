@@ -623,30 +623,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability <span class="publish-year">(2023)</span></a>
         
       
@@ -1141,34 +1117,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2013-01-21-How-Kernel's-Makefile-Specify-Output-Directory.html">How Kernel's Makefile Specify Output Directory <span class="publish-year">(2013)</span></a>
         
       
@@ -1198,34 +1146,6 @@
       
         
         <a href="/2013-10-06-Xbmc-on-Raspberry-Pi-with-Archlinux.html">Xbmc on Raspberry Pi with Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
-        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
         
       
 
@@ -2348,6 +2268,120 @@
       
         
         <a href="/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html">Why Big Companies Need to Adopt Open Source <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      Storage
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html">ZFS Profiling on Arch Linux <span class="publish-year">(2023)</span></a>
         
       
 
@@ -3510,24 +3544,21 @@
 
 <p>To implement this feature, I wrote my own little plugin. I only knew some Ruby knowledge from one of Ruby’s author’s books (I read the Chinese version of the book and cannot find the name of the English version, I believe the original book is published in Japanese with the name まつもとゆきひろ コードの世界~スーパー・プログラマになる14の思考法). I never worked on any project with Ruby. But I always wanted to write some plugins for Jekyll so I know I can customize my blog in a better way. Luckily this task is simple enough. The result source code is on my Github of this blog repo. It has a <a href="https://github.com/wb14123/blog/blob/master/jekyll/_plugins/Index.rb">ruby script</a> to generate the index page from post property, with a <a href="https://github.com/wb14123/blog/blob/master/jekyll/index_page.html">template</a> that uses another <a href="https://github.com/wb14123/blog/blob/master/jekyll/_includes/index_page.html">recursive template</a>.</p>
 
-<p>So here is how this plugin works: the only thing I need to do while writing a post is to add a new property called <code>index</code> at the starting of the Markdown file, like this:</p>
+<p>So here is how this plugin works: the only thing I need to do while writing a post is to add a new property called <code class="language-plaintext highlighter-rouge">index</code> at the starting of the Markdown file, like this:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>---
-<span class="line-numbers"> <a href="#n2" name="n2">2</a></span># these three properties are needed before this feature:
-<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>layout: post
-<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>title: Add Index to My Blog
-<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>tags: [blog, index]
-<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>
-<span class="line-numbers"> <a href="#n7" name="n7">7</a></span># this is the newly added property:
-<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>index: ['/Projects/Blog']
-<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>---
-<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>---
+# these three properties are needed before this feature:
+layout: post
+title: Add Index to My Blog
+tags: [blog, index]
 
-<p>Then the plugin will parse <code>index</code> field, break it down into multiple levels based on <code>/</code> in it, and group all the posts in the same field together. The categories are sorted based on alphabet order, while the posts in each category is sorted from old to new. <code>index</code> is an array, so in theory I can add a blog post into multiple categories if I want to, but I try not to do it if it’s not necessary, since it gives a false feeling about how many posts I’ve written. For example, at the beginning, I tried to have both <code>/Computer Science/Database</code> and <code>/Computer Science/Distributed System</code>, and almost every posts under <code>database</code> is also in <code>distributed system</code>. Then I decided it doesn’t make sense: they are more about distributed system because what I care most in those articles is about database transactions. So I remove the category <code>database</code> and put all of them just under <code>distributed system</code>. If I wrote anything like query optimization in the future, I may created another <code>database</code> category, but it’s not needed for now.</p>
+# this is the newly added property:
+index: ['/Projects/Blog']
+---
+
+</code></pre></div></div>
+
+<p>Then the plugin will parse <code class="language-plaintext highlighter-rouge">index</code> field, break it down into multiple levels based on <code class="language-plaintext highlighter-rouge">/</code> in it, and group all the posts in the same field together. The categories are sorted based on alphabet order, while the posts in each category is sorted from old to new. <code class="language-plaintext highlighter-rouge">index</code> is an array, so in theory I can add a blog post into multiple categories if I want to, but I try not to do it if it’s not necessary, since it gives a false feeling about how many posts I’ve written. For example, at the beginning, I tried to have both <code class="language-plaintext highlighter-rouge">/Computer Science/Database</code> and <code class="language-plaintext highlighter-rouge">/Computer Science/Distributed System</code>, and almost every posts under <code class="language-plaintext highlighter-rouge">database</code> is also in <code class="language-plaintext highlighter-rouge">distributed system</code>. Then I decided it doesn’t make sense: they are more about distributed system because what I care most in those articles is about database transactions. So I remove the category <code class="language-plaintext highlighter-rouge">database</code> and put all of them just under <code class="language-plaintext highlighter-rouge">distributed system</code>. If I wrote anything like query optimization in the future, I may created another <code class="language-plaintext highlighter-rouge">database</code> category, but it’s not needed for now.</p>
 
 <p>I’m very happy with the result. I want it to be simple enough as a static page without the need of Javascript. Javascript can certainly improve some UI like expand/collapse the levels. I may implement both version in the future so people can view it with and without Javascript, but the current UI is good enough for me.</p>
 

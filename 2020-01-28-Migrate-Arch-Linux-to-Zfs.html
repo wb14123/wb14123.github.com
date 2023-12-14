@@ -623,30 +623,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability <span class="publish-year">(2023)</span></a>
         
       
@@ -1141,34 +1117,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2013-01-21-How-Kernel's-Makefile-Specify-Output-Directory.html">How Kernel's Makefile Specify Output Directory <span class="publish-year">(2013)</span></a>
         
       
@@ -1198,34 +1146,6 @@
       
         
         <a href="/2013-10-06-Xbmc-on-Raspberry-Pi-with-Archlinux.html">Xbmc on Raspberry Pi with Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
-        <div class="index-selected">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></div>
         
       
 
@@ -2348,6 +2268,120 @@
       
         
         <a href="/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html">Why Big Companies Need to Adopt Open Source <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      Storage
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <div class="index-selected">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></div>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html">ZFS Profiling on Arch Linux <span class="publish-year">(2023)</span></a>
         
       
 
@@ -3538,17 +3572,14 @@
 
 <p>My disks and partitions are like this before the migration:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>- SDD
-<span class="line-numbers"><a href="#n2" name="n2">2</a></span>  + / (root)
-<span class="line-numbers"><a href="#n3" name="n3">3</a></span>  + /boot
-<span class="line-numbers"><a href="#n4" name="n4">4</a></span>- RAID1 (hdd1, hdd2)
-<span class="line-numbers"><a href="#n5" name="n5">5</a></span>  + /data
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- SDD
+  + / (root)
+  + /boot
+- RAID1 (hdd1, hdd2)
+  + /data
+</code></pre></div></div>
 
-<p>I only backup my data disks because I will not use my system disk for the ZFS pool at the creation time. I will use it as cache which can be added later. An important note is to <strong>use <code>tar</code> or <code>rsync</code> to backup data</strong>. Don’t use <code>cp</code>, it will break the file permissions and links.</p>
+<p>I only backup my data disks because I will not use my system disk for the ZFS pool at the creation time. I will use it as cache which can be added later. An important note is to <strong>use <code class="language-plaintext highlighter-rouge">tar</code> or <code class="language-plaintext highlighter-rouge">rsync</code> to backup data</strong>. Don’t use <code class="language-plaintext highlighter-rouge">cp</code>, it will break the file permissions and links.</p>
 
 <h3 id="2-install-zfs-kernel-modules-and-utils">2. Install ZFS Kernel Modules and Utils</h3>
 
@@ -3560,58 +3591,46 @@
 
 <h3 id="4-mount-the-root-dataset-and-copy-the-root-partition">4. Mount the Root Dataset and Copy the Root Partition</h3>
 
-<p>Temparory mount the root dataset to <code>/mnt</code>. Then follow the Arch Linux wiki about <a href="https://wiki.archlinux.org/index.php/Install_Arch_Linux_from_existing_Linux#From_a_host_running_Arch_Linux">installing from a host running Arch Linux</a>.</p>
+<p>Temparory mount the root dataset to <code class="language-plaintext highlighter-rouge">/mnt</code>. Then follow the Arch Linux wiki about <a href="https://wiki.archlinux.org/index.php/Install_Arch_Linux_from_existing_Linux#From_a_host_running_Arch_Linux">installing from a host running Arch Linux</a>.</p>
 
 <h3 id="5-make-new-boot-image-and-config-bootloader">5. Make New Boot Image and Config Bootloader</h3>
 
 <p>I was trying to install boot partition into the ZFS but failed after many attemps. At last I decide just use the old boot partition and sync them to ZFS as backup.</p>
 
-<p>So follow <a href="https://wiki.archlinux.org/index.php/Install_Arch_Linux_on_ZFS">install Arch Linux on ZFS wiki</a>. After the regular installation, add <code>zfs</code> in <code>/etc/mkinitcpio.conf</code> <code>HOOKS</code>:</p>
+<p>So follow <a href="https://wiki.archlinux.org/index.php/Install_Arch_Linux_on_ZFS">install Arch Linux on ZFS wiki</a>. After the regular installation, add <code class="language-plaintext highlighter-rouge">zfs</code> in <code class="language-plaintext highlighter-rouge">/etc/mkinitcpio.conf</code> <code class="language-plaintext highlighter-rouge">HOOKS</code>:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>HOOKS=(base udev autodetect modconf block keyboard zfs filesystems)
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>HOOKS=(base udev autodetect modconf block keyboard zfs filesystems)
+</code></pre></div></div>
 
-<p>Then using <code>mkinitcpio -p</code> to make new boot image. (You may want to backup old images <code>/boot/initramfs-linux.img</code> and <code>/boot/vmlinuz-linux</code> before this step).</p>
+<p>Then using <code class="language-plaintext highlighter-rouge">mkinitcpio -p</code> to make new boot image. (You may want to backup old images <code class="language-plaintext highlighter-rouge">/boot/initramfs-linux.img</code> and <code class="language-plaintext highlighter-rouge">/boot/vmlinuz-linux</code> before this step).</p>
 
-<p>Then in <code>/boot/grub/grub.cfg</code>, change the root filesystem to zfs, like this (in the menuentry):</p>
+<p>Then in <code class="language-plaintext highlighter-rouge">/boot/grub/grub.cfg</code>, change the root filesystem to zfs, like this (in the menuentry):</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>linux   /vmlinuz-linux root=ZFS=zroot/root rw  loglevel=3 quiet
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>linux   /vmlinuz-linux root=ZFS=zroot/root rw  loglevel=3 quiet
+</code></pre></div></div>
 
-<p>Which <code>zroot/root</code> is the root dataset.</p>
+<p>Which <code class="language-plaintext highlighter-rouge">zroot/root</code> is the root dataset.</p>
 
 <h3 id="6-config-mount-points">6. Config Mount Points</h3>
 
-<p>Reconfig the root dataset’s mount point to <code>/</code> and add the configuration in <code>/etc/fstab</code>:</p>
+<p>Reconfig the root dataset’s mount point to <code class="language-plaintext highlighter-rouge">/</code> and add the configuration in <code class="language-plaintext highlighter-rouge">/etc/fstab</code>:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>zroot/root / zfs defaults,noatime 0 0
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>zroot/root / zfs defaults,noatime 0 0
+</code></pre></div></div>
 
 <p>Don’t forget to set the auto import:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>systemctl enable zfs-import-cache
-<span class="line-numbers"><a href="#n2" name="n2">2</a></span>zpool set cachefile=/etc/zfs/zpool.cache &lt;pool&gt;
-<span class="line-numbers"><a href="#n3" name="n3">3</a></span>systemctl enable zfs-mount
-<span class="line-numbers"><a href="#n4" name="n4">4</a></span>systemctl enable zfs.target
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl enable zfs-import-cache
+zpool set cachefile=/etc/zfs/zpool.cache &lt;pool&gt;
+systemctl enable zfs-mount
+systemctl enable zfs.target
+</code></pre></div></div>
 
 <p>Also need to input the passphrase if using encryption. Follow the <a href="https://wiki.archlinux.org/index.php/ZFS">Arch Linux’s ZFS wiki</a> to do that.</p>
 
 <h3 id="7-restart-and-config-new-system">7. Restart and Config New System</h3>
 
-<p>After the reboot, the system should boot into the new root. Then cleanup the old root partition and add it as the cache of the pool: <code>zpool add -f zroot cache &lt;partition-uuid&gt;</code>. Then create other datasets and move back all the old data.</p>
+<p>After the reboot, the system should boot into the new root. Then cleanup the old root partition and add it as the cache of the pool: <code class="language-plaintext highlighter-rouge">zpool add -f zroot cache &lt;partition-uuid&gt;</code>. Then create other datasets and move back all the old data.</p>
 
 <p>Now I can make different datasets for different purpose. For example, make a dataset for nextcloud container’s storage. Make a highly compressed dataset for backup files from other machine, and so on.</p>
 

@@ -623,30 +623,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability <span class="publish-year">(2023)</span></a>
         
       
@@ -1141,34 +1117,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2013-01-21-How-Kernel's-Makefile-Specify-Output-Directory.html">How Kernel's Makefile Specify Output Directory <span class="publish-year">(2013)</span></a>
         
       
@@ -1198,34 +1146,6 @@
       
         
         <a href="/2013-10-06-Xbmc-on-Raspberry-Pi-with-Archlinux.html">Xbmc on Raspberry Pi with Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
-        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
         
       
 
@@ -2348,6 +2268,120 @@
       
         
         <a href="/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html">Why Big Companies Need to Adopt Open Source <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      Storage
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html">ZFS Profiling on Arch Linux <span class="publish-year">(2023)</span></a>
         
       
 
@@ -3504,81 +3538,60 @@
     
   </header>
 
-  <p>There are already many documents to teach one how to compile and install kernel. Here are just some key notes. Use <code>make help</code> under source directory for details.</p>
+  <p>There are already many documents to teach one how to compile and install kernel. Here are just some key notes. Use <code class="language-plaintext highlighter-rouge">make help</code> under source directory for details.</p>
 
 <h2 id="0-kernel-configure">0. Kernel configure</h2>
 
-<p>It is happy to have a kernel git repo. Using <code>git tag</code> to see the kernel versions and use <code>git checkout &lt;tag&gt;</code> to checkout the specified version, such as:</p>
+<p>It is happy to have a kernel git repo. Using <code class="language-plaintext highlighter-rouge">git tag</code> to see the kernel versions and use <code class="language-plaintext highlighter-rouge">git checkout &lt;tag&gt;</code> to checkout the specified version, such as:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>git checkout v3.7-rc6
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git checkout v3.7-rc6
+</code></pre></div></div>
 
-<p>It is recommended to use the distribution’s kernel configure file as a basic configure when you compile the kernel for the first time. Copy it from <code>/boot</code> to <code>&lt;build_dir&gt;/.config</code>. Use this command to modify it:</p>
+<p>It is recommended to use the distribution’s kernel configure file as a basic configure when you compile the kernel for the first time. Copy it from <code class="language-plaintext highlighter-rouge">/boot</code> to <code class="language-plaintext highlighter-rouge">&lt;build_dir&gt;/.config</code>. Use this command to modify it:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>make O=&lt;build_dir&gt; menuconfig
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make O=&lt;build_dir&gt; menuconfig
+</code></pre></div></div>
 
-<p>It will save the new configure and rename the old configure with <code>.config.old</code>.</p>
+<p>It will save the new configure and rename the old configure with <code class="language-plaintext highlighter-rouge">.config.old</code>.</p>
 
 <h2 id="1-kernel-image">1. Kernel image</h2>
 
-<p>Kernel image is the most important part. Use this command to compile kernel in <code>&lt;build_dir&gt;</code>:</p>
+<p>Kernel image is the most important part. Use this command to compile kernel in <code class="language-plaintext highlighter-rouge">&lt;build_dir&gt;</code>:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>make O=&lt;build_dir&gt; -j4
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make O=&lt;build_dir&gt; -j4
+</code></pre></div></div>
 
-<p>After that, Copy <code>vmlinux</code> and <code>System.map</code> to <code>/boot</code>. And then configure the boot loader. Or use the command <code>installkernel</code> if you have it.</p>
+<p>After that, Copy <code class="language-plaintext highlighter-rouge">vmlinux</code> and <code class="language-plaintext highlighter-rouge">System.map</code> to <code class="language-plaintext highlighter-rouge">/boot</code>. And then configure the boot loader. Or use the command <code class="language-plaintext highlighter-rouge">installkernel</code> if you have it.</p>
 
 <h2 id="2-kernel-modules">2. Kernel modules</h2>
 
 <p>Some code are compiled to kernel modules. It need to be installed to the system. Use this command to install kernel modules and firmwares:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>make O=&lt;build_dir&gt; modules_install
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make O=&lt;build_dir&gt; modules_install
+</code></pre></div></div>
 
-<p>It installs kernel modules under <code>/usr/lib/modules/&lt;kernel_version&gt;</code>. You can also specify the output directory using <code>INSTALL_MOD_PATH</code>:</p>
+<p>It installs kernel modules under <code class="language-plaintext highlighter-rouge">/usr/lib/modules/&lt;kernel_version&gt;</code>. You can also specify the output directory using <code class="language-plaintext highlighter-rouge">INSTALL_MOD_PATH</code>:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>make O=&lt;build_dir&gt; INSTALL_MOD_PATH=&lt;module_dir&gt; modules_install
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make O=&lt;build_dir&gt; INSTALL_MOD_PATH=&lt;module_dir&gt; modules_install
+</code></pre></div></div>
 
-<p>The <code>INSTALL_MOD_PATH</code> is <code>/</code> by default.</p>
+<p>The <code class="language-plaintext highlighter-rouge">INSTALL_MOD_PATH</code> is <code class="language-plaintext highlighter-rouge">/</code> by default.</p>
 
 <h2 id="3-linux-headers">3. Linux headers</h2>
 
 <p>Linux headers are some header files to invoked by user space programs. Using this command to output it:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>make O=&lt;build_dir&gt; INSTALL_HDR_PATH=&lt;headers_dir&gt; headers_install
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make O=&lt;build_dir&gt; INSTALL_HDR_PATH=&lt;headers_dir&gt; headers_install
+</code></pre></div></div>
 
-<p>It installs headers to <code>&lt;headers_dir&gt;</code>. You should copy them into <code>/usr/include</code>.</p>
+<p>It installs headers to <code class="language-plaintext highlighter-rouge">&lt;headers_dir&gt;</code>. You should copy them into <code class="language-plaintext highlighter-rouge">/usr/include</code>.</p>
 
 <h2 id="another-way">Another way</h2>
 
 <p>After all, you may want to make a kernel package to install on other machines. Such as:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>make O=&lt;build_dir&gt; -j4 binrpm-pkg
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make O=&lt;build_dir&gt; -j4 binrpm-pkg
+</code></pre></div></div>
 
 </article>
 

@@ -623,30 +623,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability <span class="publish-year">(2023)</span></a>
         
       
@@ -1141,34 +1117,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2013-01-21-How-Kernel's-Makefile-Specify-Output-Directory.html">How Kernel's Makefile Specify Output Directory <span class="publish-year">(2013)</span></a>
         
       
@@ -1198,34 +1146,6 @@
       
         
         <a href="/2013-10-06-Xbmc-on-Raspberry-Pi-with-Archlinux.html">Xbmc on Raspberry Pi with Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
-        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
         
       
 
@@ -2348,6 +2268,120 @@
       
         
         <a href="/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html">Why Big Companies Need to Adopt Open Source <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      Storage
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html">ZFS Profiling on Arch Linux <span class="publish-year">(2023)</span></a>
         
       
 
@@ -3508,30 +3542,24 @@
 
 <p>There is a big change from 1.23 to 1.24 as well, namely, <a href="https://kubernetes.io/blog/2022/03/31/ready-for-dockershim-removal/">Docker Engine support has been removed</a>. I migrated the container engine to containerd. But the process is not without pain. I need to search different sources to fix the issues. So I list my upgrade steps so that if anyone has the same issue, this may help.</p>
 
-<p>My Kubernetes cluster is set up locally with <code>kubeadm</code>. There is an <a href="https://v1-24.docs.kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/">official upgrade guide</a> for kubeadm to upgrade from 1.23 to 1.24, but it doesn’t mention any steps to remove Docker and setup containerd. So here are the steps I took:</p>
+<p>My Kubernetes cluster is set up locally with <code class="language-plaintext highlighter-rouge">kubeadm</code>. There is an <a href="https://v1-24.docs.kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/">official upgrade guide</a> for kubeadm to upgrade from 1.23 to 1.24, but it doesn’t mention any steps to remove Docker and setup containerd. So here are the steps I took:</p>
 
 <ol>
-  <li>Add <code>--container-runtime-endpoint</code> option to kubelet. The way I did it is adding <code>KUBELET_ARGS="--container-runtime-endpoint=/run/containerd/containerd.sock"</code> to <code>/etc/kubernetes/kublet.env</code>. Without this, Kubelet will fail to start.</li>
-  <li>Remove <code>--network-plugin=cni</code> from  <code>/var/lib/kubelet/kubeadm-flags.env</code>.</li>
-  <li>Add the following configuration in <code>/etc/crictl.yaml</code>, otherwise kubeadm will not be able to pull needed images:
-    <div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>runtime-endpoint: unix:///run/containerd/containerd.sock
-<span class="line-numbers"><a href="#n2" name="n2">2</a></span>image-endpoint: unix:///run/containerd/containerd.sock
-<span class="line-numbers"><a href="#n3" name="n3">3</a></span>timeout: 10
-<span class="line-numbers"><a href="#n4" name="n4">4</a></span>debug: false
-</pre></div>
-</div>
-    </div>
+  <li>Add <code class="language-plaintext highlighter-rouge">--container-runtime-endpoint</code> option to kubelet. The way I did it is adding <code class="language-plaintext highlighter-rouge">KUBELET_ARGS="--container-runtime-endpoint=/run/containerd/containerd.sock"</code> to <code class="language-plaintext highlighter-rouge">/etc/kubernetes/kublet.env</code>. Without this, Kubelet will fail to start.</li>
+  <li>Remove <code class="language-plaintext highlighter-rouge">--network-plugin=cni</code> from  <code class="language-plaintext highlighter-rouge">/var/lib/kubelet/kubeadm-flags.env</code>.</li>
+  <li>Add the following configuration in <code class="language-plaintext highlighter-rouge">/etc/crictl.yaml</code>, otherwise kubeadm will not be able to pull needed images:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>runtime-endpoint: unix:///run/containerd/containerd.sock
+image-endpoint: unix:///run/containerd/containerd.sock
+timeout: 10
+debug: false
+</code></pre></div>    </div>
   </li>
-  <li>Configure <code>SystemdCgroup</code> permission for containerd. Otherwise kube-apiserver will always be restarted because of “sandbox environment changes” (see more in <a href="https://github.com/kubernetes/kubernetes/issues/110177">Github issue</a>):
-    <div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>sudo mkdir -p /etc/containerd/
-<span class="line-numbers"><a href="#n2" name="n2">2</a></span>containerd config default | sudo tee /etc/containerd/config.toml
-<span class="line-numbers"><a href="#n3" name="n3">3</a></span>sudo sed -i 's/SystemdCgroup \= false/SystemdCgroup \= true/g' /etc/containerd/config.toml
-<span class="line-numbers"><a href="#n4" name="n4">4</a></span>sudo systemctl restart containerd
-</pre></div>
-</div>
-    </div>
+  <li>Configure <code class="language-plaintext highlighter-rouge">SystemdCgroup</code> permission for containerd. Otherwise kube-apiserver will always be restarted because of “sandbox environment changes” (see more in <a href="https://github.com/kubernetes/kubernetes/issues/110177">Github issue</a>):
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo mkdir -p /etc/containerd/
+containerd config default | sudo tee /etc/containerd/config.toml
+sudo sed -i 's/SystemdCgroup \= false/SystemdCgroup \= true/g' /etc/containerd/config.toml
+sudo systemctl restart containerd
+</code></pre></div>    </div>
   </li>
   <li>Follow the <a href="https://v1-24.docs.kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/">official upgrade guide</a>.</li>
   <li>After the upgrade, remember to restart Docker so that the old containers started by Docker will be stopped.</li>

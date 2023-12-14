@@ -623,30 +623,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability <span class="publish-year">(2023)</span></a>
         
       
@@ -1141,34 +1117,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2013-01-21-How-Kernel's-Makefile-Specify-Output-Directory.html">How Kernel's Makefile Specify Output Directory <span class="publish-year">(2013)</span></a>
         
       
@@ -1198,34 +1146,6 @@
       
         
         <a href="/2013-10-06-Xbmc-on-Raspberry-Pi-with-Archlinux.html">Xbmc on Raspberry Pi with Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
-        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
         
       
 
@@ -2348,6 +2268,120 @@
       
         
         <a href="/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html">Why Big Companies Need to Adopt Open Source <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      Storage
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html">ZFS Profiling on Arch Linux <span class="publish-year">(2023)</span></a>
         
       
 
@@ -3511,11 +3545,11 @@
 <p>The most easy way is to generate a ssh key file based on Yubikey. OpenSSH supports this since 8.2.</p>
 
 <ol>
-  <li>Run <code>ssh-keygen -t ecdsa-sk</code></li>
+  <li>Run <code class="language-plaintext highlighter-rouge">ssh-keygen -t ecdsa-sk</code></li>
   <li>Touch the Yubikey for a few seconds.</li>
 </ol>
 
-<p>Then you can use the generated ssh key like other key files with <code>-i</code> option. After type in the login command, you need to touch Yubikey for a few seconds, then you should be able to login.</p>
+<p>Then you can use the generated ssh key like other key files with <code class="language-plaintext highlighter-rouge">-i</code> option. After type in the login command, you need to touch Yubikey for a few seconds, then you should be able to login.</p>
 
 <h2 id="use-pam"><del>Use PAM</del></h2>
 
@@ -3525,58 +3559,43 @@
 
 <h3 id="1-install-packages">1. Install packages</h3>
 
-<p>PAM should be installed by default for Archlinux. So the only package we need to install is the PAM module for Yubikey <code>pam-u2f</code>:</p>
+<p>PAM should be installed by default for Archlinux. So the only package we need to install is the PAM module for Yubikey <code class="language-plaintext highlighter-rouge">pam-u2f</code>:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>sudo pacman -S pam-u2f
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo pacman -S pam-u2f
+</code></pre></div></div>
 
 <h3 id="2-generate-u2f-mapping-file">2. Generate u2f mapping file</h3>
 
 <p>Run this command first:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>pamu2fcfg -u&lt;username&gt; # Replace &lt;username&gt; by your username
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pamu2fcfg -u&lt;username&gt; # Replace &lt;username&gt; by your username
+</code></pre></div></div>
 
-<p>Touch your Yubikey for a few seconds and save the command result to a configuration file, for example, <code>/etc/u2f_mappings</code>.</p>
+<p>Touch your Yubikey for a few seconds and save the command result to a configuration file, for example, <code class="language-plaintext highlighter-rouge">/etc/u2f_mappings</code>.</p>
 
 <h3 id="3-config-pam-for-ssh">3. Config PAM for SSH</h3>
 
-<p>The PAM config file for ssh is located at <code>/etc/pam.d/sshd</code>. In order to add Yubikey as part of the authentication, add this line to the file:</p>
+<p>The PAM config file for ssh is located at <code class="language-plaintext highlighter-rouge">/etc/pam.d/sshd</code>. In order to add Yubikey as part of the authentication, add this line to the file:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>auth required pam_u2f.so authfile=/etc/u2f_mappings
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>auth required pam_u2f.so authfile=/etc/u2f_mappings
+</code></pre></div></div>
 
-<p><code>required</code> means Yubikey authentication is necessary. The other options are <code>requisite</code>, <code>sufficient</code> and <code>optional</code>. Refer to <a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/system-level_authentication_guide/pam_configuration_files">Redhat document</a> for more details.</p>
+<p><code class="language-plaintext highlighter-rouge">required</code> means Yubikey authentication is necessary. The other options are <code class="language-plaintext highlighter-rouge">requisite</code>, <code class="language-plaintext highlighter-rouge">sufficient</code> and <code class="language-plaintext highlighter-rouge">optional</code>. Refer to <a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/system-level_authentication_guide/pam_configuration_files">Redhat document</a> for more details.</p>
 
-<p>The parts after <code>pam_u2f.so</code> are the parameters. <code>authfile</code> is one of them. For all the supported parameters, refer to <a href="https://developers.yubico.com/pam-u2f/">Yubico pam-u2f document</a>.</p>
+<p>The parts after <code class="language-plaintext highlighter-rouge">pam_u2f.so</code> are the parameters. <code class="language-plaintext highlighter-rouge">authfile</code> is one of them. For all the supported parameters, refer to <a href="https://developers.yubico.com/pam-u2f/">Yubico pam-u2f document</a>.</p>
 
 <h3 id="4-config-ssh-to-include-password-authentication">4. Config SSH to include password authentication</h3>
 
-<p>In order to actually use PAM in ssh, ssh server needs to include password as part of authorization methods. The configuration is <code>AuthenticationMethods</code> in <code>sshd_config</code>. For example, if you want to use password + Yubikey + ssh key file, you can config it like this:</p>
+<p>In order to actually use PAM in ssh, ssh server needs to include password as part of authorization methods. The configuration is <code class="language-plaintext highlighter-rouge">AuthenticationMethods</code> in <code class="language-plaintext highlighter-rouge">sshd_config</code>. For example, if you want to use password + Yubikey + ssh key file, you can config it like this:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>AuthenticationMethods &quot;publickey,password&quot;
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>AuthenticationMethods "publickey,password"
+</code></pre></div></div>
 
-<p>And make sure <code>PasswordAuthentication</code> and <code>ChallengeResponseAuthentication</code> are both <code>yes</code>:</p>
+<p>And make sure <code class="language-plaintext highlighter-rouge">PasswordAuthentication</code> and <code class="language-plaintext highlighter-rouge">ChallengeResponseAuthentication</code> are both <code class="language-plaintext highlighter-rouge">yes</code>:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>PasswordAuthentication Yes
-<span class="line-numbers"><a href="#n2" name="n2">2</a></span>ChallengeResponseAuthentication Yes
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PasswordAuthentication Yes
+ChallengeResponseAuthentication Yes
+</code></pre></div></div>
 
 <p>After this, restart sshd then you can login with Yubikey authentication: type in ssh login command, input user password and press enter, touch the Yubikey for a few seconds, then you should be able to login!</p>
 

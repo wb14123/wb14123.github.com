@@ -623,30 +623,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability <span class="publish-year">(2023)</span></a>
         
       
@@ -1141,34 +1117,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2013-01-21-How-Kernel's-Makefile-Specify-Output-Directory.html">How Kernel's Makefile Specify Output Directory <span class="publish-year">(2013)</span></a>
         
       
@@ -1198,34 +1146,6 @@
       
         
         <a href="/2013-10-06-Xbmc-on-Raspberry-Pi-with-Archlinux.html">Xbmc on Raspberry Pi with Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
-        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
         
       
 
@@ -2348,6 +2268,120 @@
       
         
         <a href="/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html">Why Big Companies Need to Adopt Open Source <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      Storage
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html">ZFS Profiling on Arch Linux <span class="publish-year">(2023)</span></a>
         
       
 
@@ -3504,21 +3538,21 @@
     
   </header>
 
-  <p>I read the Go source code about scheduler these days. They are under <code>src/pkg/runtime</code>, mainly in <code>runtime.h</code>, <code>proc.c</code> and some Assembly files. The scheduler’s policy is easy to understand, because there are already many articles on this. I’m more interesting in the details. I learned how to switch the current running goroutine, which is a little mystery for me before.</p>
+  <p>I read the Go source code about scheduler these days. They are under <code class="language-plaintext highlighter-rouge">src/pkg/runtime</code>, mainly in <code class="language-plaintext highlighter-rouge">runtime.h</code>, <code class="language-plaintext highlighter-rouge">proc.c</code> and some Assembly files. The scheduler’s policy is easy to understand, because there are already many articles on this. I’m more interesting in the details. I learned how to switch the current running goroutine, which is a little mystery for me before.</p>
 
 <h2 id="basic-structures">Basic Structures</h2>
 
 <p>Go scheduler mainly uses three structures:</p>
 
 <ul>
-  <li><code>G</code> as a Goroutine.</li>
-  <li><code>M</code> as an OS thread.</li>
-  <li><code>P</code> as a context. Running under threads and control the goroutines.</li>
+  <li><code class="language-plaintext highlighter-rouge">G</code> as a Goroutine.</li>
+  <li><code class="language-plaintext highlighter-rouge">M</code> as an OS thread.</li>
+  <li><code class="language-plaintext highlighter-rouge">P</code> as a context. Running under threads and control the goroutines.</li>
 </ul>
 
-<p>The number of <code>P</code> is setted by <code>GOMAXPROCS</code>.</p>
+<p>The number of <code class="language-plaintext highlighter-rouge">P</code> is setted by <code class="language-plaintext highlighter-rouge">GOMAXPROCS</code>.</p>
 
-<p>Each <code>M</code> has a <code>G</code> called <code>g0</code> to do schedule jobs. (<code>mcall</code> will use <code>g0</code> to execute functions).</p>
+<p>Each <code class="language-plaintext highlighter-rouge">M</code> has a <code class="language-plaintext highlighter-rouge">G</code> called <code class="language-plaintext highlighter-rouge">g0</code> to do schedule jobs. (<code class="language-plaintext highlighter-rouge">mcall</code> will use <code class="language-plaintext highlighter-rouge">g0</code> to execute functions).</p>
 
 <h2 id="the-beginning">The Beginning</h2>
 
@@ -3531,182 +3565,170 @@
   <li>call runtime·mstart</li>
 </ul>
 
-<p>Well, it is not very detailed. Let’s read the code. The bootstrap code is Assembly. You can find one example in <code>asm_386.s</code>:</p>
+<p>Well, it is not very detailed. Let’s read the code. The bootstrap code is Assembly. You can find one example in <code class="language-plaintext highlighter-rouge">asm_386.s</code>:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>ok:
-<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>        // set up m and g &quot;registers&quot;
-<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>        get_tls(BX)
-<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>        LEAL        runtime·g0(SB), CX
-<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>        MOVL        CX, g(BX)
-<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>        LEAL        runtime·m0(SB), AX
-<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>
-<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>        // save m-&gt;g0 = g0
-<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>        MOVL        CX, m_g0(AX)
-<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>        // save g0-&gt;m = m0
-<span class="line-numbers"><a href="#n11" name="n11">11</a></span>        MOVL        AX, g_m(CX)
-<span class="line-numbers"><a href="#n12" name="n12">12</a></span>
-<span class="line-numbers"><a href="#n13" name="n13">13</a></span>        CALL        runtime·emptyfunc(SB)        // fault if stack check is wrong
-<span class="line-numbers"><a href="#n14" name="n14">14</a></span>
-<span class="line-numbers"><a href="#n15" name="n15">15</a></span>        // convention is D is always cleared
-<span class="line-numbers"><a href="#n16" name="n16">16</a></span>        CLD
-<span class="line-numbers"><a href="#n17" name="n17">17</a></span>
-<span class="line-numbers"><a href="#n18" name="n18">18</a></span>        CALL        runtime·check(SB)
-<span class="line-numbers"><a href="#n19" name="n19">19</a></span>
-<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>        // saved argc, argv
-<span class="line-numbers"><a href="#n21" name="n21">21</a></span>        MOVL        120(SP), AX
-<span class="line-numbers"><a href="#n22" name="n22">22</a></span>        MOVL        AX, 0(SP)
-<span class="line-numbers"><a href="#n23" name="n23">23</a></span>        MOVL        124(SP), AX
-<span class="line-numbers"><a href="#n24" name="n24">24</a></span>        MOVL        AX, 4(SP)
-<span class="line-numbers"><a href="#n25" name="n25">25</a></span>        CALL        runtime·args(SB)
-<span class="line-numbers"><a href="#n26" name="n26">26</a></span>        CALL        runtime·osinit(SB)
-<span class="line-numbers"><a href="#n27" name="n27">27</a></span>        CALL        runtime·hashinit(SB)
-<span class="line-numbers"><a href="#n28" name="n28">28</a></span>        CALL        runtime·schedinit(SB)
-<span class="line-numbers"><a href="#n29" name="n29">29</a></span>
-<span class="line-numbers"><strong><a href="#n30" name="n30">30</a></strong></span>        // create a new goroutine to start program
-<span class="line-numbers"><a href="#n31" name="n31">31</a></span>        PUSHL        $runtime·main·f(SB)        // entry
-<span class="line-numbers"><a href="#n32" name="n32">32</a></span>        PUSHL        $0        // arg size
-<span class="line-numbers"><a href="#n33" name="n33">33</a></span>        ARGSIZE(8)
-<span class="line-numbers"><a href="#n34" name="n34">34</a></span>        CALL        runtime·newproc(SB)
-<span class="line-numbers"><a href="#n35" name="n35">35</a></span>        ARGSIZE(-1)
-<span class="line-numbers"><a href="#n36" name="n36">36</a></span>        POPL        AX
-<span class="line-numbers"><a href="#n37" name="n37">37</a></span>        POPL        AX
-<span class="line-numbers"><a href="#n38" name="n38">38</a></span>
-<span class="line-numbers"><a href="#n39" name="n39">39</a></span>        // start this M
-<span class="line-numbers"><strong><a href="#n40" name="n40">40</a></strong></span>        CALL        runtime·mstart(SB)
-<span class="line-numbers"><a href="#n41" name="n41">41</a></span>
-<span class="line-numbers"><a href="#n42" name="n42">42</a></span>        INT $3
-<span class="line-numbers"><a href="#n43" name="n43">43</a></span>        RET
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ok:
+	// set up m and g "registers"
+	get_tls(BX)
+	LEAL	runtime·g0(SB), CX
+	MOVL	CX, g(BX)
+	LEAL	runtime·m0(SB), AX
 
-<p>It init an <code>M</code>, and a <code>G</code> as this <code>M</code>’s <code>g0</code>.</p>
+	// save m-&gt;g0 = g0
+	MOVL	CX, m_g0(AX)
+	// save g0-&gt;m = m0
+	MOVL	AX, g_m(CX)
 
-<p><code>runtime·schedinit</code> init the global scheduler, read <code>GOMAXPROCS</code> and start the <code>P</code>s.</p>
+	CALL	runtime·emptyfunc(SB)	// fault if stack check is wrong
 
-<p><code>runtime.main</code> and <code>runtime.newproc</code> create and queue the main Goroutine.</p>
+	// convention is D is always cleared
+	CLD
 
-<p><code>runtime.mstart</code> start this <code>M</code> at last.</p>
+	CALL	runtime·check(SB)
 
-<p><code>runtime.mstart</code> will call <code>schedule</code>, <code>schedule</code> will find a runnable <code>G</code> and call <code>execute</code> on it, <code>execute</code> will call <code>runtime·gogo</code> which is defined in the Assembly files, set the program pointer and stack to run a <code>G</code>. Now the program starts running and will never return. This main goroutine is locked to the main OS thread.</p>
+	// saved argc, argv
+	MOVL	120(SP), AX
+	MOVL	AX, 0(SP)
+	MOVL	124(SP), AX
+	MOVL	AX, 4(SP)
+	CALL	runtime·args(SB)
+	CALL	runtime·osinit(SB)
+	CALL	runtime·hashinit(SB)
+	CALL	runtime·schedinit(SB)
 
-<p>Here is what <code>runtime.gogo</code> do, for example in <code>asm_386.s</code>:</p>
+	// create a new goroutine to start program
+	PUSHL	$runtime·main·f(SB)	// entry
+	PUSHL	$0	// arg size
+	ARGSIZE(8)
+	CALL	runtime·newproc(SB)
+	ARGSIZE(-1)
+	POPL	AX
+	POPL	AX
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>// void gogo(Gobuf*)
-<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>// restore state from Gobuf; longjmp
-<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>TEXT runtime·gogo(SB), NOSPLIT, $0-4
-<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>        MOVL        4(SP), BX                // gobuf
-<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>        MOVL        gobuf_g(BX), DX
-<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>        MOVL        0(DX), CX                // make sure g != nil
-<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>        get_tls(CX)
-<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>        MOVL        DX, g(CX)
-<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>        MOVL        gobuf_sp(BX), SP        // restore SP
-<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>        MOVL        gobuf_ret(BX), AX
-<span class="line-numbers"><a href="#n11" name="n11">11</a></span>        MOVL        gobuf_ctxt(BX), DX
-<span class="line-numbers"><a href="#n12" name="n12">12</a></span>        MOVL        $0, gobuf_sp(BX)        // clear to help garbage collector
-<span class="line-numbers"><a href="#n13" name="n13">13</a></span>        MOVL        $0, gobuf_ret(BX)
-<span class="line-numbers"><a href="#n14" name="n14">14</a></span>        MOVL        $0, gobuf_ctxt(BX)
-<span class="line-numbers"><a href="#n15" name="n15">15</a></span>        MOVL        gobuf_pc(BX), BX
-<span class="line-numbers"><a href="#n16" name="n16">16</a></span>        JMP        BX
-</pre></div>
-</div>
-</div>
+	// start this M
+	CALL	runtime·mstart(SB)
+
+	INT $3
+	RET
+</code></pre></div></div>
+
+<p>It init an <code class="language-plaintext highlighter-rouge">M</code>, and a <code class="language-plaintext highlighter-rouge">G</code> as this <code class="language-plaintext highlighter-rouge">M</code>’s <code class="language-plaintext highlighter-rouge">g0</code>.</p>
+
+<p><code class="language-plaintext highlighter-rouge">runtime·schedinit</code> init the global scheduler, read <code class="language-plaintext highlighter-rouge">GOMAXPROCS</code> and start the <code class="language-plaintext highlighter-rouge">P</code>s.</p>
+
+<p><code class="language-plaintext highlighter-rouge">runtime.main</code> and <code class="language-plaintext highlighter-rouge">runtime.newproc</code> create and queue the main Goroutine.</p>
+
+<p><code class="language-plaintext highlighter-rouge">runtime.mstart</code> start this <code class="language-plaintext highlighter-rouge">M</code> at last.</p>
+
+<p><code class="language-plaintext highlighter-rouge">runtime.mstart</code> will call <code class="language-plaintext highlighter-rouge">schedule</code>, <code class="language-plaintext highlighter-rouge">schedule</code> will find a runnable <code class="language-plaintext highlighter-rouge">G</code> and call <code class="language-plaintext highlighter-rouge">execute</code> on it, <code class="language-plaintext highlighter-rouge">execute</code> will call <code class="language-plaintext highlighter-rouge">runtime·gogo</code> which is defined in the Assembly files, set the program pointer and stack to run a <code class="language-plaintext highlighter-rouge">G</code>. Now the program starts running and will never return. This main goroutine is locked to the main OS thread.</p>
+
+<p>Here is what <code class="language-plaintext highlighter-rouge">runtime.gogo</code> do, for example in <code class="language-plaintext highlighter-rouge">asm_386.s</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// void gogo(Gobuf*)
+// restore state from Gobuf; longjmp
+TEXT runtime·gogo(SB), NOSPLIT, $0-4
+	MOVL	4(SP), BX		// gobuf
+	MOVL	gobuf_g(BX), DX
+	MOVL	0(DX), CX		// make sure g != nil
+	get_tls(CX)
+	MOVL	DX, g(CX)
+	MOVL	gobuf_sp(BX), SP	// restore SP
+	MOVL	gobuf_ret(BX), AX
+	MOVL	gobuf_ctxt(BX), DX
+	MOVL	$0, gobuf_sp(BX)	// clear to help garbage collector
+	MOVL	$0, gobuf_ret(BX)
+	MOVL	$0, gobuf_ctxt(BX)
+	MOVL	gobuf_pc(BX), BX
+	JMP	BX
+</code></pre></div></div>
 
 <h2 id="the-start-of-the-other-goroutines">The Start of the Other Goroutines</h2>
 
-<p>When the program use the keyword <code>go</code>, it will start a new Goroutine. <code>runtime·proc</code> could start a <code>G</code> given the function. It put this new <code>G</code> in the current <code>P</code>’s run queue, then call <code>wakep</code> in order to call <code>startm</code>, which will get an idle <code>P</code> and run a <code>G</code> on it. If the <code>P</code> don’t have an <code>M</code> for now, it will call <code>newm</code> which will alloc an <code>M</code> using <code>startm</code> as its executing function. As we already known, <code>startm</code> will start this <code>M</code>, call scheduler to find a <code>G</code> to run.</p>
+<p>When the program use the keyword <code class="language-plaintext highlighter-rouge">go</code>, it will start a new Goroutine. <code class="language-plaintext highlighter-rouge">runtime·proc</code> could start a <code class="language-plaintext highlighter-rouge">G</code> given the function. It put this new <code class="language-plaintext highlighter-rouge">G</code> in the current <code class="language-plaintext highlighter-rouge">P</code>’s run queue, then call <code class="language-plaintext highlighter-rouge">wakep</code> in order to call <code class="language-plaintext highlighter-rouge">startm</code>, which will get an idle <code class="language-plaintext highlighter-rouge">P</code> and run a <code class="language-plaintext highlighter-rouge">G</code> on it. If the <code class="language-plaintext highlighter-rouge">P</code> don’t have an <code class="language-plaintext highlighter-rouge">M</code> for now, it will call <code class="language-plaintext highlighter-rouge">newm</code> which will alloc an <code class="language-plaintext highlighter-rouge">M</code> using <code class="language-plaintext highlighter-rouge">startm</code> as its executing function. As we already known, <code class="language-plaintext highlighter-rouge">startm</code> will start this <code class="language-plaintext highlighter-rouge">M</code>, call scheduler to find a <code class="language-plaintext highlighter-rouge">G</code> to run.</p>
 
-<p>How the <code>P</code> finds the executable <code>G</code> will be explained in the next section.</p>
+<p>How the <code class="language-plaintext highlighter-rouge">P</code> finds the executable <code class="language-plaintext highlighter-rouge">G</code> will be explained in the next section.</p>
 
 <h2 id="change-the-current-executing-goroutine">Change the Current Executing Goroutine</h2>
 
 <h3 id="when-to-change">When to Change</h3>
 
-<p>We know when the <code>G</code> is executing, the code will never return. It means that the scheduler of Go is non-preemptive. So when to change the current running <code>G</code>?</p>
+<p>We know when the <code class="language-plaintext highlighter-rouge">G</code> is executing, the code will never return. It means that the scheduler of Go is non-preemptive. So when to change the current running <code class="language-plaintext highlighter-rouge">G</code>?</p>
 
-<p>When the current Goroutine call a system call, it is the chance. It will call <code>handoffp</code>, which will release the current <code>P</code> (and set it’s state to idle), start a new <code>M</code> to run the system call <code>G</code>, and then call <code>startm</code>, which will find an idle <code>P</code> and run it.</p>
+<p>When the current Goroutine call a system call, it is the chance. It will call <code class="language-plaintext highlighter-rouge">handoffp</code>, which will release the current <code class="language-plaintext highlighter-rouge">P</code> (and set it’s state to idle), start a new <code class="language-plaintext highlighter-rouge">M</code> to run the system call <code class="language-plaintext highlighter-rouge">G</code>, and then call <code class="language-plaintext highlighter-rouge">startm</code>, which will find an idle <code class="language-plaintext highlighter-rouge">P</code> and run it.</p>
 
 <p>From Go 1.2, it increases the chance to run the scheduler. For example, when the goroutine call a function, it will check the memory and deside whether to do a scheduling.</p>
 
 <p>This could be verified by a piece of code:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>package main
-<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>
-<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>import (
-<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>        &quot;fmt&quot;
-<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>        &quot;sync&quot;
-<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>        &quot;time&quot;
-<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>)
-<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
-<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>type Counter struct {
-<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>        Count int
-<span class="line-numbers"><a href="#n11" name="n11">11</a></span>        Mu    sync.Mutex
-<span class="line-numbers"><a href="#n12" name="n12">12</a></span>}
-<span class="line-numbers"><a href="#n13" name="n13">13</a></span>
-<span class="line-numbers"><a href="#n14" name="n14">14</a></span>func loop1() {
-<span class="line-numbers"><a href="#n15" name="n15">15</a></span>        loop1()
-<span class="line-numbers"><a href="#n16" name="n16">16</a></span>}
-<span class="line-numbers"><a href="#n17" name="n17">17</a></span>
-<span class="line-numbers"><a href="#n18" name="n18">18</a></span>func loop2() {
-<span class="line-numbers"><a href="#n19" name="n19">19</a></span>        for {
-<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>        }
-<span class="line-numbers"><a href="#n21" name="n21">21</a></span>}
-<span class="line-numbers"><a href="#n22" name="n22">22</a></span>
-<span class="line-numbers"><a href="#n23" name="n23">23</a></span>func main() {
-<span class="line-numbers"><a href="#n24" name="n24">24</a></span>        counter := Counter{Count: 0}
-<span class="line-numbers"><a href="#n25" name="n25">25</a></span>        loop2()
-<span class="line-numbers"><a href="#n26" name="n26">26</a></span>
-<span class="line-numbers"><a href="#n27" name="n27">27</a></span>        for j := 0; j &lt; 10; j++ {
-<span class="line-numbers"><a href="#n28" name="n28">28</a></span>                go func() {
-<span class="line-numbers"><a href="#n29" name="n29">29</a></span>                        // get uid
-<span class="line-numbers"><strong><a href="#n30" name="n30">30</a></strong></span>                        counter.Mu.Lock()
-<span class="line-numbers"><a href="#n31" name="n31">31</a></span>                        id := counter.Count
-<span class="line-numbers"><a href="#n32" name="n32">32</a></span>                        counter.Count += 1
-<span class="line-numbers"><a href="#n33" name="n33">33</a></span>                        counter.Mu.Unlock()
-<span class="line-numbers"><a href="#n34" name="n34">34</a></span>
-<span class="line-numbers"><a href="#n35" name="n35">35</a></span>                        /*
-<span class="line-numbers"><a href="#n36" name="n36">36</a></span>                           It will print the current number of goroutine.
-<span class="line-numbers"><a href="#n37" name="n37">37</a></span>                           It is a system call, so it will give other goroutines a chance to run,
-<span class="line-numbers"><a href="#n38" name="n38">38</a></span>                           but it just happens in the beginning,
-<span class="line-numbers"><a href="#n39" name="n39">39</a></span>                           so it will just allow a limited number of Goroutines to run.
-<span class="line-numbers"><strong><a href="#n40" name="n40">40</a></strong></span>                        */
-<span class="line-numbers"><a href="#n41" name="n41">41</a></span>                        fmt.Println(id)
-<span class="line-numbers"><a href="#n42" name="n42">42</a></span>
-<span class="line-numbers"><a href="#n43" name="n43">43</a></span>                        /*
-<span class="line-numbers"><a href="#n44" name="n44">44</a></span>                          loop2() is a dead end loop. So it will block other Goroutines to run.
-<span class="line-numbers"><a href="#n45" name="n45">45</a></span>                          loop1() keeps call functions, so it give other Goroutines a chance to run.
-<span class="line-numbers"><a href="#n46" name="n46">46</a></span>                          You can see what will happen when change it to loop1()
-<span class="line-numbers"><a href="#n47" name="n47">47</a></span>                        */
-<span class="line-numbers"><a href="#n48" name="n48">48</a></span>                        loop2()
-<span class="line-numbers"><a href="#n49" name="n49">49</a></span>                }()
-<span class="line-numbers"><strong><a href="#n50" name="n50">50</a></strong></span>        }
-<span class="line-numbers"><a href="#n51" name="n51">51</a></span>        fmt.Println(&quot;hi&quot;)
-<span class="line-numbers"><a href="#n52" name="n52">52</a></span>        time.Sleep(time.Second * 1000)
-<span class="line-numbers"><a href="#n53" name="n53">53</a></span>}
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>package main
+
+import (
+	"fmt"
+	"sync"
+	"time"
+)
+
+type Counter struct {
+	Count int
+	Mu    sync.Mutex
+}
+
+func loop1() {
+	loop1()
+}
+
+func loop2() {
+	for {
+	}
+}
+
+func main() {
+	counter := Counter{Count: 0}
+	loop2()
+
+	for j := 0; j &lt; 10; j++ {
+		go func() {
+			// get uid
+			counter.Mu.Lock()
+			id := counter.Count
+			counter.Count += 1
+			counter.Mu.Unlock()
+
+			/*
+			   It will print the current number of goroutine.
+			   It is a system call, so it will give other goroutines a chance to run,
+			   but it just happens in the beginning,
+			   so it will just allow a limited number of Goroutines to run.
+			*/
+			fmt.Println(id)
+
+			/*
+			  loop2() is a dead end loop. So it will block other Goroutines to run.
+			  loop1() keeps call functions, so it give other Goroutines a chance to run.
+			  You can see what will happen when change it to loop1()
+			*/
+			loop2()
+		}()
+	}
+	fmt.Println("hi")
+	time.Sleep(time.Second * 1000)
+}
+</code></pre></div></div>
 
 <p>Run it with the debug options:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>GODEBUG=schedtrace=1000,scheddetail=1 GOMAXPROCS=10 go run a.go
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GODEBUG=schedtrace=1000,scheddetail=1 GOMAXPROCS=10 go run a.go
+</code></pre></div></div>
 
 <h3 id="how-to-change">How to Change</h3>
 
-<p>We’ve know that the first Gorutine is run by the main program and never returns. So how to change the current Goroutine? The answer is it just change the current SP to the <code>g0</code> by the Assembly code. The current Goroutine’s context is saved in order to be swapped back in the future. <code>g0</code> will then call the scheduler to decide which Goroutine to run next.</p>
+<p>We’ve know that the first Gorutine is run by the main program and never returns. So how to change the current Goroutine? The answer is it just change the current SP to the <code class="language-plaintext highlighter-rouge">g0</code> by the Assembly code. The current Goroutine’s context is saved in order to be swapped back in the future. <code class="language-plaintext highlighter-rouge">g0</code> will then call the scheduler to decide which Goroutine to run next.</p>
 
 <h3 id="which-one-to-change">Which One to Change</h3>
 
-<p>In the last section, we know that the new started <code>G</code> is just put under the <code>P</code> that calls the <code>go</code> keyword. So the queue don’t ensure fairness. However, while the <code>P</code> is able to run a new <code>G</code> but could not find any <code>G</code> in its queue, it will look up other <code>P</code>s and steal half of their <code>G</code>s if there are any. This is more effective that ensure the fairness while put <code>G</code> in the run queue since it need not lock all the scheduler to check all the <code>P</code>s run queue to ensure the fairness.</p>
+<p>In the last section, we know that the new started <code class="language-plaintext highlighter-rouge">G</code> is just put under the <code class="language-plaintext highlighter-rouge">P</code> that calls the <code class="language-plaintext highlighter-rouge">go</code> keyword. So the queue don’t ensure fairness. However, while the <code class="language-plaintext highlighter-rouge">P</code> is able to run a new <code class="language-plaintext highlighter-rouge">G</code> but could not find any <code class="language-plaintext highlighter-rouge">G</code> in its queue, it will look up other <code class="language-plaintext highlighter-rouge">P</code>s and steal half of their <code class="language-plaintext highlighter-rouge">G</code>s if there are any. This is more effective that ensure the fairness while put <code class="language-plaintext highlighter-rouge">G</code> in the run queue since it need not lock all the scheduler to check all the <code class="language-plaintext highlighter-rouge">P</code>s run queue to ensure the fairness.</p>
 
-<p>The code could be found in <code>findrunnable</code>.</p>
+<p>The code could be found in <code class="language-plaintext highlighter-rouge">findrunnable</code>.</p>
 
 <h2 id="a-slide">A Slide</h2>
 

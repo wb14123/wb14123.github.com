@@ -623,30 +623,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability <span class="publish-year">(2023)</span></a>
         
       
@@ -1141,34 +1117,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2013-01-21-How-Kernel's-Makefile-Specify-Output-Directory.html">How Kernel's Makefile Specify Output Directory <span class="publish-year">(2013)</span></a>
         
       
@@ -1198,34 +1146,6 @@
       
         
         <a href="/2013-10-06-Xbmc-on-Raspberry-Pi-with-Archlinux.html">Xbmc on Raspberry Pi with Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
-        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
         
       
 
@@ -2348,6 +2268,120 @@
       
         
         <a href="/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html">Why Big Companies Need to Adopt Open Source <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      Storage
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html">ZFS Profiling on Arch Linux <span class="publish-year">(2023)</span></a>
         
       
 
@@ -3508,42 +3542,36 @@
 
 <h2 id="oop-suits-actor-model-better">OOP Suits Actor Model Better</h2>
 
-<p>Erlang is a pure functional language. There are some arguments between OOP and FP. The point of pure functional programming is it avoids side effects: the function always gives the same result while the inputs are same. In Erlang or Elixir, it is true with the functions. But when there comes an actor (a <code>gen_server</code> for example), it is not so true. Let’s look at a <code>gen_server</code> module for example:</p>
+<p>Erlang is a pure functional language. There are some arguments between OOP and FP. The point of pure functional programming is it avoids side effects: the function always gives the same result while the inputs are same. In Erlang or Elixir, it is true with the functions. But when there comes an actor (a <code class="language-plaintext highlighter-rouge">gen_server</code> for example), it is not so true. Let’s look at a <code class="language-plaintext highlighter-rouge">gen_server</code> module for example:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>-module(example).
-<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
-<span class="line-numbers"><a href="#n3" name="n3">3</a></span>init(_Opts) -&gt; {ok, []}.
-<span class="line-numbers"><a href="#n4" name="n4">4</a></span>
-<span class="line-numbers"><a href="#n5" name="n5">5</a></span>handle_call(Msg, _from, State) -&gt; {reply, State, [Msg | State]}.
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-module(example).
+
+init(_Opts) -&gt; {ok, []}.
+
+handle_call(Msg, _from, State) -&gt; {reply, State, [Msg | State]}.
+</code></pre></div></div>
 
 <p>It is FP for now. The state of the actor is one of the input, so it always give the same result while the inputs are same.</p>
 
 <p>But when you call the methods from the outside, it is not so true. For example:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>{ok, Pid} = gen_server:start_link(example, [], []),
-<span class="line-numbers"><a href="#n2" name="n2">2</a></span>
-<span class="line-numbers"><a href="#n3" name="n3">3</a></span>%% A and B will not be the same here
-<span class="line-numbers"><a href="#n4" name="n4">4</a></span>A = gen_server:call(Pid, 1)
-<span class="line-numbers"><a href="#n5" name="n5">5</a></span>B = gen_server:call(Pid, 2)
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{ok, Pid} = gen_server:start_link(example, [], []),
 
-<p>See? In this example, the two calls of <code>gen_server:call</code> with the same inputs will not give the same outputs. It is because the actors <strong>do have state</strong>. So I think it is more suitable to think it in an OOP way.</p>
+%% A and B will not be the same here
+A = gen_server:call(Pid, 1)
+B = gen_server:call(Pid, 2)
+</code></pre></div></div>
+
+<p>See? In this example, the two calls of <code class="language-plaintext highlighter-rouge">gen_server:call</code> with the same inputs will not give the same outputs. It is because the actors <strong>do have state</strong>. So I think it is more suitable to think it in an OOP way.</p>
 
 <h2 id="it-is-complex-to-define-a-good-actor-in-erlang">It Is Complex To Define A Good Actor In Erlang</h2>
 
-<p>After I write Erlang programs about half a year, I realized that it puts too many works to the programmer which could be done by the compiler or library. For example, in order to define a module with <code>gen_server</code>, we need to do these things:</p>
+<p>After I write Erlang programs about half a year, I realized that it puts too many works to the programmer which could be done by the compiler or library. For example, in order to define a module with <code class="language-plaintext highlighter-rouge">gen_server</code>, we need to do these things:</p>
 
 <ol>
-  <li>Define a module which behaviour is <code>gen_server</code>, and define the callbacks, and an API <code>start_link</code> which will be invoked by the supervisor.</li>
-  <li>Define a module which behaviour is <code>supervisor</code> to supervise these actors.</li>
-  <li>Define a module with the API, which will invoke <code>gen_server:call</code> or <code>gen_server:cast</code> to sent messages to the <code>gen_server</code> that is just defined.</li>
+  <li>Define a module which behaviour is <code class="language-plaintext highlighter-rouge">gen_server</code>, and define the callbacks, and an API <code class="language-plaintext highlighter-rouge">start_link</code> which will be invoked by the supervisor.</li>
+  <li>Define a module which behaviour is <code class="language-plaintext highlighter-rouge">supervisor</code> to supervise these actors.</li>
+  <li>Define a module with the API, which will invoke <code class="language-plaintext highlighter-rouge">gen_server:call</code> or <code class="language-plaintext highlighter-rouge">gen_server:cast</code> to sent messages to the <code class="language-plaintext highlighter-rouge">gen_server</code> that is just defined.</li>
 </ol>
 
 <p>Elixir reduce the complex of Erlang’s syntax a lot. But it doesn’t reduce the steps above. I will write a library that do these things for the programmer, in an OOP way.</p>
@@ -3552,35 +3580,32 @@
 
 <p>Things should be done just like this:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>#this defines a `gen_server`
-<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>defmodule Basic do
-<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>  use Eroop
-<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>
-<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  init _(init_count) do
-<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>    # &quot;@&quot; means the state in actor
-<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>    @counter = init_count
-<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>  end
-<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>
-<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>  async add(num) do
-<span class="line-numbers"><a href="#n11" name="n11">11</a></span>    @counter = @counter + num
-<span class="line-numbers"><a href="#n12" name="n12">12</a></span>  end
-<span class="line-numbers"><a href="#n13" name="n13">13</a></span>
-<span class="line-numbers"><a href="#n14" name="n14">14</a></span>  sync get do
-<span class="line-numbers"><a href="#n15" name="n15">15</a></span>    @counter
-<span class="line-numbers"><a href="#n16" name="n16">16</a></span>  end
-<span class="line-numbers"><a href="#n17" name="n17">17</a></span>end
-<span class="line-numbers"><a href="#n18" name="n18">18</a></span>
-<span class="line-numbers"><a href="#n19" name="n19">19</a></span># this starts a `gen_server`
-<span class="line-numbers"><strong><a href="#n20" name="n20">20</a></strong></span>c = Basic.new 2
-<span class="line-numbers"><a href="#n21" name="n21">21</a></span># this will be executed asynced
-<span class="line-numbers"><a href="#n22" name="n22">22</a></span>c.add 1
-<span class="line-numbers"><a href="#n23" name="n23">23</a></span># this will be exeuted synced and get its result
-<span class="line-numbers"><a href="#n24" name="n24">24</a></span>count = c.get
-<span class="line-numbers"><a href="#n25" name="n25">25</a></span>
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#this defines a `gen_server`
+defmodule Basic do
+  use Eroop
+
+  init _(init_count) do
+    # "@" means the state in actor
+    @counter = init_count
+  end
+
+  async add(num) do
+    @counter = @counter + num
+  end
+
+  sync get do
+    @counter
+  end
+end
+
+# this starts a `gen_server`
+c = Basic.new 2
+# this will be executed asynced
+c.add 1
+# this will be exeuted synced and get its result
+count = c.get
+
+</code></pre></div></div>
 
 <p>I think I don’t need to explain much about it if you are familiar with Erlang, actor model or Elixir. Thanks for the powerful Elixir and its macro, I’ve implemented it in a clean way. (View the source code <a href="https://github.com/wb14123/eroop">on Github</a>).</p>
 
@@ -3590,25 +3615,22 @@
 
 <p>For example, I’d like this code to work:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>defmodule Crash do
-<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  use Eroop
-<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>
-<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  init _(init_count), do: @counter = init_count
-<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>  async crash, do: 0/0
-<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  sync get, do: @counter
-<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>end
-<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>
-<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>Crash.start_sup
-<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>c = Crash.new 1
-<span class="line-numbers"><a href="#n11" name="n11">11</a></span># Thought it is crashed, the supervisor should restart it and assign its new pid to `c`
-<span class="line-numbers"><a href="#n12" name="n12">12</a></span>c.crash
-<span class="line-numbers"><a href="#n13" name="n13">13</a></span>count = c.get
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>defmodule Crash do
+  use Eroop
 
-<p>The fact is, the supervisor is able to restart it, but the variable <code>c</code> lost the pid of the new started server,  so <code>c.get</code> will not success. There are some ways to fix it, do a little hack and register <code>c</code> as the <code>gen_server</code>’s name is one of them.</p>
+  init _(init_count), do: @counter = init_count
+  async crash, do: 0/0
+  sync get, do: @counter
+end
+
+Crash.start_sup
+c = Crash.new 1
+# Thought it is crashed, the supervisor should restart it and assign its new pid to `c`
+c.crash
+count = c.get
+</code></pre></div></div>
+
+<p>The fact is, the supervisor is able to restart it, but the variable <code class="language-plaintext highlighter-rouge">c</code> lost the pid of the new started server,  so <code class="language-plaintext highlighter-rouge">c.get</code> will not success. There are some ways to fix it, do a little hack and register <code class="language-plaintext highlighter-rouge">c</code> as the <code class="language-plaintext highlighter-rouge">gen_server</code>’s name is one of them.</p>
 
 <p>But the code will be complex, and it pushes me to think:</p>
 

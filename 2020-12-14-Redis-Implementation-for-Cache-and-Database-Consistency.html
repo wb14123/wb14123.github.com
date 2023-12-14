@@ -623,30 +623,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability <span class="publish-year">(2023)</span></a>
         
       
@@ -1141,34 +1117,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2013-01-21-How-Kernel's-Makefile-Specify-Output-Directory.html">How Kernel's Makefile Specify Output Directory <span class="publish-year">(2013)</span></a>
         
       
@@ -1198,34 +1146,6 @@
       
         
         <a href="/2013-10-06-Xbmc-on-Raspberry-Pi-with-Archlinux.html">Xbmc on Raspberry Pi with Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
-        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
         
       
 
@@ -2348,6 +2268,120 @@
       
         
         <a href="/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html">Why Big Companies Need to Adopt Open Source <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      Storage
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html">ZFS Profiling on Arch Linux <span class="publish-year">(2023)</span></a>
         
       
 
@@ -3521,31 +3555,25 @@
 
 <p>The implementation uses <a href="https://redis.io/commands/eval">Redis script</a>, which is written in Lua. It can implement multiple operations and make them atomic. In theory, this can also be done by client, but Redis script provides a consistent implementation across different clients and makes it easier to use. The algorithm is easy, so the implementation is also straight forward. The implementations are under <a href="https://github.com/wb14123/redis_lease/tree/master/scripts">scripts directory of the repo</a>. These scripts also works for Redis cluster (but I didn’t use Jepsen to test it under cluster mode). Here is an example implementation for get:</p>
 
-<div class="language-lua highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span><span style="color:#080;font-weight:bold">local</span> <span style="color:#950">key</span> = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">{</span><span style="color:#710">'</span></span>..KEYS[<span style="color:#00D">1</span>]..<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">}</span><span style="color:#710">'</span></span>
-<span class="line-numbers"> <a href="#n2" name="n2">2</a></span><span style="color:#080;font-weight:bold">local</span> <span style="color:#950">token</span> = ARGV[<span style="color:#00D">1</span>]
-<span class="line-numbers"> <a href="#n3" name="n3">3</a></span><span style="color:#080;font-weight:bold">local</span> <span style="color:#950">value</span> = redis.call(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">get</span><span style="color:#710">'</span></span>, key)
-<span class="line-numbers"> <a href="#n4" name="n4">4</a></span><span style="color:#080;font-weight:bold">if</span> <span style="color:#080;font-weight:bold">not</span> value <span style="color:#080;font-weight:bold">then</span>
-<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    redis.replicate_commands()
-<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>    <span style="color:#080;font-weight:bold">local</span> <span style="color:#950">lease_key</span> = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">lease:</span><span style="color:#710">'</span></span>..key
-<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>    redis.call(<span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">'</span><span style="color:#D20">set</span><span style="color:#710">'</span></span>, lease_key, token)
-<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    <span style="color:#080;font-weight:bold">return</span> <span style="background-color:hsla(200,100%,50%,0.06)"><span style="color:#40A">{</span><span style="color:#069">false</span>, token<span style="color:#40A">}</span></span>
-<span class="line-numbers"> <a href="#n9" name="n9">9</a></span><span style="color:#080;font-weight:bold">else</span>
-<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>    <span style="color:#080;font-weight:bold">return</span> <span style="background-color:hsla(200,100%,50%,0.06)"><span style="color:#40A">{</span>value, <span style="color:#069">false</span><span style="color:#40A">}</span></span>
-<span class="line-numbers"><a href="#n11" name="n11">11</a></span><span style="color:#080;font-weight:bold">end</span>
-</pre></div>
-</div>
-</div>
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">local</span> <span class="n">key</span> <span class="o">=</span> <span class="s1">'{'</span><span class="o">..</span><span class="n">KEYS</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">..</span><span class="s1">'}'</span>
+<span class="kd">local</span> <span class="n">token</span> <span class="o">=</span> <span class="n">ARGV</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="kd">local</span> <span class="n">value</span> <span class="o">=</span> <span class="n">redis</span><span class="p">.</span><span class="n">call</span><span class="p">(</span><span class="s1">'get'</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">value</span> <span class="k">then</span>
+    <span class="n">redis</span><span class="p">.</span><span class="n">replicate_commands</span><span class="p">()</span>
+    <span class="kd">local</span> <span class="n">lease_key</span> <span class="o">=</span> <span class="s1">'lease:'</span><span class="o">..</span><span class="n">key</span>
+    <span class="n">redis</span><span class="p">.</span><span class="n">call</span><span class="p">(</span><span class="s1">'set'</span><span class="p">,</span> <span class="n">lease_key</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="kc">false</span><span class="p">,</span> <span class="n">token</span><span class="p">}</span>
+<span class="k">else</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">value</span><span class="p">,</span> <span class="kc">false</span><span class="p">}</span>
+<span class="k">end</span>
+</code></pre></div></div>
 
 <p>After load the script, you can use it like this:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>redis-cli evalsha &lt;script_sha1&gt; 1 &lt;key&gt; &lt;uniq_id&gt;
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>redis-cli evalsha &lt;script_sha1&gt; 1 &lt;key&gt; &lt;uniq_id&gt;
+</code></pre></div></div>
 
-<p>It will return <code>value, nil</code> if there is value for the key, or <code>nil, lease</code> if there is no value.</p>
+<p>It will return <code class="language-plaintext highlighter-rouge">value, nil</code> if there is value for the key, or <code class="language-plaintext highlighter-rouge">nil, lease</code> if there is no value.</p>
 
 <p>One optimization here is, if we have value for the key, we will not store the lease. That’s because in our use case, if we can get the value, we will not get it from database and write back to the cache. This avoids a lot of memory overhead.</p>
 

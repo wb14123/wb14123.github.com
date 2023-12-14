@@ -623,30 +623,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability <span class="publish-year">(2023)</span></a>
         
       
@@ -1141,34 +1117,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2013-01-21-How-Kernel's-Makefile-Specify-Output-Directory.html">How Kernel's Makefile Specify Output Directory <span class="publish-year">(2013)</span></a>
         
       
@@ -1198,34 +1146,6 @@
       
         
         <a href="/2013-10-06-Xbmc-on-Raspberry-Pi-with-Archlinux.html">Xbmc on Raspberry Pi with Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
-        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
         
       
 
@@ -2348,6 +2268,120 @@
       
         
         <a href="/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html">Why Big Companies Need to Adopt Open Source <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      Storage
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html">ZFS Profiling on Arch Linux <span class="publish-year">(2023)</span></a>
         
       
 
@@ -3515,27 +3549,24 @@
   <li>If you are using vim plugins from git repo or something like <a href="https://github.com/robbyrussell/oh-my-zsh">oh-my-zsh</a>, you could simple use git submodule to keep track of them.</li>
 </ul>
 
-<p>The basic idea is put configure files in a directory such as <code>dotfile</code> and use git to track it. Then make a symbolic link to home. However, manual make symbolic links is boring. Firstly I am thinking of use the same directory structure as <code>~/</code> and then automatic link them. But there comes some problems: for some directories such as <code>.vim</code>, we should make a link for them while for some directories such as <code>.config</code>, we may only want to link <code>openbox</code> under it to <code>~/.config/openbox</code>. It seems impossible to use an automatic way totally. But some shell code could make life a little easy:</p>
+<p>The basic idea is put configure files in a directory such as <code class="language-plaintext highlighter-rouge">dotfile</code> and use git to track it. Then make a symbolic link to home. However, manual make symbolic links is boring. Firstly I am thinking of use the same directory structure as <code class="language-plaintext highlighter-rouge">~/</code> and then automatic link them. But there comes some problems: for some directories such as <code class="language-plaintext highlighter-rouge">.vim</code>, we should make a link for them while for some directories such as <code class="language-plaintext highlighter-rouge">.config</code>, we may only want to link <code class="language-plaintext highlighter-rouge">openbox</code> under it to <code class="language-plaintext highlighter-rouge">~/.config/openbox</code>. It seems impossible to use an automatic way totally. But some shell code could make life a little easy:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>check_link() {
-<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>        LINK=`pwd`/$1
-<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>        TARGET=~/$2
-<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>        if [ -h $TARGET ] ; then
-<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>                echo -n &quot;remove symbolic link: &quot;
-<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>                rm -v $TARGET
-<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>        elif [ -e $TARGET ] ; then
-<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>                echo -n &quot;move: &quot;
-<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>                mv -v $TARGET $TARGET.old
-<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>        fi
-<span class="line-numbers"><a href="#n11" name="n11">11</a></span>        echo -n &quot;link: &quot;
-<span class="line-numbers"><a href="#n12" name="n12">12</a></span>        ln -sv $LINK $TARGET
-<span class="line-numbers"><a href="#n13" name="n13">13</a></span>}
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>check_link() {
+	LINK=`pwd`/$1
+	TARGET=~/$2
+	if [ -h $TARGET ] ; then
+		echo -n "remove symbolic link: "
+		rm -v $TARGET
+	elif [ -e $TARGET ] ; then
+		echo -n "move: "
+		mv -v $TARGET $TARGET.old
+	fi
+	echo -n "link: "
+	ln -sv $LINK $TARGET
+}
+</code></pre></div></div>
 
-<p>Usage: <code>check_link &lt;path_in_dotfiles&gt; &lt;path_in_home&gt;</code>, such as <code>check_link vim/vimrc .vimrc</code>. See <a href="https://github.com/wb14123/dotfiles/blob/master/link.sh">my github repo</a> for details.</p>
+<p>Usage: <code class="language-plaintext highlighter-rouge">check_link &lt;path_in_dotfiles&gt; &lt;path_in_home&gt;</code>, such as <code class="language-plaintext highlighter-rouge">check_link vim/vimrc .vimrc</code>. See <a href="https://github.com/wb14123/dotfiles/blob/master/link.sh">my github repo</a> for details.</p>
 
 </article>
 

@@ -623,30 +623,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability <span class="publish-year">(2023)</span></a>
         
       
@@ -1141,34 +1117,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2013-01-21-How-Kernel's-Makefile-Specify-Output-Directory.html">How Kernel's Makefile Specify Output Directory <span class="publish-year">(2013)</span></a>
         
       
@@ -1198,34 +1146,6 @@
       
         
         <a href="/2013-10-06-Xbmc-on-Raspberry-Pi-with-Archlinux.html">Xbmc on Raspberry Pi with Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
-        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
         
       
 
@@ -2348,6 +2268,120 @@
       
         
         <a href="/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html">Why Big Companies Need to Adopt Open Source <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      Storage
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html">ZFS Profiling on Arch Linux <span class="publish-year">(2023)</span></a>
         
       
 
@@ -3530,7 +3564,7 @@
 
 <h3 id="1-dump-the-source-database-to-target-database">1. Dump the source database to target database</h3>
 
-<p>First, we need to dump the source database with a consistent view. And mark the position we’ve dumped. For example, in MySQL, you can use <code>mysqldump</code> with <code>--master-data</code> to dump the database with a bin log position. (<a href="https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html#option_mysqldump_master-data">Document about the usage</a>). After we get all the data from source database, we can insert them into the target database.</p>
+<p>First, we need to dump the source database with a consistent view. And mark the position we’ve dumped. For example, in MySQL, you can use <code class="language-plaintext highlighter-rouge">mysqldump</code> with <code class="language-plaintext highlighter-rouge">--master-data</code> to dump the database with a bin log position. (<a href="https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html#option_mysqldump_master-data">Document about the usage</a>). After we get all the data from source database, we can insert them into the target database.</p>
 
 <p>Since this is the first step, it’s very easy to handle failure: just start again from beginning. So it’s very important to capture any error while import the dumped data.</p>
 
@@ -3544,7 +3578,7 @@
 
 <h3 id="3-deny-writes-to-the-target-database-from-clients">3. Deny writes to the target database from clients</h3>
 
-<p>The easy way to keep data consistency is to have a single source of truth. Until now, we are using the source database as the source of truth and sync changes to the target database. We don’t want to mess up the target database with other writes. So we need to setup the target database permission to deny all the writes from clients. For example, in MySQL, you can grant only <code>select</code> permission to the table for the clients and deny other operations. We allow the read permission so that we can compare the read results at the next step.</p>
+<p>The easy way to keep data consistency is to have a single source of truth. Until now, we are using the source database as the source of truth and sync changes to the target database. We don’t want to mess up the target database with other writes. So we need to setup the target database permission to deny all the writes from clients. For example, in MySQL, you can grant only <code class="language-plaintext highlighter-rouge">select</code> permission to the table for the clients and deny other operations. We allow the read permission so that we can compare the read results at the next step.</p>
 
 <h3 id="4-modify-the-clients-to-read-and-write-both-databases">4. Modify the clients to read and write both databases</h3>
 
@@ -3570,27 +3604,24 @@
 
 <p>The client code would be like this:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>db_operation() {
-<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>  try {
-<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>    source_result = source_db_operation()
-<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>  } catch (PermissionException e) {
-<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    return target_db_operation()
-<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>  }
-<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>  async {
-<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    // do the following things async so it will not impact the performance
-<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>    try {
-<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>      target_result = target_db_operation()
-<span class="line-numbers"><a href="#n11" name="n11">11</a></span>      compare_result(source_result, target_result)
-<span class="line-numbers"><a href="#n12" name="n12">12</a></span>    } catch (Exception e) {
-<span class="line-numbers"><a href="#n13" name="n13">13</a></span>      log_error(e)
-<span class="line-numbers"><a href="#n14" name="n14">14</a></span>    }
-<span class="line-numbers"><a href="#n15" name="n15">15</a></span>  }
-<span class="line-numbers"><a href="#n16" name="n16">16</a></span>  return source_result
-<span class="line-numbers"><a href="#n17" name="n17">17</a></span>}
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>db_operation() {
+  try {
+    source_result = source_db_operation()
+  } catch (PermissionException e) {
+    return target_db_operation()
+  }
+  async {
+    // do the following things async so it will not impact the performance
+    try {
+      target_result = target_db_operation()
+      compare_result(source_result, target_result)
+    } catch (Exception e) {
+      log_error(e)
+    }
+  }
+  return source_result
+}
+</code></pre></div></div>
 
 <h3 id="5-deny-access-to-the-source-database-from-clients-and-wait-for-changes-to-by-synced">5. Deny access to the source database from clients and wait for changes to by synced</h3>
 

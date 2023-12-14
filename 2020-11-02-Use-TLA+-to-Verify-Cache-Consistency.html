@@ -623,30 +623,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability <span class="publish-year">(2023)</span></a>
         
       
@@ -1141,34 +1117,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2013-01-21-How-Kernel's-Makefile-Specify-Output-Directory.html">How Kernel's Makefile Specify Output Directory <span class="publish-year">(2013)</span></a>
         
       
@@ -1198,34 +1146,6 @@
       
         
         <a href="/2013-10-06-Xbmc-on-Raspberry-Pi-with-Archlinux.html">Xbmc on Raspberry Pi with Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
-        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
         
       
 
@@ -2348,6 +2268,120 @@
       
         
         <a href="/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html">Why Big Companies Need to Adopt Open Source <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      Storage
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html">ZFS Profiling on Arch Linux <span class="publish-year">(2023)</span></a>
         
       
 
@@ -3523,27 +3557,21 @@
 
 <p>Let’s first describe the normal architecture of the cache and database system. Normally, a web service query data from a database and save data to it. The service itself usually doesn’t store any stateful data. This makes it’s very easy to scale up: just start a bunch of servers and put them behind a load balancer. But for the database, it’s not so easy. It’s usually very hard to scale up a database. So when the performance of the database is an issue, we usually put a cache before it. The cache stores everything in memory so it would be much faster and can handle much more requests than a traditional database that needs to persistent everything. When we read data, we read cache first and only load it from database if there is no data in cache. When save data, we must persistent the data to database. Here is a graph about what this architecture looks like:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>web_server_1
-<span class="line-numbers"><a href="#n2" name="n2">2</a></span>web_server_2
-<span class="line-numbers"><a href="#n3" name="n3">3</a></span>web_server_3  &lt;--&gt; cache &lt;--&gt; database
-<span class="line-numbers"><a href="#n4" name="n4">4</a></span>...
-<span class="line-numbers"><a href="#n5" name="n5">5</a></span>web_server_n
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>web_server_1
+web_server_2
+web_server_3  &lt;--&gt; cache &lt;--&gt; database
+...
+web_server_n
+</code></pre></div></div>
 
 <p>We need to notice this is a different architecture than the cache of CPU. In multi-core CPUs, each core has it’s own cache instead of having a shared cache, which looks like this:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>core_1 &lt;--&gt; cache_1
-<span class="line-numbers"><a href="#n2" name="n2">2</a></span>core_2 &lt;--&gt; cache_2
-<span class="line-numbers"><a href="#n3" name="n3">3</a></span>core_3 &lt;--&gt; cache_3  &lt;---&gt; main memory
-<span class="line-numbers"><a href="#n4" name="n4">4</a></span>...
-<span class="line-numbers"><a href="#n5" name="n5">5</a></span>core_n &lt;--&gt; cache_n
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>core_1 &lt;--&gt; cache_1
+core_2 &lt;--&gt; cache_2
+core_3 &lt;--&gt; cache_3  &lt;---&gt; main memory
+...
+core_n &lt;--&gt; cache_n
+</code></pre></div></div>
 
 <p>Because of the differences of architectures, consistency and latency requirements, they usually needs different solutions. In this article, we only talk about the cache algorithms for web services.</p>
 
@@ -3553,44 +3581,38 @@
 
 <p>This is the pseudocode for this algorithm:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"> <a href="#n1" name="n1">1</a></span>read(key) {
-<span class="line-numbers"> <a href="#n2" name="n2">2</a></span>    cache = readCache(key)
-<span class="line-numbers"> <a href="#n3" name="n3">3</a></span>    if (cache != null) {
-<span class="line-numbers"> <a href="#n4" name="n4">4</a></span>        return cache
-<span class="line-numbers"> <a href="#n5" name="n5">5</a></span>    }
-<span class="line-numbers"> <a href="#n6" name="n6">6</a></span>    data = readDB(key)
-<span class="line-numbers"> <a href="#n7" name="n7">7</a></span>    writeCache(key, data)
-<span class="line-numbers"> <a href="#n8" name="n8">8</a></span>    return data
-<span class="line-numbers"> <a href="#n9" name="n9">9</a></span>}
-<span class="line-numbers"><strong><a href="#n10" name="n10">10</a></strong></span>
-<span class="line-numbers"><a href="#n11" name="n11">11</a></span>write(key, value) {
-<span class="line-numbers"><a href="#n12" name="n12">12</a></span>    writeDB(key, value)
-<span class="line-numbers"><a href="#n13" name="n13">13</a></span>    invalidateCache(key)
-<span class="line-numbers"><a href="#n14" name="n14">14</a></span>}
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>read(key) {
+    cache = readCache(key)
+    if (cache != null) {
+        return cache
+    }
+    data = readDB(key)
+    writeCache(key, data)
+    return data
+}
+
+write(key, value) {
+    writeDB(key, value)
+    invalidateCache(key)
+}
+</code></pre></div></div>
 
 <h2 id="tla-specification">TLA+ Specification</h2>
 
 <p>Once we have the algorithm in mind, we can write a TLA+ specification and let TLC to check whether it has the properties we want. A TLA+ specification is not a 100% map from the system, it’s an abstraction that omits irrelevant details. In our specification, we make two key abstractions:</p>
 
 <ol>
-  <li>Data is inconsistent between cache and database if one row is inconsistent. So in the specification, we only care about one row. Which means we don’t need the parameter for <code>key</code>.</li>
-  <li>In the specification, we don’t care about what’s the actual value as long as each client writes different values. So we let the client write it’s own ID as the value. Thus we can also omit <code>value</code> from write behavior.</li>
+  <li>Data is inconsistent between cache and database if one row is inconsistent. So in the specification, we only care about one row. Which means we don’t need the parameter for <code class="language-plaintext highlighter-rouge">key</code>.</li>
+  <li>In the specification, we don’t care about what’s the actual value as long as each client writes different values. So we let the client write it’s own ID as the value. Thus we can also omit <code class="language-plaintext highlighter-rouge">value</code> from write behavior.</li>
 </ol>
 
 <p>We need also to notice that if we write multiple state changes in one TLA+ statement, it means those state changes are atomic. In the code, we assume read/write cache/database is atomic while others are not, which means each line is an atomic operation but the lines between them are not. So for each of the lines, we should write separate statements.</p>
 
 <p>So keeping this in mind, we have these variables for our specification:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>CONSTANT CLIENTS
-<span class="line-numbers"><a href="#n2" name="n2">2</a></span>VARIABLE cache, db, cacheResults, dbResults, cacheWritten, states
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CONSTANT CLIENTS
+VARIABLE cache, db, cacheResults, dbResults, cacheWritten, states
+</code></pre></div></div>
 
 <ul>
   <li>CLIENTS: all the clients</li>
@@ -3602,40 +3624,31 @@
   <li>states: the state of clients</li>
 </ul>
 
-<p>The reason we want to have a variable <code>cacheWritten</code> is, we want to make sure the algorithm really wrote to the cache. Otherwise it would be simple to keep data consistent by not using the cache at all. (We don’t check this property in this article, but it’s not hard to add that).</p>
+<p>The reason we want to have a variable <code class="language-plaintext highlighter-rouge">cacheWritten</code> is, we want to make sure the algorithm really wrote to the cache. Otherwise it would be simple to keep data consistent by not using the cache at all. (We don’t check this property in this article, but it’s not hard to add that).</p>
 
-<p>For <code>states</code>, we want all client start with <code>free</code> and ends with <code>done</code> when read/write is done. It can go from <code>done</code> to <code>free</code> again to start another read/write.</p>
+<p>For <code class="language-plaintext highlighter-rouge">states</code>, we want all client start with <code class="language-plaintext highlighter-rouge">free</code> and ends with <code class="language-plaintext highlighter-rouge">done</code> when read/write is done. It can go from <code class="language-plaintext highlighter-rouge">done</code> to <code class="language-plaintext highlighter-rouge">free</code> again to start another read/write.</p>
 
-<p>Then we have <code>Null</code> value for no data in cache or database, <code>InitValue</code> for any value that exists before the system is running, and all the data that could be put into cache and database;</p>
+<p>Then we have <code class="language-plaintext highlighter-rouge">Null</code> value for no data in cache or database, <code class="language-plaintext highlighter-rouge">InitValue</code> for any value that exists before the system is running, and all the data that could be put into cache and database;</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>Null == &quot;null&quot;
-<span class="line-numbers"><a href="#n2" name="n2">2</a></span>InitValue == &quot;init&quot;
-<span class="line-numbers"><a href="#n3" name="n3">3</a></span>Data == CLIENTS \union {Null, InitValue}
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Null == "null"
+InitValue == "init"
+Data == CLIENTS \union {Null, InitValue}
+</code></pre></div></div>
 
 <p>Once these basic values are ready, it’s not hard to write the specification for cache and database interface. The specification of it is in <a href="https://github.com/wb14123/tla-cache/blob/master/CacheInterface.tla">CacheInterface.tla</a>. Then we can use the interface to specify the algorithm described above: <a href="https://github.com/wb14123/tla-cache/blob/master/WriteInvalidateCache.tla">WriteInvalidateCache.tla</a>.</p>
 
 <p>Finally, we want to also specify what property we want for our system. We want the data in cache and database to be consistent. It would be very hard to make them to be the same all the time. So we make a reasonable weaker statement: we want to make sure once all the clients are done, either the cache doesn’t have any data, or it has the same data as in database:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>AllDone == \A c \in CLIENTS: states[c] = &quot;done&quot;
-<span class="line-numbers"><a href="#n2" name="n2">2</a></span>Consistency == IF AllDone THEN (cache = db \/ cache = Null) ELSE TRUE
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>AllDone == \A c \in CLIENTS: states[c] = "done"
+Consistency == IF AllDone THEN (cache = db \/ cache = Null) ELSE TRUE
+</code></pre></div></div>
 
 <p>We can put the specification and all the properties we want to check into a TLC model config file <a href="https://github.com/wb14123/tla-cache/blob/master/WriteInvalidateCache.cfg">WriteInvalidateCache.cfg</a> and let TLC to check it:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>tlc WriteInvalidateCache
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tlc WriteInvalidateCache
+</code></pre></div></div>
 
-<p>After running this, it will show it violates <code>Consistency</code>, and also show all the sequences to reach the violation. In this way, we know this algorithm cannot guarantee consistency between cache and database.</p>
+<p>After running this, it will show it violates <code class="language-plaintext highlighter-rouge">Consistency</code>, and also show all the sequences to reach the violation. In this way, we know this algorithm cannot guarantee consistency between cache and database.</p>
 
 <h2 id="a-better-algorithm">A Better Algorithm</h2>
 
@@ -3645,19 +3658,13 @@
 
 <p>I implemented the specification of this algorithm in <a href="https://github.com/wb14123/tla-cache/blob/master/WriteInvalidateLease.tla">WriteInvalidateLease.tla</a> and the model config <a href="https://github.com/wb14123/tla-cache/blob/master/WriteInvalidateLease.cfg">WriteInvalidateLease.cfg</a>. If you run the TLC checker on it:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>tlc WriteInvalidateLease
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tlc WriteInvalidateLease
+</code></pre></div></div>
 
-<p>You will find it passed the check. Because we specify two clients in <code>WriteInvalidateLease.cfg</code>, so it means it meets the <code>Consistency</code> requirement with two concurrent clients:</p>
+<p>You will find it passed the check. Because we specify two clients in <code class="language-plaintext highlighter-rouge">WriteInvalidateLease.cfg</code>, so it means it meets the <code class="language-plaintext highlighter-rouge">Consistency</code> requirement with two concurrent clients:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>CLIENTS = {&quot;c1&quot;, &quot;c2&quot;}
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CLIENTS = {"c1", "c2"}
+</code></pre></div></div>
 
 <p>You can make it as many clients as you want. But increase one client will increase the checking time a lot. Usually 3 clients is enough. It will not guarantee it meets the property under unlimited clients (we need formal proof to do that), but it will give us much higher confidence on the algorithm.</p>
 
@@ -3665,16 +3672,13 @@
 
 <p>In the algorithm above, we can see the data in cache and database can be consistent once the client has done the work. But it doesn’t say any thing about client failure. Because the client write to database then invalid the cache, if the client is down during these two operations, it will not invalid the cache so it will have stale data. To specify this in TLA+, we can add two behaviors into Next:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>Failure(c) == /\ states' = [states EXCEPT ![c] = &quot;fail&quot;]
-<span class="line-numbers"><a href="#n2" name="n2">2</a></span>              /\ UNCHANGED &lt;&lt;cache, db, cacheResults, dbResults, cacheWritten, lease&gt;&gt;
-<span class="line-numbers"><a href="#n3" name="n3">3</a></span>
-<span class="line-numbers"><a href="#n4" name="n4">4</a></span>Recover(c) == /\ states[c] = &quot;fail&quot;
-<span class="line-numbers"><a href="#n5" name="n5">5</a></span>              /\ states' = [states EXCEPT ![c] = &quot;start&quot;]
-<span class="line-numbers"><a href="#n6" name="n6">6</a></span>              /\ UNCHANGED &lt;&lt;cache, db, cacheResults, dbResults, cacheWritten, lease&gt;&gt;
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Failure(c) == /\ states' = [states EXCEPT ![c] = "fail"]
+              /\ UNCHANGED &lt;&lt;cache, db, cacheResults, dbResults, cacheWritten, lease&gt;&gt;
+
+Recover(c) == /\ states[c] = "fail"
+              /\ states' = [states EXCEPT ![c] = "start"]
+              /\ UNCHANGED &lt;&lt;cache, db, cacheResults, dbResults, cacheWritten, lease&gt;&gt;
+</code></pre></div></div>
 
 <p>Since it’s much less likely for the server to not graceful shutdown, this problem is much smaller than the previous one. And the effect can be limited by having a TTL for cache. However, you need to understand that to know if the algorithm really meets your need.</p>
 

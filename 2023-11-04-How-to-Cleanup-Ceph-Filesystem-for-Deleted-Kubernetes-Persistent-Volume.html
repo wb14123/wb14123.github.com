@@ -623,30 +623,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability <span class="publish-year">(2023)</span></a>
         
       
@@ -1141,34 +1117,6 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
         <a href="/2013-01-21-How-Kernel's-Makefile-Specify-Output-Directory.html">How Kernel's Makefile Specify Output Directory <span class="publish-year">(2013)</span></a>
         
       
@@ -1198,34 +1146,6 @@
       
         
         <a href="/2013-10-06-Xbmc-on-Raspberry-Pi-with-Archlinux.html">Xbmc on Raspberry Pi with Archlinux <span class="publish-year">(2013)</span></a>
-        
-      
-
-    </div>
-
-  
-    </div>
-  
-    </div>
-  
-    </div>
-  
-
-
-
-
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-    <div class="index-intend">
-  
-
-    <div class="index-entry index-post">
-      
-        
-        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
         
       
 
@@ -2348,6 +2268,120 @@
       
         
         <a href="/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html">Why Big Companies Need to Adopt Open Source <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      Storage
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html">ZFS Profiling on Arch Linux <span class="publish-year">(2023)</span></a>
         
       
 
@@ -3508,45 +3542,30 @@
 
 <p>Once Rook is deployed in Kubernetes, you can create a <a href="https://rook.io/docs/rook/v1.11/Storage-Configuration/Shared-Filesystem-CephFS/filesystem-storage/">Ceph Filesystem</a> and use it to <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes">persistent volume (PV)</a>. Each PV’s data will be stored in a folder in the filesystem. If the PV’s reclaiming policy is set to <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#retain">retain</a>, the data will not be deleted after the persistent volume is manually deleted. It’s safer in this way. But what could you do if you want to cleanup the data? Normally you should change the PV’s reclaim policy before you delete the PV, then Rook’s operator will auto reclaim the storage in Ceph. But what if you forget or didn’t know that (like me), and want to cleanup the data after?</p>
 
-<p>First, we need to the folder/subvolume names in Ceph that store’s each PV’s data. We an get that by using <code>kubectl describe pv &lt;pv-name&gt;</code> and look for the field <code>subvolumeName</code>. But since the PV is deleted, we need to find the mappings for existing PVs and compare that with the folders/subvolumes in Ceph. This is the command to show all of the existing ones:</p>
+<p>First, we need to the folder/subvolume names in Ceph that store’s each PV’s data. We an get that by using <code class="language-plaintext highlighter-rouge">kubectl describe pv &lt;pv-name&gt;</code> and look for the field <code class="language-plaintext highlighter-rouge">subvolumeName</code>. But since the PV is deleted, we need to find the mappings for existing PVs and compare that with the folders/subvolumes in Ceph. This is the command to show all of the existing ones:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>kubectl get pv -o yaml | grep subvolumeName  | sort
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pv -o yaml | grep subvolumeName  | sort
+</code></pre></div></div>
 
 <p>Then we need to find all the existing folders/subvolumes in Ceph’s filesystem: Start a Ceph toolbox pod based on the <a href="https://rook.github.io/docs/rook/v1.11/Troubleshooting/ceph-toolbox/?h=toolbox">doc</a>. Then go into the pod and find the filesystem’s name first:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>ceph fs ls
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ceph fs ls
+</code></pre></div></div>
 
 <p>After getting the filesystem’s name, get all the subvolumegroup from it:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>ceph fs subvolume ls &lt;fs-name&gt; csi | grep 'name' | sort
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ceph fs subvolume ls &lt;fs-name&gt; csi | grep 'name' | sort
+</code></pre></div></div>
 
 <p>Compare this list with the list above, you should be able to find a subvolume that exists in Ceph but not shown in Kubernetes’ PV mapping. Use this command to check its info:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>ceph fs subvolume info &lt;fs-name&gt; &lt;subvolume-name&gt; csi
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ceph fs subvolume info &lt;fs-name&gt; &lt;subvolume-name&gt; csi
+</code></pre></div></div>
 
 <p>If you are sure this is the folder you want to delete, use this command to delete it:</p>
 
-<div class="language-plaintext highlighter-coderay"><div class="CodeRay">
-  <div class="code"><pre><span class="line-numbers"><a href="#n1" name="n1">1</a></span>ceph fs subvolume rm &lt;fs-name&gt; &lt;subvolume-name&gt; csi
-</pre></div>
-</div>
-</div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ceph fs subvolume rm &lt;fs-name&gt; &lt;subvolume-name&gt; csi
+</code></pre></div></div>
 
 
 </article>
