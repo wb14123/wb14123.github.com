@@ -39,6 +39,7 @@
   </head>
 
   <body>
+    
     <div id="index_menu">
       
 <!--
@@ -3473,35 +3474,63 @@
 
 <script>
 
+  const isIndexPage = false;
+
   const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
-
-  const indexMenu = document.getElementById('index_menu');
-  const selected = document.getElementsByClassName("index-selected")[0];
-
-
+  const indexMenu = document.getElementById('index_menu') || document.getElementById('index_menu_page');
 
 
   document.addEventListener("DOMContentLoaded", function(event) {
-    var scrollpos = localStorage.getItem('menu-scroll-pos');
-    console.log(scrollpos);
-    if (scrollpos) indexMenu.scrollTo(0, scrollpos);
+
+    if (isIndexPage) {
+      var targetHref = new URL(document.referrer).pathname;
+      console.log(targetHref);
+
+      document.querySelectorAll('a').forEach(function(anchorTag) {
+        // Check if the href attribute matches the targetHref
+        if (anchorTag.getAttribute('href') === targetHref) {
+           var newDiv = document.createElement('div');
+           newDiv.classList.add('index-selected');
+           // Copy the content of the <a> tag to the new <div>
+           newDiv.innerHTML = anchorTag.innerHTML;
+           // Replace the <a> tag with the new <div> element
+           anchorTag.parentNode.replaceChild(newDiv, anchorTag);
+        }
+      });
+
+    }
+
+    var selected = document.getElementsByClassName("index-selected")[0];
+
+    if (!isIndexPage) {
+      var scrollpos = localStorage.getItem('menu-scroll-pos');
+      console.log(scrollpos);
+      if (scrollpos) indexMenu.scrollTo(0, scrollpos);
+    }
 
     if (selected !== undefined) {
       const topOffset = selected.getBoundingClientRect().top;
       if (topOffset < 0 || topOffset > vh) {
-        indexMenu.scrollBy({left: 0, top: topOffset - vh / 3.0, behavior: "smooth"});
+        if (isIndexPage) {
+          scrollBy({left: 0, top: topOffset - vh / 3.0, behavior: "smooth"});
+        } else {
+          indexMenu.scrollBy({left: 0, top: topOffset - vh / 3.0, behavior: "smooth"});
+        }
       }
     }
 
   });
 
   window.onbeforeunload = function(e) {
-    localStorage.setItem('menu-scroll-pos', indexMenu.scrollTop );
+    if (!isIndexPage) {
+      localStorage.setItem('menu-scroll-pos', indexMenu.scrollTop );
+    }
   };
 
 </script>
 
     </div>
+    
 
     <div id="main_content">
     <header id="page_header">
