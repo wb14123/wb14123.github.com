@@ -3536,7 +3536,7 @@
       const topOffset = selected.getBoundingClientRect().top;
       if (topOffset < 0 || topOffset > vh) {
         if (isIndexPage) {
-          scrollBy({left: 0, top: topOffset - vh / 3.0, behavior: "smooth"});
+          window.scrollBy({left: 0, top: topOffset - vh / 3.0, behavior: "smooth"});
         } else {
           indexMenu.scrollBy({left: 0, top: topOffset - vh / 3.0, behavior: "smooth"});
         }
