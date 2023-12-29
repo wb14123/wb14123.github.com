@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> Update on RSS Brain to Find Related Articles with Machine Learning |  Bin Wang - My Personal Blog</title>
+    <title> Scala 2 Macro Tutorial |  Bin Wang - My Personal Blog</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
     <link rel="stylesheet" href="/static/css/asciinema-player.css" type="text/css" />
 
@@ -1928,7 +1928,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2023-12-29-Scala-Macro-Tutorial.html">Scala 2 Macro Tutorial <span class="publish-year">(2023)</span></a>
+        <div class="index-selected">Scala 2 Macro Tutorial <span class="publish-year">(2023)</span></div>
         
       
 
@@ -3006,7 +3006,7 @@
     <div class="index-entry index-post">
       
         
-        <div class="index-selected">Update on RSS Brain to Find Related Articles with Machine Learning <span class="publish-year">(2023)</span></div>
+        <a href="/2023-11-14-Update-On-RSS-Brain-to-Find-Related-Articles-with-Machine-Learning.html">Update on RSS Brain to Find Related Articles with Machine Learning <span class="publish-year">(2023)</span></a>
         
       
 
@@ -3583,88 +3583,411 @@
 
     <section id="page_content">
         <div id="content_table">
-  <h3>Table of Contents</h3><ol class="toc"><li><a href="#the-disadvantages-of-previous-algorithm">The Disadvantages of Previous Algorithm</a></li><li><a href="#word-and-document-embeddings">Word and Document Embeddings</a></li><li><a href="#select-a-model-to-use">Select a Model to Use</a></li><li><a href="#implementation-details-for-model-server">Implementation Details for Model Server</a></li><li><a href="#database-to-store-and-query-embeddings">Database to Store and Query Embeddings</a></li><li><a href="#result">Result</a></li></ol>
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#1-what-is-macro">1. What is Macro</a></li><li><a href="#2-how-to-write-a-macro">2. How to Write a Macro</a></li><li><a href="#3-project-setup-with-sbt">3. Project Setup with SBT</a></li><li><a href="#4-how-to-read-ast">4. How to Read AST</a></li><li><a href="#5-how-to-generate-tree">5. How to Generate Tree</a></li></ol>
 </div>
 
 <div id="article_content" class="">
 <article id="post">
   <header>
-    <h1>Update on RSS Brain to Find Related Articles with Machine Learning</h1>
+    <h1>Scala 2 Macro Tutorial</h1>
     
-      <p class="description">Posted on 14 Nov 2023, tagged <code>RSS Brain</code><code>Machine Learning</code><code>Nerual Network</code><code>Embeddings</code><code>Python</code></p>
+      <p class="description">Posted on 29 Dec 2023, tagged <code>Scala</code><code>macro</code><code>meta programming</code><code>AOP</code></p>
     
   </header>
 
-  <p>In the previous blog about RSS, <a href="/2022-12-03-How-RSS-Brain-Shows-Related-Articles.html">How RSS Brain Shows Related Articles</a>, I talked about how RSS Brain finds the related articles. I’ve updated the algorithm recently. This blog is about the details about the update. The basic idea is to replace tf-idf algorithm with text embeddings to represent the articles as vectors, and use ElastcSearch to store and query those vectors.</p>
+  <p>Macros are powerful but complex. Especially when the language itself like Scala is already complex. The lack of learning resource and documents makes it more so. In this article, I’ll write down some of my learnings and hopefully it can help someone else who is new to it as well. I’ll keep the examples small and simple so it’s easier to understand. Since I’m still learning it, I may continue to update this article on the way, or write a new article if there is a big topic. Either way, I’ll make notes here so you know there are updates.</p>
 
-<h2 id="the-disadvantages-of-previous-algorithm">The Disadvantages of Previous Algorithm</h2>
+<p>Scala’s macro syntax and APIs can be different from version to version. Especially it’s almost completely redesigned in Scala 3. This article only targets Scala 2 and I’ve only tested the examples on Scala 2.13.</p>
 
-<p>First let’s do a quick revisit on the algorithm before the update: it’s using tf-idf algorithm. Which is basically an algorithm to represent each document as a vector by using the words’ frequency in it. It’s an algorithm that is easy to understand, and works well enough in practice to power lots of searching engines for a long time. However, it has a few shortcomings:</p>
+<h2 id="1-what-is-macro">1. What is Macro</h2>
 
-<p>First, it doesn’t understand the meaning of the word. A word can mean different things based on context, order, combinations and so on. Different words can also have the same meaning. Word frequency along doesn’t catch that.</p>
+<p>The basic idea of macro is to modify the code with code. For example, let’s imagine a macro <code class="language-plaintext highlighter-rouge">plusToMinus</code> that modifies all the plus options of integers to minus:</p>
 
-<p>Second, “word” needs to be defined. Which is a relatively easy task for languages like English, since it has a built-in word separator character (space). However, for languages like Chinese, there is no obvious way to separate the words. The performance of tf-idf algorithm largely depends on the performance of word separating algorithm, which itself is much more complex than tf-idf and often involves machine learning as well. Even for languages like English, in order to minimize the first disadvantage above, the words are usually broke down so that some similar words can be matched.</p>
-
-<p>Last, which is an extension of the first disadvantage: it’s hard to do multi language matches. Word frequency along doesn’t know that different words in different languages can mean the same thing. Of course you can translate the document to other languages and index the translated documents, but it doesn’t scale well when you need to support more and more languages. And translation algorithms are usually much more complex than tf-idf, and mostly use machine learning too.</p>
-
-<h2 id="word-and-document-embeddings">Word and Document Embeddings</h2>
-
-<p>With the advancement of machine learning, a new method to represent words as vectors has been developed in the paper <a href="https://arxiv.org/abs/1301.3781">Efficient Estimation of Word Representations in Vector Space</a>. The vector is called word embedding. Then based on the idea, <a href="https://arxiv.org/abs/1405.4053">Distributed Representations of Sentences and Documents</a> explores representing paragraphs as a vectors. Without go into the details, the basic idea is to get a layer from neural network for a NLP task.</p>
-
-<p>For example, if we have a neural network to predict the nth word given previous words, then we may have a neural network like this:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>word[1]   --&gt; vector[1]
-word[2]   --&gt; vector[2]    --&gt; layer2 --&gt; ... -&gt; classifier -&gt; output
-...
-word[n-1] --&gt; vector[n-1]
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plusToMinus</span> <span class="o">{</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">}</span>
 </code></pre></div></div>
 
-<p>Words are mapped to vectors at the first layer, with something like</p>
+<p>This will be compiled to <code class="language-plaintext highlighter-rouge">1 - 1</code> and ends up as <code class="language-plaintext highlighter-rouge">0</code>.</p>
 
-\[v = w * W + b\]
+<p>Of cause this is not a practical example and not all the languages’ macro system can do it. But this demonstrate what macros can do where normal code cannot. Here is a more practical example: when we log something in different log levels, the API usually looks like this:</p>
 
-<p>Which \(v\) is the vector, \(w\) is the one-hot encoded word. And matrix \(W\) and \(b\) is the trained parameters. There are many other parameters in the later layers of the neural network but we don’t care. We only take \(W\) and \(b\) so that we can compute the vector for any word. With this method, the represented vectors can measure similarities between words by computing similarity of the vectors. Also surprisingly, quoted from the paper <a href="https://arxiv.org/abs/1301.3781">Efficient Estimation of Word Representations in Vector Space</a>: “To find a word that is similar to small in the same sense as biggest is similar to big, we can simply compute vector \(X = vector(biggest) − vector(big) + vector(small)\).” What a beautiful result!</p>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">v</span> <span class="k">=</span> <span class="o">...</span>
+<span class="nv">logger</span><span class="o">.</span><span class="py">info</span><span class="o">(</span><span class="n">s</span><span class="s">"This is a info log. Value: $v"</span><span class="o">)</span>
+<span class="nv">logger</span><span class="o">.</span><span class="py">warn</span><span class="o">(</span><span class="n">s</span><span class="s">"This is a warning. Value: $v"</span><span class="o">)</span>
+</code></pre></div></div>
 
-<p>I was aware of this research not long after it came out. I believe some commercial search engines started to use it since then. But the ecosystem like models, tools, databases really picked up since GPT3 came out. So recently, I decided to use it in RSS Brain because how easy to do it nowadays.</p>
+<p>However, with this kind of interface, the string <code class="language-plaintext highlighter-rouge">s"..."</code> need to be computed before passed in to the method, which is a waste since not all the strings need to be logged based on the log level configuration. Especially when <code class="language-plaintext highlighter-rouge">v.toString</code> needs a lot of resource to compute. So in language like Java, the values are usually passed in as separate parameters:</p>
 
-<h2 id="select-a-model-to-use">Select a Model to Use</h2>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">v</span> <span class="o">=</span> <span class="o">...</span>
+<span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"This is a info log. Value: {}"</span><span class="o">,</span> <span class="n">v</span><span class="o">);</span>
+<span class="n">logger</span><span class="o">.</span><span class="na">warn</span><span class="o">(</span><span class="s">"This is a warning. Value: {}"</span><span class="o">,</span> <span class="n">v</span><span class="o">);</span>
+</code></pre></div></div>
 
-<p>The first step is to select a model to use. I think OpenAI may have the best model that is available to public. You cannot access the real model but there are APIs you can call to use the model. But I don’t like it for 2 reasons: First, I don’t like OpenAI as a company: it presents itself as a non-profit organization first with the goal to make AI accessible to everyone, then stopped publish models or even the algorithm details. Second, I don’t want vendor lock-in.</p>
+<p>Even though it resolves the problem, the interface is kind of awful. And not all the users know this kind of details so they may still just construct the string directly instead of pass in separate parameters. However, with the help of macros, you can still keep the logger interface in the intuitive way. As macros, <code class="language-plaintext highlighter-rouge">logger.info</code> and <code class="language-plaintext highlighter-rouge">logger.warn</code> can modify the code directly during the compile time. For example, it can modify the code like this:</p>
 
-<p>There is also Llama. But it’s not really a multilingual model. I see some attempts to train it on some other languages, but the result are not that good in my experience. The license of the model is not commercial friendly as well. And there is no easy to use API to get the embeddings.</p>
+<p>From</p>
 
-<p>At the end I found <a href="https://www.sbert.net/index.html">SentenceTransformers</a>. There are lots of <a href="https://www.sbert.net/docs/pretrained_models.html in the project">pretrained models</a>. After all I selected the model <code class="language-plaintext highlighter-rouge">paraphrase-multilingual-mpnet-base-v2</code> since it’s a multilingual model. But it’s called “sentence” transformers for a reason: there is a size limit on the length of document that you can feed in to the models. I ended up to just get the embeddings for the article title. I think it’s a good enough for my use case.</p>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">logger</span><span class="o">.</span><span class="py">info</span><span class="o">(</span><span class="n">s</span><span class="s">"This is a info log. Value: $v"</span><span class="o">)</span>
+</code></pre></div></div>
 
-<h2 id="implementation-details-for-model-server">Implementation Details for Model Server</h2>
+<p>To</p>
 
-<p>The library SentenceTransformer is very easy to use. However it’s implemented in Python so it needs a way to communicate with RSS Brain server, which is written in Scala. Since this is a computation heavy task, the first though is to have a buffer queue in between so that the Python program can process the articles in a speed it can handle. Kafka is a good choice for external task queue but I don’t think it worth the complexity to import another component into the system. So I created buffer queue at both end to avoid creating too many requests while maintain some parallelism. Here is what the whole architecture looks like:</p>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">if</span> <span class="o">(</span><span class="n">loggerLevel</span> <span class="o">&gt;=</span> <span class="nc">INFO</span><span class="o">)</span> <span class="o">{</span>
+  <span class="nf">println</span><span class="o">(</span><span class="n">s</span><span class="s">"This is a info log. Value: $v"</span><span class="o">)</span>
+<span class="o">}</span>
+</code></pre></div></div>
 
-<p><img src="/static/images/2023-11-14-Update-On-RSS-Brain-to-Find-Related-Articles-with-Machine-Learning/article-embedding-arch.png" alt="embedding-arch" /></p>
+<p>So that the actually string computation is not done unless log level is configured to print it.</p>
 
-<p>The green parts in the diagram means the workers in them can work concurrently. On the Scala side, it follows the pattern I experimented in <a href="/2023-08-27-Compare-Task-Processing-Approaches-in-Scala.html">Compare Task Processing Approaches in Scala</a>. On the Python side, it’s more tricky since Python’s async handling is far worth than Scala’s plain old Future, not to mention effect systems like Cats Effect. I may write another blog in the future about it.</p>
+<h2 id="2-how-to-write-a-macro">2. How to Write a Macro</h2>
 
-<p>The reason I go great detail into this relatively simple problem is that it represents a category of problems: problems that need Python to do some async work because of the library supports. For example, in the future, Python server may have more features like fetching Youtube transcriptions. The architecture to integrate it into RSS Brain would be the same.</p>
+<p>Different languages have different syntaxes to write a macro. On the simpler side, macros in C can only do text substitution. On the powerful side, Lisp languages can modify the AST (abstract syntax tree) very easily because the code itself is written as a tree structure. The macro in Scala is on the powerful side since it is able to modify the AST even though it may not be as intuitive as Lisp. There are multiple ways to do it. But essentially, the process it to take the current AST as input and output a new AST. The APIs of reading AST input is very similar to reflection APIs (and in fact, sometimes they share some APIs). Generating a new AST part is more complex. In the following sections, we will walk through how to setup a SBT project to write macros, how to read an AST and how to generate a new AST.</p>
 
-<h2 id="database-to-store-and-query-embeddings">Database to Store and Query Embeddings</h2>
+<h2 id="3-project-setup-with-sbt">3. Project Setup with SBT</h2>
 
-<p>There are a few vector databases that can store vectors and query nearest vectors if given one. ElasticSearch added vector fields support at 7.0 and approximate nearest neighbor search (ANN) at 8.0. Since RSS Brain is already using ElasticSearch heavily for searching, I can just use it without add another database into the dependency. It also supports machine learning models so that you don’t need to insert the embedding vectors from the outside world, but I find it’s not as flexible.</p>
+<p>In Scala, the implementation of macros and the use of macros need to be compiled separately. So if you are using SBT, they need to be in different sub projects. Here is an example of <code class="language-plaintext highlighter-rouge">build.sbt</code>:</p>
 
-<p>Once the vectors are inserted into ElastiSearch, it’s just an API call to get the most similar documents. The details of vector insert and query are in the <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/knn-search.html">ElasticSearch KNN search document</a>. One tricky part is that even though ElasticSearch supports <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/knn-search.html#_combine_approximate_knn_with_other_features">combining ANN search with other features like term searches (tf-idf algorithm)</a> by using a boost factor, it doesn’t work well unless you are willing to tune it. That’s because the embedding vector and term vector mean different things, and the similarity score is not really comparable. So I ended up enable vector search only for finding related articles, instead of combining with term searches.</p>
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">lazy</span> <span class="k">val</span> <span class="nv">root</span> <span class="k">=</span> <span class="o">(</span><span class="n">project</span> <span class="n">in</span> <span class="nf">file</span><span class="o">(</span><span class="s">"."</span><span class="o">))</span>
+  <span class="o">.</span><span class="py">aggregate</span><span class="o">(</span><span class="n">core</span><span class="o">,</span> <span class="n">coretest</span>
+  <span class="o">.</span><span class="py">settings</span><span class="o">(</span>
+    <span class="n">name</span> <span class="o">:=</span> <span class="s">"archmage"</span>
+  <span class="o">)</span>
 
-<h2 id="result">Result</h2>
+<span class="k">lazy</span> <span class="k">val</span> <span class="nv">core</span> <span class="k">=</span> <span class="o">(</span><span class="n">project</span> <span class="n">in</span> <span class="nf">file</span><span class="o">(</span><span class="s">"core"</span><span class="o">))</span>
+  <span class="o">.</span><span class="py">settings</span><span class="o">(</span>
+    <span class="n">name</span> <span class="o">:=</span> <span class="s">"core"</span><span class="o">,</span>
+    <span class="n">libraryDependencies</span> <span class="o">++=</span> <span class="nc">Seq</span><span class="o">(</span>
+      <span class="s">"org.scala-lang"</span> <span class="o">%</span> <span class="s">"scala-reflect"</span> <span class="o">%</span> <span class="s">"2.13.12"</span><span class="o">,</span>
+      <span class="s">"co.fs2"</span> <span class="o">%%</span> <span class="s">"fs2-core"</span> <span class="o">%</span> <span class="s">"3.9.3"</span><span class="o">,</span>
+    <span class="o">)</span>
+  <span class="o">)</span>
 
-<p>It’s actually hard to have some metrics for the performance of finding related articles. I don’t believe metrics like click rate, since it doesn’t necessarily show the articles are related. I think the only way for me is to review the results manually and compute the score based on it. But I don’t think it has much value since supporting multiple language along would make it much better than the previous algorithm. But if you are using RSS Brain, you can see the results yourself and let me know what you think about the new algorithm!</p>
+<span class="k">lazy</span> <span class="k">val</span> <span class="nv">coretest</span> <span class="k">=</span> <span class="o">(</span><span class="n">project</span> <span class="n">in</span> <span class="nf">file</span><span class="o">(</span><span class="s">"coretest"</span><span class="o">))</span>
+  <span class="o">.</span><span class="py">settings</span><span class="o">(</span>
+    <span class="n">name</span> <span class="o">:=</span> <span class="s">"core-test"</span>
+  <span class="o">)</span> <span class="n">dependsOn</span> <span class="n">core</span>
+</code></pre></div></div>
 
+<p>It creates two sub projects. You can implement the macros in <code class="language-plaintext highlighter-rouge">core</code> and use them in <code class="language-plaintext highlighter-rouge">coretest</code>.</p>
+
+<p>If you want to debug the generated code from macros, add debug flags to Scala like this in <code class="language-plaintext highlighter-rouge">build.sbt</code>:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">ThisBuild</span> <span class="o">/</span> <span class="n">scalacOptions</span> <span class="o">+=</span> <span class="s">"-Ymacro-debug-lite"</span>
+</code></pre></div></div>
+
+<h2 id="4-how-to-read-ast">4. How to Read AST</h2>
+
+<h3 id="41-read-macro-parameters">4.1 Read macro parameters:</h3>
+
+<p>Here is the basic syntax of a macro. First, define a macro implementation:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">macroImpl</span><span class="o">(</span><span class="n">c</span><span class="k">:</span> <span class="kt">blackbox.Context</span><span class="o">)(</span><span class="n">s</span><span class="k">:</span> <span class="kt">c.Expr</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span> <span class="k">:</span> <span class="kt">c.Expr</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="nf">println</span><span class="o">(</span><span class="nv">s</span><span class="o">.</span><span class="py">tree</span><span class="o">.</span><span class="py">symbol</span><span class="o">.</span><span class="py">fullName</span><span class="o">)</span>
+  <span class="n">s</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The first parameter <code class="language-plaintext highlighter-rouge">c: blackbox.Context</code> is a must have for a macro implementation. There is also a <code class="language-plaintext highlighter-rouge">whitebox.Context</code> but we will not cover it in this article. More details about whitebox can be found in <a href="https://docs.scala-lang.org/overviews/macros/blackbox-whitebox.html">the official document</a>.</p>
+
+<p>The remaining parameters of the implementation method are parameters for the macro. For example, if you want to take a parameter of type <code class="language-plaintext highlighter-rouge">String</code> for the macro, then the implementation of macro will take <code class="language-plaintext highlighter-rouge">c.Expr[String]</code> as a parameter, which <code class="language-plaintext highlighter-rouge">c.Expr[String]</code> is the tree representation of the macro’s <code class="language-plaintext highlighter-rouge">String</code> parameter. The same applies to the return type of the macro. You can also  use <code class="language-plaintext highlighter-rouge">c.Tree</code> instead of <code class="language-plaintext highlighter-rouge">c.Expr[T]</code>. They can be converted between each other, which we will see in section 4.4.</p>
+
+<p>This example prints out the variable name of the passed in parameter and return the parameter without modification. Note that the printing happens at compile time since that’s when the implementation of the macro is ran. Only the returned tree or <code class="language-plaintext highlighter-rouge">c.Expr</code> is used at run time. So this macro is not doing anything useful, it’s just a demo of how to read the input tree.</p>
+
+<p>Once we have the macro implementation, we can define the macro like this:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">macroTest</span><span class="o">(</span><span class="n">arg</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="n">macro</span> <span class="n">macroImpl</span>
+</code></pre></div></div>
+
+<p>Then we can use it in another (sub) project so that the compilation is separated:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">a</span> <span class="k">=</span> <span class="s">"abc"</span>
+<span class="nf">macroTest</span><span class="o">(</span><span class="n">a</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>It will print out the full name of <code class="language-plaintext highlighter-rouge">a</code> like this during compilation:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>me.binwang.archmage.coretest.MethodMetaTest.a
+</code></pre></div></div>
+
+<p>The API of <code class="language-plaintext highlighter-rouge">c.Expr</code> is very similar as reflection API. You can experiment with it by print out different things from it and see what you can get.</p>
+
+<h3 id="42-read-type-parameters">4.2 Read type parameters:</h3>
+
+<p>Macro can also take generic type as parameters. The example below takes a parameter of any type and print out its type at compile time.</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">macroImpl</span><span class="o">[</span><span class="kt">T:</span> <span class="kt">c.WeakTypeTag</span><span class="o">](</span><span class="n">c</span><span class="k">:</span> <span class="kt">blackbox.Context</span><span class="o">)(</span><span class="n">s</span><span class="k">:</span> <span class="kt">c.Expr</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span> <span class="k">:</span> <span class="kt">c.Expr</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="nf">println</span><span class="o">(</span><span class="nv">c</span><span class="o">.</span><span class="py">weakTypeOf</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span>
+  <span class="n">s</span>
+<span class="o">}</span>
+
+<span class="k">def</span> <span class="nf">macroTest</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">s</span><span class="k">:</span> <span class="kt">T</span><span class="o">)</span><span class="k">:</span> <span class="kt">T</span> <span class="o">=</span> <span class="n">macro</span> <span class="n">macroImpl</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span>
+</code></pre></div></div>
+
+<p>Which can be used like this:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">macroTest</span><span class="o">(</span><span class="s">"abc"</span><span class="o">)</span>
+<span class="nf">macroTest</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>The output during compilation will be:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>String
+Int
+</code></pre></div></div>
+
+<h3 id="43-read-implicit-parameters">4.3 Read implicit parameters:</h3>
+
+<p>Macro can have implicit parameters, but the macro implementation shouldn’t define them as implicit. Otherwise Scala compiler will give confusing errors. See <a href="https://github.com/scala/bug/issues/6494">this issue</a> for more details.</p>
+
+<p>In the following example, <code class="language-plaintext highlighter-rouge">macroTest</code> takes an implicit double variable and return it as the new generated tree:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">macroImpl</span><span class="o">(</span><span class="n">c</span><span class="k">:</span> <span class="kt">blackbox.Context</span><span class="o">)(</span><span class="n">s</span><span class="k">:</span> <span class="kt">c.Expr</span><span class="o">[</span><span class="kt">String</span><span class="o">])(</span><span class="n">num</span><span class="k">:</span> <span class="kt">c.Expr</span><span class="o">[</span><span class="kt">Double</span><span class="o">])</span> <span class="k">:</span> <span class="kt">c.Expr</span><span class="o">[</span><span class="kt">Double</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="nf">println</span><span class="o">(</span><span class="n">s</span><span class="s">"Name of implicit num: ${num.tree.symbol.fullName}"</span><span class="o">)</span>
+  <span class="n">num</span>
+<span class="o">}</span>
+
+<span class="k">def</span> <span class="nf">macroTest</span><span class="o">(</span><span class="n">s</span><span class="k">:</span> <span class="kt">String</span><span class="o">)(</span><span class="k">implicit</span> <span class="n">num</span><span class="k">:</span> <span class="kt">Double</span><span class="o">)</span><span class="k">:</span> <span class="kt">Double</span> <span class="o">=</span> <span class="n">macro</span> <span class="n">macroImpl</span>
+</code></pre></div></div>
+
+<p>Note how <code class="language-plaintext highlighter-rouge">num</code> in <code class="language-plaintext highlighter-rouge">macroImpl</code> doesn’t have any <code class="language-plaintext highlighter-rouge">implicit</code> definition.</p>
+
+<p>Then the test code:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">implicit</span> <span class="k">val</span> <span class="nv">num</span><span class="k">:</span> <span class="kt">Double</span> <span class="o">=</span> <span class="mf">1.1</span>
+<span class="nf">println</span><span class="o">(</span><span class="nf">macroTest</span><span class="o">(</span><span class="s">"abc"</span><span class="o">))</span>
+</code></pre></div></div>
+
+<p>It will print this during the compile time:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Name of implicit num: me.binwang.archmage.coretest.MethodMetaTest.num
+</code></pre></div></div>
+
+<p>And this during the run time:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1.1
+</code></pre></div></div>
+
+<h3 id="44-read-code-block-with-by-name-parameter">4.4 Read code block with by-name parameter</h3>
+
+<p>Macros can also take <a href="https://docs.scala-lang.org/tour/by-name-parameters.html">by-name parameter</a>. However, it needs to use <code class="language-plaintext highlighter-rouge">c.Tree</code> instead of <code class="language-plaintext highlighter-rouge">c.Expr</code> as parameter in the macro implementation:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">macroImpl</span><span class="o">(</span><span class="n">c</span><span class="k">:</span> <span class="kt">blackbox.Context</span><span class="o">)(</span><span class="n">s</span><span class="k">:</span> <span class="kt">c.Tree</span><span class="o">)</span> <span class="k">:</span> <span class="kt">c.Expr</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="nf">println</span><span class="o">(</span><span class="n">s</span><span class="o">)</span>
+  <span class="nv">c</span><span class="o">.</span><span class="py">Expr</span><span class="o">[</span><span class="kt">String</span><span class="o">](</span><span class="n">s</span><span class="o">)</span>
+<span class="o">}</span>
+
+<span class="k">def</span> <span class="nf">macroTest</span><span class="o">(</span><span class="n">s</span><span class="k">:</span> <span class="o">=&gt;</span> <span class="nc">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="n">macro</span> <span class="n">macroImpl</span>
+</code></pre></div></div>
+
+<p>See how <code class="language-plaintext highlighter-rouge">c.Tree</code> is converted to <code class="language-plaintext highlighter-rouge">c.Expr</code>. You can also convert <code class="language-plaintext highlighter-rouge">c.Expr</code> to <code class="language-plaintext highlighter-rouge">c.Tree</code> by using the <code class="language-plaintext highlighter-rouge">.tree</code> method, which we’ve seen in the examples above.</p>
+
+<p>Test it with this code:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">macroTest</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="nv">a</span> <span class="k">=</span> <span class="s">"a"</span>
+  <span class="k">val</span> <span class="nv">b</span> <span class="k">=</span> <span class="s">"b"</span>
+  <span class="nf">println</span><span class="o">(</span><span class="s">"hello!"</span><span class="o">)</span>
+  <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>It will print out this during compile time:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  val a: String = "a";
+  val b: String = "b";
+  scala.Predef.println("hello!");
+  a.+(b)
+}
+</code></pre></div></div>
+
+<h3 id="45-use-quasiquotes">4.5 Use Quasiquotes</h3>
+
+<p><a href="https://docs.scala-lang.org/overviews/quasiquotes/intro.html">Quasiquotes</a>, or <code class="language-plaintext highlighter-rouge">q"..."</code>, is a very powerful syntax for Scala macro. It can both match a tree and generate a tree. For example, the following code can match different parts of a if else clause to <code class="language-plaintext highlighter-rouge">c.Tree</code> variables:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">macroImpl</span><span class="o">(</span><span class="n">c</span><span class="k">:</span> <span class="kt">blackbox.Context</span><span class="o">)(</span><span class="n">s</span><span class="k">:</span> <span class="kt">c.Tree</span><span class="o">)</span><span class="k">:</span> <span class="kt">c.Tree</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="k">import</span> <span class="nn">c.universe._</span>
+  <span class="k">val</span> <span class="nv">q</span><span class="s">"if ($cond) $thenp else $elsep"</span> <span class="k">=</span> <span class="n">s</span>
+  <span class="nf">println</span><span class="o">(</span><span class="n">cond</span><span class="o">)</span>
+  <span class="nf">println</span><span class="o">(</span><span class="n">thenp</span><span class="o">)</span>
+  <span class="nf">println</span><span class="o">(</span><span class="n">elsep</span><span class="o">)</span>
+  <span class="n">q</span><span class="s">"$cond"</span>
+<span class="o">}</span>
+
+<span class="k">def</span> <span class="nf">macroTest</span><span class="o">(</span><span class="n">s</span><span class="k">:</span> <span class="o">=&gt;</span> <span class="nc">Any</span><span class="o">)</span><span class="k">:</span> <span class="kt">Any</span> <span class="o">=</span> <span class="n">macro</span> <span class="n">macroImpl</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">cond</code>, <code class="language-plaintext highlighter-rouge">thenp</code> and <code class="language-plaintext highlighter-rouge">elsep</code> are all matched parts from the input tree.</p>
+
+<p><code class="language-plaintext highlighter-rouge">q"$cond"</code> generates a new tree using the matched condition part of the tree. We will see more details in how to use quasiquotes to generate trees in section 5.4.</p>
+
+<p>Test it with this code:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">bigNum</span> <span class="k">=</span> <span class="mi">2</span>
+<span class="k">val</span> <span class="nv">smallNum</span> <span class="k">=</span> <span class="mi">1</span>
+<span class="k">val</span> <span class="nv">result</span> <span class="k">=</span> <span class="n">macroTest</span> <span class="o">{</span>
+  <span class="nf">if</span> <span class="o">(</span><span class="n">bigNum</span> <span class="o">&gt;</span> <span class="n">smallNum</span><span class="o">)</span> <span class="o">{</span>
+    <span class="s">"no surprise"</span>
+  <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+    <span class="s">"surprise!"</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+<span class="nf">println</span><span class="o">(</span><span class="n">result</span><span class="o">)</span>
+</code></pre></div></div>
+
+<p>During the compile time, it will print out the different parts of the tree that we have asked it to match:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bigNum.&gt;(smallNum)
+"no surprise"
+"surprise!"
+</code></pre></div></div>
+
+<p>And during the run time, it will print out the value of condition instead of either if or else clause:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>true
+</code></pre></div></div>
+
+<p>More examples about how to match the tree can be found in <a href="https://docs.scala-lang.org/overviews/quasiquotes/syntax-summary.html">the document</a>. Click on each example to see more details.</p>
+
+<h2 id="5-how-to-generate-tree">5. How to Generate Tree</h2>
+
+<h3 id="51-construct-tree-directly-with-api">5.1 Construct Tree Directly with API</h3>
+
+<p>An AST can be constructed from the classes that represent the tree. For example, a constant of string can be created by <code class="language-plaintext highlighter-rouge">Literal(Constant("I replaced you!"))</code>. The following example replace any string to <code class="language-plaintext highlighter-rouge">I replaced you</code>:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">macroImpl</span><span class="o">(</span><span class="n">c</span><span class="k">:</span> <span class="kt">blackbox.Context</span><span class="o">)(</span><span class="n">s</span><span class="k">:</span> <span class="kt">c.Expr</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span> <span class="k">:</span> <span class="kt">c.Expr</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="k">import</span> <span class="nn">c.universe._</span>
+  <span class="nv">c</span><span class="o">.</span><span class="py">Expr</span><span class="o">[</span><span class="kt">String</span><span class="o">](</span><span class="nc">Literal</span><span class="o">(</span><span class="nc">Constant</span><span class="o">(</span><span class="s">"I replaced you!"</span><span class="o">)))</span>
+<span class="o">}</span>
+
+<span class="k">def</span> <span class="nf">macroTest</span><span class="o">(</span><span class="n">s</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="n">macro</span> <span class="n">macroImpl</span>
+</code></pre></div></div>
+
+<p>With the code below, it will print <code class="language-plaintext highlighter-rouge">I replaced you!</code> instead of <code class="language-plaintext highlighter-rouge">abc</code>:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">println</span><span class="o">(</span><span class="nf">macroTest</span><span class="o">(</span><span class="s">"abc"</span><span class="o">))</span>
+</code></pre></div></div>
+
+<p>This is a very simple example. When the tree becomes larger and larger , it’s more and more difficult to construct a tree with this approach. It’s like a much worse version of lisp. So in the following sections, we will see some easier ways to construct a tree.</p>
+
+<h3 id="52-use-cparse">5.2 Use <code class="language-plaintext highlighter-rouge">c.parse</code>:</h3>
+
+<p><code class="language-plaintext highlighter-rouge">c.parse</code> can parse a string as Scala code and generate an AST. For example, the following macro returns the variable name of a <code class="language-plaintext highlighter-rouge">String</code>:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">macroImpl</span><span class="o">(</span><span class="n">c</span><span class="k">:</span> <span class="kt">blackbox.Context</span><span class="o">)(</span><span class="n">s</span><span class="k">:</span> <span class="kt">c.Expr</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span> <span class="kt">c.Expr</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="nv">name</span> <span class="k">=</span> <span class="nv">s</span><span class="o">.</span><span class="py">tree</span><span class="o">.</span><span class="py">symbol</span><span class="o">.</span><span class="py">fullName</span>
+  <span class="nv">c</span><span class="o">.</span><span class="py">Expr</span><span class="o">(</span><span class="nv">c</span><span class="o">.</span><span class="py">parse</span><span class="o">(</span><span class="n">s</span><span class="s">""" "Name of var is: $name" """</span><span class="o">))</span>
+<span class="o">}</span>
+
+<span class="k">def</span> <span class="nf">macroTest</span><span class="o">(</span><span class="n">s</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="n">macro</span> <span class="n">macroImpl</span>
+</code></pre></div></div>
+
+<p>Then use it like this:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">a</span> <span class="k">=</span> <span class="s">"abc"</span>
+<span class="nf">println</span><span class="o">(</span><span class="nf">macroTest</span><span class="o">(</span><span class="n">a</span><span class="o">))</span>
+</code></pre></div></div>
+
+<p>It will print out:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Name of var is: me.binwang.archmage.coretest.MethodMetaTest.a
+</code></pre></div></div>
+
+<p>Note the output is at run time instead of compile time like the examples in the last section, because we’ve replaced the tree with new code.</p>
+
+<h3 id="53-use-reify">5.3 Use <code class="language-plaintext highlighter-rouge">reify</code></h3>
+
+<p><code class="language-plaintext highlighter-rouge">c.parse</code> is easy to use and understand. But when generating more and more code with it, it can be pretty messy since it is just a string. There is no syntax checks in IDE. Even worse, you cannot get any run time information to use in the generated tree.</p>
+
+<p><code class="language-plaintext highlighter-rouge">reify</code> is a much better option. You can write code as usual. The code in <code class="language-plaintext highlighter-rouge">reify</code> block is the code that will be generated. You can refer to another <code class="language-plaintext highlighter-rouge">Expr</code> (in the old tree) by using its <code class="language-plaintext highlighter-rouge">.splice</code> method. Here is an example to print out both the variable name and it’s value:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">macroImpl</span><span class="o">(</span><span class="n">c</span><span class="k">:</span> <span class="kt">blackbox.Context</span><span class="o">)(</span><span class="n">s</span><span class="k">:</span> <span class="kt">c.Expr</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span> <span class="kt">c.Expr</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="k">import</span> <span class="nn">c.universe._</span>
+  <span class="k">val</span> <span class="nv">name</span> <span class="k">=</span> <span class="nv">c</span><span class="o">.</span><span class="py">Expr</span><span class="o">(</span><span class="nv">c</span><span class="o">.</span><span class="py">parse</span><span class="o">(</span><span class="s">"\""</span> <span class="o">+</span> <span class="nv">s</span><span class="o">.</span><span class="py">tree</span><span class="o">.</span><span class="py">symbol</span><span class="o">.</span><span class="py">fullName</span> <span class="o">+</span> <span class="s">"\""</span><span class="o">))</span>
+  <span class="n">reify</span> <span class="o">{</span>
+    <span class="n">s</span><span class="s">"${name.splice}: ${s.splice}"</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">macroTest</code> and the test code is the same above. Running the test code will get output like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>me.binwang.archmage.coretest.MethodMetaTest.a: abc
+</code></pre></div></div>
+
+<h3 id="54-use-quasiquotes">5.4 Use Quasiquotes</h3>
+
+<p>As we’ve seen in section 4.5, <code class="language-plaintext highlighter-rouge">q"..."</code> can be used to match a tree. It can be used to generate a tree as well. For example, in the following code:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">macroImpl</span><span class="o">(</span><span class="n">c</span><span class="k">:</span> <span class="kt">blackbox.Context</span><span class="o">)(</span><span class="n">s</span><span class="k">:</span> <span class="kt">c.Tree</span><span class="o">)</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="k">import</span> <span class="nn">c.universe._</span>
+  <span class="k">val</span> <span class="nv">q</span><span class="s">"if ($cond) $thenp else $elsep"</span> <span class="k">=</span> <span class="n">s</span>
+  <span class="n">q</span><span class="s">"if ($cond) $elsep else $thenp"</span>
+<span class="o">}</span>
+
+<span class="k">def</span> <span class="nf">macroTest</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">s</span><span class="k">:</span> <span class="kt">T</span><span class="o">)</span><span class="k">:</span> <span class="kt">T</span> <span class="o">=</span> <span class="n">macro</span> <span class="n">macroImpl</span>
+</code></pre></div></div>
+
+<p>It uses the parts that have been matched by <code class="language-plaintext highlighter-rouge">q"..."</code> and generates a new tree using those parts. It swaps the if and else clause. Run it with this test code:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">macroTest</span><span class="o">(</span><span class="nf">if</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="nf">println</span><span class="o">(</span><span class="s">"a"</span><span class="o">)</span> <span class="k">else</span> <span class="nf">println</span><span class="o">(</span><span class="s">"b"</span><span class="o">))</span>
+</code></pre></div></div>
+
+<p>It will print <code class="language-plaintext highlighter-rouge">b</code> instead of <code class="language-plaintext highlighter-rouge">a</code>.</p>
+
+<h3 id="55-avoid-name-conflict">5.5 Avoid Name Conflict</h3>
+
+<p>When generating a new tree, we may generate some variables that have conflict names with the existing ones. Use <code class="language-plaintext highlighter-rouge">c.freshName</code> to get a unique name to avoid the conflict.</p>
+
+<h3 id="56-type-checked-and-unchecked-tree">5.6 Type Checked and Unchecked Tree</h3>
+
+<p>There are two kinds of AST in Scala’s internal compiler: type checked and unchecked. See more details in <a href="https://stackoverflow.com/questions/20936509/scala-macros-what-is-the-difference-between-typed-aka-typechecked-and-untyped">this Stack Overflow answer</a>. Some APIs can only accept either type checked or unchecked tree. And sometimes the compiler throws out weird errors if using the wrong type of tree. If that’s the case, try to use <code class="language-plaintext highlighter-rouge">c.untypecheck</code> and <code class="language-plaintext highlighter-rouge">c.typecheck</code> to covert trees.</p>
+
+<p>For example, here is some code that cannot be compiled:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">macroImpl</span><span class="o">(</span><span class="n">c</span><span class="k">:</span> <span class="kt">blackbox.Context</span><span class="o">)(</span><span class="n">blockTree</span><span class="k">:</span> <span class="kt">c.Tree</span><span class="o">)</span> <span class="k">:</span> <span class="kt">c.Expr</span><span class="o">[</span><span class="kt">Seq</span><span class="o">[</span><span class="kt">String</span><span class="o">]]</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="k">import</span> <span class="nn">c.universe._</span>
+  <span class="k">val</span> <span class="nv">block</span> <span class="k">=</span> <span class="nv">c</span><span class="o">.</span><span class="py">Expr</span><span class="o">[</span><span class="kt">Seq</span><span class="o">[</span><span class="kt">String</span><span class="o">]](</span><span class="n">blockTree</span><span class="o">)</span>
+  <span class="n">reify</span> <span class="o">{</span>
+    <span class="nc">Seq</span><span class="o">(</span><span class="s">"a"</span><span class="o">).</span><span class="py">flatMap</span><span class="o">{</span><span class="k">_</span> <span class="k">=&gt;</span> <span class="nv">block</span><span class="o">.</span><span class="py">splice</span><span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+
+<span class="k">def</span> <span class="nf">macroTest</span><span class="o">(</span><span class="n">blockTree</span><span class="k">:</span> <span class="o">=&gt;</span> <span class="nc">Seq</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span> <span class="kt">Seq</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="n">macro</span> <span class="n">macroImpl</span>
+
+<span class="c1">// Testing code in another sub project:</span>
+<span class="k">val</span> <span class="nv">s</span> <span class="k">=</span> <span class="s">"abc"</span>
+<span class="n">macroTest</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="nv">a</span> <span class="k">=</span> <span class="n">s</span>
+  <span class="nc">Seq</span><span class="o">(</span><span class="n">a</span><span class="o">)</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The compiler will throw error:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[error] Error while emitting XXX.scala
+[error] value a
+[error] one error found
+</code></pre></div></div>
+
+<p>To fix this, we need to convert <code class="language-plaintext highlighter-rouge">blockTree</code> to unchecked tree:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">macroImpl</span><span class="o">(</span><span class="n">c</span><span class="k">:</span> <span class="kt">blackbox.Context</span><span class="o">)(</span><span class="n">blockTree</span><span class="k">:</span> <span class="kt">c.Tree</span><span class="o">)</span> <span class="k">:</span> <span class="kt">c.Expr</span><span class="o">[</span><span class="kt">Seq</span><span class="o">[</span><span class="kt">String</span><span class="o">]]</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="k">import</span> <span class="nn">c.universe._</span>
+  <span class="k">val</span> <span class="nv">cleanedBlock</span> <span class="k">=</span> <span class="nv">c</span><span class="o">.</span><span class="py">untypecheck</span><span class="o">(</span><span class="nv">blockTree</span><span class="o">.</span><span class="py">duplicate</span><span class="o">)</span>
+  <span class="k">val</span> <span class="nv">block</span> <span class="k">=</span> <span class="nv">c</span><span class="o">.</span><span class="py">Expr</span><span class="o">[</span><span class="kt">Seq</span><span class="o">[</span><span class="kt">String</span><span class="o">]](</span><span class="n">cleanedBlock</span><span class="o">)</span>
+  <span class="n">reify</span> <span class="o">{</span>
+    <span class="nc">Seq</span><span class="o">(</span><span class="s">"a"</span><span class="o">).</span><span class="py">flatMap</span><span class="o">{</span><span class="k">_</span> <span class="k">=&gt;</span> <span class="nv">block</span><span class="o">.</span><span class="py">splice</span><span class="o">}</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
 
 </article>
 
 <footer id="post_footer">
   <table><tr>
     
-      <td id="prev"><a href="/2023-11-10-Index-Sidebar-on-My-Blog.html">Prev: Add Index Sidebar to My Blog</a></td>
+      <td id="prev"><a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html">Prev: ZFS Profiling on Arch Linux</a></td>
     
-    
-      <td id="next"><a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html" id="next">Next: Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster</a></td>
     
   </tr></table>
 </footer>
