@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> Recent Works |  Bin Wang - My Personal Blog</title>
+    <title> Prevent htmx Lazy Loaded Content From Reloading |  Bin Wang - My Personal Blog</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
     <link rel="stylesheet" href="/static/css/asciinema-player.css" type="text/css" />
 
@@ -1822,7 +1822,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2024-03-26-Prevent-HTMX-Lazy-Loaded-Content-From-Reload.html">Prevent htmx Lazy Loaded Content From Reloading <span class="publish-year">(2024)</span></a>
+        <div class="index-selected">Prevent htmx Lazy Loaded Content From Reloading <span class="publish-year">(2024)</span></div>
         
       
 
@@ -2584,7 +2584,7 @@
     <div class="index-entry index-post">
       
         
-        <div class="index-selected">Recent Works <span class="publish-year">(2013)</span></div>
+        <a href="/2013-05-15-Recent-Works.html">Recent Works <span class="publish-year">(2013)</span></a>
         
       
 
@@ -3631,67 +3631,102 @@
 
     <section id="page_content">
         <div id="content_table">
-  <h3>Table of Contents</h3><ol class="toc"><li><a href="#comment-everywhere">Comment Everywhere</a></li><li><a href="#linux-kernel">Linux Kernel</a></li><li><a href="#new-languages">New Languages</a></li><li><a href="#dd">D&amp;D</a></li><li><a href="#next-plans">Next Plans</a></li></ol>
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#1-problem">1. Problem</a></li><li><a href="#2-best-solution-swap-outer-html-instead-of-inner-html">2. Best Solution: Swap Outer HTML instead of Inner HTML</a></li><li><a href="#3-solution-b-dont-snapshot-the-whole-body">3. Solution B: Don’t Snapshot the Whole Body</a></li><li><a href="#4-solution-c-remove-htmx-action-attributes-before-taking-snapshot">4. Solution C: Remove htmx Action Attributes Before Taking Snapshot</a></li></ol>
 </div>
 
 <div id="article_content" class="">
 <article id="post">
   <header>
-    <h1>Recent Works</h1>
+    <h1>Prevent htmx Lazy Loaded Content From Reloading</h1>
     
-      <p class="description">Posted on 15 May 2013, tagged <code>work</code></p>
+      <p class="description">Posted on 26 Mar 2024, tagged <code>htmx</code><code>web</code><code>UI</code><code>Javascript</code></p>
     
   </header>
 
-  <p>There are nothing new in my blog these days. But I am working on something. Mainly learning things and working without new technique challenge (which means you can find information easily in the internet), so I will just list these work here, in case of I forget them some day.</p>
+  <p>This is a short article about some tricks in <a href="https://htmx.org">htmx</a>. I have more to say about htmx but I’ll save that to another blog. In this one, I will skip the basics about htmx and assume you already know that.</p>
 
-<h2 id="comment-everywhere">Comment Everywhere</h2>
+<h2 id="1-problem">1. Problem</h2>
 
-<p>I’m continue writing the chrome extension: Comment Everywhere. I did what I have planed: fetch Weibo (Chinese twitter) message which contains the URL. It is really a fun feature. But I need the feature to be user friendly. The things need to do mainly contains:</p>
+<p>I’ll briefly introduce two features of htmx in order the explain the problem. You can go to official website for more details about the features.</p>
 
-<ol>
-  <li>Weibo message need some time to load. The extension UI should notify user while the message is loading.</li>
-  <li>The app should be connected to Weibo, using Sina open API. So the user in Weibo cound be handled better.</li>
-  <li>If we just load the URLs which user have clicked, then to “top” section in the extension is useless.</li>
-</ol>
+<h3 id="11-browser-history">1.1. Browser History</h3>
 
-<p>And there is one technique thing about mongodb. I’m just using it as a newbie. And I don’t know what will happen when the data and user increased.</p>
+<p>htmx has <a href="https://htmx.org/docs/#history">a feature to interact with browser history</a>. Here is an example in the official document:</p>
 
-<h2 id="linux-kernel">Linux Kernel</h2>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">hx-get=</span><span class="s">"/blog"</span> <span class="na">hx-push-url=</span><span class="s">"true"</span><span class="nt">&gt;</span>Blog<span class="nt">&lt;/a&gt;</span>
+</code></pre></div></div>
 
-<p>I have read <em>Linux Kernel Development</em> by Robert Love. It introduces kernel APIs a lot. I’m thinking about reading <em>Understanding Linux Kernel</em> for more details. The most attractive thing in kernel is the module design. The other part of kernel handle all the other thing, you just need to focus on what you need to do. Think about scheduler or VFS. You need not to know when the scheduler is being called or when the file operations is happening. What you need to do is to fill the actions while the operations is happening.</p>
+<p>This will change the url in browser to <code class="language-plaintext highlighter-rouge">/blog</code> when you click the link and save a snapshot of current page into local storage. When you click back button in browser, htmx will try to find the cache in local storage, and swap it out so you don’t need to reload the whole page.</p>
 
-<p>And my simple patch about kconfig has been accepted. Though it is only a little change, it encouraged me. I’m planning to read more source and find what is going on about the current kernel development. But it seems too big and I don’t know where to start. If I can have a job about kernel, it will be perfect.</p>
+<h3 id="12-lazy-load">1.2. Lazy Load</h3>
 
-<h2 id="new-languages">New Languages</h2>
+<p>htmx sends requests when an event is triggered on an element. The rule is defined by <a href="https://htmx.org/attributes/hx-trigger/">hx-trigger</a> attribute. There are some special events can be used for lazy loading:</p>
 
-<p>I learned Go and write a simple application to fetch Weibo data. And I’m thinking about to learn erlang. It is said to be designed for the “concurrent world”. I have write some node.js code these days, and have some more thoughts about asynchronous and concurrence. They are a little mystery for me in the past. But after read some Linux kernel code and learn some new languages, I feel like I’m lifting the veil.</p>
+<ul>
+  <li>load - triggered on load (useful for lazy-loading something).</li>
+  <li>revealed - triggered when an element is scrolled into the viewport (also useful for lazy-loading).</li>
+  <li>intersect - fires once when an element first intersects the viewport.</li>
+</ul>
 
-<h2 id="dd">D&amp;D</h2>
+<p>However, when combined this with history support, the lazy loaded elements will be requested again when the pages are navigated in history. Here is an example:</p>
 
-<p>I’m wondering if it could be count as “work”. I really use some time to learn the rules. I’m thinking about to write a web app to play it. But what I need to do is to play it in the real world first.</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">hx-get=</span><span class="s">"/page1"</span> <span class="na">hx-push-url=</span><span class="s">"true"</span> <span class="na">hx-target=</span><span class="s">"#content"</span><span class="nt">&gt;</span>page1<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"content"</span> <span class="na">hx-get=</span><span class="s">"/content"</span> <span class="na">hx-trigger=</span><span class="s">"load"</span><span class="nt">&gt;&lt;/div&gt;</span>
+</code></pre></div></div>
 
-<h2 id="next-plans">Next Plans</h2>
+<p>When you click on <code class="language-plaintext highlighter-rouge">page1</code>, it will replace <code class="language-plaintext highlighter-rouge">#content</code> with the response from <code class="language-plaintext highlighter-rouge">/page1</code> and change the URL. However, when you click on back in browser, htmx will send a request to <code class="language-plaintext highlighter-rouge">/content</code> again even though it’s already in history cache, because technically, <code class="language-plaintext highlighter-rouge">#content</code> <strong>is</strong> loaded again so <code class="language-plaintext highlighter-rouge">hx-get</code> is triggered based on <code class="language-plaintext highlighter-rouge">hx-trigger</code> rule. This results a waste of resource and can sometimes make the webpage lost previous scroll position.</p>
 
-<ol>
-  <li>Continue writing <em>comment everywhere</em>.</li>
-  <li>Continue reading and understanding kernel code. Find what I could do to develop kernel.</li>
-  <li>Learn more about asynchronous and concurrence. There is <a href="https://www.kernel.org/pub/linux/kernel/people/paulmck/perfbook/perfbook.html">a good book</a>, I will read it.</li>
-  <li>Read <em>Concrete Mathematics</em>. I feel I’m a little weak on mathematics now.</li>
-  <li>If possible, play D&amp;D!</li>
-</ol>
+<p>In this article, I’ll show some tricks to prevent this. They are very simple once you know them but sometimes it’s just hard to get when you are new to the framework.</p>
 
-<p>I don’t know if I have time to do all of them. But I will do my best.</p>
+<h2 id="2-best-solution-swap-outer-html-instead-of-inner-html">2. Best Solution: Swap Outer HTML instead of Inner HTML</h2>
+
+<p>I think this is the best solution. It’s so simple that I don’t know why I didn’t get it earlier. Anyway, that’s why I write this blog so that it can help more people like me.</p>
+
+<p>By default, htmx swap the inner HTML of the element. So the <code class="language-plaintext highlighter-rouge">hx-trigger="load"</code> attribute is still there after the content is loaded and will be triggered again when load from history. The solution is to just let htmx swap the outer HTML instead. Using the same example, the code will be changed to this:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">hx-get=</span><span class="s">"/page1"</span> <span class="na">hx-push-url=</span><span class="s">"true"</span> <span class="na">hx-target=</span><span class="s">"#content"</span><span class="nt">&gt;</span>page1<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"content"</span> <span class="na">hx-get=</span><span class="s">"/content"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">hx-get=</span><span class="s">"/content"</span> <span class="na">hx-trigger=</span><span class="s">"load"</span> <span class="na">hx-target=</span><span class="s">"this"</span> <span class="na">hx-swap=</span><span class="s">"outerHTML"</span><span class="nt">&gt;&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
+
+<p>In the new implementation, we have another <code class="language-plaintext highlighter-rouge">div</code> tag inside <code class="language-plaintext highlighter-rouge">#content</code> to do the lazy load. After the response is loaded, it will swap out the whole <code class="language-plaintext highlighter-rouge">div</code> element so <code class="language-plaintext highlighter-rouge">hx-get</code> and <code class="language-plaintext highlighter-rouge">hx-trigger</code> are not there anymore when the snapshot is taken and loaded from history.</p>
+
+<p>As I said, this is the best solution in my mind and I think it fits all the cases. So if you only care about the solution, you can stop reading here. I record the following solutions simply because I figured them out earlier than this one.</p>
+
+<h2 id="3-solution-b-dont-snapshot-the-whole-body">3. Solution B: Don’t Snapshot the Whole Body</h2>
+
+<p>The solution above removes the htmx attributes. The solution in section tackles the problem in another direction: it prevents the element from loading again when go back in history.</p>
+
+<p>By default, htmx will take the snapshot of <code class="language-plaintext highlighter-rouge">body</code> and put it into history cache. That’s why when go back in history, the <code class="language-plaintext highlighter-rouge">load</code> event of the element is triggered again. To prevent it, we can let htmx only snapshot children of <code class="language-plaintext highlighter-rouge">#content</code>. <a href="https://htmx.org/docs/#specifying-history-snapshot-element">Here</a> is the official doc about how to do it. Using the same example, the code will be changed into:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">hx-get=</span><span class="s">"/page1"</span> <span class="na">hx-push-url=</span><span class="s">"true"</span> <span class="na">hx-target=</span><span class="s">"#content"</span><span class="nt">&gt;</span>page1<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"content-load"</span> <span class="na">hx-get=</span><span class="s">"/content"</span> <span class="na">hx-trigger=</span><span class="s">"load"</span> <span class="na">hx-target=</span><span class="s">"#content"</span><span class="nt">&gt;&lt;/div&gt;</span>&gt;
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"content"</span> <span class="na">hx-history-elt</span><span class="nt">&gt;&lt;/div&gt;</span>
+</code></pre></div></div>
+
+<p>Here we load the content with <code class="language-plaintext highlighter-rouge">#content-load</code> element. htmx will only swap out <code class="language-plaintext highlighter-rouge">#content</code> when we forward or go back in browser history since we added <code class="language-plaintext highlighter-rouge">hx-history-elt</code> on <code class="language-plaintext highlighter-rouge">#content</code>. This prevents <code class="language-plaintext highlighter-rouge">load</code> event from being triggered on <code class="language-plaintext highlighter-rouge">#content-load</code> so it will not send a new request.</p>
+
+<p>But this solution has great limitations: you need to change the snapshot element which is not always possible.</p>
+
+<h2 id="4-solution-c-remove-htmx-action-attributes-before-taking-snapshot">4. Solution C: Remove htmx Action Attributes Before Taking Snapshot</h2>
+
+<p>This is a solution that could work in theory but I didn’t test it, because I came up with the best solution when thinking about it.</p>
+
+<p>The idea is similar: we don’t want htmx action attributes like <code class="language-plaintext highlighter-rouge">hx-get</code> when we load the history. Other than swap the whole outerHTML, there is a htmx event you can catch in Javascript to remove the attribute before taking a snapshot:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">htmx</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">htmx:beforeHistorySave</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nb">document</span><span class="p">.</span><span class="nf">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">#content</span><span class="dl">'</span><span class="p">).</span><span class="nf">removeAttributes</span><span class="p">(</span><span class="dl">"</span><span class="s2">hx-get</span><span class="dl">"</span><span class="p">))</span>
+<span class="p">})</span>
+</code></pre></div></div>
 
 </article>
 
 <footer id="post_footer">
   <table><tr>
     
-      <td id="prev"><a href="/2013-04-02-More-About-Program-In-Shell-And-Function.html">Prev: More About Program In Shell And Function</a></td>
+      <td id="prev"><a href="/2024-03-19-Travel-Back-to-China.html">Prev: Travel Back to China</a></td>
     
-    
-      <td id="next"><a href="/2013-07-14-Build-Erlang-the-Rebar-Way.html" id="next">Next: Build Erlang the Rebar Way</a></td>
     
   </tr></table>
 </footer>

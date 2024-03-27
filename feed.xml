@@ -1,4 +1,79 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2024-03-19T20:10:10-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Travel Back to China</title><link href="https://www.binwang.me/2024-03-19-Travel-Back-to-China.html" rel="alternate" type="text/html" title="Travel Back to China" /><published>2024-03-19T00:00:00-04:00</published><updated>2024-03-19T00:00:00-04:00</updated><id>https://www.binwang.me/Travel-Back-to-China</id><content type="html" xml:base="https://www.binwang.me/2024-03-19-Travel-Back-to-China.html"><![CDATA[<p>After more than 4 years staying aboard without being able to go back to China because of Covid, I finally had the chance and spent this Chinese New Year at my hometown. Now I’ve come back to Toronto, it’s time to record it when my memory and feelings are still fresh.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2024-03-26T22:04:24-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Prevent htmx Lazy Loaded Content From Reloading</title><link href="https://www.binwang.me/2024-03-26-Prevent-HTMX-Lazy-Loaded-Content-From-Reload.html" rel="alternate" type="text/html" title="Prevent htmx Lazy Loaded Content From Reloading" /><published>2024-03-26T00:00:00-04:00</published><updated>2024-03-26T00:00:00-04:00</updated><id>https://www.binwang.me/Prevent-HTMX-Lazy-Loaded-Content-From-Reload</id><content type="html" xml:base="https://www.binwang.me/2024-03-26-Prevent-HTMX-Lazy-Loaded-Content-From-Reload.html"><![CDATA[<p>This is a short article about some tricks in <a href="https://htmx.org">htmx</a>. I have more to say about htmx but I’ll save that to another blog. In this one, I will skip the basics about htmx and assume you already know that.</p>
+
+<h2 id="1-problem">1. Problem</h2>
+
+<p>I’ll briefly introduce two features of htmx in order the explain the problem. You can go to official website for more details about the features.</p>
+
+<h3 id="11-browser-history">1.1. Browser History</h3>
+
+<p>htmx has <a href="https://htmx.org/docs/#history">a feature to interact with browser history</a>. Here is an example in the official document:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">hx-get=</span><span class="s">"/blog"</span> <span class="na">hx-push-url=</span><span class="s">"true"</span><span class="nt">&gt;</span>Blog<span class="nt">&lt;/a&gt;</span>
+</code></pre></div></div>
+
+<p>This will change the url in browser to <code class="language-plaintext highlighter-rouge">/blog</code> when you click the link and save a snapshot of current page into local storage. When you click back button in browser, htmx will try to find the cache in local storage, and swap it out so you don’t need to reload the whole page.</p>
+
+<h3 id="12-lazy-load">1.2. Lazy Load</h3>
+
+<p>htmx sends requests when an event is triggered on an element. The rule is defined by <a href="https://htmx.org/attributes/hx-trigger/">hx-trigger</a> attribute. There are some special events can be used for lazy loading:</p>
+
+<ul>
+  <li>load - triggered on load (useful for lazy-loading something).</li>
+  <li>revealed - triggered when an element is scrolled into the viewport (also useful for lazy-loading).</li>
+  <li>intersect - fires once when an element first intersects the viewport.</li>
+</ul>
+
+<p>However, when combined this with history support, the lazy loaded elements will be requested again when the pages are navigated in history. Here is an example:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">hx-get=</span><span class="s">"/page1"</span> <span class="na">hx-push-url=</span><span class="s">"true"</span> <span class="na">hx-target=</span><span class="s">"#content"</span><span class="nt">&gt;</span>page1<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"content"</span> <span class="na">hx-get=</span><span class="s">"/content"</span> <span class="na">hx-trigger=</span><span class="s">"load"</span><span class="nt">&gt;&lt;/div&gt;</span>
+</code></pre></div></div>
+
+<p>When you click on <code class="language-plaintext highlighter-rouge">page1</code>, it will replace <code class="language-plaintext highlighter-rouge">#content</code> with the response from <code class="language-plaintext highlighter-rouge">/page1</code> and change the URL. However, when you click on back in browser, htmx will send a request to <code class="language-plaintext highlighter-rouge">/content</code> again even though it’s already in history cache, because technically, <code class="language-plaintext highlighter-rouge">#content</code> <strong>is</strong> loaded again so <code class="language-plaintext highlighter-rouge">hx-get</code> is triggered based on <code class="language-plaintext highlighter-rouge">hx-trigger</code> rule. This results a waste of resource and can sometimes make the webpage lost previous scroll position.</p>
+
+<p>In this article, I’ll show some tricks to prevent this. They are very simple once you know them but sometimes it’s just hard to get when you are new to the framework.</p>
+
+<h2 id="2-best-solution-swap-outer-html-instead-of-inner-html">2. Best Solution: Swap Outer HTML instead of Inner HTML</h2>
+
+<p>I think this is the best solution. It’s so simple that I don’t know why I didn’t get it earlier. Anyway, that’s why I write this blog so that it can help more people like me.</p>
+
+<p>By default, htmx swap the inner HTML of the element. So the <code class="language-plaintext highlighter-rouge">hx-trigger="load"</code> attribute is still there after the content is loaded and will be triggered again when load from history. The solution is to just let htmx swap the outer HTML instead. Using the same example, the code will be changed to this:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">hx-get=</span><span class="s">"/page1"</span> <span class="na">hx-push-url=</span><span class="s">"true"</span> <span class="na">hx-target=</span><span class="s">"#content"</span><span class="nt">&gt;</span>page1<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"content"</span> <span class="na">hx-get=</span><span class="s">"/content"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">hx-get=</span><span class="s">"/content"</span> <span class="na">hx-trigger=</span><span class="s">"load"</span> <span class="na">hx-target=</span><span class="s">"this"</span> <span class="na">hx-swap=</span><span class="s">"outerHTML"</span><span class="nt">&gt;&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
+
+<p>In the new implementation, we have another <code class="language-plaintext highlighter-rouge">div</code> tag inside <code class="language-plaintext highlighter-rouge">#content</code> to do the lazy load. After the response is loaded, it will swap out the whole <code class="language-plaintext highlighter-rouge">div</code> element so <code class="language-plaintext highlighter-rouge">hx-get</code> and <code class="language-plaintext highlighter-rouge">hx-trigger</code> are not there anymore when the snapshot is taken and loaded from history.</p>
+
+<p>As I said, this is the best solution in my mind and I think it fits all the cases. So if you only care about the solution, you can stop reading here. I record the following solutions simply because I figured them out earlier than this one.</p>
+
+<h2 id="3-solution-b-dont-snapshot-the-whole-body">3. Solution B: Don’t Snapshot the Whole Body</h2>
+
+<p>The solution above removes the htmx attributes. The solution in section tackles the problem in another direction: it prevents the element from loading again when go back in history.</p>
+
+<p>By default, htmx will take the snapshot of <code class="language-plaintext highlighter-rouge">body</code> and put it into history cache. That’s why when go back in history, the <code class="language-plaintext highlighter-rouge">load</code> event of the element is triggered again. To prevent it, we can let htmx only snapshot children of <code class="language-plaintext highlighter-rouge">#content</code>. <a href="https://htmx.org/docs/#specifying-history-snapshot-element">Here</a> is the official doc about how to do it. Using the same example, the code will be changed into:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">hx-get=</span><span class="s">"/page1"</span> <span class="na">hx-push-url=</span><span class="s">"true"</span> <span class="na">hx-target=</span><span class="s">"#content"</span><span class="nt">&gt;</span>page1<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"content-load"</span> <span class="na">hx-get=</span><span class="s">"/content"</span> <span class="na">hx-trigger=</span><span class="s">"load"</span> <span class="na">hx-target=</span><span class="s">"#content"</span><span class="nt">&gt;&lt;/div&gt;</span>&gt;
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"content"</span> <span class="na">hx-history-elt</span><span class="nt">&gt;&lt;/div&gt;</span>
+</code></pre></div></div>
+
+<p>Here we load the content with <code class="language-plaintext highlighter-rouge">#content-load</code> element. htmx will only swap out <code class="language-plaintext highlighter-rouge">#content</code> when we forward or go back in browser history since we added <code class="language-plaintext highlighter-rouge">hx-history-elt</code> on <code class="language-plaintext highlighter-rouge">#content</code>. This prevents <code class="language-plaintext highlighter-rouge">load</code> event from being triggered on <code class="language-plaintext highlighter-rouge">#content-load</code> so it will not send a new request.</p>
+
+<p>But this solution has great limitations: you need to change the snapshot element which is not always possible.</p>
+
+<h2 id="4-solution-c-remove-htmx-action-attributes-before-taking-snapshot">4. Solution C: Remove htmx Action Attributes Before Taking Snapshot</h2>
+
+<p>This is a solution that could work in theory but I didn’t test it, because I came up with the best solution when thinking about it.</p>
+
+<p>The idea is similar: we don’t want htmx action attributes like <code class="language-plaintext highlighter-rouge">hx-get</code> when we load the history. Other than swap the whole outerHTML, there is a htmx event you can catch in Javascript to remove the attribute before taking a snapshot:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">htmx</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">htmx:beforeHistorySave</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nb">document</span><span class="p">.</span><span class="nf">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">#content</span><span class="dl">'</span><span class="p">).</span><span class="nf">removeAttributes</span><span class="p">(</span><span class="dl">"</span><span class="s2">hx-get</span><span class="dl">"</span><span class="p">))</span>
+<span class="p">})</span>
+</code></pre></div></div>]]></content><author><name></name></author><category term="htmx" /><category term="web" /><category term="UI" /><category term="Javascript" /><summary type="html"><![CDATA[This is a short article about some tricks in htmx. I have more to say about htmx but I’ll save that to another blog. In this one, I will skip the basics about htmx and assume you already know that.]]></summary></entry><entry><title type="html">Travel Back to China</title><link href="https://www.binwang.me/2024-03-19-Travel-Back-to-China.html" rel="alternate" type="text/html" title="Travel Back to China" /><published>2024-03-19T00:00:00-04:00</published><updated>2024-03-19T00:00:00-04:00</updated><id>https://www.binwang.me/Travel-Back-to-China</id><content type="html" xml:base="https://www.binwang.me/2024-03-19-Travel-Back-to-China.html"><![CDATA[<p>After more than 4 years staying aboard without being able to go back to China because of Covid, I finally had the chance and spent this Chinese New Year at my hometown. Now I’ve come back to Toronto, it’s time to record it when my memory and feelings are still fresh.</p>
 
 <h2 id="before-we-go">Before We Go</h2>
 
@@ -2343,59 +2418,4 @@ val transactionDecodedPayload = parser.parse(transactionDecodedPayloadStr).flatM
 
 <h2 id="5-other-thoughts">5. Other Thoughts</h2>
 
-<p>As I said about a <a href="/2020-11-08-DNS-Resolving-Bug-in-iOS-14.html">previous blog about an iOS bug</a>, I really hate Apple’s close ecosystem. But Apple’s hardware is good and has a large user space, so we cannot avoid it. Hopefully Android can be better at permission management and other mobile OS can also catch up.</p>]]></content><author><name></name></author><category term="iOS" /><category term="Apple" /><category term="In App Purchase" /><category term="Scala" /><category term="Java" /><category term="Programming" /><summary type="html"><![CDATA[When you write an app for iOS, publish it to Apple App Store and want to sell something within it, Apple makes it mandatory to use its own in app purchase framework for non consumable items and subscriptions. If the app has a server, it’s very usual that the server wants to know the payment events and have some followup logic with them. But how to do that? There is always an option to let the app send a request to server, but anyone can use the same endpoint to make false claims. To prevent this, Apple has a server to server notification mechanism: Instead the app itself, a server from Apple will send a request to your server to notify the payment events. Since the message is signed by Apple, you can make sure no one else can fake it by verifying the signature.]]></summary></entry><entry><title type="html">A Library to Make It Easier to Use Scala with gRPC</title><link href="https://www.binwang.me/2022-05-02-A-Library-to-Make-It-Easier-to-Use-Scala-with-GRPC.html" rel="alternate" type="text/html" title="A Library to Make It Easier to Use Scala with gRPC" /><published>2022-05-02T00:00:00-04:00</published><updated>2022-05-02T00:00:00-04:00</updated><id>https://www.binwang.me/A-Library-to-Make-It-Easier-to-Use-Scala-with-GRPC</id><content type="html" xml:base="https://www.binwang.me/2022-05-02-A-Library-to-Make-It-Easier-to-Use-Scala-with-GRPC.html"><![CDATA[<p><em>This article describes why I created the library <a href="https://github.com/wb14123/scala2grpc">Scala2grpc</a>.</em></p>
-
-<p><a href="https://grpc.io/">gPRC</a> is a Remote Procedure Call (RPC) framework made by Google. It uses a domain specific language (DSL) to define the APIs, and provides tools for lots of languages to generate code for both servers and clients. The generated code includes models and API interfaces. The developer can create a gRPC server by implementing the generated interfaces. There are lots of examples in the official document so I’ll not spend more time on the details.</p>
-
-<p>It has lots of advantages compared to traditional HTTP APIs that encode payloads as JSON or XML. Just to name a few: it’s type safe so there are less places to make errors; it has a schema so causes less confusing when communicate APIs between developers; it’s more efficient on both serialization and translation. Because of the advantages and the big name behind it, it’s very popular, especially for mobile apps because of the good client support.</p>
-
-<p>However, I feel the framework is very invasive: models are usually the foundations of a program. With gRPC, the models are generated by the framework, as well as the interfaces. This makes the whole program depends on the framework very heavily. Here is an example:</p>
-
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// ExampleService is generated by gRPC</span>
-<span class="k">class</span> <span class="nc">ExampleServiceImpl</span><span class="o">()</span> <span class="k">extends</span> <span class="nc">ExampleService</span> <span class="o">{</span>
-	<span class="c1">// ExampleInput and ExampleOutput are both generated by gRPC.</span>
-	<span class="k">def</span> <span class="nf">exampleAPI</span><span class="o">(</span><span class="n">input</span> <span class="nc">ExampleInput</span><span class="o">)</span><span class="k">:</span> <span class="kt">ExampleOut</span> <span class="o">=</span> <span class="o">{</span>
-		<span class="o">...</span>
-  <span class="o">}</span>
-<span class="o">}</span>
-
-</code></pre></div></div>
-
-<p>It’s more invasive than most of the (non RPC) libraries: for most of other libraries, you can define the interface and use those libraries to fill in the implementations, so when you change a library you don’t need to change other parts of the code.</p>
-
-<p>Maybe sometimes it doesn’t matter too much: say you are Google and this framework is so fundamental in the services that no one is gonna to change it. But if you don’t like it, a way to work around this is to define the business logic at another place, and invoke those native classes and methods in the implementation of the gRPC generated interfaces. The logic in these implementations should be as simple as possible, usually just the invoking of methods and the converting between gRPC models and native models. Here is an example of this approach:</p>
-
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-<span class="c1">// define natvie classes</span>
-<span class="k">case</span> <span class="k">class</span> <span class="nc">MyInput</span><span class="o">(...)</span>
-<span class="k">case</span> <span class="k">class</span> <span class="nc">MyOutput</span><span class="o">(...)</span>
-
-<span class="k">class</span> <span class="nc">MyService</span><span class="o">()</span> <span class="o">{</span>
-	<span class="k">def</span> <span class="nf">myAPI</span><span class="o">(</span><span class="n">input</span> <span class="nc">MyInput</span><span class="o">)</span><span class="k">:</span> <span class="kt">MyOutput</span> <span class="o">=</span> <span class="o">{</span>
-		<span class="o">...</span>
-	<span class="o">}</span>
-<span class="o">}</span>
-
-
-<span class="c1">// implement gRPC interfaces</span>
-<span class="c1">// ExampleService is generated by gRPC</span>
-<span class="k">class</span> <span class="nc">ExampleServiceImpl</span><span class="o">(</span><span class="k">val</span> <span class="nv">myService</span><span class="k">:</span> <span class="kt">MyService</span><span class="o">)</span> <span class="k">extends</span> <span class="nc">ExampleService</span> <span class="o">{</span>
-
-	<span class="c1">// ExampleInput and ExampleOutput are both generated by gRPC.</span>
-	<span class="k">def</span> <span class="nf">exampleAPI</span><span class="o">(</span><span class="n">input</span> <span class="nc">ExampleInput</span><span class="o">)</span><span class="k">:</span> <span class="kt">ExampleOut</span> <span class="o">=</span> <span class="o">{</span>
-		<span class="k">val</span> <span class="nv">myInput</span> <span class="k">=</span> <span class="nf">convertFromGRPC</span><span class="o">(</span><span class="n">input</span><span class="o">)</span>
-		<span class="k">val</span> <span class="nv">myOutput</span> <span class="k">=</span> <span class="nv">myService</span><span class="o">.</span><span class="py">myAPI</span><span class="o">(</span><span class="n">myInput</span><span class="o">)</span>
-		<span class="nf">convertToGRPC</span><span class="o">(</span><span class="n">myOutput</span><span class="o">)</span>
-  <span class="o">}</span>
-<span class="o">}</span>
-
-<span class="c1">// implement convertFromGRPC ...</span>
-<span class="c1">// implement convertToGRPC ...</span>
-
-</code></pre></div></div>
-
-<p>However, this results lots of repeated works, especially for the converting between gRPC models and native models.</p>
-
-<p>So here is where the sbt plugin Scala2grpc I’ve written comes in: it will generate all the proto files from the native Scala classes, and also generates the classes to convert between native models and gPRC models, and the classes to implement the gPRC interfaces. For example, in the example above, you only needs to write the code for <code class="language-plaintext highlighter-rouge">MyInput</code>, <code class="language-plaintext highlighter-rouge">MyOutput</code> and <code class="language-plaintext highlighter-rouge">MyService</code>, the generation of the proto files are handled by Scala2grpc, as well as <code class="language-plaintext highlighter-rouge">ExampleServiceImpl</code>, <code class="language-plaintext highlighter-rouge">convertFromGRPC</code> and <code class="language-plaintext highlighter-rouge">convertToGRPC</code>.</p>
-
-<p>Sounds interesting? Check out the <a href="https://github.com/wb14123/scala2grpc">Github page</a> to see how to use it. Don’t forget to star it if you find it helpful!</p>]]></content><author><name></name></author><category term="Programming" /><category term="Scala" /><category term="gRPC" /><category term="backend" /><summary type="html"><![CDATA[This article describes why I created the library Scala2grpc.]]></summary></entry></feed>
+<p>As I said about a <a href="/2020-11-08-DNS-Resolving-Bug-in-iOS-14.html">previous blog about an iOS bug</a>, I really hate Apple’s close ecosystem. But Apple’s hardware is good and has a large user space, so we cannot avoid it. Hopefully Android can be better at permission management and other mobile OS can also catch up.</p>]]></content><author><name></name></author><category term="iOS" /><category term="Apple" /><category term="In App Purchase" /><category term="Scala" /><category term="Java" /><category term="Programming" /><summary type="html"><![CDATA[When you write an app for iOS, publish it to Apple App Store and want to sell something within it, Apple makes it mandatory to use its own in app purchase framework for non consumable items and subscriptions. If the app has a server, it’s very usual that the server wants to know the payment events and have some followup logic with them. But how to do that? There is always an option to let the app send a request to server, but anyone can use the same endpoint to make false claims. To prevent this, Apple has a server to server notification mechanism: Instead the app itself, a server from Apple will send a request to your server to notify the payment events. Since the message is signed by Apple, you can make sure no one else can fake it by verifying the signature.]]></summary></entry></feed>
