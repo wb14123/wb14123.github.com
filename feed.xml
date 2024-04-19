@@ -1,4 +1,46 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2024-04-11T11:10:44-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Prevent htmx Lazy Loaded Content From Reloading</title><link href="https://www.binwang.me/2024-03-26-Prevent-HTMX-Lazy-Loaded-Content-From-Reload.html" rel="alternate" type="text/html" title="Prevent htmx Lazy Loaded Content From Reloading" /><published>2024-03-26T00:00:00-04:00</published><updated>2024-03-26T00:00:00-04:00</updated><id>https://www.binwang.me/Prevent-HTMX-Lazy-Loaded-Content-From-Reload</id><content type="html" xml:base="https://www.binwang.me/2024-03-26-Prevent-HTMX-Lazy-Loaded-Content-From-Reload.html"><![CDATA[<p>This is a short article about some tricks in <a href="https://htmx.org">htmx</a>. I have more to say about htmx but I’ll save that to another blog. In this one, I will skip the basics about htmx and assume you already know that.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2024-04-18T20:52:03-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Make Flutter Web Apps More Native Like</title><link href="https://www.binwang.me/2024-04-18-Make-Flutter-Web-App-More-Native-Like.html" rel="alternate" type="text/html" title="Make Flutter Web Apps More Native Like" /><published>2024-04-18T00:00:00-04:00</published><updated>2024-04-18T00:00:00-04:00</updated><id>https://www.binwang.me/Make-Flutter-Web-App-More-Native-Like</id><content type="html" xml:base="https://www.binwang.me/2024-04-18-Make-Flutter-Web-App-More-Native-Like.html"><![CDATA[<h2 id="background">Background</h2>
+
+<p>I’ve built the client app of <a href="https://rssbrain.com">RSS Brain</a> with Flutter so that I don’t need to write different code for different platforms. It’s a pleasant to write Flutter code. And the app works good enough for Android and iOS. However, Flutter web support is a different story. You can feel the app is just not a normal website. I’m not satisfy with that. After attempts to make it more like a native web page and failed, I’m rewriting it with web technology again. That’s why the <a href="/2024-03-26-Prevent-HTMX-Lazy-Loaded-Content-From-Reload.html">last blog post</a> is about htmx.</p>
+
+<p>Before I move on, I’d like to record what I have tried, as a note for myself and hopefully it can also help someone else. It’s really sad this article as my first blog about Flutter, maybe the only one for a long time.</p>
+
+<h2 id="how-flutter-renders-a-web-page">How Flutter Renders a Web Page</h2>
+
+<p>In Flutter, you define the UI widgets in Dart. And Flutter the engine will parse the widgets and render it to different targets: iOS, Android, web and even Windows and Linux applications. In principle, I think that is a good idea and I really enjoy writing Flutter code compared to Javascript frameworks like AngularJS or ReactJS. It’s really unfortunate the web support is not good enough to me.</p>
+
+<p>The core problem is how Flutter renders the web pages. We all know a web page is represented in HTML. Even if we don’t write HTML directly but use a Javascript framework, it is manipulating HTML tags at the end. Flutter renders widgets to different HTML elements like <code class="language-plaintext highlighter-rouge">div</code> at first. However, it was later changed to draw all the widgets in a canvas. (The old render method is still available through <code class="language-plaintext highlighter-rouge">--web-render html</code> but I encountered multiple bugs and seems it’s given less and less care). This makes Flutter web apps doesn’t really behave like a native app, because a normal web page doesn’t have everything in a canvas.</p>
+
+<p>For the problems it brings, I found solutions for some of them. For some others, I didn’t find one. The sections below are some of the problems and some of the solutions.</p>
+
+<h2 id="make-text-selectable">Make Text Selectable</h2>
+
+<p>By default, the text in Flutter app is not selectable. You can use the <a href="https://api.flutter.dev/flutter/material/SelectableText-class.html">SeletableText</a> widget to make text selectable.</p>
+
+<h2 id="make-links-and-buttons-recognized-by-browser">Make Links And Buttons Recognized by Browser</h2>
+
+<p>I use <a href="https://vimium.github.io/">Vimium</a> heavily. But Flutter rendering all the content into a canvas makes the clickable links and buttons not recognized by the browser, thus makes Vimium not working. This is a deal breaker for me, especially it’s something I built that breaks my workflow.</p>
+
+<p>I found a solution at the end to make links and buttons recognizable. It can be done by enabling semantics support. Add this line in the main function after <code class="language-plaintext highlighter-rouge">runApp</code>:</p>
+
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SemanticsBinding</span><span class="o">.</span><span class="na">instance</span><span class="o">.</span><span class="na">ensureSemantics</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>This will render extra information in HTML instead of only drawing the canvas. It will make widgets like <code class="language-plaintext highlighter-rouge">Button</code> recognizable.</p>
+
+<p>However, if you are using something more lower level like <code class="language-plaintext highlighter-rouge">GestureDetector</code>, you need to wrap the widgets with <code class="language-plaintext highlighter-rouge">Semantics</code>. Here is an example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Semantics(button: true, enabled: true, child: myCustomClickable)
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">myCustomClickable</code> will be recognized as a clickable element with that.</p>
+
+<h2 id="scrolling-behaviour">Scrolling Behaviour</h2>
+
+<p>The scrolling feels choppy sometimes. And because the browser has no idea about the scroll position of the page, it just makes the scrolling behaviour feels different. For example, <a href="https://github.com/flutter/flutter/issues/69529">here</a> is a Github issue opened 4 years ago describing this kind of problem and is still not resolved. For me, this is the last straw to make me give up Flutter, since it breaks scrolling keyboard shortcuts of Vimium.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>The idea behind Flutter is great. I hope the web support can be better and better so that I can finally come back to it one day. But for now, I cannot wait for it and need to take another route. Stay tuned for more updates about that journey.</p>]]></content><author><name></name></author><category term="Flutter" /><category term="web" /><category term="UI" /><category term="Dart" /><summary type="html"><![CDATA[Background]]></summary></entry><entry><title type="html">Prevent htmx Lazy Loaded Content From Reloading</title><link href="https://www.binwang.me/2024-03-26-Prevent-HTMX-Lazy-Loaded-Content-From-Reload.html" rel="alternate" type="text/html" title="Prevent htmx Lazy Loaded Content From Reloading" /><published>2024-03-26T00:00:00-04:00</published><updated>2024-03-26T00:00:00-04:00</updated><id>https://www.binwang.me/Prevent-HTMX-Lazy-Loaded-Content-From-Reload</id><content type="html" xml:base="https://www.binwang.me/2024-03-26-Prevent-HTMX-Lazy-Loaded-Content-From-Reload.html"><![CDATA[<p>This is a short article about some tricks in <a href="https://htmx.org">htmx</a>. I have more to say about htmx but I’ll save that to another blog. In this one, I will skip the basics about htmx and assume you already know that.</p>
 
 <h2 id="1-problem">1. Problem</h2>
 
@@ -2248,174 +2290,4 @@ B: [0.5,  0.5,   0,   1]
 
 <p>Last but not least, I just want to write something and feel the happiness of coding. I really enjoy myself a lot while writing this project: coding, choosing the tech stack to use, setting up high availability cluster and database, and so on. Everything is so elegant because I can decide how to do it.</p>
 
-<p>While enjoy myself during the development of the project, I find the product is pretty useful as well. So I decided to share it, and if it benefits more people I’m happier. As I said at the beginning of the article, I’ll open source the whole project and allow non commercial usages when it’s ready. But at the mean time, you can pay a monthly fee to use the software. The reason of this payment mode is two fold: I don’t want this software to be flooded with terrible ads, but I still need some revenue to keep the infrastructure running (for both hardware cost and my time). So I want to set some barriers at first to limit the user base, so that the users can have a better experience. Hope you enjoy this app and let me know if you run into any issues or have any question.</p>]]></content><author><name></name></author><category term="RSS" /><category term="project" /><category term="RSS Brain" /><category term="digital life" /><category term="news" /><summary type="html"><![CDATA[I’ve written yet another RSS Reader called RSS Brain recently. If you just want to take a quick look at the main features and try it, the official website is the best place to start. Though most of the main features are already finished and I’ve used it personally for a few months, be aware it’s still in beta stage and hasn’t been tested by a larger group yet. So please let me know if you run into any issues. I will open source it as well in the future (for non commercial usage) but it’s not ready yet for now.]]></summary></entry><entry><title type="html">Handle Apple In-App-Purchase Server Notification with Scala/Java</title><link href="https://www.binwang.me/2022-08-20-Apple-In-App-Purchase-Server-to-Server-Notification-Handling-with-Scala-Java.html" rel="alternate" type="text/html" title="Handle Apple In-App-Purchase Server Notification with Scala/Java" /><published>2022-08-20T00:00:00-04:00</published><updated>2022-08-20T00:00:00-04:00</updated><id>https://www.binwang.me/Apple-In-App-Purchase-Server-to-Server-Notification-Handling-with-Scala-Java</id><content type="html" xml:base="https://www.binwang.me/2022-08-20-Apple-In-App-Purchase-Server-to-Server-Notification-Handling-with-Scala-Java.html"><![CDATA[<p>When you write an app for iOS, publish it to Apple App Store and want to sell something within it, Apple makes it mandatory to use its own in app purchase framework for non consumable items and subscriptions. If the app has a server, it’s very usual that the server wants to know the payment events and have some followup logic with them. But how to do that? There is always an option to let the app send a request to server, but anyone can use the same endpoint to make false claims. To prevent this, Apple has a server to server notification mechanism: Instead the app itself, a server from Apple will send a request to your server to notify the payment events. Since the message is signed by Apple, you can make sure no one else can fake it by verifying the signature.</p>
-
-<p>While this framework should in theory makes developer’s life easier, the lack of documentation makes it very painful to use. There is also little and often wrong information on the Internet about how to verify the signature, especially for a server written with Java related tech stack. So in this article, I will give an example about how to decode and verify the payment notification messages sent by Apple with Scala. The library we are using is <a href="https://connect2id.com/products/nimbus-jose-jwt">Nimbus JOSE + JWT</a> which is written in Java, so the method applies to other JVM languages as well. Hopefully this can help other developers who are facing the same problem.</p>
-
-<h2 id="1-how-to-trigger-a-server-notification">1. How to Trigger a Server Notification</h2>
-
-<p>Needless to say, to receive a payment notification you must initiate a payment from the app. There are various ways to do it and we will not discuss it in this article. But be aware there are two ways to test the in app payment: create a <a href="https://developer.apple.com/documentation/xcode/setting-up-storekit-testing-in-xcode">StoreKit configuration in Xcode</a> or <a href="https://developer.apple.com/documentation/storekit/in-app_purchase/testing_in-app_purchases_with_sandbox">use a sandbox environment</a>. Only the later one will trigger a server to server notification.</p>
-
-<p>Another requirement is to set up the notification endpoint in Apple Connection settings. The endpoint is a https URL that Apple will send a http post request to. <a href="https://developer.apple.com/documentation/storekit/in-app_purchase/original_api_for_in-app_purchase/subscriptions_and_offers/enabling_app_store_server_notifications">Here</a> is the Apple document about how to do it.</p>
-
-<h2 id="2-server-notification-workflow">2. Server Notification Workflow</h2>
-
-<p>In order to better understand how to handle the notification message, let’s take a look at the server notification workflow first.</p>
-
-<p><img src="/static/images/2022-08-20-Apple-In-App-Purchase-Server-to-Server-Notification-Handling-with-Scala-Java/iap-server-notification.png" alt="iap-server-notification" /></p>
-
-<p>When Apple receives some payment information, whether it’s from the app, or from subscription renew, or subscription expiration or other events, it will try to send the event to your server by sending an http POST request. In order to make sure no other people can fake a request to the same http endpoint, Apple signs the request payload with a private key that only Apple has access, so that when your server received the message, you can verify it by Apple’s public key.</p>
-
-<p>The way Apple signs the message is using a standard called <a href="https://www.rfc-editor.org/rfc/rfc7515.html">JWS</a>. This is a complex standard with multiple implementation options. To fully understand it you also need to know things like <a href="https://www.rfc-editor.org/rfc/rfc7518.html">JWA</a> and <a href="https://www.rfc-editor.org/rfc/rfc7517">JWK</a>. Apple has very little document about how to decode its own message other than throw this RFC page into the document. Even in support forums, their response is like “use your favourite crypto library”, which doesn’t really help anything.</p>
-
-<h3 id="3-jws-overview">3. JWS Overview</h3>
-
-<p>To make it easy, I will give a very simple overview of JWS, JWS has three parts: a header that contains metadata like keys and algorithm to use, the actual payload, and a signature:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>header (metadata)
-
------------
-
-payload (actual message we want, base64 encoded JSON)
-
------------
-
-signature (generated by applying crypto algrithm on payload with keys in header)
-</code></pre></div></div>
-
-<p>So in order to make sure the whole message is actually sent by Apple, we need to verify:</p>
-
-<ul>
-  <li>The signature is generated by the keys in header and the payload.</li>
-  <li>The keys in header is generated by Apple.</li>
-</ul>
-
-<p>Since the payload is only base64 encoded, for a developer that is not familiar with JWS, even with the help of a JWS library, both verification steps can be easily missed since it only affects the verification, not the decoding of the message.</p>
-
-<p>In the section next, we will have an example about how to decode the message while really verify the message is sent by Apple as well.</p>
-
-<h2 id="4-decode-and-verify-notification">4. Decode and Verify Notification</h2>
-
-<p>Here we are using <a href="https://developer.apple.com/documentation/appstoreservernotifications/app_store_server_notifications_v2">App Store server notifications v2</a>. Let’s say you’ve already got the http POST body from your configured endpoint:</p>
-
-<pre><code class="language-Scala">val responseBodyV2Str: String = ... // your code to get POST body from HTTP request
-</code></pre>
-
-<p><code class="language-plaintext highlighter-rouge">responseBodyV2Str</code> itself is not a JWS object but a JSON string like this:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{"signedPayload":"eyJhbGciOiJFUzI1NiIsIng1YyI6WyJNSUlFTU...."}
-</code></pre></div></div>
-
-<p>The value of <code class="language-plaintext highlighter-rouge">signedPayload</code> is the encoded JWS string we want to parse. So we need to get that value first. I’m using <a href="https://circe.github.io/circe/">circe</a> to parse the JSON string, but any method that can parse it and get the value is fine. In my case, I defined some classes based on the JSON structures so that we can parse them in a more type safe way.</p>
-
-<pre><code class="language-Scala">import io.circe.generic.extras._
-import io.circe.parser
-
-
-object ApplePaymentService {
-
-  implicit val config: Configuration = Configuration.default.withDefaults
-
-  @ConfiguredJsonCodec case class AppleResponseBodyV2(
-    signedPayload: String,
-  )
-
-  @ConfiguredJsonCodec case class AppleResponseBodyV2DecodedPayload(
-    notificationType: String,
-    subtype: Option[String],
-    data: ApplePayloadData,
-  )
-
-  @ConfiguredJsonCodec case class ApplePayloadData(
-    appAppleId: Option[String],
-    bundleId: String,
-    bundleVersion: String,
-    environment: String,
-    signedRenewalInfo: String,
-    signedTransactionInfo: String,
-  )
-
-  @ConfiguredJsonCodec case class AppleJWSTransactionDecodedPayload(
-    appAccountToken: String,
-    bundleId: String,
-    environment: String,
-    expiresDate: Long, // timestamp in ms
-    inAppOwnershipType: String,
-    originalPurchaseDate: Long, // timestamp in ms
-    originalTransactionId: String,
-    productId: String,
-    purchaseDate: Long, // timestamp in ms
-    quantity: Int,
-    transactionId: String,
-    `type`: String,
-    webOrderLineItemId: String,
-  )
-}
-</code></pre>
-
-<p>With the help with the classes and JSON parser, we can get the value of <code class="language-plaintext highlighter-rouge">signedPayload</code>. (I removed <code class="language-plaintext highlighter-rouge">\n</code> from the JSON string since it’s not valid to have newlines in JSON string, not sure why Apple’s request body has newline in it):</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val responseBodyV2 = parser.parse(responseBodyV2Str.replace("\n", "")).flatMap(_.as[AppleResponseBodyV2]).toTry.get
-</code></pre></div></div>
-
-<p>After get the JWS string, we can parse it with <a href="https://connect2id.com/products/nimbus-jose-jwt/examples">Numbus Jose + JWT</a> (follow the document to add this dependency into your project first):</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import com.nimbusds.jose.JWSObject
-import com.nimbusds.jose.crypto.ECDSAVerifier
-import com.nimbusds.jose.crypto.bc.BouncyCastleProviderSingleton
-import com.nimbusds.jose.jwk.ECKey
-import com.nimbusds.jose.util.X509CertUtils
-
-
-val jwsObject = JWSObject.parse(responseBodyV2.signedPayload)
-val jwsCerts = jwsObject.getHeader.getX509CertChain.asScala.map(c =&gt; X509CertUtils.parse(c.decode()))
-</code></pre></div></div>
-
-<h3 id="41-verify-keys-in-jws-header-is-signed-by-apple">4.1 Verify keys in JWS header is signed by Apple</h3>
-
-<p><code class="language-plaintext highlighter-rouge">jwsCerts</code> is a list of <code class="language-plaintext highlighter-rouge">X509Certificate</code>, which is the key chain in JWS header. A cert in the list can be verified by the cert behind it. And the last cert should be verified by Apple’s public key so that we can make sure the whole key chain is signed by Apple.</p>
-
-<p>So let’s first get the root cert of Apple first: download <a href="https://www.apple.com/certificateauthority/AppleRootCA-G3.cer">Apple Root CA - G3 Root</a> from <a href="https://www.apple.com/certificateauthority/">Apple PKI website</a> and put it under your project’s <code class="language-plaintext highlighter-rouge">src/resources/certs</code> (or any where the program can read, we are just using it as an example here). Then we can read the Apple root cert with this code:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val appleRootCa = X509CertUtils.parse(getClass.getResourceAsStream("/certs/AppleRootCA-G3.cer").readAllBytes())
-</code></pre></div></div>
-
-<p>With both the key chain and root cert, we can verify the key chain is both valid and signed by Apple:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jwsCerts.sliding(2).foreach { x =&gt;
-  x.head.verify(x.last.getPublicKey)
-}
-jwsCerts.last.verify(appleRootCa.getPublicKey)
-</code></pre></div></div>
-
-<p>It will throw exception if the verify doesn’t pass.</p>
-
-<h3 id="42-verify-jws-is-signed-by-keys-in-jws-header">4.2 Verify JWS is signed by keys in JWS header</h3>
-
-<p>Once we verified the keys in JWS header is signed by Apple, we need to verify JWS itself is signed by these keys. Since the <code class="language-plaintext highlighter-rouge">alg</code> field in this JWS header is <code class="language-plaintext highlighter-rouge">ES256</code>, we will use <code class="language-plaintext highlighter-rouge">ECDSAVerifier</code> to verify it:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val jwk = ECKey.parse(jwsCerts.head)
-val jwsVerifier = new ECDSAVerifier(jwk)
-if (!jwsObject.verify(jwsVerifier)) {
-  throw new RuntimeException("Apple JWS object cannot be verified")
-}
-</code></pre></div></div>
-
-<h3 id="43-parse-the-payload">4.3 Parse the payload</h3>
-
-<p>After verify the JWS is valid, we can start to parse the payload. I’m using the JSON parser and the structure I defined above. Please refer to Apple’s document about the actual fields in the payload:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val responseBodyV2Payload = jwsObject.getPayload.toString
-val responseBodyV2DecodedPayload = parser.parse(responseBodyV2Payload).flatMap(_.as[AppleResponseBodyV2DecodedPayload]).toTry.get
-val transactionPayload = responseBodyV2DecodedPayload.data.signedTransactionInfo
-val transactionDecodedPayloadStr = JWSObject.parse(transactionPayload).getPayload.toString
-val transactionDecodedPayload = parser.parse(transactionDecodedPayloadStr).flatMap(_.as[AppleJWSTransactionDecodedPayload]).toTry.get
-</code></pre></div></div>
-
-<p>Here we have the detailed transaction information in <code class="language-plaintext highlighter-rouge">transactionDecodedPayload</code> and can hand it with our business logic.</p>
-
-<p>There is an interesting thing: <code class="language-plaintext highlighter-rouge">signedRenewInfo</code> and <code class="language-plaintext highlighter-rouge">signedTrasactionInfo</code> are both encoded with JWS again in payload data. I don’t know why: since we’ve already verified the whole payload is signed by Apple, all the content in it should already be valid as well, what’s the point to sign the fields again? I just decoded the fields with <code class="language-plaintext highlighter-rouge">JWSObject.parse</code> but you can always verify it with the same method above just to be safe.</p>
-
-<h2 id="5-other-thoughts">5. Other Thoughts</h2>
-
-<p>As I said about a <a href="/2020-11-08-DNS-Resolving-Bug-in-iOS-14.html">previous blog about an iOS bug</a>, I really hate Apple’s close ecosystem. But Apple’s hardware is good and has a large user space, so we cannot avoid it. Hopefully Android can be better at permission management and other mobile OS can also catch up.</p>]]></content><author><name></name></author><category term="iOS" /><category term="Apple" /><category term="In App Purchase" /><category term="Scala" /><category term="Java" /><category term="Programming" /><summary type="html"><![CDATA[When you write an app for iOS, publish it to Apple App Store and want to sell something within it, Apple makes it mandatory to use its own in app purchase framework for non consumable items and subscriptions. If the app has a server, it’s very usual that the server wants to know the payment events and have some followup logic with them. But how to do that? There is always an option to let the app send a request to server, but anyone can use the same endpoint to make false claims. To prevent this, Apple has a server to server notification mechanism: Instead the app itself, a server from Apple will send a request to your server to notify the payment events. Since the message is signed by Apple, you can make sure no one else can fake it by verifying the signature.]]></summary></entry></feed>
+<p>While enjoy myself during the development of the project, I find the product is pretty useful as well. So I decided to share it, and if it benefits more people I’m happier. As I said at the beginning of the article, I’ll open source the whole project and allow non commercial usages when it’s ready. But at the mean time, you can pay a monthly fee to use the software. The reason of this payment mode is two fold: I don’t want this software to be flooded with terrible ads, but I still need some revenue to keep the infrastructure running (for both hardware cost and my time). So I want to set some barriers at first to limit the user base, so that the users can have a better experience. Hope you enjoy this app and let me know if you run into any issues or have any question.</p>]]></content><author><name></name></author><category term="RSS" /><category term="project" /><category term="RSS Brain" /><category term="digital life" /><category term="news" /><summary type="html"><![CDATA[I’ve written yet another RSS Reader called RSS Brain recently. If you just want to take a quick look at the main features and try it, the official website is the best place to start. Though most of the main features are already finished and I’ve used it personally for a few months, be aware it’s still in beta stage and hasn’t been tested by a larger group yet. So please let me know if you run into any issues. I will open source it as well in the future (for non commercial usage) but it’s not ready yet for now.]]></summary></entry></feed>

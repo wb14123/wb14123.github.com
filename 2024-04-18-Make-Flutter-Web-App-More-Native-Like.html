@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> Add Index to My Blog |  Bin Wang - My Personal Blog</title>
+    <title> Make Flutter Web Apps More Native Like |  Bin Wang - My Personal Blog</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
     <link rel="stylesheet" href="/static/css/asciinema-player.css" type="text/css" />
 
@@ -2370,7 +2370,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2024-04-18-Make-Flutter-Web-App-More-Native-Like.html">Make Flutter Web Apps More Native Like <span class="publish-year">(2024)</span></a>
+        <div class="index-selected">Make Flutter Web Apps More Native Like <span class="publish-year">(2024)</span></div>
         
       
 
@@ -2984,7 +2984,7 @@
     <div class="index-entry index-post">
       
         
-        <div class="index-selected">Add Index to My Blog <span class="publish-year">(2021)</span></div>
+        <a href="/2021-10-31-Add-Index-to-My-Blog.html">Add Index to My Blog <span class="publish-year">(2021)</span></a>
         
       
 
@@ -3699,56 +3699,69 @@
 
     <section id="page_content">
         <div id="content_table">
-  
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#background">Background</a></li><li><a href="#how-flutter-renders-a-web-page">How Flutter Renders a Web Page</a></li><li><a href="#make-text-selectable">Make Text Selectable</a></li><li><a href="#make-links-and-buttons-recognized-by-browser">Make Links And Buttons Recognized by Browser</a></li><li><a href="#scrolling-behaviour">Scrolling Behaviour</a></li><li><a href="#conclusion">Conclusion</a></li></ol>
 </div>
 
 <div id="article_content" class="">
 <article id="post">
   <header>
-    <h1>Add Index to My Blog</h1>
+    <h1>Make Flutter Web Apps More Native Like</h1>
     
-      <p class="description">Posted on 31 Oct 2021, tagged <code>blog</code><code>index</code></p>
+      <p class="description">Posted on 18 Apr 2024, tagged <code>Flutter</code><code>web</code><code>UI</code><code>Dart</code></p>
     
   </header>
 
-  <p><em>Update: the index page has been removed in favoer of the index sidebar. See <a href="/2023-11-10-Index-Sidebar-on-My-Blog.html">Add Index Sidebar to My Blog</a> for more details.</em></p>
+  <h2 id="background">Background</h2>
 
-<p>I added an <a href="/index_page.html">index page</a> to my blog yesterday, which can also be accessed from the “Index” entry at the top of every page. When I moved this blog to Jekyll, I <a href="/2012-12-10-Remove-Categories.html">removed categories</a> since I thought tag should be enough. But after a few years, I feel something is missing. One of the reason maybe I never implemented find posts by tags, which makes tags useless. Even if I had that, I feel it’s still not enough. But I don’t want categories , since “category” in Jekyll is normally means a flat level structure. What I want is a nested category structure. It should let me create as many levels as I want, like the index in a book. In this way, I will have a better idea about which field I have covered, and what I should focus on based on my future plan. It can also benefit the readers: they can find the posts they are interested much easier. Not every blog post has the same quality or depth based on the nature of the topic, so in this way the posts under most interesting topics can be grouped together instead of being buried in the timeline.</p>
+<p>I’ve built the client app of <a href="https://rssbrain.com">RSS Brain</a> with Flutter so that I don’t need to write different code for different platforms. It’s a pleasant to write Flutter code. And the app works good enough for Android and iOS. However, Flutter web support is a different story. You can feel the app is just not a normal website. I’m not satisfy with that. After attempts to make it more like a native web page and failed, I’m rewriting it with web technology again. That’s why the <a href="/2024-03-26-Prevent-HTMX-Lazy-Loaded-Content-From-Reload.html">last blog post</a> is about htmx.</p>
 
-<p>To implement this feature, I wrote my own little plugin. I only knew some Ruby knowledge from one of Ruby’s author’s books (I read the Chinese version of the book and cannot find the name of the English version, I believe the original book is published in Japanese with the name まつもとゆきひろ コードの世界~スーパー・プログラマになる14の思考法). I never worked on any project with Ruby. But I always wanted to write some plugins for Jekyll so I know I can customize my blog in a better way. Luckily this task is simple enough. The result source code is on my Github of this blog repo. It has a <a href="https://github.com/wb14123/blog/blob/master/jekyll/_plugins/Index.rb">ruby script</a> to generate the index page from post property, with a <a href="https://github.com/wb14123/blog/blob/master/jekyll/index_page.html">template</a> that uses another <a href="https://github.com/wb14123/blog/blob/master/jekyll/_includes/index_page.html">recursive template</a>.</p>
+<p>Before I move on, I’d like to record what I have tried, as a note for myself and hopefully it can also help someone else. It’s really sad this article as my first blog about Flutter, maybe the only one for a long time.</p>
 
-<p>So here is how this plugin works: the only thing I need to do while writing a post is to add a new property called <code class="language-plaintext highlighter-rouge">index</code> at the starting of the Markdown file, like this:</p>
+<h2 id="how-flutter-renders-a-web-page">How Flutter Renders a Web Page</h2>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>---
-# these three properties are needed before this feature:
-layout: post
-title: Add Index to My Blog
-tags: [blog, index]
+<p>In Flutter, you define the UI widgets in Dart. And Flutter the engine will parse the widgets and render it to different targets: iOS, Android, web and even Windows and Linux applications. In principle, I think that is a good idea and I really enjoy writing Flutter code compared to Javascript frameworks like AngularJS or ReactJS. It’s really unfortunate the web support is not good enough to me.</p>
 
-# this is the newly added property:
-index: ['/Projects/Blog']
----
+<p>The core problem is how Flutter renders the web pages. We all know a web page is represented in HTML. Even if we don’t write HTML directly but use a Javascript framework, it is manipulating HTML tags at the end. Flutter renders widgets to different HTML elements like <code class="language-plaintext highlighter-rouge">div</code> at first. However, it was later changed to draw all the widgets in a canvas. (The old render method is still available through <code class="language-plaintext highlighter-rouge">--web-render html</code> but I encountered multiple bugs and seems it’s given less and less care). This makes Flutter web apps doesn’t really behave like a native app, because a normal web page doesn’t have everything in a canvas.</p>
 
+<p>For the problems it brings, I found solutions for some of them. For some others, I didn’t find one. The sections below are some of the problems and some of the solutions.</p>
+
+<h2 id="make-text-selectable">Make Text Selectable</h2>
+
+<p>By default, the text in Flutter app is not selectable. You can use the <a href="https://api.flutter.dev/flutter/material/SelectableText-class.html">SeletableText</a> widget to make text selectable.</p>
+
+<h2 id="make-links-and-buttons-recognized-by-browser">Make Links And Buttons Recognized by Browser</h2>
+
+<p>I use <a href="https://vimium.github.io/">Vimium</a> heavily. But Flutter rendering all the content into a canvas makes the clickable links and buttons not recognized by the browser, thus makes Vimium not working. This is a deal breaker for me, especially it’s something I built that breaks my workflow.</p>
+
+<p>I found a solution at the end to make links and buttons recognizable. It can be done by enabling semantics support. Add this line in the main function after <code class="language-plaintext highlighter-rouge">runApp</code>:</p>
+
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SemanticsBinding</span><span class="o">.</span><span class="na">instance</span><span class="o">.</span><span class="na">ensureSemantics</span><span class="p">();</span>
 </code></pre></div></div>
 
-<p>Then the plugin will parse <code class="language-plaintext highlighter-rouge">index</code> field, break it down into multiple levels based on <code class="language-plaintext highlighter-rouge">/</code> in it, and group all the posts in the same field together. The categories are sorted based on alphabet order, while the posts in each category is sorted from old to new. <code class="language-plaintext highlighter-rouge">index</code> is an array, so in theory I can add a blog post into multiple categories if I want to, but I try not to do it if it’s not necessary, since it gives a false feeling about how many posts I’ve written. For example, at the beginning, I tried to have both <code class="language-plaintext highlighter-rouge">/Computer Science/Database</code> and <code class="language-plaintext highlighter-rouge">/Computer Science/Distributed System</code>, and almost every posts under <code class="language-plaintext highlighter-rouge">database</code> is also in <code class="language-plaintext highlighter-rouge">distributed system</code>. Then I decided it doesn’t make sense: they are more about distributed system because what I care most in those articles is about database transactions. So I remove the category <code class="language-plaintext highlighter-rouge">database</code> and put all of them just under <code class="language-plaintext highlighter-rouge">distributed system</code>. If I wrote anything like query optimization in the future, I may created another <code class="language-plaintext highlighter-rouge">database</code> category, but it’s not needed for now.</p>
+<p>This will render extra information in HTML instead of only drawing the canvas. It will make widgets like <code class="language-plaintext highlighter-rouge">Button</code> recognizable.</p>
 
-<p>I’m very happy with the result. I want it to be simple enough as a static page without the need of Javascript. Javascript can certainly improve some UI like expand/collapse the levels. I may implement both version in the future so people can view it with and without Javascript, but the current UI is good enough for me.</p>
+<p>However, if you are using something more lower level like <code class="language-plaintext highlighter-rouge">GestureDetector</code>, you need to wrap the widgets with <code class="language-plaintext highlighter-rouge">Semantics</code>. Here is an example:</p>
 
-<p>UI aside, I’m much happier about the content. The index has a good structure. It shows the fields I’ve explored. It even shows a correlation between the focus and the timeline, which I never thought about before. For example, the only two posts about algorithm are published when I was in the University, when I joined some programming contest. The posts about Linux are most published at the last year of my college life, when I was in the first few years of using Linx and had an internship at Redhat. It doesn’t mean I’m not interested in Linux anymore. It’s just after so many years of using Linux, it becomes a tool that so fundamental to my work and digital life, and I don’t feel the necessary to actively learn the basic things and tune it. Data processing related topic happened most when I worked in an A/B testing company. And machine learning related topic also happened around that time, when I was most interested in neural networks, which resulted the most popular side project I’ve built. I started to post distributed system related topic after I joined a database company, and still find it’s an interesting topic thus many posts in last year. Which also remains me if I want to learn more about it I should continue to write articles about it in this and following years. But not everything is perfect, mainly because I didn’t write everything I’ve worked on my blog. One of the reason is a lot of things I’ve explored are already somewhere else and I don’t want to just copy something to my blog. The projects I’ve worked on are also not covered. I’m still thinking what’s the best way to put it into the index: either add a link to the project page, or write a blog post about each of the projects. Other than those, there is still something missing. It’s mostly because of lazy, which I should change in the future.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Semantics(button: true, enabled: true, child: myCustomClickable)
+</code></pre></div></div>
 
-<p>So as a result, the index page achieved some of goal: covering some of my past works and thoughts, and remanding me what I should focus in the future. About the goal of benefiting the readers, you as a reader decide if it’s good or not.</p>
+<p><code class="language-plaintext highlighter-rouge">myCustomClickable</code> will be recognized as a clickable element with that.</p>
 
+<h2 id="scrolling-behaviour">Scrolling Behaviour</h2>
+
+<p>The scrolling feels choppy sometimes. And because the browser has no idea about the scroll position of the page, it just makes the scrolling behaviour feels different. For example, <a href="https://github.com/flutter/flutter/issues/69529">here</a> is a Github issue opened 4 years ago describing this kind of problem and is still not resolved. For me, this is the last straw to make me give up Flutter, since it breaks scrolling keyboard shortcuts of Vimium.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>The idea behind Flutter is great. I hope the web support can be better and better so that I can finally come back to it one day. But for now, I cannot wait for it and need to take another route. Stay tuned for more updates about that journey.</p>
 
 </article>
 
 <footer id="post_footer">
   <table><tr>
     
-      <td id="prev"><a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Prev: Personal ZFS Offsite Backup Solution</a></td>
+      <td id="prev"><a href="/2024-03-26-Prevent-HTMX-Lazy-Loaded-Content-From-Reload.html">Prev: Prevent htmx Lazy Loaded Content From Reloading</a></td>
     
-    
-      <td id="next"><a href="/2022-04-04-%E5%8D%81%E4%B8%89%E5%B9%B4%E5%89%8D%E8%A2%AB%E9%9A%94%E7%A6%BB%E7%9A%84%E7%BB%8F%E5%8E%86.html" id="next">Next: 十三年前被隔离的经历</a></td>
     
   </tr></table>
 </footer>
