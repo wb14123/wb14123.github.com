@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> Install BLAS Library for MXNet |  Bin Wang - My Personal Blog</title>
+    <title> Random Playlists for Self Hosted Videos |  Bin Wang - My Personal Blog</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
     <link rel="stylesheet" href="/static/css/asciinema-player.css" type="text/css" />
 
@@ -420,7 +420,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2024-06-03-Random-Video-Playlists-for-Self-Hosted-Videos.html">Random Playlists for Self Hosted Videos <span class="publish-year">(2024)</span></a>
+        <div class="index-selected">Random Playlists for Self Hosted Videos <span class="publish-year">(2024)</span></div>
         
       
 
@@ -810,7 +810,7 @@
     <div class="index-entry index-post">
       
         
-        <div class="index-selected">Install BLAS Library for MXNet <span class="publish-year">(2015)</span></div>
+        <a href="/2015-11-08-Install-BLAS-Library-for-MXNet.html">Install BLAS Library for MXNet <span class="publish-year">(2015)</span></a>
         
       
 
@@ -3723,46 +3723,70 @@
 
     <section id="page_content">
         <div id="content_table">
-  
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#ersatztv">ErsatzTV</a></li><li><a href="#jellyfin">Jellyfin</a></li><li><a href="#kodi-with-samba">Kodi with Samba</a></li><li><a href="#xspf-playlist-on-samba-with-kodi-and-vlc">XSPF Playlist on Samba with Kodi and VLC</a></li></ol>
 </div>
 
 <div id="article_content" class="">
 <article id="post">
   <header>
-    <h1>Install BLAS Library for MXNet</h1>
+    <h1>Random Playlists for Self Hosted Videos</h1>
     
-      <p class="description">Posted on 08 Nov 2015, tagged <code>deep learning</code><code>programming</code><code>mxnet</code><code>mac os x</code></p>
+      <p class="description">Posted on 03 Jun 2024, tagged <code>video</code><code>selfhost</code><code>vlc</code><code>kodi</code><code>media</code></p>
     
   </header>
 
-  <p><a href="https://github.com/dmlc/mxnet">MXNet</a> is a deep learning library. I read its doc and some of its source code. It looks very good. So I’d like to install and try it. While I’m following the <a href="https://mxnet.readthedocs.org/en/latest/build.html#build-mxnet-library">installing guide</a> to install it on Mac OS X, it failed to compile with the error <code class="language-plaintext highlighter-rouge">cblas.h</code> not found. The message pointed out I may miss the BLAS library.</p>
+  <p>With the development of computer systems and online streaming services, it’s never easier to play TV shows or movies on demand. There are some shows that I watch over and over when I want to relax. But the action of finding a show and selecting an episode makes it less causal. To some extent, I miss the old days to causally open a TV channel just to watch some random things. In this article, I will explain my journey to achieve that. More specifically, I want something like this:</p>
 
-<p>After some search, I find Mac OS X seems to come with its default BLAS library. But I cannot find its headers. And as an article said, the default BLAS library may not as fast as some third party ones. So I install <code class="language-plaintext highlighter-rouge">OpenBLAS</code> with homebrew:</p>
+<ul>
+  <li>Be able to add videos into collections and play videos randomly from a collection.</li>
+  <li>Be able to share the collections and videos to other devices including:
+    <ul>
+      <li>Other desktops and laptops, including Linux and MacOS.</li>
+      <li>Mobile devices including Android and iOS.</li>
+      <li>TVs like Android TV box.</li>
+    </ul>
+  </li>
+  <li>No transcoding on the server.</li>
+  <li>The solution needs to be self hosted, free and open.</li>
+</ul>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew install openblas
-</code></pre></div></div>
+<p>I think I need to add more details about “no transcoding on the server” since a lot of solutions need that. All my devices are compatible to play the formats in my video collection. So it’s a waste of resource to do another transcoding on the server, especially my video server is also the desktop PC I use the most everyday. If this is not a requirement to you, you may be able to find much better solutions. That’s why I listed everything I’ve tried so it may help someone even it’s not the solution I chose at last.</p>
 
-<p>It is installed under <code class="language-plaintext highlighter-rouge">/usr/local/opt/openblas</code>, so we need to change these lines in the MXNet’s <code class="language-plaintext highlighter-rouge">config.mk</code> (it should be copied from <code class="language-plaintext highlighter-rouge">make/osx.mk</code> as the installing guide specified) :</p>
+<p>So here you go. If you just want to see my final solution, go to the last section.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># the additional link flags you want to add
-ADD_LDFLAGS = '-L/usr/local/opt/openblas/lib'
+<h2 id="ersatztv">ErsatzTV</h2>
 
-# the additional compile flags you want to add
-ADD_CFLAGS = '-I/usr/local/opt/openblas/include'
-</code></pre></div></div>
+<p><a href="https://ersatztv.org/">ErsatzTV</a> is a self hosted service to create live TV channels and stream them. You can add videos to collections, and put them into schedules. It works very much like a real TV channel. It has a Docker image and doesn’t need any external databases, so it’s really easy to try it out. Once you create channels it can generate m3u8 playlists so that you can stream it on any client that supports it.</p>
 
-<p>Then the compile should pass.</p>
+<p>It has great features. However, without transcoding on the server and use HLS Direct to stream the videos, there are some problems: I cannot open the stream in VLC. I could open it in Jellyfin, but once it jumps to another video with different format, it stops playing. I need to restart the client which is very annoying.</p>
 
+<h2 id="jellyfin">Jellyfin</h2>
+
+<p><a href="https://jellyfin.org/">Jellyfin</a> is a very popular media server. It’s like the more popular <a href="https://www.plex.tv/">Plex</a> but is free and open source. I was never a fan of Plex since it just doesn’t feel right to self host something you cannot really control. Jellyfin has gone a long way since I tried it a few years ago. You can add TV shows and movies to collections and play random videos from there. Even though it’s not as powerful as the schedule feature in ErsatzTV, it’s still great for my use case.</p>
+
+<p>However, it falls short on “no transcoding on server” part again. The web client can only play a very limited video format. Its Linux client can play most video formats fairly well, but I still need my mobile devices be able to play the videos. The official Android and iOS clients are not any better than the web client. A third party iOS client <a href="https://github.com/jellyfin/Swiftfin">Swiftlin</a> does much better, but somehow it cannot play from a collection.</p>
+
+<h2 id="kodi-with-samba">Kodi with Samba</h2>
+
+<p>I use Kodi on my Android TV box all the time. The videos are shared through Samba. Kodi has <a href="https://kodi.wiki/view/Add-on:Play_Random_Videos">an offical add-on</a> to play random videos from TV shows, movies, folders and so on. However Kodi doesn’t have the concept of collection. It has playlist but it’s very hard to use. In theory you can symbol link all the videos to different folders as collections and play from there, but it’s too hacky. Kodi has an iOS client but it’s not in App Store so it needs to be compiled and resigned every a few days.</p>
+
+<p>While I was exploring these ideas, I realized even Kodi doesn’t have any good built in playlist or collection feature, there are some file formats for video playlists. With that, we can even use other video clients. m3u file came to mind at first but the videos paths should be relative paths so it can be played from any device even though the mount point is different. At last I found <a href="https://en.wikipedia.org/wiki/XML_Shareable_Playlist_Format">XSPF</a> which allows relative path for the videos. With that, I came up with my final solution.</p>
+
+<h2 id="xspf-playlist-on-samba-with-kodi-and-vlc">XSPF Playlist on Samba with Kodi and VLC</h2>
+
+<p>So based on my exploration above, I came out an idea to use XSPF playlist to create collections. I just put the XSPF files in my videos folder to share through Samba together. Since the video paths are relative in the playlist, once you mount the Samba folder on other devices, you can just click the playlist and play it through supported clients.</p>
+
+<p>For the clients, I use Kodi on the Android TV box and VLC on other devices. For Kodi, once <a href="https://kodi.wiki/view/Add-on:Play_Random_Videos">Play Random Videos add-on</a> is installed, you can long press on the playlist file to play a random video. VLC on desktops <a href="https://superuser.com/a/1808182">can be configured</a> to always play videos randomly from a playlist. On Android, there is an option to shuffle play once you open the playlist. But strangely, the VLC on my iPad is not able to play the XSPF file. I may dig into that in the future but it’s good enough for me now.</p>
+
+<p>The only part left is to create the XSPF playlist. It’s a xml file so you can edit it manually but that takes too much time. So I created a Scala script to add or remove videos from a folder. Even though I used Scala for a long time and write my side projects with it, it’s the first time I use it as scripting and it’s such a pleasant with the help of <a href="https://ammonite.io/">Ammonite</a>. The script is on <a href="https://github.com/wb14123/xspf-editor">Github</a> so that you can also use it if needed.</p>
 
 </article>
 
 <footer id="post_footer">
   <table><tr>
     
-      <td id="prev"><a href="/2015-11-04-The-Life-of-Hermit-without-Materially.html">Prev: 摒弃现代科技的隐士生活</a></td>
+      <td id="prev"><a href="/2024-04-18-Make-Flutter-Web-App-More-Native-Like.html">Prev: Make Flutter Web Apps More Native Like</a></td>
     
-    
-      <td id="next"><a href="/2015-11-22-Use-Redis-Instead-of-Spark-Streaming-to-Count-Statistics.html" id="next">Next: Use Redis Instead of Spark Streaming to Count Statistics</a></td>
     
   </tr></table>
 </footer>
