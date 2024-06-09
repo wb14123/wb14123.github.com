@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> Build a Linux Virtual Machine for Windows Apps |  Bin Wang - My Personal Blog</title>
+    <title> Create a Checkbox That Returns Boolean Value for htmx |  Bin Wang - My Personal Blog</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
     <link rel="stylesheet" href="/static/css/asciinema-player.css" type="text/css" />
 
@@ -1254,7 +1254,7 @@
     <div class="index-entry index-post">
       
         
-        <div class="index-selected">Build a Linux Virtual Machine for Windows Apps <span class="publish-year">(2023)</span></div>
+        <a href="/2023-09-01-Build-a-Linux-Virtual-Machine-for-Windows-Apps.html">Build a Linux Virtual Machine for Windows Apps <span class="publish-year">(2023)</span></a>
         
       
 
@@ -2556,7 +2556,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2024-06-08-Create-a-Checkbox-That-Returns-Boolean-Value-for-htmx.html">Create a Checkbox That Returns Boolean Value for htmx <span class="publish-year">(2024)</span></a>
+        <div class="index-selected">Create a Checkbox That Returns Boolean Value for htmx <span class="publish-year">(2024)</span></div>
         
       
 
@@ -3751,119 +3751,254 @@
 
     <section id="page_content">
         <div id="content_table">
-  <h3>Table of Contents</h3><ol class="toc"><li><a href="#background">Background</a></li><li><a href="#a-little-history-of-deepin">A Little History of Deepin</a></li><li><a href="#deepin-linux-101">Deepin Linux 101</a></li><li><a href="#installation">Installation</a></li><li><a href="#replace-dde-with-xfce">Replace DDE with XFCE</a></li><li><a href="#configure-lightdm">Configure lightdm</a></li><li><a href="#install-windows-95-theme">Install Windows 95 theme</a></li><li><a href="#other-xfce-tweaks">Other XFCE tweaks</a></li><li><a href="#remove-stock-deepin-apps">Remove Stock Deepin Apps</a></li><li><a href="#disable-deepin-services">Disable Deepin Services</a></li></ol>
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#the-problem-of-checkbox">The Problem of Checkbox</a></li><li><a href="#how-htmx-submit-the-checkbox-value">How htmx Submit the Checkbox Value</a></li><li><a href="#create-a-custom-checkbox-element-with-web-component">Create a Custom Checkbox Element with Web Component</a></li><li><a href="#what-about-the-native-html-form-action">What About the Native HTML Form Action</a></li></ol>
 </div>
 
 <div id="article_content" class="">
 <article id="post">
   <header>
-    <h1>Build a Linux Virtual Machine for Windows Apps</h1>
+    <h1>Create a Checkbox That Returns Boolean Value for htmx</h1>
     
-      <p class="description">Posted on 01 Sep 2023, tagged <code>Linux</code><code>Windows</code><code>Virtual Machine</code><code>Deepin</code><code>Wine</code></p>
+      <p class="description">Posted on 08 Jun 2024, tagged <code>HTML</code><code>htmx</code><code>Javascript</code><code>frontend</code><code>tech</code></p>
     
   </header>
 
-  <h2 id="background">Background</h2>
+  <h2 id="the-problem-of-checkbox">The Problem of Checkbox</h2>
 
-<p>Linux is great. However sometimes you just need to run some Windows only applications to collaborate with other people, especially if it’s impossible to let the other party to change the software. Luckily I rarely run into that situation in the past 10+ years. The only recent exceptions I can remember are filling some government forms (which uses pdf with XFA form. Yes Firefox can fill that now but it’s still incompatible with Adobe Reader from time to time), use IM and video meeting software with a previous Chinese client for some consultant work.</p>
+<p><a href="https://htmx.org/">htmx</a> is a lightweight Javascript framework. We all know in native HTML, a <code class="language-plaintext highlighter-rouge">form</code> element can send a HTTP request to a server with the values of <code class="language-plaintext highlighter-rouge">input</code> elements. In htmx, this feature is made more powerful and flexible: you can include the value of any element, and with the help with htmx extensions like <a href="https://htmx.org/extensions/json-enc/">json-enc</a>, it can also post JSON data.</p>
 
-<p>Even it’s rarely used, it’s handy to have a VM to run Windows applications. But Windows is becoming more and more bloat, adding more and more tracking and ads, basically more holistic to users. The only good parts in Windows XP and Windows 7 have long gone. Currently I have a Windows 10 VM, but I’m not sure if I ever want to login to Windows 11 if Windows 10’s life is end. So it’s good to have a backup plan to run Windows apps without Windows. Practise reasons aside, it’s just fun to play with Linux distros. Linux and its desktop environments are so diverse and configurable, I spent such a great time to explore what are the possibilities.</p>
+<p>However, there is one thing that htmx inherited from the native HTML form behaviour: for checkboxes, it only includes its value when the checkbox is checked. And the default value for checkbox is <code class="language-plaintext highlighter-rouge">"on"</code> instead of <code class="language-plaintext highlighter-rouge">true</code> (even though you can change it to another value). I understand this decision because it wants to keep the same behaviour so there is no surprise, but it also makes the backend parsing very inconvenient. The checkbox field needs some special treatment at the backend: you need to know there is a checkbox field so that you can set it to false when it’s not submitted with the request, and set it to true otherwise.</p>
 
-<p>There is <a href="https://www.winehq.org/">Wine</a> to run Windows applications on Linux. It’s not perfect. Some apps need to be tweaked a lot in order to run with wine and some are just nearly impossible. Even the software can be run with wine, I don’t want to run it on my OS since wine is just a compatibility layer, not a sandbox. Which means the typical malware like behaviours in Windows applications are still effective under Wine. So I need to run it in a virtual machine. It also gives us an opportunity to select a distro to focus more on this specific task.</p>
+<p>In this article, we will explore how to define a custom checkbox element so that it has a boolean value and will always be submitted with the HTTP request. We first explore the implementation for htmx and then for native HTML.</p>
 
-<p>I have tried a few distros in the last few days. At the end I find <a href="https://www.deepin.org">Deepin Linux</a> is the best one for this use case. Especially you want to run Chinese Windows apps.</p>
+<h2 id="how-htmx-submit-the-checkbox-value">How htmx Submit the Checkbox Value</h2>
 
-<h2 id="a-little-history-of-deepin">A Little History of Deepin</h2>
+<p>In order to make it work with htmx, we first need to know how htmx do the HTTP request with parameters. The document doesn’t have a lot of details but we can always check the source code. The code that processes input values is in the function <a href="https://github.com/bigskysoftware/htmx/blob/d6afc5b8dbd7213037d0bc4213aa0b7b469bcd62/src/htmx.js#L2549"><code class="language-plaintext highlighter-rouge">processInputValue</code></a>:</p>
 
-<p>Deepin’s root is in Windows. It first started as a Windows online forum and then started to customize and piracy Windows XP. The year was 2006. Almost no one bought Windows in China back in the days. I don’t know if business or even Universities ever bought Windows licenses or not, but even they do, it’s a very common practise to install piracy Windows in those environment because the popular ones are so user friendly. Computer sellers would ask the buyers if they want to change the stock Windows to a piracy one, and most of the time they do. Ironically, the only time I’ve inputted a (legitimately obtained) Windows key is when I was working at Redhat and setting up a Windows server for testing Samba and nfs. The popular piracy versions are really impressive: the installation is fast and easy, they are more beautiful, they include things like system backup and recovery, they have common drivers pre-installed and application to find drivers (not like the driver finder on Windows, this one actually works), the system was cut down to a very small size and so on. However, if it sounds sketchy to you, you are not wrong. Even though the user experience maybe superior, there is no shortage of back doors and things like that. The popular versions even have their own more sketchy piracy versions. However, that era is wild west for computer security and just one more vulnerability didn’t really matter that much in my mind.</p>
-
-<p>Anyway, Deepin was one of the most popular among them. But things didn’t last for long. Around 2008, the year China hosted its first Olympic Game, the person behind a popular piracy version got arrested. Even the common practise of using piracy Windows in China lasted a long time after that, the big ones felt the risk and stopped making them. Some of them started to make Linux distros instead. Again, Deepin became one of the most popular. <a href="https://en.wikipedia.org/wiki/YLMF_Computer_Technology_Co.,_Ltd.">雨林沐风 (YLMF)</a> is another very popular one which is in famous of its clean and beautify theme in the Windows piracy era. It started to make Linux distro (<a href="https://en.wikipedia.org/wiki/StartOS">YLMF OS</a>) around the same time. It is the first Linux distro I’ve ever used and introduced the whole world of Linux to me.</p>
-
-<p>It’s no wonder Deepin Linux has good support for Windows applications: Windows users are its earliest user base. It’s still true nowadays: even with some failed attempts, Chinese government never stopped exploring to use Linux instead of Windows on government devices. After these years, because of factors like applications are more web based instead of native, and the better experience of Linux desktop, Chinese government actually replaced a large amount of their devices with Linux. From what I know, they are using <a href="https://en.wikipedia.org/wiki/Ubuntu_Kylin">Ubuntu Kylin</a> instead of Deepin or UOS (commercial version of Deepin), but the market is large enough to motivate Deepin to continue maintaining Windows app supports.</p>
-
-<h2 id="deepin-linux-101">Deepin Linux 101</h2>
-
-<p>We’ve talked enough history. Let’s look at Deepin Linux at nowadays. It has it’s own desktop environment called DDE and includes lots of its own apps like browser, video player, mail client and so on. But it’s not my taste and the DE is pretty resource hungry on my machine. Luckily, Deepin is based on Debian stable, so you can basically customize to whatever you like using Debian packages, which we will do later.</p>
-
-<p>The main thing we want in Deepin Linux is its app store. It has lots of Windows applications supported by default. Deepin actually has its own wine version deepin-wine to support those Windows apps better. No matter what tweaks we are going to do with the system, make sure app store works after that.</p>
-
-<p>It also ships with Android support with UEngine, which is a fork of Anbox. There are some officially supported Android apps in the package repo but seems they are not findable in app store. You can use <code class="language-plaintext highlighter-rouge">apt search uengine</code> to find them in terminal. I’ve never had good experience with Android in VM and this time it’s no exception: I tried to install an app from apt and it couldn’t start because of uengine startup timeout. I’m not sure if it will be better on a physical machine but I don’t bother to try it.</p>
-
-<p>Overall, I have double feelings about Deepin. On one hand, it’s pretty impressive on the technical side about what they have done and the community they’ve built. On the other hand, it always feels a little bit sketchy. Even after the Windows piracy era, the Linux distro is still less trustworthy in my mind because of some telemetry its app store collects, not straightforward removable stock apps, the connection (or the intention to connect) with Chinese government and so on. In addition of all the Windows apps I’m going to install, I will not have any personal or important data on it.</p>
-
-<p>After understanding the basics of Deepin Linux, let’s go ahead to install and tweak it. To have a taste of what it will look like, let me show a screenshot of my setup:</p>
-
-<p><img src="/static/images/2023-08-31-Build-a-Linux-VM-for-Windows-Apps/screenshot.png" alt="screnshot" /></p>
-
-<h2 id="installation">Installation</h2>
-
-<p>The installation is pretty straightforward, but make sure to make these tweaks:</p>
-
-<ul>
-  <li>During the installation, it will detect that you are in a VM and prompt to use “performance” mode. Make sure to select it so that it will be faster. Even though we will replace the DE later so I don’t think it matters that much, but it doesn’t hurt anyway.</li>
-  <li>By default it will create a recovery partition, which is a waste of storage since we are using a VM. We can take snapshots through the VM software if we backup and recovery. So make sure to manually partition the file system and not using recovery partition.</li>
-</ul>
-
-<h2 id="replace-dde-with-xfce">Replace DDE with XFCE</h2>
-
-<p>As I said, I don’t like the default DDE Deepin ships. And with limited time I don’t find it’s very configurable as well. So we will replace it with the less resource hungry and highly customizable XFCE. In order to install XFCE, run this in the terminal:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo apt install xfce4 xfce4-goodies
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">processInputValue</span><span class="p">(</span><span class="nx">processed</span><span class="p">,</span> <span class="nx">values</span><span class="p">,</span> <span class="nx">errors</span><span class="p">,</span> <span class="nx">elt</span><span class="p">,</span> <span class="nx">validate</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if </span><span class="p">(</span><span class="nx">elt</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="nf">haveSeenNode</span><span class="p">(</span><span class="nx">processed</span><span class="p">,</span> <span class="nx">elt</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">processed</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="nx">elt</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if </span><span class="p">(</span><span class="nf">shouldInclude</span><span class="p">(</span><span class="nx">elt</span><span class="p">))</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="nf">getRawAttribute</span><span class="p">(</span><span class="nx">elt</span><span class="p">,</span><span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">elt</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+        <span class="k">if </span><span class="p">(</span><span class="nx">elt</span><span class="p">.</span><span class="nx">multiple</span> <span class="o">&amp;&amp;</span> <span class="nx">elt</span><span class="p">.</span><span class="nx">tagName</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">SELECT</span><span class="dl">"</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">value</span> <span class="o">=</span> <span class="nf">toArray</span><span class="p">(</span><span class="nx">elt</span><span class="p">.</span><span class="nf">querySelectorAll</span><span class="p">(</span><span class="dl">"</span><span class="s2">option:checked</span><span class="dl">"</span><span class="p">)).</span><span class="nf">map</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">e</span><span class="p">.</span><span class="nx">value</span> <span class="p">});</span>
+        <span class="p">}</span>
+        <span class="c1">// include file inputs</span>
+        <span class="k">if </span><span class="p">(</span><span class="nx">elt</span><span class="p">.</span><span class="nx">files</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">value</span> <span class="o">=</span> <span class="nf">toArray</span><span class="p">(</span><span class="nx">elt</span><span class="p">.</span><span class="nx">files</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="nf">addValueToValues</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">values</span><span class="p">);</span>
+        <span class="k">if </span><span class="p">(</span><span class="nx">validate</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nf">validateElement</span><span class="p">(</span><span class="nx">elt</span><span class="p">,</span> <span class="nx">errors</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">if </span><span class="p">(</span><span class="nf">matches</span><span class="p">(</span><span class="nx">elt</span><span class="p">,</span> <span class="dl">'</span><span class="s1">form</span><span class="dl">'</span><span class="p">))</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">inputs</span> <span class="o">=</span> <span class="nx">elt</span><span class="p">.</span><span class="nx">elements</span><span class="p">;</span>
+        <span class="nf">forEach</span><span class="p">(</span><span class="nx">inputs</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">input</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nf">processInputValue</span><span class="p">(</span><span class="nx">processed</span><span class="p">,</span> <span class="nx">values</span><span class="p">,</span> <span class="nx">errors</span><span class="p">,</span> <span class="nx">input</span><span class="p">,</span> <span class="nx">validate</span><span class="p">);</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div></div>
 
-<p>Then logout and select <code class="language-plaintext highlighter-rouge">xfce</code> in the login screen.</p>
+<p>So it checks whether the element should be included through function <code class="language-plaintext highlighter-rouge">shouldInclude(elt)</code> and get its value if so (some additional logic for <code class="language-plaintext highlighter-rouge">select</code> and <code class="language-plaintext highlighter-rouge">file</code> but it’s not a concern here). In <a href="https://github.com/bigskysoftware/htmx/blob/d6afc5b8dbd7213037d0bc4213aa0b7b469bcd62/src/htmx.js#L2512"><code class="language-plaintext highlighter-rouge">shouldInclude</code></a>, it will only include a checkbox if it’s checked:</p>
 
-<h2 id="configure-lightdm">Configure lightdm</h2>
-
-<p>Deepin is using <code class="language-plaintext highlighter-rouge">lightdm</code> as its display manager. To match our simple xfce feeling, I’d like to change the login screen to a simpler and reto look. Open <code class="language-plaintext highlighter-rouge">/etc/ligthdm/lightdm.conf</code> and apply these changes:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- greeter-session=lightdm-deepin-greeter
-+ greeter-session=lightdm-gtk-greeter
-- user-session=deepin
-+ user-sesion=xfce
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">shouldInclude</span><span class="p">(</span><span class="nx">elt</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">elt</span><span class="p">.</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">""</span> <span class="o">||</span> <span class="nx">elt</span><span class="p">.</span><span class="nx">name</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="nx">elt</span><span class="p">.</span><span class="nx">disabled</span> <span class="o">||</span> <span class="nf">closest</span><span class="p">(</span><span class="nx">elt</span><span class="p">,</span> <span class="dl">"</span><span class="s2">fieldset[disabled]</span><span class="dl">"</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">// ignore "submitter" types (see jQuery src/serialize.js)</span>
+    <span class="k">if </span><span class="p">(</span><span class="nx">elt</span><span class="p">.</span><span class="nx">type</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">button</span><span class="dl">"</span> <span class="o">||</span> <span class="nx">elt</span><span class="p">.</span><span class="nx">type</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">submit</span><span class="dl">"</span> <span class="o">||</span> <span class="nx">elt</span><span class="p">.</span><span class="nx">tagName</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">image</span><span class="dl">"</span> <span class="o">||</span> <span class="nx">elt</span><span class="p">.</span><span class="nx">tagName</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">reset</span><span class="dl">"</span> <span class="o">||</span> <span class="nx">elt</span><span class="p">.</span><span class="nx">tagName</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">file</span><span class="dl">"</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if </span><span class="p">(</span><span class="nx">elt</span><span class="p">.</span><span class="nx">type</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">checkbox</span><span class="dl">"</span> <span class="o">||</span> <span class="nx">elt</span><span class="p">.</span><span class="nx">type</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">radio</span><span class="dl">"</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">elt</span><span class="p">.</span><span class="nx">checked</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div></div>
 
-<h2 id="install-windows-95-theme">Install Windows 95 theme</h2>
+<h2 id="create-a-custom-checkbox-element-with-web-component">Create a Custom Checkbox Element with Web Component</h2>
 
-<p>Another important reason of choosing XFCE the <a href="https://github.com/grassmunk/Chicago95">Chicago95 theme</a>, which makes XFCE looks like Windows 95. If we are having an OS for running Windows programs, what’s a better look than Windows 95/98/2000 era theme?</p>
+<p>I tried to find or write an extension for htmx to include checkbox elements with boolean values, but from what I learnt in <a href="https://htmx.org/extensions/">the htmx extension doc</a>, there is no good way to do that. So I decided to create a custom HTML element that extends <code class="language-plaintext highlighter-rouge">input</code> to return boolean values for htmx to get.</p>
 
-<p>Go to <a href="https://github.com/grassmunk/Chicago95">Chicago95’s Github repo</a> and follow the instructions to install it. Since it’s made for XUbuntu, which is based on Ubuntu which is in turn based on Debian, the installation script works perfectly. After installation, read the popped up txt file so tweak remaining things to make it more Windows 95 like if you want.</p>
+<p>With <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_components#attributechangedcallback">web component</a>, we can create a HTML tag that can be used just like any other built-in HTML tags. The <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements">MDN guide</a> does a good job to explain how to do it so I will not repeat it here. I’ll just put my implementation of the customized checkbox here:</p>
 
-<p>If you also want to make the login screen Windows 95 like, you need to use <code class="language-plaintext highlighter-rouge">lightdm-webkit-greeter</code> instead of the <code class="language-plaintext highlighter-rouge">lightdm-gtk-greeter</code> above and change the theme. See <a href="https://github.com/grassmunk/Chicago95/tree/5670fde8ce33b33d37622b888278aa9cdbe5eea2/Lightdm/Chicago95">the doc</a> for more details. However, <code class="language-plaintext highlighter-rouge">lightdm-webkit-greeter</code> is not in Debian or Deepin’s package repo by default and I find the trouble to install it manually doesn’t worth it, so I didn’t make the change.</p>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">BooleanCheckbox</span> <span class="kd">extends</span> <span class="nc">HTMLInputElement</span> <span class="p">{</span>
+    <span class="nf">constructor</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">();</span>
+    <span class="p">}</span>
 
-<p>For Firefox, there is a <a href="https://addons.mozilla.org/en-US/firefox/addon/windows-98-se/?utm_source=addons.mozilla.org&amp;utm_medium=referral&amp;utm_content=search">Windows 98 SE</a> theme I find fit into the system theme the best.</p>
+    <span class="kd">get</span> <span class="nf">checked</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span>
 
-<h2 id="other-xfce-tweaks">Other XFCE tweaks</h2>
+    <span class="kd">get</span> <span class="nf">value</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">if </span><span class="p">(</span><span class="k">super</span><span class="p">.</span><span class="nx">checked</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
-<ul>
-  <li>Disable compositor in Settings -&gt; Window Manager Tweaks -&gt; Compositor. Some windows will have a black frame after this, so enable/disable it based on your preference.</li>
-  <li>I’d also like to disable auto session save:
-    <ul>
-      <li>Uncheck all the boxes in Settings -&gt; Session and Startup -&gt; General (I find it doesn’t prompt and auto save if <code class="language-plaintext highlighter-rouge">prompt on logout</code> is checked)</li>
-      <li>Remove all the existing sessions: <code class="language-plaintext highlighter-rouge">rm -r ~/.cache/sessions/*</code></li>
-    </ul>
-  </li>
-</ul>
+<span class="nx">customElements</span><span class="p">.</span><span class="nf">define</span><span class="p">(</span><span class="dl">"</span><span class="s2">boolean-checkbox</span><span class="dl">"</span><span class="p">,</span> <span class="nx">BooleanCheckbox</span><span class="p">,</span> <span class="p">{</span> <span class="na">extends</span><span class="p">:</span> <span class="dl">"</span><span class="s2">input</span><span class="dl">"</span> <span class="p">});</span>
+</code></pre></div></div>
 
-<h2 id="remove-stock-deepin-apps">Remove Stock Deepin Apps</h2>
+<p>You can see it’s very simple. It extends the <code class="language-plaintext highlighter-rouge">input</code> element. It overwrite <code class="language-plaintext highlighter-rouge">checked</code> to always return <code class="language-plaintext highlighter-rouge">true</code> so that htmx will always include it in the request. And for <code class="language-plaintext highlighter-rouge">value</code>, it returns a boolean depends on <code class="language-plaintext highlighter-rouge">super.checked</code>. At last it register the customized element as a tag namedj<code class="language-plaintext highlighter-rouge">boolean-checkbox</code>, so that we can just use it like this in HTML:</p>
 
-<p>There are lots of stock apps made by Deepin. Even though I like the effort, I still prefer the familiar ones and the ones XFCE has. So I need to uninstall the stock apps. However, you cannot uninstall them through Deepin’s app store, so we need to use <code class="language-plaintext highlighter-rouge">apt</code> to find and remove them.</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"checkbox"</span> <span class="na">is=</span><span class="s">"boolean-checkbox"</span> <span class="nt">/&gt;</span>Boolean checkbox
+</code></pre></div></div>
 
-<p>Use <code class="language-plaintext highlighter-rouge">apt search deepin | grep installed</code> to find installed deepin packages and remove the ones you don’t want. Then use <code class="language-plaintext highlighter-rouge">sudo apt autoremove</code> and <code class="language-plaintext highlighter-rouge">sudo apt autoclean</code> to cleanup the not needed dependencies. Make sure app store is still working after this since it’s the whole point of using Deepin.</p>
+<p>The <code class="language-plaintext highlighter-rouge">is="boolean-checkbox"</code> part tells the browser that this is a customized input element.</p>
 
-<h2 id="disable-deepin-services">Disable Deepin Services</h2>
+<p>Here is a complete example:</p>
 
-<p>I didn’t remove all the deepin related packages since some of them are needed by the App Store. However, I don’t think some of them are needed to run as deamon even if I left them on the machine. So type <code class="language-plaintext highlighter-rouge">systemctl status deepin-</code> and press tab for autocomplete to see the systemd services related to deepin, and use <code class="language-plaintext highlighter-rouge">systemctl disable &lt;service&gt;</code> to disable the ones you don’t need.</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;title&gt;</span>htmx boolean checkbox example<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://unpkg.com/htmx.org@1.9.12"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://unpkg.com/htmx.org@1.9.12/dist/ext/json-enc.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script&gt;</span>
+      <span class="kd">class</span> <span class="nc">BooleanCheckbox</span> <span class="kd">extends</span> <span class="nc">HTMLInputElement</span> <span class="p">{</span>
+          <span class="nf">constructor</span><span class="p">()</span> <span class="p">{</span>
+              <span class="k">super</span><span class="p">();</span>
+          <span class="p">}</span>
+
+          <span class="kd">get</span> <span class="nf">checked</span><span class="p">()</span> <span class="p">{</span>
+              <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+          <span class="p">}</span>
+
+          <span class="kd">get</span> <span class="nf">value</span><span class="p">()</span> <span class="p">{</span>
+              <span class="k">if </span><span class="p">(</span><span class="k">super</span><span class="p">.</span><span class="nx">checked</span><span class="p">)</span> <span class="p">{</span>
+                  <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+              <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                  <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+              <span class="p">}</span>
+          <span class="p">}</span>
+      <span class="p">}</span>
+      <span class="nx">customElements</span><span class="p">.</span><span class="nf">define</span><span class="p">(</span><span class="dl">"</span><span class="s2">boolean-checkbox</span><span class="dl">"</span><span class="p">,</span> <span class="nx">BooleanCheckbox</span><span class="p">,</span> <span class="p">{</span> <span class="na">extends</span><span class="p">:</span> <span class="dl">"</span><span class="s2">input</span><span class="dl">"</span> <span class="p">});</span>
+    <span class="nt">&lt;/script&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;form&gt;</span>
+      <span class="nt">&lt;div&gt;&lt;input</span> <span class="na">type=</span><span class="s">"checkbox"</span> <span class="na">name=</span><span class="s">"default-checkbox"</span> <span class="nt">/&gt;</span>Default checkbox<span class="nt">&lt;/div&gt;</span>
+      <span class="nt">&lt;div&gt;&lt;input</span> <span class="na">type=</span><span class="s">"checkbox"</span> <span class="na">is=</span><span class="s">"boolean-checkbox"</span> <span class="na">name=</span><span class="s">"boolean-checkbox"</span> <span class="nt">/&gt;</span>Boolean checkbox<span class="nt">&lt;/div&gt;</span>
+      <span class="nt">&lt;button</span> <span class="na">hx-post=</span><span class="s">"test-post"</span> <span class="na">hx-ext=</span><span class="s">"json-enc"</span><span class="nt">&gt;</span>Submit<span class="nt">&lt;/button&gt;</span>
+    <span class="nt">&lt;/form&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>It defines two checkboxes: a native one and a customized one. We use the <code class="language-plaintext highlighter-rouge">json-enc</code> extension so it will post JSON as request body. When click the submit button, if both of them are unchecked, the post body looks like this:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="nl">"boolean-checkbox"</span><span class="p">:</span><span class="kc">false</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>And if both are selected, here is the post body:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="nl">"default-checkbox"</span><span class="p">:</span><span class="s2">"on"</span><span class="p">,</span><span class="nl">"boolean-checkbox"</span><span class="p">:</span><span class="kc">true</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="what-about-the-native-html-form-action">What About the Native HTML Form Action</h2>
+
+<p>The custom element <code class="language-plaintext highlighter-rouge">boolean-checkbox</code> only works with htmx to post boolean values. If you use native form action like this:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">"test-call"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;input</span> <span class="na">is=</span><span class="s">"boolean-checkbox"</span> <span class="na">type=</span><span class="s">"checkbox"</span> <span class="na">name=</span><span class="s">"boolean-checkbox"</span><span class="nt">&gt;</span>Boolean Checkbox<span class="nt">&lt;/input&gt;</span>
+  <span class="nt">&lt;button&gt;</span>Submit<span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+</code></pre></div></div>
+
+<p>The behaviour is still like the native checkbox, which only posts value “on” when it’s checked.</p>
+
+<p>Even though I don’t use the native form action, it still makes me wonder if I can support it. (Disclaimer: all the code below are experiments and I don’t recommend anyone uses it on production without careful tests.)</p>
+
+<p>In fact, there is a way to set form value in web component through <a href="https://developer.mozilla.org/en-US/docs/Web/API/ElementInternals/setFormValue"><code class="language-plaintext highlighter-rouge">ElementInternals.setFormValue</code></a>:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">this</span><span class="p">.</span><span class="nx">internals</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nf">attachInternals</span><span class="p">();</span>
+<span class="k">this</span><span class="p">.</span><span class="nx">internals</span><span class="p">.</span><span class="nf">setFormValue</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>However, in HTML standard, <code class="language-plaintext highlighter-rouge">ElementInternals</code> is not supported if the custom element is extending a built-in input element. Actually there is a <a href="https://github.com/whatwg/html/issues/5166">Github issue</a> asking for this feature, and the response to not support it doesn’t make sense to me:</p>
+
+<blockquote>
+  <p>Since Apple’s WebKit team’s position is that customized builtins shouldn’t exist in the first place, we don’t support this proposal.</p>
+</blockquote>
+
+<p>Anyway, it is what it is. So I need to workaround it. The solution I came up is to include another checkbox element as a child instead of inherit it. Here is the code:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">BooleanCheckbox</span> <span class="kd">extends</span> <span class="nc">HTMLElement</span> <span class="p">{</span>
+
+    <span class="kd">static</span> <span class="nx">formAssociated</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+    <span class="nf">constructor</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">();</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">internals</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nf">attachInternals</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="nf">connectedCallback</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">shadow</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nf">attachShadow</span><span class="p">({</span><span class="na">mode</span><span class="p">:</span> <span class="dl">"</span><span class="s2">open</span><span class="dl">"</span><span class="p">});</span>
+        <span class="kd">const</span> <span class="nx">internalCheckbox</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">input</span><span class="dl">"</span><span class="p">);</span>
+        <span class="nx">internalCheckbox</span><span class="p">.</span><span class="nf">setAttribute</span><span class="p">(</span><span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">checkbox</span><span class="dl">"</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nf">getAttributeNames</span><span class="p">().</span><span class="nf">forEach</span><span class="p">((</span><span class="nx">name</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="nx">internalCheckbox</span><span class="p">.</span><span class="nf">setAttribute</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nf">getAttribute</span><span class="p">(</span><span class="nx">name</span><span class="p">));</span>
+        <span class="p">});</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">shadow</span><span class="p">.</span><span class="nf">appendChild</span><span class="p">(</span><span class="nx">internalCheckbox</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">internals</span><span class="p">.</span><span class="nf">setFormValue</span><span class="p">(</span><span class="nx">internalCheckbox</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
+        <span class="nx">internalCheckbox</span><span class="p">.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">change</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">internals</span><span class="p">.</span><span class="nf">setFormValue</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+
+    <span class="kd">get</span> <span class="nf">checkbox</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">shadow</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="dl">"</span><span class="s2">input[type=checkbox]</span><span class="dl">"</span><span class="p">);</span>
+    <span class="p">}</span>
+
+
+    <span class="kd">get</span> <span class="nf">checked</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">get</span> <span class="nf">value</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">if </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">checkbox</span><span class="p">.</span><span class="nx">checked</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="nx">customElements</span><span class="p">.</span><span class="nf">define</span><span class="p">(</span><span class="dl">"</span><span class="s2">boolean-checkbox</span><span class="dl">"</span><span class="p">,</span> <span class="nx">BooleanCheckbox</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>It listens on the <code class="language-plaintext highlighter-rouge">checked</code> attribute on the child checkbox and update the form value based on it. <code class="language-plaintext highlighter-rouge">static formAssociated = true;</code> is needed so that we can set form values.</p>
+
+<p>Then in HTML, we can use it like this:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">"/test-call"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div&gt;&lt;input</span> <span class="na">type=</span><span class="s">"checkbox"</span> <span class="na">name=</span><span class="s">"default-checkbox"</span> <span class="nt">/&gt;</span>Default Checkbox<span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div&gt;&lt;boolean-checkbox</span> <span class="na">name=</span><span class="s">"boolean-checkbox"</span><span class="nt">&gt;&lt;/boolean-checkbox&gt;</span>Boolean Checkbox<span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div&gt;&lt;button&gt;</span>Submit<span class="nt">&lt;/button&gt;&lt;/div&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+</code></pre></div></div>
+
+<p>When click the submit button, it calls <code class="language-plaintext highlighter-rouge">/test-call?boolean-checkbox=false</code> if both checkboxes are unchecked and <code class="language-plaintext highlighter-rouge">/test-call?default-checkbox=on&amp;boolean-checkbox=true</code> if both are checked.</p>
 
 </article>
 
 <footer id="post_footer">
   <table><tr>
     
-      <td id="prev"><a href="/2023-08-27-Compare-Task-Processing-Approaches-in-Scala.html">Prev: Compare Task Processing Approaches in Scala</a></td>
+      <td id="prev"><a href="/2024-06-03-Random-Video-Playlists-for-Self-Hosted-Videos.html">Prev: Random Playlists for Self Hosted Videos</a></td>
     
-    
-      <td id="next"><a href="/2023-09-23-Migrate-Scala2Grpc-to-Cats-Effect-3.html" id="next">Next: Migrate Scala2grpc to Cats Effect 3</a></td>
     
   </tr></table>
 </footer>
