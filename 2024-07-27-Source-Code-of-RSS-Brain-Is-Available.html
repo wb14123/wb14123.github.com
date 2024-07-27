@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> 端口666：毁灭！ |  Bin Wang - My Personal Blog</title>
+    <title> Source Code of RSS Brain is Available |  Bin Wang - My Personal Blog</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
     <link rel="stylesheet" href="/static/css/asciinema-player.css" type="text/css" />
 
@@ -1002,7 +1002,7 @@
     <div class="index-entry index-post">
       
         
-        <div class="index-selected">端口666：毁灭！ <span class="publish-year">(2011)</span></div>
+        <a href="/2011-07-12-port666.html">端口666：毁灭！ <span class="publish-year">(2011)</span></a>
         
       
 
@@ -3226,7 +3226,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2024-07-27-Source-Code-of-RSS-Brain-Is-Available.html">Source Code of RSS Brain is Available <span class="publish-year">(2024)</span></a>
+        <div class="index-selected">Source Code of RSS Brain is Available <span class="publish-year">(2024)</span></div>
         
       
 
@@ -3803,37 +3803,92 @@
 
     <section id="page_content">
         <div id="content_table">
-  
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#code-license">Code License</a></li><li><a href="#the-purpose">The Purpose</a></li><li><a href="#release-process">Release Process</a></li><li><a href="#roadmap">Roadmap</a></li></ol>
 </div>
 
 <div id="article_content" class="">
 <article id="post">
   <header>
-    <h1>端口666：毁灭！</h1>
+    <h1>Source Code of RSS Brain is Available</h1>
     
-      <p class="description">Posted on 12 Jul 2011, tagged </p>
+      <p class="description">Posted on 27 Jul 2024, tagged <code>RSS Brain</code><code>open source</code><code>source available</code><code>project</code><code>software engineer</code></p>
     
   </header>
 
-  <p>在网络通讯中，我们知道IP地址是非常重要的。和IP地址同等重要的，就是网络的端口了。如果把IP地址比作门牌号，那么就可以把端口比作是房间号。IP地址用来找到机器的所在，而机器中的每个应用又要给分配一个端口。一般1024以下的端口是有比较特殊的含义的，例如常用的80端口就是用来超文本传输协议的，一般浏览网页什么的都是用这个端口。这个就不多说了，如果你学过一点网络对这个应该不会陌生，或者没学过也可以上网查一些资料。在Linux或者Unix系统下，可以在/etc/services文件中看见各个端口的用途。其中，可以发现一个比较有意思的端口666,是留给了ID公司的一个第一人称射击游戏Doom（或译作毁灭公爵）。</p>
+  <p><em>This article is also posted at <a href="https://news.rssbrain.com/news/2024/07/26/Source-Code-Released">RSS Brain blog</a>.</em></p>
 
-<p>如果你不知道这ID公司或者Doom这个游戏，我非常推荐你看一下《Doom启示录》。ID公司一直是游戏界中图形处理的领头羊，而其中的技术天才约翰的一句话更是一直激励着我：“在计算机界，只要你有一台电脑，一张Linux光盘和一个互联网帐号，你就可以达到你所能达到的技术顶尖。”然而虽然这个公司和这个游戏这么有名，我也不明白为什么系统会专门给它留出来一个端口呢。还是666,这在中国可是个挺吉利的数字。</p>
+<p>When I first published <a href="https://www.rssbrain.com/">RSS Brain</a>, I promised the source code will be released (well, I actually said “open source”, but more on that later). After I rewrote the whole Flutter frontend with Javascript, most code is put into a single source repo. I feel comfortable to release it. So here it is on <a href="https://github.com/wb14123/rss_brain_release">Github</a>.</p>
 
-<p>但是当我上网查了一下，才知道事情不是这么回事。666在西方国家中原来是魔鬼的意思，向来是个很不吉利的数字。《圣经》启示录13:16-18中：“他又叫众人，无论大小、贫富、自主的、为奴的，都在右手上或是在额上受一个印记。除了那受印记、有了兽名或有兽名数目的，都不得作买卖。在这里有智慧：凡有聪明的，可以算计兽的数目；因为这是人的数目，他的数目是六百六十六。”所以666是兽的象征。还有很多人考证圣经中为什么这样说，我觉得挺不靠谱的，不过大家要是有兴趣的话就去网上查查吧。</p>
+<p>There are two things you may notice from the source code:</p>
 
-<p>所以666在西方不仅不是个吉利的数字，还是一个非常邪恶和另人恐惧的数字。很多时候大家都尽量避免和这个数字打交道，据说IBM生产的一个产品就直接跳过了666这个编号。但是技术天才和Geek们的思维就是不一样，而且人家游戏的名字本来就叫Doom，就是毁灭的意思，所以别人避之不及的666ID公司反而非常喜爱，因此就用作了自己游戏Doom的端口。而因为666又有着这么酷的含义，所以很多病毒入侵的时候也都选择这个端口。</p>
+<ul>
+  <li>The commit history is mostly missing.</li>
+  <li>The code license is not an open source license.</li>
+</ul>
 
-<p>知道点这些东西，时常会觉得IT界也是个有自己文化并且是个很好玩的地方。一起努力吧，嘿嘿。</p>
+<p>I’ll talk about the most important one first: the code license.</p>
+
+<h2 id="code-license">Code License</h2>
+
+<p>RSS Brain’s source code is released under <a href="https://github.com/wb14123/rss_brain_release?tab=License-1-ov-file#readme">SSPL</a>, Server Side Public License. I don’t want to use “open source” as a market point for RSS Brain so I must make this clear first: technically, RSS Brain is a <a href="https://en.wikipedia.org/wiki/Source-available_software">source available software</a>, not an open source one, since SSPL is not recognized as an open source license.</p>
+
+<p>SSPL is mostly the same as <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>, but with a key difference: it requires the user to release the source code of the whole stack if the project is used commercially. If you want to run the code on your own server and use RSS Brain freely, it’s all good. You can even share your server with family and friends. But as long as you start to charge money for that service, you need to release the source code of everything you use for the service, including things like OS, CI/CD, web server and so on. So it basically makes it impractical to use the source code commercially. I chose that feature on purpose.</p>
+
+<h2 id="the-purpose">The Purpose</h2>
+
+<p>Before I explain why I chose this license, I must explain the reasons of making RSS Brain’s source code available.</p>
+
+<h3 id="transparent-algorithm">Transparent Algorithm</h3>
+
+<p>In a past blog post <a href="https://www.binwang.me/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong about Recommendation System</a>, I mentioned I don’t want to manipulated by recommendation systems. Ant that’s one of the main motivations for me to start write my own RSS reader. While there are still ranking and recommendation algorithms in RSS Brain, it’s aimed to provider better information instead of making the user more addicted to the product. In order to approve that, the algorithm needs to be available so that the users can inspect it and decide whether it’s the right one for them.</p>
+
+<p>Be aware even the source code is available, it still needs some level of trust since the code running on my server <a href="https://app.rssbrain.com">app.rssbrain.com</a> can theoretically be different from what is being released. But it’s good enough for most people. However, if you want absolute control, you can always run it on your own server with the source code available.</p>
+
+<h3 id="no-vendor-lock-in">No Vendor Lock-in</h3>
+
+<p>Another important benefit is the user can expect the software to last. Even if I don’t host the service anymore, there is always a way to continue using it since the code is available. Yes it’s not commercial friendly, but if the software turned out to be really useful and attracted enthusiasts, I believe someone else will continue to maintain it for free. I think this property is critical for any product that needs to be used every day and becomes an important part of the digital life.</p>
+
+<h3 id="no-free-commercial-usage">No Free Commercial Usage</h3>
+
+<p>The next benefit is not for the user, but for myself. I want the <strong>users</strong> be able to self host the service for free, but I don’t want other people take my source code for free and earn money from it. I think that’s reasonable, especially considering I also provide paid hosted solution at <a href="https://app.rssbrain.com">app.rssbrain.com</a>.</p>
+
+<h3 id="considerations-of-contributors">Considerations of Contributors</h3>
+
+<p>One big advantage of open source project is it can attract contributors to make the software better. And it can sometimes justify the free commercial usage because all the competitors are contributing to the software. But because this is a software I am and will use daily, I want to have 100% control of the roadmap of it. Not only the product aspect, but also technology aspect. It’s just easier to write all the things by myself, at least for now. So I’m fine to chose a non open source license even with less potential contributors.</p>
+
+<h2 id="release-process">Release Process</h2>
+
+<p>You may notice the source code has very few commit history. The release process will be only one commit for each release. The release cycle will be one release every few weeks, depends on how much process I make. The regular releases will mostly on the weekend. If there is a bug or a security risk, the release maybe more frequent.</p>
+
+<p>The version number is in the format of <code class="language-plaintext highlighter-rouge">X.Y.Z</code>. Where Y will be increased for every feature release and Z will be increased for every bug fix. X will only be increased for breaking changes or really major update.</p>
+
+<p>I’ll make my hosted version at <a href="https://app.rssbrain.com">app.rssbrain.com</a> the same as the source code. Which means at each release, I’ll update the app first, and release the source code just after it. I’ll add a section in the app’s setting page to indicate the current version.</p>
+
+<p>The reason I chose this release mode is the same reason as I released it under SSPL. I only want the source code be available to users, but I don’t really care about whether there will be contributions from other people. So hide the commit history between releases just make my life easier since I don’t need to care too much about keep my commit messages clean.</p>
+
+<h2 id="roadmap">Roadmap</h2>
+
+<p>With this source code released, everyone can inspect the algorithm to decide if this is the right product for them. However, for self-host, even if you can do it right now, it requires some undocumented configuration. So I’ll do the following things to make it easier:</p>
+
+<ul>
+  <li>Add documents for self-host.</li>
+  <li>Add documents for admin operations like create admin users.</li>
+  <li>Disable some components by default. To name a few:
+    <ul>
+      <li>There is an machine learning server mentioned in <a href="https://www.binwang.me/2023-11-14-Update-On-RSS-Brain-to-Find-Related-Articles-with-Machine-Learning.html">this blog</a>. I will likely disable it by default since I’m thinking about redo this part in the short future.</li>
+      <li>Payment is not needed for self-hosted instances so I’ll disable it by default.</li>
+      <li>There is an image proxy that I’ll likely to disable as well, just to make it easier to deploy.</li>
+    </ul>
+  </li>
+</ul>
 
 </article>
 
 <footer id="post_footer">
   <table><tr>
     
-      <td id="prev"><a href="/2011-07-11-quick-sort.html">Prev: 快排杀手</a></td>
+      <td id="prev"><a href="/2024-07-12-A-Review-of-Linux-on-Surface-Pro-4.html">Prev: A Review of Linux on Surface Pro 4</a></td>
     
-    
-      <td id="next"><a href="/2011-12-20-life-game.html" id="next">Next: 好玩的生命游戏</a></td>
     
   </tr></table>
 </footer>

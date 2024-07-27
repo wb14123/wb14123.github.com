@@ -1,4 +1,69 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2024-07-13T10:53:53-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">A Review of Linux on Surface Pro 4</title><link href="https://www.binwang.me/2024-07-12-A-Review-of-Linux-on-Surface-Pro-4.html" rel="alternate" type="text/html" title="A Review of Linux on Surface Pro 4" /><published>2024-07-12T00:00:00-04:00</published><updated>2024-07-12T00:00:00-04:00</updated><id>https://www.binwang.me/A-Review-of-Linux-on-Surface-Pro-4</id><content type="html" xml:base="https://www.binwang.me/2024-07-12-A-Review-of-Linux-on-Surface-Pro-4.html"><![CDATA[<h2 id="background">Background</h2>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2024-07-27T18:13:39-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Source Code of RSS Brain is Available</title><link href="https://www.binwang.me/2024-07-27-Source-Code-of-RSS-Brain-Is-Available.html" rel="alternate" type="text/html" title="Source Code of RSS Brain is Available" /><published>2024-07-27T00:00:00-04:00</published><updated>2024-07-27T00:00:00-04:00</updated><id>https://www.binwang.me/Source-Code-of-RSS-Brain-Is-Available</id><content type="html" xml:base="https://www.binwang.me/2024-07-27-Source-Code-of-RSS-Brain-Is-Available.html"><![CDATA[<p><em>This article is also posted at <a href="https://news.rssbrain.com/news/2024/07/26/Source-Code-Released">RSS Brain blog</a>.</em></p>
+
+<p>When I first published <a href="https://www.rssbrain.com/">RSS Brain</a>, I promised the source code will be released (well, I actually said “open source”, but more on that later). After I rewrote the whole Flutter frontend with Javascript, most code is put into a single source repo. I feel comfortable to release it. So here it is on <a href="https://github.com/wb14123/rss_brain_release">Github</a>.</p>
+
+<p>There are two things you may notice from the source code:</p>
+
+<ul>
+  <li>The commit history is mostly missing.</li>
+  <li>The code license is not an open source license.</li>
+</ul>
+
+<p>I’ll talk about the most important one first: the code license.</p>
+
+<h2 id="code-license">Code License</h2>
+
+<p>RSS Brain’s source code is released under <a href="https://github.com/wb14123/rss_brain_release?tab=License-1-ov-file#readme">SSPL</a>, Server Side Public License. I don’t want to use “open source” as a market point for RSS Brain so I must make this clear first: technically, RSS Brain is a <a href="https://en.wikipedia.org/wiki/Source-available_software">source available software</a>, not an open source one, since SSPL is not recognized as an open source license.</p>
+
+<p>SSPL is mostly the same as <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>, but with a key difference: it requires the user to release the source code of the whole stack if the project is used commercially. If you want to run the code on your own server and use RSS Brain freely, it’s all good. You can even share your server with family and friends. But as long as you start to charge money for that service, you need to release the source code of everything you use for the service, including things like OS, CI/CD, web server and so on. So it basically makes it impractical to use the source code commercially. I chose that feature on purpose.</p>
+
+<h2 id="the-purpose">The Purpose</h2>
+
+<p>Before I explain why I chose this license, I must explain the reasons of making RSS Brain’s source code available.</p>
+
+<h3 id="transparent-algorithm">Transparent Algorithm</h3>
+
+<p>In a past blog post <a href="https://www.binwang.me/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong about Recommendation System</a>, I mentioned I don’t want to manipulated by recommendation systems. Ant that’s one of the main motivations for me to start write my own RSS reader. While there are still ranking and recommendation algorithms in RSS Brain, it’s aimed to provider better information instead of making the user more addicted to the product. In order to approve that, the algorithm needs to be available so that the users can inspect it and decide whether it’s the right one for them.</p>
+
+<p>Be aware even the source code is available, it still needs some level of trust since the code running on my server <a href="https://app.rssbrain.com">app.rssbrain.com</a> can theoretically be different from what is being released. But it’s good enough for most people. However, if you want absolute control, you can always run it on your own server with the source code available.</p>
+
+<h3 id="no-vendor-lock-in">No Vendor Lock-in</h3>
+
+<p>Another important benefit is the user can expect the software to last. Even if I don’t host the service anymore, there is always a way to continue using it since the code is available. Yes it’s not commercial friendly, but if the software turned out to be really useful and attracted enthusiasts, I believe someone else will continue to maintain it for free. I think this property is critical for any product that needs to be used every day and becomes an important part of the digital life.</p>
+
+<h3 id="no-free-commercial-usage">No Free Commercial Usage</h3>
+
+<p>The next benefit is not for the user, but for myself. I want the <strong>users</strong> be able to self host the service for free, but I don’t want other people take my source code for free and earn money from it. I think that’s reasonable, especially considering I also provide paid hosted solution at <a href="https://app.rssbrain.com">app.rssbrain.com</a>.</p>
+
+<h3 id="considerations-of-contributors">Considerations of Contributors</h3>
+
+<p>One big advantage of open source project is it can attract contributors to make the software better. And it can sometimes justify the free commercial usage because all the competitors are contributing to the software. But because this is a software I am and will use daily, I want to have 100% control of the roadmap of it. Not only the product aspect, but also technology aspect. It’s just easier to write all the things by myself, at least for now. So I’m fine to chose a non open source license even with less potential contributors.</p>
+
+<h2 id="release-process">Release Process</h2>
+
+<p>You may notice the source code has very few commit history. The release process will be only one commit for each release. The release cycle will be one release every few weeks, depends on how much process I make. The regular releases will mostly on the weekend. If there is a bug or a security risk, the release maybe more frequent.</p>
+
+<p>The version number is in the format of <code class="language-plaintext highlighter-rouge">X.Y.Z</code>. Where Y will be increased for every feature release and Z will be increased for every bug fix. X will only be increased for breaking changes or really major update.</p>
+
+<p>I’ll make my hosted version at <a href="https://app.rssbrain.com">app.rssbrain.com</a> the same as the source code. Which means at each release, I’ll update the app first, and release the source code just after it. I’ll add a section in the app’s setting page to indicate the current version.</p>
+
+<p>The reason I chose this release mode is the same reason as I released it under SSPL. I only want the source code be available to users, but I don’t really care about whether there will be contributions from other people. So hide the commit history between releases just make my life easier since I don’t need to care too much about keep my commit messages clean.</p>
+
+<h2 id="roadmap">Roadmap</h2>
+
+<p>With this source code released, everyone can inspect the algorithm to decide if this is the right product for them. However, for self-host, even if you can do it right now, it requires some undocumented configuration. So I’ll do the following things to make it easier:</p>
+
+<ul>
+  <li>Add documents for self-host.</li>
+  <li>Add documents for admin operations like create admin users.</li>
+  <li>Disable some components by default. To name a few:
+    <ul>
+      <li>There is an machine learning server mentioned in <a href="https://www.binwang.me/2023-11-14-Update-On-RSS-Brain-to-Find-Related-Articles-with-Machine-Learning.html">this blog</a>. I will likely disable it by default since I’m thinking about redo this part in the short future.</li>
+      <li>Payment is not needed for self-hosted instances so I’ll disable it by default.</li>
+      <li>There is an image proxy that I’ll likely to disable as well, just to make it easier to deploy.</li>
+    </ul>
+  </li>
+</ul>]]></content><author><name></name></author><category term="RSS Brain" /><category term="open source" /><category term="source available" /><category term="project" /><category term="software engineer" /><summary type="html"><![CDATA[This article is also posted at RSS Brain blog.]]></summary></entry><entry><title type="html">A Review of Linux on Surface Pro 4</title><link href="https://www.binwang.me/2024-07-12-A-Review-of-Linux-on-Surface-Pro-4.html" rel="alternate" type="text/html" title="A Review of Linux on Surface Pro 4" /><published>2024-07-12T00:00:00-04:00</published><updated>2024-07-12T00:00:00-04:00</updated><id>https://www.binwang.me/A-Review-of-Linux-on-Surface-Pro-4</id><content type="html" xml:base="https://www.binwang.me/2024-07-12-A-Review-of-Linux-on-Surface-Pro-4.html"><![CDATA[<h2 id="background">Background</h2>
 
 <p>I bought a Surface Pro 4 at 2016. It has an Intel Core m3-6Y30 CPU and 4GB memory. The spec is not that impressive even compared to an average laptop released years earlier. On the other hand, the form factor is very attractive to me: at a very low price, you get a tablet with a beautiful HiDPI 2k screen, a pressure sensitive stylus and an useable keyboard. It is on the heavier side if used as a tablet, but compared to other laptops, it’s very light. It served me very well for my limited use cases. The blog <a href="/2016-11-28-Config-Development-Environment-on-Windows.html">Build a Unix Like Environment on Windows</a> was written at that era. Some years later, I bought a more powerful laptop when I needed to work while traveling. So I gave the Surface away to a family member.</p>
 
@@ -2332,151 +2397,4 @@ sudo systemctl restart containerd
   </li>
   <li>Follow the <a href="https://v1-24.docs.kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/">official upgrade guide</a>.</li>
   <li>After the upgrade, remember to restart Docker so that the old containers started by Docker will be stopped.</li>
-</ol>]]></content><author><name></name></author><category term="Kubernetes" /><category term="container" /><category term="Docker" /><category term="Linux" /><summary type="html"><![CDATA[In the last blog post, I introduced using Kubernetes to setup high available infrastructure. I had that setup a long time ago. I did the long overdue upgrade for Kubernetes from 1.23 to 1.24 recently. Since GlusterFS is deprecated(though not removed) in 1.25, I have no plans to continue the upgrade without exploring alternative storage options.]]></summary></entry><entry><title type="html">Infrastructure Setup for High Availability</title><link href="https://www.binwang.me/2023-03-13-Infrastructure-Setup-for-High-Availability.html" rel="alternate" type="text/html" title="Infrastructure Setup for High Availability" /><published>2023-03-13T00:00:00-04:00</published><updated>2023-03-13T00:00:00-04:00</updated><id>https://www.binwang.me/Infrastructure-Setup-for-High-Availability</id><content type="html" xml:base="https://www.binwang.me/2023-03-13-Infrastructure-Setup-for-High-Availability.html"><![CDATA[<p><em>See <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster</a> for updates on this setup.</em></p>
-
-<p>Cloud is popular these days. But sometimes we just want to host something small, maybe just an open source service for family and friends, or some self-built service that we are still experimenting on. In this case, the cloud can be expensive. We can just throw a few nodes at home and run it at a very low cost. But you don’t want the service down when some nodes failed, at least the service should be available when you upgrade and reboot the nodes because it can happen very frequently. In this article, I will talk about how to build high available infrastructure so that the service can be alive even when some nodes are down.</p>
-
-<h2 id="what-is-high-availability">What is High Availability?</h2>
-
-<p>Availability means a service is alive and can serve traffic. High availability (HA) means when some components of the system are down, the service is still alive. The failed components can be in different layers: it can be a region, a DC, a network, or some nodes. In this article, I’ll only talk about things including and above node level, since region and network are usually out of control for a small infrastructure setup. That means you can host the service on multiple machines, and it should still be alive even when some of the machines are down. This is the most useful case of HA in the case anyway since nodes can be down frequently because of OS or software updates.</p>
-
-<p>Before I start with the real setup, I want to clear some myths about HA first. Maybe you’ve heard of the famous CAP theorem, which says only two of the three properties can be met at the same time: consistency, availability, and partition tolerance. Lots of people misinterpret it as a HA system that will sacrifice consistency during a failure. It is not true: the type of partition that makes you must choose between consistency and availability is very rare. In most well-designed HA systems, you can have both as long as more than half of the nodes are alive (alive also means reachable from clients). And HA doesn’t necessarily mean it prioritizes availability over consistency either: it just means it can handle more failure cases when keeping both consistency and availability. When there is a failure it cannot handle, it can choose to keep consistency and make the service unavailable. This is the type of HA I’m going to introduce in this setup.</p>
-
-<p>So to make it clear, the HA goal in this setup is to make the services still alive without sacrificing consistency when we lose less than half of the nodes (either it’s partitioned from the network or actually dead).</p>
-
-<h2 id="ha-setup">HA Setup</h2>
-
-<p>As said before, the HA needs multiple nodes in case of some nodes are down. The setup in this article can tolerate less than half of the node loss. So if you want to have a HA that can handle 1 node loss, the whole system needs at least 3 nodes. There are lots of cheap used machines on the market that have enough power to host many open source services.</p>
-
-<p>The HA setup has multiple layers and we will use different tools for each of the layers:</p>
-
-<ul>
-  <li>Compute: Kubernetes</li>
-  <li>Storage: GlusterFk</li>
-  <li>Database: Cockroach DB</li>
-  <li>Network Ingress: Cloudflare Tunnel</li>
-</ul>
-
-<p>Here is an overview of the setup:</p>
-
-<p><img src="/static/images/2023-03-13-Infrastructure-Setup-for-High-Availability/HA-self-hosted.png" alt="overview" /></p>
-
-<p><em>Update at 2023-11-28: updated the diagram to include Keepalived.</em></p>
-
-<p>Let’s talk about each of them in detail.</p>
-
-<h2 id="compute-kubernetes">Compute: Kubernetes</h2>
-
-<p><a href="https://kubernetes.io/">Kubernetes</a> is a container orchestration system. Think of it as Docker but across machines. You define what you want to run in the format of YAML or Json, including how much CPU, memory, and storage to use, then Kubernetes will find a node that fits your needs to run your container. It also tries to keep the current system state that meets your definition. For example, if there is a node failed and your service’s container is on it, Kubernetes will try to find another node to start the container so that the state meets the definition. So if the service itself doesn’t have any state between restarts, you get HA for free using Kubernetes.</p>
-
-<p>I must have some warnings about using Kubernetes. It’s a complex project that is used by many big players. It’s not very easy to set up, maintain or upgrade. You need lots of knowledge to make it work. It has so many open issues that your particular needs are most likely not prioritized. While it’s open source so that you can modify the code to meet your use case, and I’ve had good experience contributing code in the early days, the recent experience is not so good anymore: you may need to attend some discussions to push your change instead of async online discussion. That is a lot for a causal contributor. So I end up maintaining a custom branch of Kubernetes with the changes I need locally, which is also a lot for average users.</p>
-
-<p>Even though Kubernetes is heavy, I still think it’s a good tool even for small deployments since it’s already the industry standard. If you want to dedicate the maintenance of the Kubernetes cluster to a third party in the future, you can find lots of providers very easily. And you can just migrate your services to a different cluster without much effort since you’ve already defined the deployment in a language that any Kubernetes cluster can understand.</p>
-
-<p>If you decide Kubernetes is the way to go, Kubernetes can be deployed with Kubeadm. Here is the <a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/">official document</a> about how to deploy a Kubernetes cluster. Make sure to finish the <a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/">HA setup</a> so that Kubernetes can survive even if some nodes are down.</p>
-
-<p>Because of the nature of multiple nodes, every time the service restarts, the container can end on a different machine. So if your service needs to store anything on a disk, the data can get lost if you use the local disk of the machine. There are a few solutions for this:</p>
-
-<ul>
-  <li>Just don’t store data on a disk:
-    <ul>
-      <li>Store it in a database instead. But this is not an option for a service we don’t write and control.</li>
-      <li>Send the files to another system. For example, you can send all the logs to something like Elastic Search so that it’s acceptable to lose logs after the container is restarted.</li>
-      <li>Use <a href="https://kubernetes.io/docs/concepts/configuration/configmap/">ConfigMaps</a> for configuration files so that you can access them on any machine.</li>
-    </ul>
-  </li>
-  <li>Bind the service to a specific node so that the container will run on that machine all the time. This needs the service itself to have HA built in so that when that node fails, the containers on the other nodes can still serve traffic. We will see an example of this in Cockroach DB setup.</li>
-  <li>The last option is to use a distributed storage system that can be accessed from every machine. We will use GlusterFS for it in this setup.</li>
-</ul>
-
-<h2 id="storage-glusterfs">Storage: GlusterFS</h2>
-
-<p><strong>WARNING: Gluster integration for Kubernetes has been removed since Kubernetes 1.26. You can use CephFS instead. Or check <a href="https://github.com/kadalu/kadalu/">Kadulu</a> if you still want to use GlusterFS.</strong></p>
-
-<p><a href="https://www.gluster.org/">Gluster</a> is a distributed storage system. Once you created a GlusterFS volume, you can mount it to a machine just like NFS. The difference is the volume is backed by multiple machines so if even one of the machines fails, the volume is still usable. Kubernetes could mount a GlusterFS volume for containers as well. Sadly, Kubernetes has removed this support since version 1.26. But I’ve had this setup for a while and is still using an older version of Kubernetes, so I’ll still list GlusterFS as a solution here. The documents are still available for older versions. <a href="https://v1-24.docs.kubernetes.io/docs/concepts/storage/volumes/#glusterfs">Here is an example for Kubernetes 1.24</a>. You can select “versions” on the upper right to match your Kubernetes installation. CephFS is another distributed storage system, but it’s less user-friendly than GlusterFS in my opinion since the setup is more complex and it’s harder to mount it locally and explore it like a normal Linux file system. <a href="https://github.com/kadalu/kadalu/">Kadulu</a> seems to be another option if you still want to use GlusterFS, but I’ve never used it and I’m not sure if it’s production ready or not.</p>
-
-<p>See <a href="https://docs.gluster.org/en/latest/Install-Guide/Overview/#what-is-gluster-without-making-me-learn-an-extra-glossary-of-terminology">the official install guide</a> for how to install Gluster and set it up. Most of the Linux distros already have the Gluster in the repo so you can install it by the package manager, and configure it based on the official document. Be aware you need to reserve a separate partition just for Gluster.</p>
-
-<p>When creating a Gluster volume for use with Kubernetes, make sure to create it with at least 3 replicas so that you have HA for this volume. One of the replicas can be “<a href="https://docs.gluster.org/en/v3/Administrator%20Guide/arbiter-volumes-and-quorum/">arbiter</a>”, which means it’s only used for checking consistency and doesn’t store any actual data. So the data is only duplicated across 2 machines instead of 3 to save some space. Here is an example command to create such a volume:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo gluster volume create &lt;volume-name&gt; replica 3 arbiter 1 &lt;host1&gt;:&lt;glusterfs-path&gt; &lt;host2&gt;:&lt;glusterfs-path&gt; &lt;host3&gt;:&lt;glusterfs-path&gt;
-</code></pre></div></div>
-
-<h2 id="database-cockroachdb">Database: CockroachDB</h2>
-
-<p>Even though we can make persistent work with distributed storage, it’s better to avoid it if possible because of the setup complexity and performance impact. (This is more of the case of a self-hosted solution, distributed storage from cloud providers is very easy to use, and is also used by the VM so there is no difference in performance). We’ve listed some options above. In this section, we will look at how to create a database for the services to use so that they don’t need to store data on disks.</p>
-
-<p>Here I will use CockroachDB as an example. But this introduction should help you to set up other similar systems like Elastic Search. Cockroach DB is a distributed database that is compatible with PostgreSQL. It’s built with HA in mind, so it has good guarantees and is easy to set up. I’ve checked lots of HA solutions for PostgreSQL and all of them have less guarantee (lots of them have no information about the consistency and availability level they provide, and I found them half-baked with a closer look) while are much harder to set up. I’ve written <a href="/2018-07-29-A-Review-on-Spanner-and-Open-Source-Implementations.html">a blog about Spanner that also talks about Cockroach DB</a> if you are interested in more details. Overall I have a good impression of it: the tech writings are solid, and the support is nice: when I have an issue and report it in the forum, the response is usually very quick and useful even though I’m just a free user.</p>
-
-<p>CockroachDB has <a href="https://www.cockroachlabs.com/docs/stable/kubernetes-overview.html">an official document</a> about how to install it on Kubernetes. It’s using <a href="https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/">StatefulSets</a>. Here is <a href="https://raw.githubusercontent.com/cockroachdb/cockroach/master/cloud/kubernetes/cockroachdb-statefulset.yaml">one of the configurations it uses</a>. However, I still find there are too many limitations in StatefulSets so I deployed it in my own way:</p>
-
-<ul>
-  <li>Each CockroachDB instance is in its own StatefulSets with only 1 replica.</li>
-  <li>Each of the instances is bound to the physical node with <a href="https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/">PodAffinity</a>. So that each instance will only ever run on a specific host. In this way, we can just use the local disk as the storage because it will never run on a different host.</li>
-  <li>Each CockroachDB instance has its own <a href="https://kubernetes.io/docs/concepts/services-networking/service/">service</a> defined so that they can communicate with each other.</li>
-  <li>Copy the parameters from the official configuration and adjust them based on your use case.</li>
-</ul>
-
-<p>With a setup like this, it’s like installing CockroachDB on physical nodes but managed by Kubernetes. You don’t need to worry about distributed storage. When a node fails, a CockroachDB instance will also fail. But since CockroachDB itself has HA enabled, the whole CockroachDB cluster is still alive. Here is an example of the Kubernetes resources in my setup:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Pods
-
-NAME                READY   STATUS    RESTARTS   AGE
-pod/cockroach01-0   1/1     Running   1          4d11h
-pod/cockroach02-0   1/1     Running   5          4d11h
-pod/cockroach03-0   1/1     Running   0          4d11h
-
-# StatefulSet
-
-NAME          READY   AGE
-cockroach01   1/1     298d
-cockroach02   1/1     298d
-cockroach03   1/1     298d
-
-# Service
-
-NAME                              TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)                          AGE
-service/cockroach01-cockroachdb   ClusterIP   None           &lt;none&gt;        26257/TCP,8080/TCP               298d
-service/cockroach02-cockroachdb   ClusterIP   None           &lt;none&gt;        26257/TCP,8080/TCP               298d
-service/cockroach03-cockroachdb   ClusterIP   None           &lt;none&gt;        26257/TCP,8080/TCP               298d
-service/cockroachdb               ClusterIP   10.96.70.142   &lt;none&gt;        26257/TCP,8080/TCP               269d
-service/cockroachdb-public        NodePort    10.108.23.98   &lt;none&gt;        26257:30005/TCP,8080:30006/TCP   269d
-</code></pre></div></div>
-
-<p>You can see there is a separate StatefulSet for each of the CockroachDB instances, and a service for each of them for internal communications (with the name pattern <code class="language-plaintext highlighter-rouge">cockroach**-cockroachdb</code>). Service <code class="language-plaintext highlighter-rouge">cockroachdb</code> is for the use in Kubernetes cluster, and service <code class="language-plaintext highlighter-rouge">cockroachdb-public</code> is used by the service outside of the Kubernetes cluster (can be disabled if not needed) so that you can see the dashboard from your browser.</p>
-
-<p>It may seem to have more Kubernetes definitions to write with such a method. But remember, while Kubernetes accepts YAML or Json format, how to prepare the definition can be flexible: you can use your favorite programming language to construct the definition and pass it to Kubernetes with a <a href="https://kubernetes.io/docs/reference/using-api/client-libraries/">client library</a>.</p>
-
-<p>The upgrade of CockroachDB is very easy as well. Make sure to check the official release notes and upgrade guides first, but normally the upgrade is just to patch each of the StatefulSet with a newer version of Docker image, for example:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># run this command for every stateful set
-
-kubectl patch statefulset cockroach01 \
---type='json' \
--p='[{"op": "replace", "path": "/spec/template/spec/containers/0/image", "value":"cockroachdb/cockroach:v22.2.5"}]'
-</code></pre></div></div>
-
-<h2 id="network-ingress">Network Ingress</h2>
-
-<p>Once we have everything deployed in the cluster, the last step is to expose our service to the public Internet so that everyone can use it. Here we list two options based on the use case.</p>
-
-<h3 id="cloudflare-tunnel">Cloudflare Tunnel</h3>
-
-<p><a href="https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/">Cloudflare Tunnel</a> is basically a reverse proxy that forwards the traffic from the public Internet to your service. There is a daemon called cloudflared running in Kubernetes. Cloudflare will forward the traffic from clients to cloudflared and cloudflared will forward the traffic to the actual service. Check <a href="https://developers.cloudflare.com/cloudflare-one/tutorials/many-cfd-one-tunnel/">this doc</a> to see how it works with Kubernetes.</p>
-
-<p>The upside of Cloudflare tunnel is that you don’t need to open any port to the public Internet at all. So it’s safer because there is no way to access your service without going to Cloudflare first. Cloudflare also provide some tools to mediate attacks like DDoS.</p>
-
-<p>The downside is it depends on a third-party provider. And it can see all the traffic. It only supports limited protocols. So if you want to avoid Cloudflare seeing your traffic or have a protocol that is not supported, you need a more generic way to do it.</p>
-
-<h3 id="nodeport-with-virtual-ip-and-dynamic-dns">NodePort with Virtual IP and Dynamic DNS</h3>
-
-<p>We need to really open a port to the Internet without something like Cloudflare Tunnel. First, we need to open a port on our nodes, this can be done by defining <a href="https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport">NodePort</a> in Kubernetes’ service.</p>
-
-<p>Once we have the port opened on the nodes, we need to open it to the Internet. How to do it depends on the Internet provider. Usually, you should be able to set up a port mapping from the router to an internal IP for a node. However, to make the setup HA, we shouldn’t map the port just to a single node since that single node can be down, we can set up Keepalived so that there is a virtual IP that always maps to a live node. If you’ve <a href="https://github.com/kubernetes/kubeadm/blob/main/docs/ha-considerations.md#options-for-software-load-balancing">set up HA for Kubernetes with Keepalived and HAProxy</a>, you should be already familiar with how to set it up.</p>
-
-<p>When you open a NodePort, make sure you’ve configured all the protections like authentication and encryption since beyond that it’s public Internet and anyone can access it.
-You may want to run Nginx or HAProxy in the Kubernetes cluster, use it as a reverse proxy and only expose it to the Internet so that it’s safer and you have more control over the public traffic.</p>
-
-<p>The client also needs a way to find the IP address of your network. Depending on the Internet provider, the IP address can change from time to time. So we need dynamic DNS to bind the changing IP to a fixed DNS. <a href="https://github.com/ddclient/ddclient">ddclient</a> can do it automatically and supports lots of domain name providers.</p>
-
-<p>After all of this, your service is open to the public Internet and can be accessed by anyone. But if desired, you can still use Cloudflare DNS with proxy enabled, so that the client will send requests to Cloudflare first and you can get protections from Cloudflare. In this case, since the SSL is terminated inside the Kubernetes cluster, Cloudflare will not be able to see the actual payload of the traffic.</p>]]></content><author><name></name></author><category term="Kubernetes" /><category term="GlusterFS" /><category term="CockroachDB" /><category term="tech" /><category term="high availability" /><summary type="html"><![CDATA[See Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster for updates on this setup.]]></summary></entry></feed>
+</ol>]]></content><author><name></name></author><category term="Kubernetes" /><category term="container" /><category term="Docker" /><category term="Linux" /><summary type="html"><![CDATA[In the last blog post, I introduced using Kubernetes to setup high available infrastructure. I had that setup a long time ago. I did the long overdue upgrade for Kubernetes from 1.23 to 1.24 recently. Since GlusterFS is deprecated(though not removed) in 1.25, I have no plans to continue the upgrade without exploring alternative storage options.]]></summary></entry></feed>
