@@ -1,4 +1,53 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2024-07-27T18:13:39-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Source Code of RSS Brain is Available</title><link href="https://www.binwang.me/2024-07-27-Source-Code-of-RSS-Brain-Is-Available.html" rel="alternate" type="text/html" title="Source Code of RSS Brain is Available" /><published>2024-07-27T00:00:00-04:00</published><updated>2024-07-27T00:00:00-04:00</updated><id>https://www.binwang.me/Source-Code-of-RSS-Brain-Is-Available</id><content type="html" xml:base="https://www.binwang.me/2024-07-27-Source-Code-of-RSS-Brain-Is-Available.html"><![CDATA[<p><em>This article is also posted at <a href="https://news.rssbrain.com/news/2024/07/26/Source-Code-Released">RSS Brain blog</a>.</em></p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2024-08-07T09:00:47-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">My MacOS Essentials</title><link href="https://www.binwang.me/2024-08-07-My-MacOS-Essentials.html" rel="alternate" type="text/html" title="My MacOS Essentials" /><published>2024-08-07T00:00:00-04:00</published><updated>2024-08-07T00:00:00-04:00</updated><id>https://www.binwang.me/My-MacOS-Essentials</id><content type="html" xml:base="https://www.binwang.me/2024-08-07-My-MacOS-Essentials.html"><![CDATA[<p>As a long time Linux and KDE user, I’m pretty uncomfortable with the workflow of MacOS even though I have used MacOS fairly long as well. A lot of companies don’t support Linux to be used on the development laptop. Even for some companies that do support Linux, the hardware for Linux is usually far worse than Macbooks. So MacOS is often the best or even the only choice for work. This is still the case for my new job. I think it’s a good opportunity to write a blog about my MacOS setup. This can be a note for myself when I need to setup a fresh MacOS again in the future.</p>
+
+<h2 id="my-complain-about-macos-desktop-environment">My Complain about MacOS Desktop Environment</h2>
+
+<p>Everyone has different taste and needs about desktop environment and I respect that. The following is just based on my own preference. If you happen to have the same pain points, the setup may help you. Otherwise I find it’s pretty inspiring to see how other people work as well even though I may never work like that.</p>
+
+<p>I mostly just use these apps for work:</p>
+
+<ul>
+  <li>A terminal. I use iTerm2 for this. I usually uses tmux to manage “windows” in terminal so I usually don’t open multiple iTerm2 windows.</li>
+  <li>IDE. Usually Intellij Idea or other JetBrain family products.</li>
+  <li>Browser: Firefox.</li>
+  <li>Team collaboration software like Slack and Zoom.</li>
+</ul>
+
+<p>Most of those software are cross platform so I don’t have much complain about the software themselves. The things I want to change are on the desktop environment itself.</p>
+
+<p>There is a thing in MacOS that I wouldn’t be used to in a million years: the logic of windows grouping for the same app. It results these problems:</p>
+
+<p>First, it needs different keyboard shortcut when switch through windows. It just adds unnecessary complexity. Especially with my HHKB keyboard, the <code class="language-plaintext highlighter-rouge">~</code>/<code>`</code> key is far away from Tab key: it’s at the top right corner. And it’s hard to see from a glance what windows are available.</p>
+
+<p>Talking about seeing what windows are available, the dock doesn’t do a good job as well. You can only see which apps are open. And I don’t feel it’s doing a good job even for that. Usually I just end with lots of opened windows/apps that’s no longer needed and it’s hard to keep track of them without a proper panel that shows all the windows.</p>
+
+<h2 id="make-it-more-kdewindows-like">Make It More KDE/Windows Like</h2>
+
+<p>So my goal here is to make it more KDE/Windows like, which means:</p>
+
+<ul>
+  <li>Use the same keyboard shortcut to cycle through all the windows, do not group the windows by app.</li>
+  <li>Have a panel shows all the windows. Again, do not group by app.</li>
+  <li>This is a good to have: use keyboard to snap windows on the left/right or maximum.</li>
+</ul>
+
+<p>I don’t need the “start menu” since I usually just open apps by bring up the searchable launcher: Spotlight in MacOS and KRunner in KDE.</p>
+
+<p>So here are a list of software that archive my needs:</p>
+
+<ul>
+  <li><a href="https://alt-tab-macos.netlify.app/">AltTab</a>: cycle through all the windows without grouping by app.</li>
+  <li><a href="https://rectangleapp.com/">Rectangle</a>: Windows snap and keyboard shortcuts</li>
+  <li><a href="https://ubarapp.com/">uBar</a> or <a href="https://sidebarapp.net/">sidebar</a>: KDE/Windows like panel bar to show all windows.</li>
+</ul>
+
+<h2 id="other-quality-of-life-improvements">Other Quality of Life Improvements</h2>
+
+<p>There are two other software I find very useful even though they are not related to the workflow above.</p>
+
+<p>First, <a href="https://github.com/tombonez/noTunes">noTunes</a>. It bans the start of Apple Music. I find it’s very annoying that when I accidentally pressed some button or touched my Airpods, the Apple Music popped up. I don’t even know what triggered it. So this software solves this problem perfectly.</p>
+
+<p>The second one is <a href="https://karabiner-elements.pqrs.org/">Karabiner-Elements</a>. This is a very powerful custom key mapping software. But I mainly use it to support two keyboards at the same time. That is a very very niche personal need: I use two same keyboards as split keyboard. I can write more on that in the future blogs. But the point is, MacOS doesn’t support two keyboards at the same time very well and this software solves that.</p>]]></content><author><name></name></author><category term="MacOS" /><category term="tools" /><category term="software" /><category term="desktop environment" /><summary type="html"><![CDATA[As a long time Linux and KDE user, I’m pretty uncomfortable with the workflow of MacOS even though I have used MacOS fairly long as well. A lot of companies don’t support Linux to be used on the development laptop. Even for some companies that do support Linux, the hardware for Linux is usually far worse than Macbooks. So MacOS is often the best or even the only choice for work. This is still the case for my new job. I think it’s a good opportunity to write a blog about my MacOS setup. This can be a note for myself when I need to setup a fresh MacOS again in the future.]]></summary></entry><entry><title type="html">Source Code of RSS Brain is Available</title><link href="https://www.binwang.me/2024-07-27-Source-Code-of-RSS-Brain-Is-Available.html" rel="alternate" type="text/html" title="Source Code of RSS Brain is Available" /><published>2024-07-27T00:00:00-04:00</published><updated>2024-07-27T00:00:00-04:00</updated><id>https://www.binwang.me/Source-Code-of-RSS-Brain-Is-Available</id><content type="html" xml:base="https://www.binwang.me/2024-07-27-Source-Code-of-RSS-Brain-Is-Available.html"><![CDATA[<p><em>This article is also posted at <a href="https://news.rssbrain.com/news/2024/07/26/Source-Code-Released">RSS Brain blog</a>.</em></p>
 
 <p>When I first published <a href="https://www.rssbrain.com/">RSS Brain</a>, I promised the source code will be released (well, I actually said “open source”, but more on that later). After I rewrote the whole Flutter frontend with Javascript, most code is put into a single source repo. I feel comfortable to release it. So here it is on <a href="https://github.com/wb14123/rss_brain_release">Github</a>.</p>
 
@@ -2372,29 +2421,4 @@ RUN cd /opt &amp;&amp; \
   </tbody>
 </table>
 
-<p>We can see approaches that parallelize all the parts win the performance game.</p>]]></content><author><name></name></author><category term="Scala" /><category term="concurrent" /><category term="cats" /><category term="cats-effect" /><category term="fs2" /><category term="queue" /><category term="stream" /><summary type="html"><![CDATA[All the source code mentioned in this blog can be found in my Github repo.]]></summary></entry><entry><title type="html">Upgrade Kubernetes from 1.23 to 1.24</title><link href="https://www.binwang.me/2023-05-22-Upgrade-Kubernetes-from-1.23-to-1.24.html" rel="alternate" type="text/html" title="Upgrade Kubernetes from 1.23 to 1.24" /><published>2023-05-22T00:00:00-04:00</published><updated>2023-05-22T00:00:00-04:00</updated><id>https://www.binwang.me/Upgrade-Kubernetes-from-1.23-to-1.24</id><content type="html" xml:base="https://www.binwang.me/2023-05-22-Upgrade-Kubernetes-from-1.23-to-1.24.html"><![CDATA[<p>In the <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">last blog post</a>, I introduced using Kubernetes to setup high available infrastructure. I had that setup a long time ago. I did the long overdue upgrade for Kubernetes from 1.23 to 1.24 recently. Since GlusterFS is <a href="https://github.com/kubernetes/kubernetes/pull/111485">deprecated</a>(though not removed) in 1.25, I have no plans to continue the upgrade without exploring alternative storage options.</p>
-
-<p>There is a big change from 1.23 to 1.24 as well, namely, <a href="https://kubernetes.io/blog/2022/03/31/ready-for-dockershim-removal/">Docker Engine support has been removed</a>. I migrated the container engine to containerd. But the process is not without pain. I need to search different sources to fix the issues. So I list my upgrade steps so that if anyone has the same issue, this may help.</p>
-
-<p>My Kubernetes cluster is set up locally with <code class="language-plaintext highlighter-rouge">kubeadm</code>. There is an <a href="https://v1-24.docs.kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/">official upgrade guide</a> for kubeadm to upgrade from 1.23 to 1.24, but it doesn’t mention any steps to remove Docker and setup containerd. So here are the steps I took:</p>
-
-<ol>
-  <li>Add <code class="language-plaintext highlighter-rouge">--container-runtime-endpoint</code> option to kubelet. The way I did it is adding <code class="language-plaintext highlighter-rouge">KUBELET_ARGS="--container-runtime-endpoint=/run/containerd/containerd.sock"</code> to <code class="language-plaintext highlighter-rouge">/etc/kubernetes/kublet.env</code>. Without this, Kubelet will fail to start.</li>
-  <li>Remove <code class="language-plaintext highlighter-rouge">--network-plugin=cni</code> from  <code class="language-plaintext highlighter-rouge">/var/lib/kubelet/kubeadm-flags.env</code>.</li>
-  <li>Add the following configuration in <code class="language-plaintext highlighter-rouge">/etc/crictl.yaml</code>, otherwise kubeadm will not be able to pull needed images:
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>runtime-endpoint: unix:///run/containerd/containerd.sock
-image-endpoint: unix:///run/containerd/containerd.sock
-timeout: 10
-debug: false
-</code></pre></div>    </div>
-  </li>
-  <li>Configure <code class="language-plaintext highlighter-rouge">SystemdCgroup</code> permission for containerd. Otherwise kube-apiserver will always be restarted because of “sandbox environment changes” (see more in <a href="https://github.com/kubernetes/kubernetes/issues/110177">Github issue</a>):
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo mkdir -p /etc/containerd/
-containerd config default | sudo tee /etc/containerd/config.toml
-sudo sed -i 's/SystemdCgroup \= false/SystemdCgroup \= true/g' /etc/containerd/config.toml
-sudo systemctl restart containerd
-</code></pre></div>    </div>
-  </li>
-  <li>Follow the <a href="https://v1-24.docs.kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/">official upgrade guide</a>.</li>
-  <li>After the upgrade, remember to restart Docker so that the old containers started by Docker will be stopped.</li>
-</ol>]]></content><author><name></name></author><category term="Kubernetes" /><category term="container" /><category term="Docker" /><category term="Linux" /><summary type="html"><![CDATA[In the last blog post, I introduced using Kubernetes to setup high available infrastructure. I had that setup a long time ago. I did the long overdue upgrade for Kubernetes from 1.23 to 1.24 recently. Since GlusterFS is deprecated(though not removed) in 1.25, I have no plans to continue the upgrade without exploring alternative storage options.]]></summary></entry></feed>
+<p>We can see approaches that parallelize all the parts win the performance game.</p>]]></content><author><name></name></author><category term="Scala" /><category term="concurrent" /><category term="cats" /><category term="cats-effect" /><category term="fs2" /><category term="queue" /><category term="stream" /><summary type="html"><![CDATA[All the source code mentioned in this blog can be found in my Github repo.]]></summary></entry></feed>

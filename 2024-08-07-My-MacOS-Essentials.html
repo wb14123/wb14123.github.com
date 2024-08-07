@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> SICP第三章总结（上）——可变量与环境 |  Bin Wang - My Personal Blog</title>
+    <title> My MacOS Essentials |  Bin Wang - My Personal Blog</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
     <link rel="stylesheet" href="/static/css/asciinema-player.css" type="text/css" />
 
@@ -1360,7 +1360,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2024-08-07-My-MacOS-Essentials.html">My MacOS Essentials <span class="publish-year">(2024)</span></a>
+        <div class="index-selected">My MacOS Essentials <span class="publish-year">(2024)</span></div>
         
       
 
@@ -1974,7 +1974,7 @@
     <div class="index-entry index-post">
       
         
-        <div class="index-selected">SICP第三章总结（上）——可变量与环境 <span class="publish-year">(2012)</span></div>
+        <a href="/2012-01-27-sicp30.html">SICP第三章总结（上）——可变量与环境 <span class="publish-year">(2012)</span></a>
         
       
 
@@ -3853,94 +3853,77 @@
 
     <section id="page_content">
         <div id="content_table">
-  <h3>Table of Contents</h3><ol class="toc"><li><a href="#一变量的赋值">一、变量的赋值</a></li><li><a href="#二环境">二、环境</a></li><li><a href="#三面向对象编程">三、面向对象编程</a></li></ol>
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#my-complain-about-macos-desktop-environment">My Complain about MacOS Desktop Environment</a></li><li><a href="#make-it-more-kdewindows-like">Make It More KDE/Windows Like</a></li><li><a href="#other-quality-of-life-improvements">Other Quality of Life Improvements</a></li></ol>
 </div>
 
-<div id="article_content" class="zh">
+<div id="article_content" class="">
 <article id="post">
   <header>
-    <h1>SICP第三章总结（上）——可变量与环境</h1>
+    <h1>My MacOS Essentials</h1>
     
-      <p class="description">Posted on 27 Jan 2012, tagged <code>sicp</code><code>programming</code></p>
+      <p class="description">Posted on 07 Aug 2024, tagged <code>MacOS</code><code>tools</code><code>software</code><code>desktop environment</code></p>
     
   </header>
 
-  <p>因为各种事情，中间隔了很长时间没有更新有关SICP的总结了。因为第三章涉及到的东西实在太多，一篇文章来总结完似乎不太现实，因此将第三章的总结分为两个部分，上半部分是有关可变的变量和环境，下半部分是流编程。我刚开始看SICP的时候，是为了学lisp，但是看到第三章才真正意识到SICP的重点是什么，看它的书名就知道，这不是一本讲解一门语言的书，而是讲有关程序构造和解释的书，对语言的构造了解多一些，不管用什么语言，都很容易用上其中的思想。在第三章，作者深入讨论了在命令式语言中我们习以为常的事情——赋值所带来的影响。虽然这不是一本讲解编程语言的书，但是由于前几篇博客都是介绍了语法，我们还是遵守这种习惯吧，继续讲解Scheme的语法吧。这本书讲的不是语言，但是语言在这本书中还是一个很重要的工具的。其实所谓Scheme的语法，只是一些保留字，方便我以后查询。</p>
+  <p>As a long time Linux and KDE user, I’m pretty uncomfortable with the workflow of MacOS even though I have used MacOS fairly long as well. A lot of companies don’t support Linux to be used on the development laptop. Even for some companies that do support Linux, the hardware for Linux is usually far worse than Macbooks. So MacOS is often the best or even the only choice for work. This is still the case for my new job. I think it’s a good opportunity to write a blog about my MacOS setup. This can be a note for myself when I need to setup a fresh MacOS again in the future.</p>
 
-<h2 id="一变量的赋值">一、变量的赋值</h2>
+<h2 id="my-complain-about-macos-desktop-environment">My Complain about MacOS Desktop Environment</h2>
 
-<p>在SICP前面的学习中很多人肯定发现了，在Scheme中，基本上所有的操作都是不改变变量原有的值。比如一个函数的作用是将一个列表中的值反转，那么它只是返回这个列表反转后的值，而不是改变这个列表。因为在数学的世界里，一个函数也好，变量也好，它所代表的值不应该总是改变的。但是在现实世界中，一些状态却总是随时间改变，如果语言支持赋值，也许在写有关真实世界的模型时就会方便一些。但是我们将会看到，这种方便所带来的一些麻烦。</p>
+<p>Everyone has different taste and needs about desktop environment and I respect that. The following is just based on my own preference. If you happen to have the same pain points, the setup may help you. Otherwise I find it’s pretty inspiring to see how other people work as well even though I may never work like that.</p>
 
-<p>首先还是先介绍一下有关变量赋值的语法：</p>
+<p>I mostly just use these apps for work:</p>
 
-<h3 id="1set">1.set!</h3>
+<ul>
+  <li>A terminal. I use iTerm2 for this. I usually uses tmux to manage “windows” in terminal so I usually don’t open multiple iTerm2 windows.</li>
+  <li>IDE. Usually Intellij Idea or other JetBrain family products.</li>
+  <li>Browser: Firefox.</li>
+  <li>Team collaboration software like Slack and Zoom.</li>
+</ul>
 
-<p>给一个变量赋值，语法为<code class="language-plaintext highlighter-rouge">(set! &lt;arg1&gt; &lt;arg2&gt;)</code>，就是将arg1赋值为arg2。在Scheme中，与赋值有关的函数，基本后面都是跟一个感叹号的。</p>
+<p>Most of those software are cross platform so I don’t have much complain about the software themselves. The things I want to change are on the desktop environment itself.</p>
 
-<h3 id="2set-car">2.set-car!</h3>
+<p>There is a thing in MacOS that I wouldn’t be used to in a million years: the logic of windows grouping for the same app. It results these problems:</p>
 
-<p>给一个列表的头赋值。语法和set!类似。</p>
+<p>First, it needs different keyboard shortcut when switch through windows. It just adds unnecessary complexity. Especially with my HHKB keyboard, the <code class="language-plaintext highlighter-rouge">~</code>/<code>`</code> key is far away from Tab key: it’s at the top right corner. And it’s hard to see from a glance what windows are available.</p>
 
-<h3 id="3set-cdr">3.set-cdr!</h3>
+<p>Talking about seeing what windows are available, the dock doesn’t do a good job as well. You can only see which apps are open. And I don’t feel it’s doing a good job even for that. Usually I just end with lots of opened windows/apps that’s no longer needed and it’s hard to keep track of them without a proper panel that shows all the windows.</p>
 
-<p>给一个列表的cdr赋值。类似于set-car。</p>
+<h2 id="make-it-more-kdewindows-like">Make It More KDE/Windows Like</h2>
 
-<p>随意乱用set-car!和set-cdr!有可能使列表的关系变得很乱，如果学过数据结构中的链表和C语言中的指针，对这个的理解应该会比较深一些。</p>
+<p>So my goal here is to make it more KDE/Windows like, which means:</p>
 
-<p>根据SICP的一贯思想，只要有基础的功能，那么别的功能也都能实现。set!就是以前所没有的一个基础功能，而set-car!和set-cdr!都可以通过set!来实现。SICP中有具体的实现过程，这里就不再多说了。</p>
+<ul>
+  <li>Use the same keyboard shortcut to cycle through all the windows, do not group the windows by app.</li>
+  <li>Have a panel shows all the windows. Again, do not group by app.</li>
+  <li>This is a good to have: use keyboard to snap windows on the left/right or maximum.</li>
+</ul>
 
-<p>可以改变变量的值，使得一个变量只是某段代码的替代，变成了代表指向某个存储地址。在很多情况下，并不需要对元素进行赋值，而对元素赋值，有可能使代码的实现不甚优雅，程序的效率变低，更有可能给程序造成一些隐患，这个在书中也有一些例子。那能给变量赋值的好处在哪里呢？就是我们可以用时间来思考程序中的数据了，像在真实世界中一样，一些值可以随着时间的改变而改变，这样可以更好的模拟真实世界。为了可以使变量的改变更好的被解释器所处理，引入了“环境”的概念。</p>
+<p>I don’t need the “start menu” since I usually just open apps by bring up the searchable launcher: Spotlight in MacOS and KRunner in KDE.</p>
 
-<h2 id="二环境">二、环境</h2>
+<p>So here are a list of software that archive my needs:</p>
 
-<p>环境是一个比较关键的解释模型。前面所介绍的解释模型是直接替换函数的代码和参数，但是由于变量变成了可以改变的，所以以前的模型已经不适用了。环境的模型可以解释很多东西，包括类似于我们在其它语言中学过的局部变量。通过环境，我们可以实现面向对象编程，声明一个类，用这个类来声明很多互不关联的实体。所谓环境，可以把它的结构想象成一个序列，这在书中讲的都很详细了，我曾经写了好几次，想解释一下环境模型，但是写简单了不可能解释得清楚，写复杂了又远远不如原书中所讲的好，所以就只好作罢。</p>
+<ul>
+  <li><a href="https://alt-tab-macos.netlify.app/">AltTab</a>: cycle through all the windows without grouping by app.</li>
+  <li><a href="https://rectangleapp.com/">Rectangle</a>: Windows snap and keyboard shortcuts</li>
+  <li><a href="https://ubarapp.com/">uBar</a> or <a href="https://sidebarapp.net/">sidebar</a>: KDE/Windows like panel bar to show all windows.</li>
+</ul>
 
-<p>虽然由于我水平有限不能总结太多关于环境的东西，但这个真的是一个很重要的模型，也是Scheme解释器工作的真实原理，多看原书就会有比较深的理解。</p>
+<h2 id="other-quality-of-life-improvements">Other Quality of Life Improvements</h2>
 
-<h2 id="三面向对象编程">三、面向对象编程</h2>
+<p>There are two other software I find very useful even though they are not related to the workflow above.</p>
 
-<p>不知道SICP成书的时候有没有“面向对象”这个词语。而书中的英文我也不知道怎么翻译好，但是根据它的思想，我索性就写做面向对象编程好了。说到这里也稍微闲聊一下关于面向对象编程吧。很多语言号称是支持面向对象编程，Java更是强制把所有的东西都封装成类。但是我觉得，如果一个好的程序员，用什么语言，都会有模块化的思想的，而让编程语言强制规定这些，反而限制了程序员的自由。也许是因为Scheme的面向对象更透明更神奇的原因，让我突然想到了柏拉图世界中的观点，即每种物体在理想世界中都有一个标准，真实世界中的物体都是依靠这个标准而来的。而类的声明就像是这个“元物体”，而通过类新建的对象就像是真实世界中的物体。</p>
+<p>First, <a href="https://github.com/tombonez/noTunes">noTunes</a>. It bans the start of Apple Music. I find it’s very annoying that when I accidentally pressed some button or touched my Airpods, the Apple Music popped up. I don’t even know what triggered it. So this software solves this problem perfectly.</p>
 
-<p>好了，废话少说，这里我们看一下Scheme是怎样实现面向对象的模块化设计的。其实这篇文章所介绍的新东西只有上面两节，这里只是一种思想。</p>
+<p>The second one is <a href="https://karabiner-elements.pqrs.org/">Karabiner-Elements</a>. This is a very powerful custom key mapping software. But I mainly use it to support two keyboards at the same time. That is a very very niche personal need: I use two same keyboards as split keyboard. I can write more on that in the future blogs. But the point is, MacOS doesn’t support two keyboards at the same time very well and this software solves that.</p>
 
-<p>不要认为一个类很神奇，其实它们也都是用代码来实现的。通过那些只有逻辑功能的代码，我们就可以创造一个类。比如用下面的代码，我们可以创造一个银行账户的类:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(define (make-account balance)
-    (define (withdraw amount)
-        (if (&gt;= balance amount)
-            (begin (set! balance (- balance amount))
-                balance)
-            "Insufficient funds"))
-    (define (deposit amount)
-        (set! balance (+ balance amount))
-            balance)
-    (define (dispatch m)
-        (cond ((eq? m 'withdraw) withdraw)
-            ((eq? m 'deposit) deposit)
-            (else (error "Unknown request -- MAKE-ACCOUNT"
-                m))))
-    dispatch)
-(define A1 (make-account 100))
-</code></pre></div></div>
-
-<p>即可生成一个初始有100元、名为A1的银行账户，</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>((A1 'dispath) 100)
-</code></pre></div></div>
-
-<p>即可向其中存入100元。</p>
-
-<p>不需要额外的知识，我们只要仔细的研读上面的代码，就可以知道这种面向对象的方法是怎样实现的。从此我们可以看出，除了我们的思想，不需要额外的东西，即可实现面向对象的编程。</p>
 
 </article>
 
 <footer id="post_footer">
   <table><tr>
     
-      <td id="prev"><a href="/2011-12-20-life-game.html">Prev: 好玩的生命游戏</a></td>
+      <td id="prev"><a href="/2024-07-27-Source-Code-of-RSS-Brain-Is-Available.html">Prev: Source Code of RSS Brain is Available</a></td>
     
-    
-      <td id="next"><a href="/2012-02-11-cplusplus.html" id="next">Next: 也谈C++</a></td>
     
   </tr></table>
 </footer>
