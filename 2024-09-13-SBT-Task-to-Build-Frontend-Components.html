@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> About |  Bin Wang - My Personal Blog</title>
+    <title> SBT Task to Build Frontend Components |  Bin Wang - My Personal Blog</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
     <link rel="stylesheet" href="/static/css/asciinema-player.css" type="text/css" />
 
@@ -1952,7 +1952,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2024-09-13-SBT-Task-to-Build-Frontend-Components.html">SBT Task to Build Frontend Components <span class="publish-year">(2024)</span></a>
+        <div class="index-selected">SBT Task to Build Frontend Components <span class="publish-year">(2024)</span></div>
         
       
 
@@ -3881,33 +3881,190 @@
 
     <section id="page_content">
         <div id="content_table">
-  
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#frontend-package-management-and-build">Frontend Package Management and Build</a></li><li><a href="#sbt-task-to-trigger-build-and-package-dist-files">SBT Task to Trigger Build and Package Dist Files</a></li><li><a href="#serve-resource-files-in-http-server">Serve Resource Files in Http Server</a></li></ol>
 </div>
 
 <div id="article_content" class="">
 <article id="post">
   <header>
-    <h1>About</h1>
+    <h1>SBT Task to Build Frontend Components</h1>
+    
+      <p class="description">Posted on 13 Sep 2024, tagged <code>Scala</code><code>SBT</code><code>Javascript</code><code>CSS</code><code>frontend</code><code>webpack</code><code>npm</code></p>
     
   </header>
 
-  <p>Hi, I’m Bin Wang (王斌). Welcome to my personal website. I record my thoughts, research and life here. You can find the index at the left side of the page if you are on a big screen, or click the menu button at the top left otherwise. You can also subscribe to the <a href="/feed.xml">RSS feed</a> for the new posts.</p>
+  <p>Even writing a website using something else than Javascript to render content from server, sometimes it’s inevitable to have some Javascript or CSS code. So managing Javascript dependencies and build packages is needed. The easiest way may be just don’t use any tool: download all the dependency files into a directory and import them in the html file directly. That’s what I was doing for <a href="https://rssbrain.com">RSS Bran</a> before. But it get messy pretty quickly and it’s hard to keep track of the dependencies. So it’s time for me to resolve the problem. Since the project is written in Scala, I’ll note down how I do it with Scala’s build tool SBT.</p>
 
-<p>Other than the long posts, I also record some random thoughts with much shorter post. It’s powered by <a href="https://mastodon.binwang.me/">my self hosted Mastodon</a> and you can see them at the <a href="/snippets">Snippets tab</a>.</p>
+<h2 id="frontend-package-management-and-build">Frontend Package Management and Build</h2>
 
-<p>As a programmer, I also write side projects and contribute to open source projects. You can find some information at <a href="https://github.com/wb14123">my Github page</a>.</p>
+<p>I put all the frontend related code into a separate sub-directory and treat it like a frontend project. This makes things much easier and less hacky. I use npm to manage the dependencies and use webpack to build it. Here is an example of the code tree structure:</p>
 
-<p>I also list <a href="/travel.html">where I have been</a> and <a href="/read.html">what I have read</a>. Since there is an old saying in Chinese: “Walk thousands of miles, and read thousands of books (行千里路，读万卷书)”. I believe it makes my life vaster and more beautiful.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>▾ js/
+  ▾ css/
+      google-fonts.css
+      main.css
+      pico.jade.min.css
+  ▾ dist/
+      f20305dee9d396fea5c7.ttf
+      f5ef242406fdcf40a232.otf
+      main.css
+      main.js
+      main.js.LICENSE.txt
+  ▾ fonts/
+      google-material-icons-outlined.otf
+      google-material-icons.ttf
+  ▸ node_modules/
+  ▾ src/
+      boolean-checkbox.js
+      error-handler.js
+      global-htmx.js
+      index.js
+      match-id.js
+      popover-menu.js
+      register-service-worker.js
+      service-worker.js
+      set-theme.js
+      source-images.js
+    package-lock.json
+    package.json
+    readme.md
+    webpack.config.js
+▸ project/
+▸ src/
+  build.sbt
+  LICENSE.txt
+	readme.md
+</code></pre></div></div>
 
-<p>If you want to search something in this website. You can click <a href="/search.html">search</a> above. It is powered by Google, which means the pages need time to be indexed. So you may not always be able to search the newest post.</p>
+<p>You can see other than the <code class="language-plaintext highlighter-rouge">js</code> directory, it’s a pretty standard structure for a Scala project managed by SBT.</p>
 
-<p>At last, if you want to contact me, my Email address is <a href="mailto:bin.wang@mail.binwang.me">bin.wang@mail.binwang.me</a>.</p>
+<p>When look into <code class="language-plaintext highlighter-rouge">js</code> directory, it’s a frontend project managed by npm and built with webpack.</p>
+
+<p><code class="language-plaintext highlighter-rouge">js/src/index.js</code> bundles all the dependencies in node modules and local files. Here is an example:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// css</span>
+
+<span class="k">import</span> <span class="dl">'</span><span class="s1">somment/somment.css</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">lite-youtube-embed/src/lite-yt-embed.css</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">toastify-js/src/toastify.css</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">../css/google-fonts.css</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">../css/pico.jade.min.css</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">../css/main.css</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="c1">// js</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">./boolean-checkbox.js</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">import</span> <span class="dl">'</span><span class="s1">htmx.org</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">./global-htmx.js</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">import</span> <span class="nx">Alpine</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">alpinejs</span><span class="dl">'</span><span class="p">;</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">Alpine</span> <span class="o">=</span> <span class="nx">Alpine</span><span class="p">;</span>
+
+<span class="k">import</span> <span class="o">*</span> <span class="nx">as</span> <span class="nx">FloatingUIDOM</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@floating-ui/dom</span><span class="dl">'</span><span class="p">;</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">FloatingUIDOM</span> <span class="o">=</span> <span class="nx">FloatingUIDOM</span><span class="p">;</span>
+
+<span class="k">import</span> <span class="dl">'</span><span class="s1">lite-youtube-embed</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">@splidejs/splide</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Toastify</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">toastify-js</span><span class="dl">'</span><span class="p">;</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">Toastify</span> <span class="o">=</span> <span class="nx">Toastify</span><span class="p">;</span>
+
+<span class="k">import</span> <span class="nx">DOMPurify</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">dompurify</span><span class="dl">'</span><span class="p">;</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">DOMPurify</span> <span class="o">=</span> <span class="nx">DOMPurify</span><span class="p">;</span>
+
+<span class="k">import</span> <span class="dl">'</span><span class="s1">imgs-html</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">somment</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">import</span> <span class="dl">'</span><span class="s1">./error-handler.js</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">./popover-menu.js</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">./match-id.js</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">./set-theme.js</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">./source-images.js</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">./register-service-worker.js</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="nx">Alpine</span><span class="p">.</span><span class="nf">start</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>Here is an example of <code class="language-plaintext highlighter-rouge">webpack.config.js</code>:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">MiniCssExtractPlugin</span> <span class="o">=</span> <span class="nf">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">mini-css-extract-plugin</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">module</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">rules</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="c1">// If you enable `experiments.css` or `experiments.futureDefaults`, please uncomment line below</span>
+        <span class="c1">// type: "javascript/auto",</span>
+        <span class="na">test</span><span class="p">:</span> <span class="sr">/</span><span class="se">\.(</span><span class="sr">sa|sc|c</span><span class="se">)</span><span class="sr">ss$/i</span><span class="p">,</span>
+        <span class="na">use</span><span class="p">:</span> <span class="p">[</span>
+          <span class="nx">MiniCssExtractPlugin</span><span class="p">.</span><span class="nx">loader</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">css-loader</span><span class="dl">"</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">postcss-loader</span><span class="dl">"</span><span class="p">,</span>
+        <span class="p">],</span>
+      <span class="p">},</span>
+    <span class="p">],</span>
+  <span class="p">},</span>
+  <span class="na">plugins</span><span class="p">:</span> <span class="p">[</span><span class="k">new</span> <span class="nc">MiniCssExtractPlugin</span><span class="p">()],</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>Since this is more related to frontend tech and is very basic, I will not go too much into details. But the point is, when run <code class="language-plaintext highlighter-rouge">npx webpack</code> under <code class="language-plaintext highlighter-rouge">js</code> directory, it will build bundled files into <code class="language-plaintext highlighter-rouge">js/dist</code>. We will write a SBT task to trigger this command and copy the dist files into resources to package.</p>
+
+<h2 id="sbt-task-to-trigger-build-and-package-dist-files">SBT Task to Trigger Build and Package Dist Files</h2>
+
+<p>SBT is very flexible since you can basically write Scala code to define the tasks. Here we define the first task to install npm dependencies and trigger webpack build (in <code class="language-plaintext highlighter-rouge">build.sbt</code>):</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">lazy</span> <span class="k">val</span> <span class="nv">webpack</span> <span class="k">=</span> <span class="n">taskKey</span><span class="o">[</span><span class="kt">Unit</span><span class="o">](</span><span class="s">"Run webpack in js directory"</span><span class="o">)</span>
+<span class="n">webpack</span> <span class="o">:=</span>  <span class="o">{</span>
+  <span class="k">val</span> <span class="nv">workDir</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="s">"./js"</span><span class="o">)</span>
+  <span class="nc">Process</span><span class="o">(</span><span class="s">"npm"</span> <span class="o">::</span> <span class="s">"install"</span> <span class="o">::</span> <span class="nc">Nil</span><span class="o">,</span> <span class="n">workDir</span><span class="o">)</span> <span class="o">#&amp;&amp;</span> <span class="nc">Process</span><span class="o">(</span><span class="s">"npx"</span> <span class="o">::</span> <span class="s">"webpack"</span> <span class="o">::</span> <span class="nc">Nil</span><span class="o">,</span> <span class="n">workDir</span><span class="o">)</span> <span class="o">!</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>It defines a task called <code class="language-plaintext highlighter-rouge">webpack</code>, so when you run <code class="language-plaintext highlighter-rouge">sbt webpack</code>, it will run <code class="language-plaintext highlighter-rouge">npm install &amp;&amp; npx webpack</code> under <code class="language-plaintext highlighter-rouge">js</code>.</p>
+
+<p>Then we define another task to copy all the dist files to generated resource directory:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Compile</span> <span class="o">/</span> <span class="n">resourceGenerators</span> <span class="o">+=</span> <span class="nv">Def</span><span class="o">.</span><span class="py">task</span> <span class="o">{</span>
+  <span class="nv">webpack</span><span class="o">.</span><span class="py">value</span>
+  <span class="k">val</span> <span class="nv">file</span> <span class="k">=</span> <span class="o">(</span><span class="nc">Compile</span> <span class="o">/</span> <span class="n">resourceManaged</span><span class="o">).</span><span class="py">value</span> <span class="o">/</span> <span class="s">"webview"</span> <span class="o">/</span> <span class="s">"static"</span> <span class="o">/</span> <span class="s">"dist"</span>
+  <span class="nv">IO</span><span class="o">.</span><span class="py">copyDirectory</span><span class="o">(</span><span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="s">"./js/dist"</span><span class="o">),</span> <span class="n">file</span><span class="o">,</span> <span class="n">overwrite</span> <span class="k">=</span> <span class="kc">true</span><span class="o">)</span>
+  <span class="nv">IO</span><span class="o">.</span><span class="py">listFiles</span><span class="o">(</span><span class="n">file</span><span class="o">).</span><span class="py">toSeq</span>
+<span class="o">}.</span><span class="py">taskValue</span>
+</code></pre></div></div>
+
+<p>Here we added some steps when SBT generate resource files: first we let it run <code class="language-plaintext highlighter-rouge">webpack</code> task we defined above, then copy all the files under <code class="language-plaintext highlighter-rouge">js/dist</code> to <code class="language-plaintext highlighter-rouge">webview/static/dist</code> under generated resources. Here resources means Java resource files, like the files under <code class="language-plaintext highlighter-rouge">src/main/resources</code>, but auto generated to <code class="language-plaintext highlighter-rouge">target/scala-2.13/resource_managed</code> and will be packaged together as resource files.</p>
+
+<p>So when you run <code class="language-plaintext highlighter-rouge">sbt package</code> here, the generated jar package will include all those files as resource files. For example, in my project, the generated jar package have these if you open it with vim (which can view zipped package):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>81663 webview/static/dist/f20305dee9d396fea5c7.ttf
+81664 webview/static/dist/f5ef242406fdcf40a232.otf
+81665 webview/static/dist/main.css
+81666 webview/static/dist/main.js
+81667 webview/static/dist/main.js.LICENSE.txt
+</code></pre></div></div>
+
+<h2 id="serve-resource-files-in-http-server">Serve Resource Files in Http Server</h2>
+
+<p>Now you can serve the files under <code class="language-plaintext highlighter-rouge">webview/static/dist</code> with your web server. Different web server or framework do it differently. Here is an example of http4s:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// include the following route into the http4s web server</span>
+<span class="c1">// IMPORTANT: every resource file under `/webview` will be public accessible</span>
+<span class="k">val</span> <span class="nv">assetsRoutes</span> <span class="k">=</span> <span class="n">resourceServiceBuilder</span><span class="o">[</span><span class="kt">IO</span><span class="o">](</span><span class="s">"/webview"</span><span class="o">).</span><span class="py">toRoutes</span>
+</code></pre></div></div>
+
+<p>Then you can use them in HTML:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"/static/dist/main.css"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/static/dist/main.js"</span> <span class="na">defer=</span><span class="s">"defer"</span><span class="nt">&gt;&lt;/script&gt;</span>
+</code></pre></div></div>
 
 
 </article>
 
 <footer id="post_footer">
   <table><tr>
+    
+      <td id="prev"><a href="/2024-08-07-My-MacOS-Essentials.html">Prev: My MacOS Essentials</a></td>
     
     
   </tr></table>

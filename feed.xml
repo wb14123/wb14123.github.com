@@ -1,4 +1,167 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2024-08-07T09:00:47-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">My MacOS Essentials</title><link href="https://www.binwang.me/2024-08-07-My-MacOS-Essentials.html" rel="alternate" type="text/html" title="My MacOS Essentials" /><published>2024-08-07T00:00:00-04:00</published><updated>2024-08-07T00:00:00-04:00</updated><id>https://www.binwang.me/My-MacOS-Essentials</id><content type="html" xml:base="https://www.binwang.me/2024-08-07-My-MacOS-Essentials.html"><![CDATA[<p>As a long time Linux and KDE user, I’m pretty uncomfortable with the workflow of MacOS even though I have used MacOS fairly long as well. A lot of companies don’t support Linux to be used on the development laptop. Even for some companies that do support Linux, the hardware for Linux is usually far worse than Macbooks. So MacOS is often the best or even the only choice for work. This is still the case for my new job. I think it’s a good opportunity to write a blog about my MacOS setup. This can be a note for myself when I need to setup a fresh MacOS again in the future.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2024-09-13T22:35:57-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">SBT Task to Build Frontend Components</title><link href="https://www.binwang.me/2024-09-13-SBT-Task-to-Build-Frontend-Components.html" rel="alternate" type="text/html" title="SBT Task to Build Frontend Components" /><published>2024-09-13T00:00:00-04:00</published><updated>2024-09-13T00:00:00-04:00</updated><id>https://www.binwang.me/SBT-Task-to-Build-Frontend-Components</id><content type="html" xml:base="https://www.binwang.me/2024-09-13-SBT-Task-to-Build-Frontend-Components.html"><![CDATA[<p>Even writing a website using something else than Javascript to render content from server, sometimes it’s inevitable to have some Javascript or CSS code. So managing Javascript dependencies and build packages is needed. The easiest way may be just don’t use any tool: download all the dependency files into a directory and import them in the html file directly. That’s what I was doing for <a href="https://rssbrain.com">RSS Bran</a> before. But it get messy pretty quickly and it’s hard to keep track of the dependencies. So it’s time for me to resolve the problem. Since the project is written in Scala, I’ll note down how I do it with Scala’s build tool SBT.</p>
+
+<h2 id="frontend-package-management-and-build">Frontend Package Management and Build</h2>
+
+<p>I put all the frontend related code into a separate sub-directory and treat it like a frontend project. This makes things much easier and less hacky. I use npm to manage the dependencies and use webpack to build it. Here is an example of the code tree structure:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>▾ js/
+  ▾ css/
+      google-fonts.css
+      main.css
+      pico.jade.min.css
+  ▾ dist/
+      f20305dee9d396fea5c7.ttf
+      f5ef242406fdcf40a232.otf
+      main.css
+      main.js
+      main.js.LICENSE.txt
+  ▾ fonts/
+      google-material-icons-outlined.otf
+      google-material-icons.ttf
+  ▸ node_modules/
+  ▾ src/
+      boolean-checkbox.js
+      error-handler.js
+      global-htmx.js
+      index.js
+      match-id.js
+      popover-menu.js
+      register-service-worker.js
+      service-worker.js
+      set-theme.js
+      source-images.js
+    package-lock.json
+    package.json
+    readme.md
+    webpack.config.js
+▸ project/
+▸ src/
+  build.sbt
+  LICENSE.txt
+	readme.md
+</code></pre></div></div>
+
+<p>You can see other than the <code class="language-plaintext highlighter-rouge">js</code> directory, it’s a pretty standard structure for a Scala project managed by SBT.</p>
+
+<p>When look into <code class="language-plaintext highlighter-rouge">js</code> directory, it’s a frontend project managed by npm and built with webpack.</p>
+
+<p><code class="language-plaintext highlighter-rouge">js/src/index.js</code> bundles all the dependencies in node modules and local files. Here is an example:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// css</span>
+
+<span class="k">import</span> <span class="dl">'</span><span class="s1">somment/somment.css</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">lite-youtube-embed/src/lite-yt-embed.css</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">toastify-js/src/toastify.css</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">../css/google-fonts.css</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">../css/pico.jade.min.css</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">../css/main.css</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="c1">// js</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">./boolean-checkbox.js</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">import</span> <span class="dl">'</span><span class="s1">htmx.org</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">./global-htmx.js</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">import</span> <span class="nx">Alpine</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">alpinejs</span><span class="dl">'</span><span class="p">;</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">Alpine</span> <span class="o">=</span> <span class="nx">Alpine</span><span class="p">;</span>
+
+<span class="k">import</span> <span class="o">*</span> <span class="nx">as</span> <span class="nx">FloatingUIDOM</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@floating-ui/dom</span><span class="dl">'</span><span class="p">;</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">FloatingUIDOM</span> <span class="o">=</span> <span class="nx">FloatingUIDOM</span><span class="p">;</span>
+
+<span class="k">import</span> <span class="dl">'</span><span class="s1">lite-youtube-embed</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">@splidejs/splide</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">Toastify</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">toastify-js</span><span class="dl">'</span><span class="p">;</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">Toastify</span> <span class="o">=</span> <span class="nx">Toastify</span><span class="p">;</span>
+
+<span class="k">import</span> <span class="nx">DOMPurify</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">dompurify</span><span class="dl">'</span><span class="p">;</span>
+<span class="nb">window</span><span class="p">.</span><span class="nx">DOMPurify</span> <span class="o">=</span> <span class="nx">DOMPurify</span><span class="p">;</span>
+
+<span class="k">import</span> <span class="dl">'</span><span class="s1">imgs-html</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">somment</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="k">import</span> <span class="dl">'</span><span class="s1">./error-handler.js</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">./popover-menu.js</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">./match-id.js</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">./set-theme.js</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">./source-images.js</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="dl">'</span><span class="s1">./register-service-worker.js</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="nx">Alpine</span><span class="p">.</span><span class="nf">start</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>Here is an example of <code class="language-plaintext highlighter-rouge">webpack.config.js</code>:</p>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">MiniCssExtractPlugin</span> <span class="o">=</span> <span class="nf">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">mini-css-extract-plugin</span><span class="dl">"</span><span class="p">);</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">module</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">rules</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="c1">// If you enable `experiments.css` or `experiments.futureDefaults`, please uncomment line below</span>
+        <span class="c1">// type: "javascript/auto",</span>
+        <span class="na">test</span><span class="p">:</span> <span class="sr">/</span><span class="se">\.(</span><span class="sr">sa|sc|c</span><span class="se">)</span><span class="sr">ss$/i</span><span class="p">,</span>
+        <span class="na">use</span><span class="p">:</span> <span class="p">[</span>
+          <span class="nx">MiniCssExtractPlugin</span><span class="p">.</span><span class="nx">loader</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">css-loader</span><span class="dl">"</span><span class="p">,</span>
+          <span class="dl">"</span><span class="s2">postcss-loader</span><span class="dl">"</span><span class="p">,</span>
+        <span class="p">],</span>
+      <span class="p">},</span>
+    <span class="p">],</span>
+  <span class="p">},</span>
+  <span class="na">plugins</span><span class="p">:</span> <span class="p">[</span><span class="k">new</span> <span class="nc">MiniCssExtractPlugin</span><span class="p">()],</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>Since this is more related to frontend tech and is very basic, I will not go too much into details. But the point is, when run <code class="language-plaintext highlighter-rouge">npx webpack</code> under <code class="language-plaintext highlighter-rouge">js</code> directory, it will build bundled files into <code class="language-plaintext highlighter-rouge">js/dist</code>. We will write a SBT task to trigger this command and copy the dist files into resources to package.</p>
+
+<h2 id="sbt-task-to-trigger-build-and-package-dist-files">SBT Task to Trigger Build and Package Dist Files</h2>
+
+<p>SBT is very flexible since you can basically write Scala code to define the tasks. Here we define the first task to install npm dependencies and trigger webpack build (in <code class="language-plaintext highlighter-rouge">build.sbt</code>):</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">lazy</span> <span class="k">val</span> <span class="nv">webpack</span> <span class="k">=</span> <span class="n">taskKey</span><span class="o">[</span><span class="kt">Unit</span><span class="o">](</span><span class="s">"Run webpack in js directory"</span><span class="o">)</span>
+<span class="n">webpack</span> <span class="o">:=</span>  <span class="o">{</span>
+  <span class="k">val</span> <span class="nv">workDir</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="s">"./js"</span><span class="o">)</span>
+  <span class="nc">Process</span><span class="o">(</span><span class="s">"npm"</span> <span class="o">::</span> <span class="s">"install"</span> <span class="o">::</span> <span class="nc">Nil</span><span class="o">,</span> <span class="n">workDir</span><span class="o">)</span> <span class="o">#&amp;&amp;</span> <span class="nc">Process</span><span class="o">(</span><span class="s">"npx"</span> <span class="o">::</span> <span class="s">"webpack"</span> <span class="o">::</span> <span class="nc">Nil</span><span class="o">,</span> <span class="n">workDir</span><span class="o">)</span> <span class="o">!</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>It defines a task called <code class="language-plaintext highlighter-rouge">webpack</code>, so when you run <code class="language-plaintext highlighter-rouge">sbt webpack</code>, it will run <code class="language-plaintext highlighter-rouge">npm install &amp;&amp; npx webpack</code> under <code class="language-plaintext highlighter-rouge">js</code>.</p>
+
+<p>Then we define another task to copy all the dist files to generated resource directory:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Compile</span> <span class="o">/</span> <span class="n">resourceGenerators</span> <span class="o">+=</span> <span class="nv">Def</span><span class="o">.</span><span class="py">task</span> <span class="o">{</span>
+  <span class="nv">webpack</span><span class="o">.</span><span class="py">value</span>
+  <span class="k">val</span> <span class="nv">file</span> <span class="k">=</span> <span class="o">(</span><span class="nc">Compile</span> <span class="o">/</span> <span class="n">resourceManaged</span><span class="o">).</span><span class="py">value</span> <span class="o">/</span> <span class="s">"webview"</span> <span class="o">/</span> <span class="s">"static"</span> <span class="o">/</span> <span class="s">"dist"</span>
+  <span class="nv">IO</span><span class="o">.</span><span class="py">copyDirectory</span><span class="o">(</span><span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="s">"./js/dist"</span><span class="o">),</span> <span class="n">file</span><span class="o">,</span> <span class="n">overwrite</span> <span class="k">=</span> <span class="kc">true</span><span class="o">)</span>
+  <span class="nv">IO</span><span class="o">.</span><span class="py">listFiles</span><span class="o">(</span><span class="n">file</span><span class="o">).</span><span class="py">toSeq</span>
+<span class="o">}.</span><span class="py">taskValue</span>
+</code></pre></div></div>
+
+<p>Here we added some steps when SBT generate resource files: first we let it run <code class="language-plaintext highlighter-rouge">webpack</code> task we defined above, then copy all the files under <code class="language-plaintext highlighter-rouge">js/dist</code> to <code class="language-plaintext highlighter-rouge">webview/static/dist</code> under generated resources. Here resources means Java resource files, like the files under <code class="language-plaintext highlighter-rouge">src/main/resources</code>, but auto generated to <code class="language-plaintext highlighter-rouge">target/scala-2.13/resource_managed</code> and will be packaged together as resource files.</p>
+
+<p>So when you run <code class="language-plaintext highlighter-rouge">sbt package</code> here, the generated jar package will include all those files as resource files. For example, in my project, the generated jar package have these if you open it with vim (which can view zipped package):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>81663 webview/static/dist/f20305dee9d396fea5c7.ttf
+81664 webview/static/dist/f5ef242406fdcf40a232.otf
+81665 webview/static/dist/main.css
+81666 webview/static/dist/main.js
+81667 webview/static/dist/main.js.LICENSE.txt
+</code></pre></div></div>
+
+<h2 id="serve-resource-files-in-http-server">Serve Resource Files in Http Server</h2>
+
+<p>Now you can serve the files under <code class="language-plaintext highlighter-rouge">webview/static/dist</code> with your web server. Different web server or framework do it differently. Here is an example of http4s:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// include the following route into the http4s web server</span>
+<span class="c1">// IMPORTANT: every resource file under `/webview` will be public accessible</span>
+<span class="k">val</span> <span class="nv">assetsRoutes</span> <span class="k">=</span> <span class="n">resourceServiceBuilder</span><span class="o">[</span><span class="kt">IO</span><span class="o">](</span><span class="s">"/webview"</span><span class="o">).</span><span class="py">toRoutes</span>
+</code></pre></div></div>
+
+<p>Then you can use them in HTML:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">href=</span><span class="s">"/static/dist/main.css"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/static/dist/main.js"</span> <span class="na">defer=</span><span class="s">"defer"</span><span class="nt">&gt;&lt;/script&gt;</span>
+</code></pre></div></div>]]></content><author><name></name></author><category term="Scala" /><category term="SBT" /><category term="Javascript" /><category term="CSS" /><category term="frontend" /><category term="webpack" /><category term="npm" /><summary type="html"><![CDATA[Even writing a website using something else than Javascript to render content from server, sometimes it’s inevitable to have some Javascript or CSS code. So managing Javascript dependencies and build packages is needed. The easiest way may be just don’t use any tool: download all the dependency files into a directory and import them in the html file directly. That’s what I was doing for RSS Bran before. But it get messy pretty quickly and it’s hard to keep track of the dependencies. So it’s time for me to resolve the problem. Since the project is written in Scala, I’ll note down how I do it with Scala’s build tool SBT.]]></summary></entry><entry><title type="html">My MacOS Essentials</title><link href="https://www.binwang.me/2024-08-07-My-MacOS-Essentials.html" rel="alternate" type="text/html" title="My MacOS Essentials" /><published>2024-08-07T00:00:00-04:00</published><updated>2024-08-07T00:00:00-04:00</updated><id>https://www.binwang.me/My-MacOS-Essentials</id><content type="html" xml:base="https://www.binwang.me/2024-08-07-My-MacOS-Essentials.html"><![CDATA[<p>As a long time Linux and KDE user, I’m pretty uncomfortable with the workflow of MacOS even though I have used MacOS fairly long as well. A lot of companies don’t support Linux to be used on the development laptop. Even for some companies that do support Linux, the hardware for Linux is usually far worse than Macbooks. So MacOS is often the best or even the only choice for work. This is still the case for my new job. I think it’s a good opportunity to write a blog about my MacOS setup. This can be a note for myself when I need to setup a fresh MacOS again in the future.</p>
 
 <h2 id="my-complain-about-macos-desktop-environment">My Complain about MacOS Desktop Environment</h2>
 
@@ -2085,340 +2248,4 @@ RUN cd /opt &amp;&amp; \
 
 <h2 id="disable-deepin-services">Disable Deepin Services</h2>
 
-<p>I didn’t remove all the deepin related packages since some of them are needed by the App Store. However, I don’t think some of them are needed to run as deamon even if I left them on the machine. So type <code class="language-plaintext highlighter-rouge">systemctl status deepin-</code> and press tab for autocomplete to see the systemd services related to deepin, and use <code class="language-plaintext highlighter-rouge">systemctl disable &lt;service&gt;</code> to disable the ones you don’t need.</p>]]></content><author><name></name></author><category term="Linux" /><category term="Windows" /><category term="Virtual Machine" /><category term="Deepin" /><category term="Wine" /><summary type="html"><![CDATA[Background]]></summary></entry><entry><title type="html">Compare Task Processing Approaches in Scala</title><link href="https://www.binwang.me/2023-08-27-Compare-Task-Processing-Approaches-in-Scala.html" rel="alternate" type="text/html" title="Compare Task Processing Approaches in Scala" /><published>2023-08-27T00:00:00-04:00</published><updated>2023-08-27T00:00:00-04:00</updated><id>https://www.binwang.me/Compare-Task-Processing-Approaches-in-Scala</id><content type="html" xml:base="https://www.binwang.me/2023-08-27-Compare-Task-Processing-Approaches-in-Scala.html"><![CDATA[<p><em>All the source code mentioned in this blog can be found in <a href="https://github.com/wb14123/scala-stream-demo">my Github repo</a>.</em></p>
-
-<h2 id="task-processing">Task Processing</h2>
-
-<p>There is a common problem in computer science and I’ve met it again recently: how to generate and process tasks efficiently? Use my recent project <a href="https://www.rssbrain.com">RSS Brain</a> as an example: it needs to find the RSS feeds that haven’t been updated for a while in a database, and fetch the newest data from network.</p>
-
-<p>The easiest way to do it is producing and consuming the tasks in a sequence, for example:</p>
-
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">feeds</span> <span class="k">=</span> <span class="nf">getPendingFeeds</span><span class="o">()</span> <span class="c1">// produce the tasks</span>
-<span class="nv">feeds</span><span class="o">.</span><span class="py">foreach</span><span class="o">(</span><span class="n">fetchFromNetwork</span><span class="o">)</span> <span class="c1">// consume the dtasks</span>
-</code></pre></div></div>
-
-<p>However, it is unnecessarily slow. Network request doesn’t take lots of CPU and we can send multiple requests at the same time. Even if <code class="language-plaintext highlighter-rouge">fetchFromNetwork</code> is a CPU bound task, it can be parallelized if there are multiple CPU cores on a machine.</p>
-
-<p>In this article, we will explore ways to do it more efficiently with <a href="https://typelevel.org/cats-effect/">Cats Effect</a> and <a href="https://fs2.io">FS2</a> in a functional programming fashion.</p>
-
-<p><em>You may wonder why not using AKKA stream? Other than it’s using a different programming paradigm (not functional programming), it’s also because <a href="https://www.lightbend.com/blog/why-we-are-changing-the-license-for-akka">AKKA has changed its license</a> with a ridiculous price.</em></p>
-
-<h2 id="introducing-cats-effect-and-fs2">Introducing Cats Effect and FS2</h2>
-
-<p>To make <code class="language-plaintext highlighter-rouge">processTask</code> async, there is <code class="language-plaintext highlighter-rouge">Future</code> in Scala’s standard library. However, the side effect will happen when you create a <code class="language-plaintext highlighter-rouge">Future</code> instance. For example:</p>
-
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">processTask</span><span class="o">(</span><span class="n">task</span><span class="k">:</span> <span class="kt">Task</span><span class="o">)</span><span class="k">:</span> <span class="kt">Future</span><span class="o">[</span><span class="kt">Unit</span><span class="o">]</span> <span class="k">=</span> <span class="nc">Future</span><span class="o">(</span><span class="nf">println</span><span class="o">(</span><span class="n">task</span><span class="o">))</span>
-
-<span class="k">val</span> <span class="nv">runTask1</span> <span class="k">=</span> <span class="nf">processTask</span><span class="o">(</span><span class="n">task1</span><span class="o">)</span> <span class="c1">// this will start the async task</span>
-</code></pre></div></div>
-
-<p>I assume the readers have a basic understanding of functional programming, so I’ll not explain why we want to avoid side effects. While Scala is not a pure functional language, a popular Scala library <a href="https://typelevel.org/cats-effect/">Cats Effect</a> provides convenient ways to wrap side effects. With the help of its <code class="language-plaintext highlighter-rouge">IO</code> type, we can define an async task like this:</p>
-
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">processTask</span><span class="o">(</span><span class="n">task</span><span class="k">:</span> <span class="kt">Task</span><span class="o">)</span><span class="k">:</span> <span class="kt">IO</span><span class="o">[</span><span class="kt">Unit</span><span class="o">]</span> <span class="k">=</span> <span class="nc">IO</span><span class="o">(</span><span class="nf">println</span><span class="o">(</span><span class="n">task</span><span class="o">))</span>
-
-<span class="c1">// this will not start the task, so no side effect</span>
-<span class="k">val</span> <span class="nv">runTask1</span> <span class="k">=</span> <span class="nf">processTask</span><span class="o">(</span><span class="n">task1</span><span class="o">)</span>
-
-<span class="c1">// out of pure functional world and starts the side effect</span>
-<span class="nv">runTask1</span><span class="o">.</span><span class="py">unsafeRunSync</span><span class="o">()</span>
-</code></pre></div></div>
-
-<p>Then there is <a href="https://fs2.io">fs2</a> that is a stream library that can be used with cats effect. It will be very handy when resolving our problem as we can see later.</p>
-
-<p><em>Cat Effect has some big changes in version 3.x. In this article, we are using version 2.x. But I may upgrade the version in the future.</em></p>
-
-<h2 id="testing-setup">Testing Setup</h2>
-
-<p>In order to test which approach is the best under different scenarios, we need some basic setup. In <a href="https://github.com/wb14123/scala-stream-demo/blob/master/src/main/scala/TestRunner.scala">TestRunner.scala</a>, I defined some functions to generate tasks. Here are their signatures:</p>
-
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Produce a sequence of tasks represented by `Int`</span>
-<span class="k">def</span> <span class="nf">produce</span><span class="o">(</span><span class="n">start</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">end</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">IO</span><span class="o">[</span><span class="kt">Seq</span><span class="o">[</span><span class="kt">Int</span><span class="o">]]</span>
-
-<span class="c1">// Process a task</span>
-<span class="k">def</span> <span class="nf">consume</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">IO</span><span class="o">[</span><span class="kt">Unit</span><span class="o">]</span>
-
-<span class="c1">// Produce tasks as a stream</span>
-<span class="k">def</span> <span class="nf">def</span> <span class="nf">produceStream</span><span class="o">(</span><span class="n">start</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">end</span><span class="k">:</span> <span class="kt">Double</span><span class="o">)</span><span class="k">:</span> <span class="kt">fs2.Stream</span><span class="o">[</span><span class="kt">IO</span>, <span class="kt">Int</span><span class="o">]</span>
-</code></pre></div></div>
-
-<p><code class="language-plaintext highlighter-rouge">produce</code> simply produces tasks as <code class="language-plaintext highlighter-rouge">int</code>, and <code class="language-plaintext highlighter-rouge">consume</code> just print characters. In each of the functions, I use <code class="language-plaintext highlighter-rouge">IO.sleep</code> to create some delay to simulate the real world non-blocking IO. They also print characters <code class="language-plaintext highlighter-rouge">P</code> (produce) or <code class="language-plaintext highlighter-rouge">C</code> (consume) (based on the width of terminal, some of the <code class="language-plaintext highlighter-rouge">C</code> outputs may be skipped to fit the width) when being invoked, so that we can have an intuitive view of how quick tasks are produced and consumed.</p>
-
-<p>Then there is <a href="https://github.com/wb14123/scala-stream-demo/blob/master/src/main/scala/TestConfig.scala">TestConfig.scala</a> for configuring the test:</p>
-
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">trait</span> <span class="nc">TestConfig</span> <span class="o">{</span>
-  <span class="k">val</span> <span class="nv">testName</span><span class="k">:</span> <span class="kt">String</span>
-  <span class="k">val</span> <span class="nv">produceDelay</span><span class="k">:</span> <span class="kt">FiniteDuration</span>
-  <span class="k">val</span> <span class="nv">minConsumeDelayMillis</span><span class="k">:</span> <span class="kt">Long</span>
-  <span class="k">val</span> <span class="nv">maxConsumeDelayMillis</span><span class="k">:</span> <span class="kt">Long</span>
-  <span class="k">val</span> <span class="nv">batchSize</span> <span class="k">=</span> <span class="mi">100</span>  <span class="c1">// consume batch size</span>
-  <span class="k">val</span> <span class="nv">totalSize</span> <span class="k">=</span> <span class="mi">1000</span> <span class="c1">// how many tasks to generate</span>
-<span class="o">}</span>
-</code></pre></div></div>
-
-<p>By setting up produce and consume delays, we can test scenarios when producer is slower, consumer is slower, or producer and consumer speed is almost the same. Here are the configurations we are going to use in <a href="https://github.com/wb14123/scala-stream-demo/blob/master/src/main/scala/Main.scala">Main.scala</a></p>
-
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">configs</span> <span class="k">=</span> <span class="nc">Seq</span><span class="o">(</span>
-  <span class="k">new</span> <span class="nc">TestConfig</span> <span class="o">{</span>
-    <span class="k">override</span> <span class="k">val</span> <span class="nv">testName</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"slow-producer"</span>
-    <span class="k">override</span> <span class="k">val</span> <span class="nv">produceDelay</span><span class="k">:</span> <span class="kt">FiniteDuration</span> <span class="o">=</span> <span class="mf">1000.</span><span class="n">millis</span>
-    <span class="k">override</span> <span class="k">val</span> <span class="nv">minConsumeDelayMillis</span><span class="k">:</span> <span class="kt">Long</span> <span class="o">=</span> <span class="mi">10</span>
-    <span class="k">override</span> <span class="k">val</span> <span class="nv">maxConsumeDelayMillis</span><span class="k">:</span> <span class="kt">Long</span> <span class="o">=</span> <span class="mi">100</span>
-  <span class="o">},</span>
-  <span class="k">new</span> <span class="nc">TestConfig</span> <span class="o">{</span>
-    <span class="k">override</span> <span class="k">val</span> <span class="nv">testName</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"balanced"</span>
-    <span class="k">override</span> <span class="k">val</span> <span class="nv">produceDelay</span><span class="k">:</span> <span class="kt">FiniteDuration</span> <span class="o">=</span> <span class="mf">1005.</span><span class="n">millis</span>
-    <span class="k">override</span> <span class="k">val</span> <span class="nv">minConsumeDelayMillis</span><span class="k">:</span> <span class="kt">Long</span> <span class="o">=</span> <span class="mi">10</span>
-    <span class="k">override</span> <span class="k">val</span> <span class="nv">maxConsumeDelayMillis</span><span class="k">:</span> <span class="kt">Long</span> <span class="o">=</span> <span class="mi">2000</span>
-  <span class="o">},</span>
-  <span class="k">new</span> <span class="nc">TestConfig</span> <span class="o">{</span>
-    <span class="k">override</span> <span class="k">val</span> <span class="nv">testName</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">"slow-consumer"</span>
-    <span class="k">override</span> <span class="k">val</span> <span class="nv">produceDelay</span><span class="k">:</span> <span class="kt">FiniteDuration</span> <span class="o">=</span> <span class="mf">10.</span><span class="n">millis</span>
-    <span class="k">override</span> <span class="k">val</span> <span class="nv">minConsumeDelayMillis</span><span class="k">:</span> <span class="kt">Long</span> <span class="o">=</span> <span class="mi">10</span>
-    <span class="k">override</span> <span class="k">val</span> <span class="nv">maxConsumeDelayMillis</span><span class="k">:</span> <span class="kt">Long</span> <span class="o">=</span> <span class="mi">1000</span>
-  <span class="o">}</span>
-<span class="o">)</span>
-</code></pre></div></div>
-
-<h2 id="approach-1-batch-consuming">Approach 1: Batch Consuming</h2>
-
-<p>The first approach is to make the consuming side parallel. We can consume a batch of tasks concurrently, like in <a href="https://github.com/wb14123/scala-stream-demo/blob/master/src/main/scala/BatchIOApp.scala">BatchIOApp.scala</a>.</p>
-
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">loop</span><span class="o">(</span><span class="n">start</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">IO</span><span class="o">[</span><span class="kt">Unit</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
-  <span class="nf">if</span> <span class="o">(</span><span class="n">start</span> <span class="o">&gt;=</span> <span class="nv">config</span><span class="o">.</span><span class="py">totalSize</span><span class="o">)</span> <span class="o">{</span>
-    <span class="nv">IO</span><span class="o">.</span><span class="py">unit</span>
-  <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-    <span class="nf">produce</span><span class="o">(</span><span class="n">start</span><span class="o">,</span> <span class="n">start</span> <span class="o">+</span> <span class="nv">config</span><span class="o">.</span><span class="py">batchSize</span><span class="o">)</span>
-      <span class="o">.</span><span class="py">flatMap</span><span class="o">{</span><span class="nv">_</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="n">consume</span><span class="o">).</span><span class="py">parSequence</span><span class="o">}</span>
-      <span class="o">.</span><span class="py">flatMap</span><span class="o">(</span><span class="k">_</span> <span class="k">=&gt;</span> <span class="nf">loop</span><span class="o">(</span><span class="n">start</span> <span class="o">+</span> <span class="nv">config</span><span class="o">.</span><span class="py">batchSize</span><span class="o">))</span>
-  <span class="o">}</span>
-<span class="o">}</span>
-</code></pre></div></div>
-
-<p>However, this only makes a batch of tasks run in parallel. It needs to wait the whole batch to be finished in order to start next batch. This is very obvious when we run this approach and see the output of characters (download <a href="https://github.com/wb14123/scala-stream-demo">Github repo</a> and run <code class="language-plaintext highlighter-rouge">sbt "run -n BatchIOApp"</code>). See how it paused after each batch even when consumer is slower than producer:</p>
-
-<div id="cast-tmpg4x5_bn7-ascii"></div>
-<script src="/static/js/asciinema-player.min.js"></script>
-<script>AsciinemaPlayer.create('/static/asciicasts/tmpg4x5_bn7-ascii.cast', document.getElementById('cast-tmpg4x5_bn7-ascii'), {rows: 10, autoPlay: true});</script>
-
-<h2 id="approach-2-use-blocking-queue-to-buffer-tasks">Approach 2: Use Blocking Queue to Buffer Tasks</h2>
-
-<p>We need a way to let producers not waiting for consumers, and also let consumers not wait for a batch to finish in order to start next batch. A very common solution is to use a queue between producers and consumers. Producers put tasks into the queue, and consumers get tasks for the queue. If the queue is thread safe, then both producers and consumers can work on their own without care about each other. In order to not let producer put unlimited tasks into the queue to blowup the memory, we need the queue to have a capacity. When the queue is full, the producer should be blocked. And when the queue is empty, the consumers should be blocked as well.</p>
-
-<p>In Java, <code class="language-plaintext highlighter-rouge">BlockingQueue</code> meets our requirements. We can use an implementation <code class="language-plaintext highlighter-rouge">LinkedBlockingQueue</code>. However, <code class="language-plaintext highlighter-rouge">BlockingQueue</code> will block the whole thread instead of a single <code class="language-plaintext highlighter-rouge">IO</code>. Let’s not worry about it for now and see how to use a queue to implement producing and consuming in parallel. The implementation is in <a href="https://github.com/wb14123/scala-stream-demo/blob/master/src/main/scala/BlockingQueueApp.scala">BlockingQueueApp.scala</a>:</p>
-
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-<span class="k">val</span> <span class="nv">queue</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">LinkedBlockingQueue</span><span class="o">[</span><span class="kt">Option</span><span class="o">[</span><span class="kt">Int</span><span class="o">]](</span><span class="nv">config</span><span class="o">.</span><span class="py">batchSize</span> <span class="o">*</span> <span class="mi">2</span><span class="o">)</span>
-
-<span class="k">override</span> <span class="k">def</span> <span class="nf">work</span><span class="o">()</span><span class="k">:</span> <span class="kt">IO</span><span class="o">[</span><span class="kt">Unit</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
-  <span class="nc">Seq</span><span class="o">(</span>
-    <span class="o">(</span><span class="nf">produceStream</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="py">map</span><span class="o">(</span><span class="nc">Some</span><span class="o">(</span><span class="k">_</span><span class="o">))</span> <span class="o">++</span> <span class="nv">fs2</span><span class="o">.</span><span class="py">Stream</span><span class="o">.</span><span class="py">emit</span><span class="o">(</span><span class="nc">None</span><span class="o">))</span>
-			<span class="o">.</span><span class="py">evalMap</span><span class="o">(</span><span class="n">x</span> <span class="k">=&gt;</span> <span class="nc">IO</span><span class="o">(</span><span class="nv">queue</span><span class="o">.</span><span class="py">put</span><span class="o">(</span><span class="n">x</span><span class="o">))).</span><span class="py">compile</span><span class="o">.</span><span class="py">drain</span><span class="o">,</span>
-    <span class="nf">dequeueStream</span><span class="o">().</span><span class="py">unNoneTerminate</span><span class="o">.</span><span class="py">parEvalMap</span><span class="o">(</span><span class="nv">config</span><span class="o">.</span><span class="py">batchSize</span><span class="o">)(</span><span class="n">consume</span><span class="o">).</span><span class="py">compile</span><span class="o">.</span><span class="py">drain</span><span class="o">,</span>
-  <span class="o">).</span><span class="py">parSequence</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="k">_</span> <span class="k">=&gt;</span> <span class="o">())</span>
-<span class="o">}</span>
-
-<span class="k">private</span> <span class="k">def</span> <span class="nf">dequeueStream</span><span class="o">()</span><span class="k">:</span> <span class="kt">fs2.Stream</span><span class="o">[</span><span class="kt">IO</span>, <span class="kt">Option</span><span class="o">[</span><span class="kt">Int</span><span class="o">]]</span> <span class="k">=</span> <span class="o">{</span>
-  <span class="nv">fs2</span><span class="o">.</span><span class="py">Stream</span><span class="o">.</span><span class="py">eval</span><span class="o">(</span><span class="nc">IO</span><span class="o">(</span><span class="nv">queue</span><span class="o">.</span><span class="py">take</span><span class="o">()))</span> <span class="o">++</span> <span class="nf">dequeueStream</span><span class="o">()</span>
-<span class="o">}</span>
-</code></pre></div></div>
-
-<p>Here we have two IOs run in parallel with <code class="language-plaintext highlighter-rouge">parSequence</code>: the first one creates a task stream by <code class="language-plaintext highlighter-rouge">produceStream</code>, and append <code class="language-plaintext highlighter-rouge">None</code> at the end so that the consumer knows it should end processing. Another stream <code class="language-plaintext highlighter-rouge">dequeueStream</code> gets the tasks from the queue then consumes it in parallel with <code class="language-plaintext highlighter-rouge">parEvalmap(config.batchSize)(consume)</code>.</p>
-
-<p>When run it with <code class="language-plaintext highlighter-rouge">sbt "run -n BlockingQueueApp"</code>, we can see it’s much faster when the consumer is faster or has the same speed as the producer. Especially when the consumer is slow, it prints multiple <code class="language-plaintext highlighter-rouge">P</code> at first, which means the producers doesn’t wait all the consumers to finish in order to produce tasks.</p>
-
-<div id="cast-tmp6dx2heu_-ascii"></div>
-<script src="/static/js/asciinema-player.min.js"></script>
-<script>AsciinemaPlayer.create('/static/asciicasts/tmp6dx2heu_-ascii.cast', document.getElementById('cast-tmp6dx2heu_-ascii'), {rows: 10, autoPlay: true});</script>
-
-<p>Back to the blocking the whole thread problem: it doesn’t seem to be a problem in this case, right? It’s only because we are lucky! In this setup, we are using two fixed threads as the thread pool of running IO in <code class="language-plaintext highlighter-rouge">Main.scala</code>:</p>
-
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">val</span> <span class="nv">executor</span> <span class="k">=</span> <span class="nv">Executors</span><span class="o">.</span><span class="py">newFixedThreadPool</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="o">(</span><span class="n">r</span><span class="k">:</span> <span class="kt">Runnable</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="o">{</span>
-  <span class="k">val</span> <span class="nv">back</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">Thread</span><span class="o">(</span><span class="n">r</span><span class="o">)</span>
-  <span class="nv">back</span><span class="o">.</span><span class="py">setDaemon</span><span class="o">(</span><span class="kc">true</span><span class="o">)</span>
-  <span class="n">back</span>
-<span class="o">})</span>
-
-<span class="k">implicit</span> <span class="k">override</span> <span class="k">def</span> <span class="nf">executionContext</span><span class="k">:</span> <span class="kt">ExecutionContext</span> <span class="o">=</span> <span class="nv">ExecutionContext</span><span class="o">.</span><span class="py">fromExecutor</span><span class="o">(</span><span class="n">executor</span><span class="o">)</span>
-
-<span class="k">implicit</span> <span class="k">override</span> <span class="k">def</span> <span class="nf">timer</span><span class="k">:</span> <span class="kt">Timer</span><span class="o">[</span><span class="kt">IO</span><span class="o">]</span> <span class="k">=</span> <span class="nv">IO</span><span class="o">.</span><span class="py">timer</span><span class="o">(</span><span class="n">executionContext</span><span class="o">)</span>
-
-<span class="k">implicit</span> <span class="k">override</span> <span class="k">def</span> <span class="nf">contextShift</span><span class="k">:</span> <span class="kt">ContextShift</span><span class="o">[</span><span class="kt">IO</span><span class="o">]</span> <span class="k">=</span> <span class="nv">IO</span><span class="o">.</span><span class="py">contextShift</span><span class="o">(</span><span class="n">executionContext</span><span class="o">)</span>
-</code></pre></div></div>
-
-<p>If 2 consumers with empty queue happens to be scheduled on these 2 threads separately, it will block. If we change our <code class="language-plaintext highlighter-rouge">BlockingQueueApp</code> to the code in <a href="https://github.com/wb14123/scala-stream-demo/blob/master/src/main/scala/RealBlockingQueueApp.scala">RealBlockingQueueApp</a>:</p>
-
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">override</span> <span class="k">def</span> <span class="nf">work</span><span class="o">()</span><span class="k">:</span> <span class="kt">IO</span><span class="o">[</span><span class="kt">Unit</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
-  <span class="nc">Seq</span><span class="o">(</span>
-    <span class="nf">dequeueStream</span><span class="o">().</span><span class="py">unNoneTerminate</span><span class="o">.</span><span class="py">parEvalMap</span><span class="o">(</span><span class="nv">config</span><span class="o">.</span><span class="py">batchSize</span><span class="o">)(</span><span class="n">consume</span><span class="o">).</span><span class="py">compile</span><span class="o">.</span><span class="py">drain</span><span class="o">,</span>
-    <span class="nf">dequeueStream</span><span class="o">().</span><span class="py">unNoneTerminate</span><span class="o">.</span><span class="py">parEvalMap</span><span class="o">(</span><span class="nv">config</span><span class="o">.</span><span class="py">batchSize</span><span class="o">)(</span><span class="n">consume</span><span class="o">).</span><span class="py">compile</span><span class="o">.</span><span class="py">drain</span><span class="o">,</span>
-    <span class="o">(</span><span class="nf">produceStream</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="py">map</span><span class="o">(</span><span class="nc">Some</span><span class="o">(</span><span class="k">_</span><span class="o">))</span> <span class="o">++</span> <span class="nv">fs2</span><span class="o">.</span><span class="py">Stream</span><span class="o">.</span><span class="py">emit</span><span class="o">(</span><span class="nc">None</span><span class="o">)).</span><span class="py">evalMap</span><span class="o">(</span><span class="n">x</span> <span class="k">=&gt;</span> <span class="nc">IO</span><span class="o">(</span><span class="nv">queue</span><span class="o">.</span><span class="py">put</span><span class="o">(</span><span class="n">x</span><span class="o">))).</span><span class="py">compile</span><span class="o">.</span><span class="py">drain</span><span class="o">,</span>
-  <span class="o">).</span><span class="py">parSequence</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="k">_</span> <span class="k">=&gt;</span> <span class="o">())</span>
-<span class="o">}</span>
-</code></pre></div></div>
-
-<p>Here we started two dequeue stream at first. Now the whole program will block when run it with <code class="language-plaintext highlighter-rouge">sbt "run -b"</code> .</p>
-
-<p>The lesson learned here is that there is a big risk if any operation blocks the whole thread in cats effect. Even it doesn’t block the whole program, it may make a whole thread unavailable.</p>
-
-<p>Actually in <a href="https://typelevel.org/cats-effect/docs/thread-model">Cats Effect’s thread model</a>, there is another thread pool for blocking tasks if we mark it explicitly. In <a href="https://github.com/wb14123/scala-stream-demo/blob/master/src/main/scala/AsyncConsole.scala">AsyncConsole.scala</a>, I use this exact block mode to run console output so that it won’t effect other non blocking IO operations:</p>
-
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">asyncPrintln</span><span class="o">(</span><span class="n">s</span><span class="k">:</span> <span class="kt">String</span><span class="o">)(</span>
-    <span class="k">implicit</span> <span class="n">cs</span><span class="k">:</span> <span class="kt">ContextShift</span><span class="o">[</span><span class="kt">IO</span><span class="o">],</span> <span class="n">blocker</span><span class="k">:</span> <span class="kt">Blocker</span><span class="o">)</span><span class="k">:</span> <span class="kt">IO</span><span class="o">[</span><span class="kt">Unit</span><span class="o">]</span> <span class="k">=</span> <span class="nv">blocker</span><span class="o">.</span><span class="py">blockOn</span><span class="o">(</span><span class="nc">IO</span><span class="o">(</span><span class="nf">println</span><span class="o">(</span><span class="n">s</span><span class="o">)))</span>
-</code></pre></div></div>
-
-<p>However, if a thread is blocked in this pool, it will start another thread for the next operation. Based on the document, there is no limit on how many threads will be created. So if the producer is much slower than consumer, there will be more and more consume operations blocked on dequeue, so it will generate a large amount of threads, which is not ideal and eventually even will blow up the memory.</p>
-
-<h2 id="approach-3-use-cats-effect-friendly-queue">Approach 3: Use Cats Effect Friendly Queue</h2>
-
-<p>What if we have a queue that only block the dequeue <code class="language-plaintext highlighter-rouge">IO</code> when empty instead of blocking the whole thread? Luckily, FS2 provides such a queue. (Cats Effect 3.x also provides such a queue). The implementation is basically the same as above (code in <a href="https://github.com/wb14123/scala-stream-demo/blob/master/src/main/scala/StreamQueueApp.scala">StreamQueueApp.scala</a>):</p>
-
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">fs2.concurrent.Queue</span>
-
-<span class="k">def</span> <span class="nf">work</span><span class="o">()</span><span class="k">:</span> <span class="kt">IO</span><span class="o">[</span><span class="kt">Unit</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
-  <span class="k">for</span> <span class="o">{</span>
-    <span class="n">queue</span> <span class="k">&lt;-</span> <span class="nv">Queue</span><span class="o">.</span><span class="py">bounded</span><span class="o">[</span><span class="kt">IO</span>, <span class="kt">Option</span><span class="o">[</span><span class="kt">Int</span><span class="o">]](</span><span class="nv">config</span><span class="o">.</span><span class="py">batchSize</span> <span class="o">*</span> <span class="mi">2</span><span class="o">)</span>
-    <span class="k">_</span> <span class="k">&lt;-</span> <span class="nc">Seq</span><span class="o">(</span>
-      <span class="o">(</span><span class="nf">produceStream</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="py">map</span><span class="o">(</span><span class="nc">Some</span><span class="o">(</span><span class="k">_</span><span class="o">))</span> <span class="o">++</span> <span class="nv">fs2</span><span class="o">.</span><span class="py">Stream</span><span class="o">.</span><span class="py">emit</span><span class="o">(</span><span class="nc">None</span><span class="o">)).</span><span class="py">through</span><span class="o">(</span><span class="nv">queue</span><span class="o">.</span><span class="py">enqueue</span><span class="o">).</span><span class="py">compile</span><span class="o">.</span><span class="py">drain</span><span class="o">,</span>
-      <span class="nv">queue</span><span class="o">.</span><span class="py">dequeue</span><span class="o">.</span><span class="py">unNoneTerminate</span><span class="o">.</span><span class="py">parEvalMap</span><span class="o">(</span><span class="nv">config</span><span class="o">.</span><span class="py">batchSize</span><span class="o">)(</span><span class="n">consume</span><span class="o">).</span><span class="py">compile</span><span class="o">.</span><span class="py">drain</span><span class="o">,</span>
-    <span class="o">).</span><span class="py">parSequence</span>
-  <span class="o">}</span> <span class="nf">yield</span> <span class="o">()</span>
-<span class="o">}</span>
-</code></pre></div></div>
-
-<p>Run <code class="language-plaintext highlighter-rouge">sbt "run -n StreamAppQueue"</code> to see how it performs.</p>
-
-<h2 id="approach-4-use-fs2-stream-directly">Approach 4: Use FS2 Stream Directly</h2>
-
-<p>FS2 actually provides some advanced stream operations that makes it possible to combine the producing stream and consume stream, like the code in <a href="https://github.com/wb14123/scala-stream-demo/blob/master/src/main/scala/StreamApp.scala">StreamApp.scala</a>:</p>
-
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">produceStream</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="py">parEvalMap</span><span class="o">(</span><span class="nv">config</span><span class="o">.</span><span class="py">batchSize</span><span class="o">)(</span><span class="n">consume</span><span class="o">).</span><span class="py">compile</span><span class="o">.</span><span class="py">drain</span>
-</code></pre></div></div>
-
-<p>Here we map <code class="language-plaintext highlighter-rouge">consume</code> in parallel on <code class="language-plaintext highlighter-rouge">produce</code> stream. However, if you try to run <code class="language-plaintext highlighter-rouge">sbt "run -n StreamApp"</code> vs <code class="language-plaintext highlighter-rouge">sbt "run -n StreamQueueApp"</code>, you will find this is slower than before. This is because <code class="language-plaintext highlighter-rouge">produceStream</code> will give the next batch when the downstream asks. If we can prepare at least one batch before the downstream is free, we can save more time. Luckily, it’s very easy to do in fs2. As we can see in <a href="https://github.com/wb14123/scala-stream-demo/blob/master/src/main/scala/PrefetchStreamApp.scala">PrefetchStreamApp.scala</a>, we can add <code class="language-plaintext highlighter-rouge">prefetch</code> after the <code class="language-plaintext highlighter-rouge">produceStream</code>:</p>
-
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">produceStream</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="py">prefetch</span><span class="o">.</span><span class="py">parEvalMap</span><span class="o">(</span><span class="nv">config</span><span class="o">.</span><span class="py">batchSize</span><span class="o">)(</span><span class="n">consume</span><span class="o">).</span><span class="py">compile</span><span class="o">.</span><span class="py">drain</span>
-</code></pre></div></div>
-
-<p>It will prefetch a <a href="https://fs2.io/#/guide?id=chunks">chunk</a> of elements. Use <code class="language-plaintext highlighter-rouge">prefetchN</code> if you want to prefetch N chunks.</p>
-
-<p>Then run this with <code class="language-plaintext highlighter-rouge">sbt "run -n PrefetchStreamApp"</code>, you will find the performance is similar as the queued approach.</p>
-
-<p>Actually if you check the source code of <code class="language-plaintext highlighter-rouge">prefetch</code>, you will find the implementation is almost the same as ours:</p>
-
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">prefetch</span><span class="o">[</span><span class="kt">F2</span><span class="o">[</span><span class="kt">x</span><span class="o">]</span> <span class="k">&gt;:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">x</span><span class="o">]</span><span class="kt">:</span> <span class="kt">Concurrent</span><span class="o">]</span><span class="k">:</span> <span class="kt">Stream</span><span class="o">[</span><span class="kt">F2</span>, <span class="kt">O</span><span class="o">]</span> <span class="k">=</span> <span class="n">prefetchN</span><span class="o">[</span><span class="kt">F2</span><span class="o">](</span><span class="mi">1</span><span class="o">)</span>
-
-<span class="k">def</span> <span class="nf">prefetchN</span><span class="o">[</span><span class="kt">F2</span><span class="o">[</span><span class="kt">x</span><span class="o">]</span> <span class="k">&gt;:</span> <span class="kt">F</span><span class="o">[</span><span class="kt">x</span><span class="o">]</span><span class="kt">:</span> <span class="kt">Concurrent</span><span class="o">](</span><span class="n">n</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Stream</span><span class="o">[</span><span class="kt">F2</span>, <span class="kt">O</span><span class="o">]</span> <span class="k">=</span>
-  <span class="nv">Stream</span><span class="o">.</span><span class="py">eval</span><span class="o">(</span><span class="nv">Queue</span><span class="o">.</span><span class="py">bounded</span><span class="o">[</span><span class="kt">F2</span>, <span class="kt">Option</span><span class="o">[</span><span class="kt">Chunk</span><span class="o">[</span><span class="kt">O</span><span class="o">]]](</span><span class="n">n</span><span class="o">)).</span><span class="py">flatMap</span> <span class="o">{</span> <span class="n">queue</span> <span class="k">=&gt;</span>
-    <span class="nv">queue</span><span class="o">.</span><span class="py">dequeue</span><span class="o">.</span><span class="py">unNoneTerminate</span>
-      <span class="o">.</span><span class="py">flatMap</span><span class="o">(</span><span class="nv">Stream</span><span class="o">.</span><span class="py">chunk</span><span class="o">(</span><span class="k">_</span><span class="o">))</span>
-      <span class="o">.</span><span class="py">concurrently</span><span class="o">(</span><span class="nv">chunks</span><span class="o">.</span><span class="py">noneTerminate</span><span class="o">.</span><span class="py">covary</span><span class="o">[</span><span class="kt">F2</span><span class="o">].</span><span class="py">through</span><span class="o">(</span><span class="nv">queue</span><span class="o">.</span><span class="py">enqueue</span><span class="o">))</span>
-  <span class="o">}</span>
-</code></pre></div></div>
-
-<h2 id="approach-5-make-producers-run-in-parallel">Approach 5: Make Producers Run in Parallel</h2>
-
-<p>We’ve made it runs in parallel between consumers, also between consumers and producers. But we haven’t made producers run in parallel yet. With the queue, its very easy to do, just start multiple <code class="language-plaintext highlighter-rouge">IO</code>s for <code class="language-plaintext highlighter-rouge">produceStream.through(queue.enqueue)</code>. <a href="https://github.com/wb14123/scala-stream-demo/blob/master/src/main/scala/ConcurrentProducerQueueApp.scala">ConcurrentProduceQueueApp.scala</a> is an example:</p>
-
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">val</span> <span class="nv">counter</span> <span class="k">=</span> <span class="k">new</span> <span class="nc">AtomicInteger</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span>
-
-<span class="k">override</span> <span class="k">def</span> <span class="nf">work</span><span class="o">()</span><span class="k">:</span> <span class="kt">IO</span><span class="o">[</span><span class="kt">Unit</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
-  <span class="k">for</span> <span class="o">{</span>
-    <span class="n">queue</span> <span class="k">&lt;-</span> <span class="nv">Queue</span><span class="o">.</span><span class="py">bounded</span><span class="o">[</span><span class="kt">IO</span>, <span class="kt">Int</span><span class="o">](</span><span class="nv">config</span><span class="o">.</span><span class="py">batchSize</span> <span class="o">*</span> <span class="mi">2</span><span class="o">)</span>
-    <span class="k">_</span> <span class="k">&lt;-</span> <span class="nc">Seq</span><span class="o">(</span>
-      <span class="nf">produceStream</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="nv">config</span><span class="o">.</span><span class="py">totalSize</span> <span class="o">/</span> <span class="mi">2</span><span class="o">).</span><span class="py">through</span><span class="o">(</span><span class="nv">queue</span><span class="o">.</span><span class="py">enqueue</span><span class="o">).</span><span class="py">compile</span><span class="o">.</span><span class="py">drain</span><span class="o">,</span>
-      <span class="nf">produceStream</span><span class="o">(</span><span class="nv">config</span><span class="o">.</span><span class="py">totalSize</span> <span class="o">/</span> <span class="mi">2</span><span class="o">,</span> <span class="nv">config</span><span class="o">.</span><span class="py">totalSize</span><span class="o">).</span><span class="py">through</span><span class="o">(</span><span class="nv">queue</span><span class="o">.</span><span class="py">enqueue</span><span class="o">).</span><span class="py">compile</span><span class="o">.</span><span class="py">drain</span><span class="o">,</span>
-      <span class="nv">queue</span><span class="o">.</span><span class="py">dequeue</span><span class="o">.</span><span class="py">parEvalMap</span><span class="o">(</span><span class="nv">config</span><span class="o">.</span><span class="py">batchSize</span><span class="o">)</span> <span class="o">{</span> <span class="n">x</span> <span class="k">=&gt;</span>
-        <span class="nf">consume</span><span class="o">(</span><span class="n">x</span><span class="o">).</span><span class="py">map</span> <span class="o">{</span> <span class="k">_</span> <span class="k">=&gt;</span>
-          <span class="nf">if</span> <span class="o">(</span><span class="nv">counter</span><span class="o">.</span><span class="py">incrementAndGet</span><span class="o">()</span> <span class="o">&gt;=</span> <span class="nv">config</span><span class="o">.</span><span class="py">totalSize</span><span class="o">)</span> <span class="o">{</span>
-            <span class="nc">None</span>
-          <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-            <span class="nc">Some</span><span class="o">()</span>
-          <span class="o">}</span>
-        <span class="o">}</span>
-      <span class="o">}.</span><span class="py">unNoneTerminate</span><span class="o">.</span><span class="py">compile</span><span class="o">.</span><span class="py">drain</span><span class="o">,</span>
-    <span class="o">).</span><span class="py">parSequence</span>
-  <span class="o">}</span> <span class="nf">yield</span> <span class="o">()</span>
-<span class="o">}</span>
-</code></pre></div></div>
-
-<p>It has 2 concurrent producers but in theory you can create as many as you want, just be careful with the parameters of <code class="language-plaintext highlighter-rouge">produceStream</code>.</p>
-
-<p>If you run this with <code class="language-plaintext highlighter-rouge">sbt "run -n ConcurrentProduceQueueApp"</code>, you can find the performance is much better with slower producer. However, with the help of fs2 library, we can make the code cleaner without depends on any queue explicitly. Here is what I did in <a href="https://github.com/wb14123/scala-stream-demo/blob/master/src/main/scala/ConcurrentProducerApp.scala">ConcurrentProducerApp.scala</a>:</p>
-
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">work</span><span class="o">()</span><span class="k">:</span> <span class="kt">IO</span><span class="o">[</span><span class="kt">Unit</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
-  <span class="nv">fs2</span><span class="o">.</span><span class="py">Stream</span><span class="o">.</span><span class="py">emits</span><span class="o">(</span><span class="nc">Range</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">produceParallelism</span><span class="o">))</span>
-    <span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="n">batch</span> <span class="k">=&gt;</span> <span class="nf">produceStream</span><span class="o">(</span>
-      <span class="n">batch</span> <span class="o">*</span> <span class="nv">config</span><span class="o">.</span><span class="py">totalSize</span> <span class="o">/</span> <span class="n">produceParallelism</span><span class="o">,</span>
-      <span class="o">(</span><span class="n">batch</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span> <span class="o">*</span> <span class="nv">config</span><span class="o">.</span><span class="py">totalSize</span> <span class="o">/</span> <span class="nv">produceParallelism</span><span class="o">.</span><span class="py">toDouble</span><span class="o">))</span>
-    <span class="o">.</span><span class="py">parJoin</span><span class="o">(</span><span class="n">produceParallelism</span><span class="o">)</span>
-    <span class="o">.</span><span class="py">prefetch</span>
-    <span class="o">.</span><span class="py">parEvalMap</span><span class="o">(</span><span class="nv">config</span><span class="o">.</span><span class="py">batchSize</span><span class="o">)(</span><span class="n">consume</span><span class="o">).</span><span class="py">compile</span><span class="o">.</span><span class="py">drain</span>
-<span class="o">}</span>
-</code></pre></div></div>
-
-<p>Here we use <code class="language-plaintext highlighter-rouge">parJoin</code> to join multiple producer stream at the same time.</p>
-
-<h2 id="more">More</h2>
-
-<p>All the approaches above other than the first one uses a queue either implicitly or explicitly. However, under high parallelism and load, every job operating on a single queue may makes this queue a bottleneck. In this case, there is a <a href="https://en.wikipedia.org/wiki/Work_stealing">work stealing</a> algorithm that each consumers can has its own queue, and whenever a consumer’s queue is empty, it steal some tasks from another one. But it’s a little bit complex and unnecessary if the load is not so high, so I will not cover it in this article.</p>
-
-<h2 id="test-results">Test Results</h2>
-
-<p>Now let’s run all the approaches and compare the performance with <code class="language-plaintext highlighter-rouge">sbt "run -n"</code>. Here are the results:</p>
-
-<table>
-  <thead>
-    <tr>
-      <th> </th>
-      <th>slow producer</th>
-      <th>balanced</th>
-      <th>slow consumer</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>BatchIO</td>
-      <td>11086.078637 ms</td>
-      <td>29912.377578 ms</td>
-      <td>10015.51878 ms</td>
-    </tr>
-    <tr>
-      <td>BlockingQueue</td>
-      <td>10190.038753 ms</td>
-      <td>14195.228189 ms</td>
-      <td>6495.333179 ms</td>
-    </tr>
-    <tr>
-      <td>StreamQueue</td>
-      <td>10138.016643 ms</td>
-      <td>14458.443122 ms</td>
-      <td>6418.078377 ms</td>
-    </tr>
-    <tr>
-      <td>Stream</td>
-      <td>10356.178562 ms</td>
-      <td>15655.697826 ms</td>
-      <td>6560.111697 ms</td>
-    </tr>
-    <tr>
-      <td>PrefetchStream</td>
-      <td>10141.110634 ms</td>
-      <td>14578.362136 ms</td>
-      <td>6376.628036 ms</td>
-    </tr>
-    <tr>
-      <td>ConcurrentProduceresQueue</td>
-      <td>5187.442452 ms</td>
-      <td>14395.321922 ms</td>
-      <td>6576.538821 ms</td>
-    </tr>
-    <tr>
-      <td>ConcurrentProducer</td>
-      <td>5198.723825 ms</td>
-      <td>14544.247312 ms</td>
-      <td>6418.078377 ms</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>We can see approaches that parallelize all the parts win the performance game.</p>]]></content><author><name></name></author><category term="Scala" /><category term="concurrent" /><category term="cats" /><category term="cats-effect" /><category term="fs2" /><category term="queue" /><category term="stream" /><summary type="html"><![CDATA[All the source code mentioned in this blog can be found in my Github repo.]]></summary></entry></feed>
+<p>I didn’t remove all the deepin related packages since some of them are needed by the App Store. However, I don’t think some of them are needed to run as deamon even if I left them on the machine. So type <code class="language-plaintext highlighter-rouge">systemctl status deepin-</code> and press tab for autocomplete to see the systemd services related to deepin, and use <code class="language-plaintext highlighter-rouge">systemctl disable &lt;service&gt;</code> to disable the ones you don’t need.</p>]]></content><author><name></name></author><category term="Linux" /><category term="Windows" /><category term="Virtual Machine" /><category term="Deepin" /><category term="Wine" /><summary type="html"><![CDATA[Background]]></summary></entry></feed>
