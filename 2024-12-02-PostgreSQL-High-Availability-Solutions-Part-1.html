@@ -4146,7 +4146,9 @@ max_connections: 500
   <li><code class="language-plaintext highlighter-rouge">--key-count 1 --max-txn-length 1 --max-writes-per-key 24000</code>: operate on a single key until the operations exceed 24000 times.</li>
 </ul>
 
-<p>As stated above, the test slows down the network the whole time to an average of 100ms round trip. At the same time, it does this loop: wait 30 seconds. Kill the primary node by killing the k3s process and all its children processes. Wait 60 seconds. Start k3s service again. The for loop means run the command 10 times so it has a higher possibility to trigger the failure.</p>
+<p>As stated above, the test slows down the network the whole time to an average of 100ms round trip. At the same time, it does this loop: wait 30 seconds. Kill the primary node by killing the k3s process and all its children processes. Wait 60 seconds. Start k3s service again.</p>
+
+<p>At last, the outer for loop runs the command 10 times so it has a higher possibility to trigger the failure.</p>
 
 <p>About why run the test 10 times instead of a single round of 300 mins, it’s related to another problem I found during the test which will be discussed in the later sections.</p>
 
