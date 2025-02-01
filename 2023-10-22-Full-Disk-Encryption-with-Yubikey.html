@@ -3925,7 +3925,7 @@
 
     <section id="page_content">
         <div id="content_table">
-  <h3>Table of Contents</h3><ol class="toc"><li><a href="#background">Background</a></li><li><a href="#install-linux-with-luks2">Install Linux with LUKS2</a></li><li><a href="#enroll-yubikey-to-key-slot">Enroll Yubikey to Key Slot</a></li><li><a href="#setup-crypttab">Setup crypttab</a></li><li><a href="#setup-mkinitcpio">Setup mkinitcpio</a></li><li><a href="#test-and-finish">Test and Finish!</a></li></ol>
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#background">Background</a></li><li><a href="#install-linux-with-luks2">Install Linux with LUKS2</a></li><li><a href="#enroll-yubikey-to-key-slot">Enroll Yubikey to Key Slot</a></li><li><a href="#setup-crypttab-with-mkinitcpio">Setup crypttab with mkinitcpio</a></li><li><a href="#setup-crypttab-with-dracut">Setup crypttab with dracut</a></li><li><a href="#test-and-finish">Test and Finish!</a></li></ol>
 </div>
 
 <div id="article_content" class="">
@@ -3937,7 +3937,9 @@
     
   </header>
 
-  <h2 id="background">Background</h2>
+  <p><em>Updated at 2025-02-01: update the method to include using dracut.</em></p>
+
+<h2 id="background">Background</h2>
 
 <p>As mentioned in a previous blog <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability</a>, I’ve setup a high available cluster that has 3 machines. But one of them is on my laptop. I feel like I need a dedicated machine for my personal usage, especially I’m planning some travels. So I need to remove the laptop from the cluster. Its disk space is also very limited. With migrating Gluster to Ceph (more blogs to come on that) and not be able to use a disk partition with Ceph’s encryption, I need another machine with more disks. So I repurposed another small form factor machine to join the cluster.</p>
 
@@ -3961,7 +3963,7 @@
 
 <p>Plug in the Yubikey. You can use this command first to list all the FIDO2 devices to make sure the Yubikey is recognized:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemd-cryptenroll --fido2-device=auto list
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemd-cryptenroll --fido2-device=list
 </code></pre></div></div>
 
 <p>Note: You may need to install <code class="language-plaintext highlighter-rouge">libfido2</code>.</p>
@@ -3973,7 +3975,7 @@
 
 <p>It will show hint about you may need to press the Yubikey during the process. So <strong>watch the Yubikey: when its LED flashes, press it to continue.</strong></p>
 
-<h2 id="setup-crypttab">Setup crypttab</h2>
+<h2 id="setup-crypttab-with-mkinitcpio">Setup crypttab with mkinitcpio</h2>
 
 <p>Put a line like this into <code class="language-plaintext highlighter-rouge">/etc/crypttab.initramfs</code>. It will be copied to initramfs by mkinitcpio as <code class="language-plaintext highlighter-rouge">/etc/crypttab</code> so that your root partition can be decrypted before it is mounted:</p>
 
@@ -3984,15 +3986,25 @@
 
 <p>If it’s not root partition, you can put it in <code class="language-plaintext highlighter-rouge">/etc/crypttab</code> so it will be used after root partition is mounted.</p>
 
-<h2 id="setup-mkinitcpio">Setup mkinitcpio</h2>
-
-<p><code class="language-plaintext highlighter-rouge">mkinitcpio</code> is a tool to generate initramfs. <code class="language-plaintext highlighter-rouge">/etc/crypttab.initramfs</code> only works with it. So if your distro comes with other tools like <code class="language-plaintext highlighter-rouge">dracut</code>, you may need to uninstall it and install <code class="language-plaintext highlighter-rouge">mkinitcpio</code> instead.</p>
+<p><code class="language-plaintext highlighter-rouge">mkinitcpio</code> is a tool to generate initramfs. <code class="language-plaintext highlighter-rouge">/etc/crypttab.initramfs</code> only works with it.</p>
 
 <p>Once making sure <code class="language-plaintext highlighter-rouge">mkinitcpio</code> is installed, we need to configure the hooks to make it read <code class="language-plaintext highlighter-rouge">crypttab</code> to decrypt the disks. We also need to make sure we are using systemd init instead of busybox init.</p>
 
 <p>Open <code class="language-plaintext highlighter-rouge">/etc/mkinitcpio.conf</code>, and find the line with <code class="language-plaintext highlighter-rouge">HOOKS=(...)</code>. Refer to <a href="https://wiki.archlinux.org/title/Mkinitcpio#Common_hooks">this wiki page</a> about the common hooks and replace busybox hooks with systemd ones. For example, in my setup, I replaced <code class="language-plaintext highlighter-rouge">udev</code> with <code class="language-plaintext highlighter-rouge">systemd</code> and <code class="language-plaintext highlighter-rouge">keymap</code> with <code class="language-plaintext highlighter-rouge">sd-vconsole</code>. Then add <code class="language-plaintext highlighter-rouge">sd-encrypt</code> to the hooks. The order matters: usually it comes after <code class="language-plaintext highlighter-rouge">sd-vconsole</code>.</p>
 
 <p>Then use <code class="language-plaintext highlighter-rouge">mkinitcpio -P</code> to regenerate initramfs images.</p>
+
+<h2 id="setup-crypttab-with-dracut">Setup crypttab with dracut</h2>
+
+<p>If the system come with <code class="language-plaintext highlighter-rouge">dracut</code> instead of <code class="language-plaintext highlighter-rouge">mkinitcpio</code> by default, you can add this line in <code class="language-plaintext highlighter-rouge">/etc/crypttab</code> directly to support both password and Yubikey:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>myvolume UUID=... none luks,fido2-device=auto
+</code></pre></div></div>
+
+<p>Then regenerate the initramfs using:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo dracut --force
+</code></pre></div></div>
 
 <h2 id="test-and-finish">Test and Finish!</h2>
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2025-01-16T22:22:59-05:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">A 2-Year Reflection for 2023 and 2024</title><link href="https://www.binwang.me/2025-01-13-A-2-Year-Reflection.html" rel="alternate" type="text/html" title="A 2-Year Reflection for 2023 and 2024" /><published>2025-01-13T00:00:00-05:00</published><updated>2025-01-13T00:00:00-05:00</updated><id>https://www.binwang.me/A-2-Year-Reflection</id><content type="html" xml:base="https://www.binwang.me/2025-01-13-A-2-Year-Reflection.html"><![CDATA[<p>Here is another new year! I didn’t write any retrospective for 2023, so I’d like to combine it with 2024 together in this one since 2023 is a very important year for me. I planned to write it after came back from <a href="/2024-03-19-Travel-Back-to-China.html">China’s travel</a> but never got the time. When I finally got the time it was already too late to write a year-end review. I’m staying in China again now (when I first started this article but I’ve been back when publishing it). While there is no work related thing to worry about when on vacation, I can use this time to review what happened in the past 2 years so it won’t slip through again.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2025-02-01T16:26:32-05:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">A 2-Year Reflection for 2023 and 2024</title><link href="https://www.binwang.me/2025-01-13-A-2-Year-Reflection.html" rel="alternate" type="text/html" title="A 2-Year Reflection for 2023 and 2024" /><published>2025-01-13T00:00:00-05:00</published><updated>2025-01-13T00:00:00-05:00</updated><id>https://www.binwang.me/A-2-Year-Reflection</id><content type="html" xml:base="https://www.binwang.me/2025-01-13-A-2-Year-Reflection.html"><![CDATA[<p>Here is another new year! I didn’t write any retrospective for 2023, so I’d like to combine it with 2024 together in this one since 2023 is a very important year for me. I planned to write it after came back from <a href="/2024-03-19-Travel-Back-to-China.html">China’s travel</a> but never got the time. When I finally got the time it was already too late to write a year-end review. I’m staying in China again now (when I first started this article but I’ve been back when publishing it). While there is no work related thing to worry about when on vacation, I can use this time to review what happened in the past 2 years so it won’t slip through again.</p>
 
 <h2 id="a-new-life">A New Life</h2>
 
@@ -2293,7 +2293,9 @@ word[n-1] --&gt; vector[n-1]
 <p>If you are sure this is the folder you want to delete, use this command to delete it:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ceph fs subvolume rm &lt;fs-name&gt; &lt;subvolume-name&gt; csi
-</code></pre></div></div>]]></content><author><name></name></author><category term="Kubernetes" /><category term="Ceph" /><category term="Distributed file system" /><summary type="html"><![CDATA[Ceph is a distributed file system. Rook is a project to deploy it with Kubernetes. I recently replaced GlusterFS in my Kubernetes cluster with Ceph. I will write a blog (or a series of blogs) for the migration. But in this article, I will just talk about a problem I encountered, just in case I forget it.]]></summary></entry><entry><title type="html">Linux Full Disk Encryption with Yubikey</title><link href="https://www.binwang.me/2023-10-22-Full-Disk-Encryption-with-Yubikey.html" rel="alternate" type="text/html" title="Linux Full Disk Encryption with Yubikey" /><published>2023-10-22T00:00:00-04:00</published><updated>2023-10-22T00:00:00-04:00</updated><id>https://www.binwang.me/Full-Disk-Encryption-with-Yubikey</id><content type="html" xml:base="https://www.binwang.me/2023-10-22-Full-Disk-Encryption-with-Yubikey.html"><![CDATA[<h2 id="background">Background</h2>
+</code></pre></div></div>]]></content><author><name></name></author><category term="Kubernetes" /><category term="Ceph" /><category term="Distributed file system" /><summary type="html"><![CDATA[Ceph is a distributed file system. Rook is a project to deploy it with Kubernetes. I recently replaced GlusterFS in my Kubernetes cluster with Ceph. I will write a blog (or a series of blogs) for the migration. But in this article, I will just talk about a problem I encountered, just in case I forget it.]]></summary></entry><entry><title type="html">Linux Full Disk Encryption with Yubikey</title><link href="https://www.binwang.me/2023-10-22-Full-Disk-Encryption-with-Yubikey.html" rel="alternate" type="text/html" title="Linux Full Disk Encryption with Yubikey" /><published>2023-10-22T00:00:00-04:00</published><updated>2023-10-22T00:00:00-04:00</updated><id>https://www.binwang.me/Full-Disk-Encryption-with-Yubikey</id><content type="html" xml:base="https://www.binwang.me/2023-10-22-Full-Disk-Encryption-with-Yubikey.html"><![CDATA[<p><em>Updated at 2025-02-01: update the method to include using dracut.</em></p>
+
+<h2 id="background">Background</h2>
 
 <p>As mentioned in a previous blog <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability</a>, I’ve setup a high available cluster that has 3 machines. But one of them is on my laptop. I feel like I need a dedicated machine for my personal usage, especially I’m planning some travels. So I need to remove the laptop from the cluster. Its disk space is also very limited. With migrating Gluster to Ceph (more blogs to come on that) and not be able to use a disk partition with Ceph’s encryption, I need another machine with more disks. So I repurposed another small form factor machine to join the cluster.</p>
 
@@ -2317,7 +2319,7 @@ word[n-1] --&gt; vector[n-1]
 
 <p>Plug in the Yubikey. You can use this command first to list all the FIDO2 devices to make sure the Yubikey is recognized:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemd-cryptenroll --fido2-device=auto list
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemd-cryptenroll --fido2-device=list
 </code></pre></div></div>
 
 <p>Note: You may need to install <code class="language-plaintext highlighter-rouge">libfido2</code>.</p>
@@ -2329,7 +2331,7 @@ word[n-1] --&gt; vector[n-1]
 
 <p>It will show hint about you may need to press the Yubikey during the process. So <strong>watch the Yubikey: when its LED flashes, press it to continue.</strong></p>
 
-<h2 id="setup-crypttab">Setup crypttab</h2>
+<h2 id="setup-crypttab-with-mkinitcpio">Setup crypttab with mkinitcpio</h2>
 
 <p>Put a line like this into <code class="language-plaintext highlighter-rouge">/etc/crypttab.initramfs</code>. It will be copied to initramfs by mkinitcpio as <code class="language-plaintext highlighter-rouge">/etc/crypttab</code> so that your root partition can be decrypted before it is mounted:</p>
 
@@ -2340,9 +2342,7 @@ word[n-1] --&gt; vector[n-1]
 
 <p>If it’s not root partition, you can put it in <code class="language-plaintext highlighter-rouge">/etc/crypttab</code> so it will be used after root partition is mounted.</p>
 
-<h2 id="setup-mkinitcpio">Setup mkinitcpio</h2>
-
-<p><code class="language-plaintext highlighter-rouge">mkinitcpio</code> is a tool to generate initramfs. <code class="language-plaintext highlighter-rouge">/etc/crypttab.initramfs</code> only works with it. So if your distro comes with other tools like <code class="language-plaintext highlighter-rouge">dracut</code>, you may need to uninstall it and install <code class="language-plaintext highlighter-rouge">mkinitcpio</code> instead.</p>
+<p><code class="language-plaintext highlighter-rouge">mkinitcpio</code> is a tool to generate initramfs. <code class="language-plaintext highlighter-rouge">/etc/crypttab.initramfs</code> only works with it.</p>
 
 <p>Once making sure <code class="language-plaintext highlighter-rouge">mkinitcpio</code> is installed, we need to configure the hooks to make it read <code class="language-plaintext highlighter-rouge">crypttab</code> to decrypt the disks. We also need to make sure we are using systemd init instead of busybox init.</p>
 
@@ -2350,11 +2350,23 @@ word[n-1] --&gt; vector[n-1]
 
 <p>Then use <code class="language-plaintext highlighter-rouge">mkinitcpio -P</code> to regenerate initramfs images.</p>
 
+<h2 id="setup-crypttab-with-dracut">Setup crypttab with dracut</h2>
+
+<p>If the system come with <code class="language-plaintext highlighter-rouge">dracut</code> instead of <code class="language-plaintext highlighter-rouge">mkinitcpio</code> by default, you can add this line in <code class="language-plaintext highlighter-rouge">/etc/crypttab</code> directly to support both password and Yubikey:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>myvolume UUID=... none luks,fido2-device=auto
+</code></pre></div></div>
+
+<p>Then regenerate the initramfs using:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo dracut --force
+</code></pre></div></div>
+
 <h2 id="test-and-finish">Test and Finish!</h2>
 
 <p>Okay, now we have already setup everything. We can boot the system and test. Make sure Yubikey is plugged in before the boot. And watch for its LED light to flash and press it when it does! This little detail spent me lots of time to figure it out.</p>
 
-<p>You can also use password to decrypt the disk <strong>without Yubikey plugged in</strong>. Wait it for 30 seconds and it will prompt you to input the password. The time can be configured in <code class="language-plaintext highlighter-rouge">/etc/crypttab</code> (or <code class="language-plaintext highlighter-rouge">/etc/crypttab.initramfs</code>) by setting up <a href="https://man.archlinux.org/man/crypttab.5">token-timeout=</a>.</p>]]></content><author><name></name></author><category term="Yubikey" /><category term="Linux" /><category term="Encryption" /><summary type="html"><![CDATA[Background]]></summary></entry><entry><title type="html">A Boring JVM Memory Profiling Story</title><link href="https://www.binwang.me/2023-09-30-A-Boring-JVM-Memory-Profiling-Story.html" rel="alternate" type="text/html" title="A Boring JVM Memory Profiling Story" /><published>2023-09-30T00:00:00-04:00</published><updated>2023-09-30T00:00:00-04:00</updated><id>https://www.binwang.me/A-Boring-JVM-Memory-Profiling-Story</id><content type="html" xml:base="https://www.binwang.me/2023-09-30-A-Boring-JVM-Memory-Profiling-Story.html"><![CDATA[<h2 id="background-of-memory-leakings">Background of Memory Leakings</h2>
+<p>You can also use password to decrypt the disk <strong>without Yubikey plugged in</strong>. Wait it for 30 seconds and it will prompt you to input the password. The time can be configured in <code class="language-plaintext highlighter-rouge">/etc/crypttab</code> (or <code class="language-plaintext highlighter-rouge">/etc/crypttab.initramfs</code>) by setting up <a href="https://man.archlinux.org/man/crypttab.5">token-timeout=</a>.</p>]]></content><author><name></name></author><category term="Yubikey" /><category term="Linux" /><category term="Encryption" /><summary type="html"><![CDATA[Updated at 2025-02-01: update the method to include using dracut.]]></summary></entry><entry><title type="html">A Boring JVM Memory Profiling Story</title><link href="https://www.binwang.me/2023-09-30-A-Boring-JVM-Memory-Profiling-Story.html" rel="alternate" type="text/html" title="A Boring JVM Memory Profiling Story" /><published>2023-09-30T00:00:00-04:00</published><updated>2023-09-30T00:00:00-04:00</updated><id>https://www.binwang.me/A-Boring-JVM-Memory-Profiling-Story</id><content type="html" xml:base="https://www.binwang.me/2023-09-30-A-Boring-JVM-Memory-Profiling-Story.html"><![CDATA[<h2 id="background-of-memory-leakings">Background of Memory Leakings</h2>
 
 <p>I encountered another memory leak problem recently. I’ve debugged a few of memory leak problems in the past, including <a href="https://github.com/splicemachine/spliceengine/pull/2260">the one</a> in Splice Machine, an open source distributed SQL engine based on HBase but was sadly discontinued. The memory leak problems are interesting because it’s challenging to find the root cause. However, I’ve never written a blog about it. Memory leak problems are not so usual, so when I encountered a new one, I kind of need to remember what tools I’ve used. So this time, even though not as interesting as some other memory leak problems I’ve debugged in the past, I decide to write it down as a note for my own reference in the future. The tool set I used this time is relatively simple. I guess I can write more when I use others in the future. This is more like a dev log instead of a tutorial. The “boring” in the title means it’s a pretty standard process and the problem is not that hard to find this time.</p>
 
