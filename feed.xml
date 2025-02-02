@@ -1,4 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2025-02-01T16:26:32-05:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">A 2-Year Reflection for 2023 and 2024</title><link href="https://www.binwang.me/2025-01-13-A-2-Year-Reflection.html" rel="alternate" type="text/html" title="A 2-Year Reflection for 2023 and 2024" /><published>2025-01-13T00:00:00-05:00</published><updated>2025-01-13T00:00:00-05:00</updated><id>https://www.binwang.me/A-2-Year-Reflection</id><content type="html" xml:base="https://www.binwang.me/2025-01-13-A-2-Year-Reflection.html"><![CDATA[<p>Here is another new year! I didn’t write any retrospective for 2023, so I’d like to combine it with 2024 together in this one since 2023 is a very important year for me. I planned to write it after came back from <a href="/2024-03-19-Travel-Back-to-China.html">China’s travel</a> but never got the time. When I finally got the time it was already too late to write a year-end review. I’m staying in China again now (when I first started this article but I’ve been back when publishing it). While there is no work related thing to worry about when on vacation, I can use this time to review what happened in the past 2 years so it won’t slip through again.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2025-02-02T00:04:53-05:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Replace A Dead Node in My High Available Cluster</title><link href="https://www.binwang.me/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html" rel="alternate" type="text/html" title="Replace A Dead Node in My High Available Cluster" /><published>2025-02-01T00:00:00-05:00</published><updated>2025-02-01T00:00:00-05:00</updated><id>https://www.binwang.me/Replace-A-Dead-Node-in-My-High-Avaliable-Cluster</id><content type="html" xml:base="https://www.binwang.me/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html"><![CDATA[<p>In my previous blogs <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">[1]</a><a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">[2]</a>, I’ve introduced my high available cluster setup. It works really well: when 1 of the 3 nodes is down, the service either continue to be online, or can be recovered rather quickly (in the case I set service replica to 1 to not wasting the resource). However, in the beginning of this year, one node is down not because of regular updates or temporary shutdown for maintenance, but because its system disk is dead. While it’s annoying to replace the disk and bring it back, it’s actually a good opportunity to verify a dead node can be replaced in my setup. So I will note the steps down in this article. This will be a short one but it shows how easy it is.</p>
+
+<h2 id="what-has-lost">What Has Lost?</h2>
+
+<p>The dead disk is the system disk. It has the OS, but also has the data for CockroachDB and ElasticSearch. However, since the data for CockroachDB and ElasticSearch is replicated across the cluster, it can be recovered from other machines.</p>
+
+<p>The machine also has a separate disk for CephFS but that disk is not lost. The data in CephFS is also replicated so should be able to recover from other machines as well even if it’s dead. But it may need additional setup, like changing the disk uuid in Rook’s Kubernetes manifests.</p>
+
+<h2 id="why-not-recover-from-backup">Why Not Recover From Backup?</h2>
+
+<p>First of all, I don’t backup that often because I don’t feel the need considering the data is replicated. Another reason is, I setup this machine based on the usage of <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">offsite online backup</a>. Then I repurposed it to use in this HA cluster. I want to change the secure boot setup because the threat model is different so it doesn’t need such complex boot setup, which is not supported very well by mainstream Linux without TPM 2.0.</p>
+
+<p>Since the data can all be recovered from other machines automatically, it would be easier to just install a fresh OS and some basic infrastructure so that all the service deployments and data can be auto recovered. This also simulates a dead node situation, so that I have more confidence for recovering from such failures in the future.</p>
+
+<h2 id="how-to-recover">How to Recover?</h2>
+
+<p>Okay, here we are for the actual recovery steps. It’s very simple:</p>
+
+<p>First, install the OS. Configure basic things like network IP address, ssh, etc. Install things like <code class="language-plaintext highlighter-rouge">prometheus-node-exporter</code> if you are using it on other machines.</p>
+
+<p>Next step is to let the node to join our Kubernetes cluster. Before that, we can remove the old dead node in the Kubernetes cluster by using the command <code class="language-plaintext highlighter-rouge">kubectl delete node ...</code>.</p>
+
+<p>Then install k3s: Copy the config file under <code class="language-plaintext highlighter-rouge">/etc/rancher/k3s/config.yaml</code> from another machine and adjust the node IP and network interface config. Make sure the config has something like <code class="language-plaintext highlighter-rouge">server: https://...:6443</code> so it will join the existing cluster instead of creating a new cluster. Check the k3s versions on other machines by using <code class="language-plaintext highlighter-rouge">kubectl get nodes -o wide</code>. Then install it with <code class="language-plaintext highlighter-rouge">curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v1.31.1+k3s1 sh -</code> assuming <code class="language-plaintext highlighter-rouge">v1.31.1+k3s1</code> is the version.</p>
+
+<p>After k3s is installed, the k3s service should be enabled by default and the node should join our cluster automatically. If the hostname and IP address are the same as the dead machine, the Kubernetes cluster should automatically reschedule the services on to this machine. If there are some failed containers, check the log to see if it’s because the local directory for the storage is missing. In my case, I need to create the local directory for CockroachDB and ElasticSearch, and set the owner to 1000 for ElasticSearch.</p>
+
+<p>At last, we need to make sure CephFS is working. Make sure <code class="language-plaintext highlighter-rouge">ceph</code> and <code class="language-plaintext highlighter-rouge">rbd</code> can be loaded with <code class="language-plaintext highlighter-rouge">modprobe</code>. If so, add them to <code class="language-plaintext highlighter-rouge">/etc/modules-load.d</code> to load on boot:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat /etc/modules-load.d/ceph.conf
+ceph
+cat /etc/modules-load.d/rbd.conf
+rbd
+</code></pre></div></div>]]></content><author><name></name></author><category term="Kubernetes" /><category term="infrastructure" /><category term="high availability" /><summary type="html"><![CDATA[In my previous blogs [1][2], I’ve introduced my high available cluster setup. It works really well: when 1 of the 3 nodes is down, the service either continue to be online, or can be recovered rather quickly (in the case I set service replica to 1 to not wasting the resource). However, in the beginning of this year, one node is down not because of regular updates or temporary shutdown for maintenance, but because its system disk is dead. While it’s annoying to replace the disk and bring it back, it’s actually a good opportunity to verify a dead node can be replaced in my setup. So I will note the steps down in this article. This will be a short one but it shows how easy it is.]]></summary></entry><entry><title type="html">A 2-Year Reflection for 2023 and 2024</title><link href="https://www.binwang.me/2025-01-13-A-2-Year-Reflection.html" rel="alternate" type="text/html" title="A 2-Year Reflection for 2023 and 2024" /><published>2025-01-13T00:00:00-05:00</published><updated>2025-01-13T00:00:00-05:00</updated><id>https://www.binwang.me/A-2-Year-Reflection</id><content type="html" xml:base="https://www.binwang.me/2025-01-13-A-2-Year-Reflection.html"><![CDATA[<p>Here is another new year! I didn’t write any retrospective for 2023, so I’d like to combine it with 2024 together in this one since 2023 is a very important year for me. I planned to write it after came back from <a href="/2024-03-19-Travel-Back-to-China.html">China’s travel</a> but never got the time. When I finally got the time it was already too late to write a year-end review. I’m staying in China again now (when I first started this article but I’ve been back when publishing it). While there is no work related thing to worry about when on vacation, I can use this time to review what happened in the past 2 years so it won’t slip through again.</p>
 
 <h2 id="a-new-life">A New Life</h2>
 
@@ -2495,56 +2527,4 @@ RUN cd /opt &amp;&amp; \
   <li>Check the identified code and classes.</li>
   <li>If it’s a third party library and we cannot find the root cause, check if the issue is reported. Otherwise report the issue.</li>
   <li>Fix the memory leak based on the root cause.</li>
-</ul>]]></content><author><name></name></author><category term="Java" /><category term="JVM" /><category term="Memory Leak" /><category term="Scala" /><category term="JProfiler" /><category term="Profiling" /><summary type="html"><![CDATA[Background of Memory Leakings]]></summary></entry><entry><title type="html">Jekyll Plugin to Load Asciinema Recordings Locally</title><link href="https://www.binwang.me/2023-09-24-Jekyll-Plugin-to-Load-Asciicast-Locally.html" rel="alternate" type="text/html" title="Jekyll Plugin to Load Asciinema Recordings Locally" /><published>2023-09-24T00:00:00-04:00</published><updated>2023-09-24T00:00:00-04:00</updated><id>https://www.binwang.me/Jekyll-Plugin-to-Load-Asciicast-Locally</id><content type="html" xml:base="https://www.binwang.me/2023-09-24-Jekyll-Plugin-to-Load-Asciicast-Locally.html"><![CDATA[<p><a href="https://asciinema.org/">Asciinema</a> is a wonderful tool to record Linux terminal. It saves the records as a text format called Asciicast. However, it has a strong integration with its website. Especially if you want to embed the recordings into the web page use some simple JS code like this:</p>
-
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://asciinema.org/a/14.js"</span> <span class="na">id=</span><span class="s">"asciicast-14"</span> <span class="na">async</span><span class="nt">&gt;&lt;/script&gt;</span>
-</code></pre></div></div>
-
-<p>You need to share the recordings to Asciinema’s website and need to link an account with the recordings, otherwise they will be deleted after 7 days, which I just found out yesterday. I don’t want my blog to rely on some third party website for core content, so I need a way to load the recordings from my website itself.</p>
-
-<p>Lucky, the <a href="https://github.com/asciinema/asciinema-player">Asciinema Javascript player</a> is open source and support to load recordings from a url out of box. First you need to import the CSS:</p>
-
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">type=</span><span class="s">"text/css"</span> <span class="na">href=</span><span class="s">"/asciinema-player.css"</span> <span class="nt">/&gt;</span>
-</code></pre></div></div>
-
-<p>This is no big deal since this can be put in Jekyll’s template. Then you need some JS code like this:</p>
-
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"demo"</span><span class="nt">&gt;&lt;/div&gt;</span>
- ...
-<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/asciinema-player.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
-<span class="nt">&lt;script&gt;</span>
-  <span class="nx">AsciinemaPlayer</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="dl">'</span><span class="s1">/demo.cast</span><span class="dl">'</span><span class="p">,</span> <span class="nb">document</span><span class="p">.</span><span class="nf">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">demo</span><span class="dl">'</span><span class="p">));</span>
-<span class="nt">&lt;/script&gt;</span>
-</code></pre></div></div>
-
-<p>It’s a little bit too much for embedding a terminal recording in a blog. However, with the powerful Jekyll plugin system, We can write a plugin to make it simpler so that we can just use a tag to include it:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-{% asciicast &lt;id&gt; %}
-
-</code></pre></div></div>
-
-<p>Here is the implementation, it’s also in <a href="https://github.com/wb14123/blog/blob/master/jekyll/_plugins/Asciicast.rb">my blog’s Github repo</a>:</p>
-
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">Jekyll</span>
-  <span class="k">class</span> <span class="nc">RenderAsciicastTag</span> <span class="o">&lt;</span> <span class="no">Liquid</span><span class="o">::</span><span class="no">Tag</span>
-
-    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">tag_name</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">tokens</span><span class="p">)</span>
-      <span class="k">super</span>
-      <span class="vi">@text</span> <span class="o">=</span> <span class="n">text</span><span class="p">.</span><span class="nf">strip</span>
-    <span class="k">end</span>
-
-    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
-      <span class="s2">"&lt;div id=</span><span class="se">\"</span><span class="s2">cast-</span><span class="si">#{</span><span class="vi">@text</span><span class="si">}</span><span class="se">\"</span><span class="s2">&gt;&lt;/div&gt;"</span> <span class="p">\</span>
-      <span class="s1">'&lt;script src="/static/js/asciinema-player.min.js"&gt;&lt;/script&gt;'</span> <span class="p">\</span>
-      <span class="s2">"&lt;script&gt;AsciinemaPlayer.create('/static/asciicasts/</span><span class="si">#{</span><span class="vi">@text</span><span class="si">}</span><span class="s2">.cast', document.getElementById('cast-</span><span class="si">#{</span><span class="vi">@text</span><span class="si">}</span><span class="s2">'), {rows: 10, autoPlay: true});&lt;/script&gt;"</span>
-    <span class="k">end</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-
-<span class="no">Liquid</span><span class="o">::</span><span class="no">Template</span><span class="p">.</span><span class="nf">register_tag</span><span class="p">(</span><span class="s1">'asciicast'</span><span class="p">,</span> <span class="no">Jekyll</span><span class="o">::</span><span class="no">RenderAsciicastTag</span><span class="p">)</span>
-</code></pre></div></div>
-
-<p>It will find the recordings under <code class="language-plaintext highlighter-rouge">/static/asciicasts/{id}.cast</code> and load from there.</p>
-
-<p>Put this file under <code class="language-plaintext highlighter-rouge">_plugins</code> and happy hacking!</p>]]></content><author><name></name></author><category term="Jekyll" /><category term="Blog" /><category term="command line" /><category term="Asciicast" /><summary type="html"><![CDATA[Asciinema is a wonderful tool to record Linux terminal. It saves the records as a text format called Asciicast. However, it has a strong integration with its website. Especially if you want to embed the recordings into the web page use some simple JS code like this:]]></summary></entry></feed>
+</ul>]]></content><author><name></name></author><category term="Java" /><category term="JVM" /><category term="Memory Leak" /><category term="Scala" /><category term="JProfiler" /><category term="Profiling" /><summary type="html"><![CDATA[Background of Memory Leakings]]></summary></entry></feed>

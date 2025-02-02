@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> Deploy Matrix for Users in China |  Bin Wang - My Personal Blog</title>
+    <title> Replace A Dead Node in My High Available Cluster |  Bin Wang - My Personal Blog</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
     <link rel="stylesheet" href="/static/css/asciinema-player.css" type="text/css" />
 
@@ -396,7 +396,7 @@
     <div class="index-entry index-post">
       
         
-        <div class="index-selected">Deploy Matrix for Users in China <span class="publish-year">(2020)</span></div>
+        <a href="/2020-09-08-Build-An-Instant-Messaging-System-without-Censorship-Deployment-Options.html">Deploy Matrix for Users in China <span class="publish-year">(2020)</span></a>
         
       
 
@@ -768,7 +768,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Available Cluster <span class="publish-year">(2025)</span></a>
+        <div class="index-selected">Replace A Dead Node in My High Available Cluster <span class="publish-year">(2025)</span></div>
         
       
 
@@ -3949,192 +3949,59 @@
 
     <section id="page_content">
         <div id="content_table">
-  <h3>Table of Contents</h3><ol class="toc"><li><a href="#1-deploy-a-single-im-server-outside-china">1. Deploy A Single IM Server Outside China</a></li><li><a href="#2-deploy-a-server-in-china-with-license">2. Deploy A Server in China with License</a></li><li><a href="#3-deploy-a-server-in-china-without-dns-resolving">3. Deploy A Server in China without DNS Resolving</a></li><li><a href="#4-deploy-another-server-in-china-with-personal-internet">4. Deploy Another Server in China with Personal Internet</a></li><li><a href="#conclusion">Conclusion</a></li></ol>
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#what-has-lost">What Has Lost?</a></li><li><a href="#why-not-recover-from-backup">Why Not Recover From Backup?</a></li><li><a href="#how-to-recover">How to Recover?</a></li></ol>
 </div>
 
 <div id="article_content" class="">
 <article id="post">
   <header>
-    <h1>Deploy Matrix for Users in China</h1>
+    <h1>Replace A Dead Node in My High Available Cluster</h1>
     
-      <p class="description">Posted on 08 Sep 2020, tagged <code>technology</code><code>Matrix</code><code>instant messaging</code></p>
+      <p class="description">Posted on 01 Feb 2025, tagged <code>Kubernetes</code><code>infrastructure</code><code>high availability</code></p>
     
   </header>
 
-  <p><em>This article belongs of a series of articles that talk about how to build an instant messaging system without censorship:</em></p>
+  <p>In my previous blogs <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">[1]</a><a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">[2]</a>, I’ve introduced my high available cluster setup. It works really well: when 1 of the 3 nodes is down, the service either continue to be online, or can be recovered rather quickly (in the case I set service replica to 1 to not wasting the resource). However, in the beginning of this year, one node is down not because of regular updates or temporary shutdown for maintenance, but because its system disk is dead. While it’s annoying to replace the disk and bring it back, it’s actually a good opportunity to verify a dead node can be replaced in my setup. So I will note the steps down in this article. This will be a short one but it shows how easy it is.</p>
 
-<ol>
-  <li><em><a href="/2020-08-23-Build-An-Instant_Messaging-System-without-Censorship-Choose-the-right-technology.html">Matrix: A Self Hosted Instant Messaging Solution with End to End Encryption</a></em></li>
-  <li><em><a href="/2020-08-29-Build-An-Instant_Messaging-System-without-Censorship-Choose-An-Overview-of-Chinese-Internet-Censorship-Strategy.html">Overview of China’s Internet censorship strategy</a></em></li>
-  <li><em><a href="/2020-09-08-Build-An-Instant-Messaging-System-without-Censorship-Deployment-Options.html">Deploy Matrix for Users in China</a></em></li>
-</ol>
+<h2 id="what-has-lost">What Has Lost?</h2>
 
-<p>In the previous articles, we chose Matrix as our IM service solution. We also discussed how the Internet is censored in China. In this article, we will discuss multiple ways to deploy Matrix service. The goals are providing the best user experience while avoiding the censorship. Specifically, we want to meet these requirements:</p>
+<p>The dead disk is the system disk. It has the OS, but also has the data for CockroachDB and ElasticSearch. However, since the data for CockroachDB and ElasticSearch is replicated across the cluster, it can be recovered from other machines.</p>
 
-<ol>
-  <li>Avoid the government censorship.</li>
-  <li>Make the latency between users and server as low as possible.</li>
-  <li>Make it easy for end users to setup.</li>
-</ol>
+<p>The machine also has a separate disk for CephFS but that disk is not lost. The data in CephFS is also replicated so should be able to recover from other machines as well even if it’s dead. But it may need additional setup, like changing the disk uuid in Rook’s Kubernetes manifests.</p>
 
-<p>We will explore the deployment options. And compare them at the end.</p>
+<h2 id="why-not-recover-from-backup">Why Not Recover From Backup?</h2>
 
-<h2 id="1-deploy-a-single-im-server-outside-china">1. Deploy A Single IM Server Outside China</h2>
+<p>First of all, I don’t backup that often because I don’t feel the need considering the data is replicated. Another reason is, I setup this machine based on the usage of <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">offsite online backup</a>. Then I repurposed it to use in this HA cluster. I want to change the secure boot setup because the threat model is different so it doesn’t need such complex boot setup, which is not supported very well by mainstream Linux without TPM 2.0.</p>
 
-<p>The easiest solution would be deploying a single Matrix server. There are a lot of requirements to deploy a server in China, so it would be better to deploy a server outside China:</p>
+<p>Since the data can all be recovered from other machines automatically, it would be easier to just install a fresh OS and some basic infrastructure so that all the service deployments and data can be auto recovered. This also simulates a dead node situation, so that I have more confidence for recovering from such failures in the future.</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   Users in China
-           ^
-           |
-           V
-        Server
-           ^
-           |
-           V
- Users outside China
+<h2 id="how-to-recover">How to Recover?</h2>
+
+<p>Okay, here we are for the actual recovery steps. It’s very simple:</p>
+
+<p>First, install the OS. Configure basic things like network IP address, ssh, etc. Install things like <code class="language-plaintext highlighter-rouge">prometheus-node-exporter</code> if you are using it on other machines.</p>
+
+<p>Next step is to let the node to join our Kubernetes cluster. Before that, we can remove the old dead node in the Kubernetes cluster by using the command <code class="language-plaintext highlighter-rouge">kubectl delete node ...</code>.</p>
+
+<p>Then install k3s: Copy the config file under <code class="language-plaintext highlighter-rouge">/etc/rancher/k3s/config.yaml</code> from another machine and adjust the node IP and network interface config. Make sure the config has something like <code class="language-plaintext highlighter-rouge">server: https://...:6443</code> so it will join the existing cluster instead of creating a new cluster. Check the k3s versions on other machines by using <code class="language-plaintext highlighter-rouge">kubectl get nodes -o wide</code>. Then install it with <code class="language-plaintext highlighter-rouge">curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v1.31.1+k3s1 sh -</code> assuming <code class="language-plaintext highlighter-rouge">v1.31.1+k3s1</code> is the version.</p>
+
+<p>After k3s is installed, the k3s service should be enabled by default and the node should join our cluster automatically. If the hostname and IP address are the same as the dead machine, the Kubernetes cluster should automatically reschedule the services on to this machine. If there are some failed containers, check the log to see if it’s because the local directory for the storage is missing. In my case, I need to create the local directory for CockroachDB and ElasticSearch, and set the owner to 1000 for ElasticSearch.</p>
+
+<p>At last, we need to make sure CephFS is working. Make sure <code class="language-plaintext highlighter-rouge">ceph</code> and <code class="language-plaintext highlighter-rouge">rbd</code> can be loaded with <code class="language-plaintext highlighter-rouge">modprobe</code>. If so, add them to <code class="language-plaintext highlighter-rouge">/etc/modules-load.d</code> to load on boot:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat /etc/modules-load.d/ceph.conf
+ceph
+cat /etc/modules-load.d/rbd.conf
+rbd
 </code></pre></div></div>
-
-<p>But as we discussed in the previous article, the latency for users in China will be high. Sometimes, GFW may completely block the server so that the users cannot connect at all.</p>
-
-<p>Matrix is a distributed protocol, so we can deploy multiple servers to give the best experience for all users. From here, we will explore the options with multiple servers: a server outside China and at least one server in China.</p>
-
-<h2 id="2-deploy-a-server-in-china-with-license">2. Deploy A Server in China with License</h2>
-
-<p>The most regular way to deploy a service in China is to get all the required licenses. Then the users in China can connect to this server:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   Users in China
-           ^
-           |
-           V
-   Server in China  &lt;----- Public DNS Record
-           ^
-           |
-           V
- Server outside China
-           ^
-           |
-           V
- Users outside China
-
-</code></pre></div></div>
-
-<p>The shortcomings are also obvious:</p>
-
-<ol>
-  <li>It needs some work to get a license. Especially it would be hard for an individual to get a license for IM service. It’s possible to hide the business purpose while applying, but there are risks.</li>
-  <li>Once the service is on government’s record, government can track it and require information from the server. Even the messages are end to end encrypted, some information on the server can still be sensitive.</li>
-</ol>
-
-<h2 id="3-deploy-a-server-in-china-without-dns-resolving">3. Deploy A Server in China without DNS Resolving</h2>
-
-<p>The main reason we need a license to deploy a server in China is because the IDC and cloud providers may block the server if a domain without license is resolving to it. So one way to avoid the blocking is, don’t bind a domain name to the server. But we cannot use IP address directly either: we need HTTPS to encrypt the traffic. And the communications between servers also depends on domain names.</p>
-
-<p>So we need to find a way to resolve domain name without public DNS server. Though it’s hard, it’s not impossible. For example, you can change the DNS record on the computer by modifying the hosts file. Or you can create a DNS server on the home router. For the mobile phones, it’s much harder. But I believe there are apps can do that.</p>
-
-<p>So this solution is don’t register the domain name in public DNS servers. Instead, add the records on end user devices:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   Users in China
-   (Add DNS record)
-           ^
-           |
-           V
-   Server in China
-           ^
-           |
-           V
- Server outside China
-   (Add DNS record)
-           ^
-           |
-           V
- Users outside China
-
-</code></pre></div></div>
-
-<h2 id="4-deploy-another-server-in-china-with-personal-internet">4. Deploy Another Server in China with Personal Internet</h2>
-
-<p>As we mentioned in the last article, while cloud providers and IDC block servers, ISP doesn’t block high number ports. So if we can deploy another server at home and point the domain name to this server, the end user doesn’t need to setup custom DNS records. We will still keep the other server in cloud/IDC for the stable connection between servers.</p>
-
-<p>For the two servers in China, only one of them needs to host the IM service. The other one can just be a proxy.</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        Users in China
-              ^
-              |
-              V
-      Proxy server in China    &lt;----- Public DNS Record
-        (Home Internet)
-              ^
-              |
-              V
-      IM Server in China
-         (Cloud/IDC)
-              ^
-              |
-              V
-     Server outside China
-(Add DNS record that resolves domain
-  name to server on Cloud/IDC)
-              ^
-              |
-              V
-    Users outside China
-
-</code></pre></div></div>
-
-<p>There are also disadvantages for this solution: other than we need another server, the home Internet may not be able to provide the best speed for users in China.</p>
-
-<h2 id="conclusion">Conclusion</h2>
-
-<p>In the table below, we can compare them by the censorship circumvention, service speed and end user setup easiness:</p>
-
-<table>
-  <thead>
-    <tr>
-      <th style="text-align: left">Deployment Option</th>
-      <th style="text-align: left">Censorship Circumvention</th>
-      <th style="text-align: left">Service Speed</th>
-      <th style="text-align: left">End User Setup Easiness</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: left">1</td>
-      <td style="text-align: left">3 stars</td>
-      <td style="text-align: left">1 star</td>
-      <td style="text-align: left">3 stars</td>
-    </tr>
-    <tr>
-      <td style="text-align: left">2</td>
-      <td style="text-align: left">1 star</td>
-      <td style="text-align: left">3 stars</td>
-      <td style="text-align: left">3 stars</td>
-    </tr>
-    <tr>
-      <td style="text-align: left">3</td>
-      <td style="text-align: left">2 stars</td>
-      <td style="text-align: left">3 stars</td>
-      <td style="text-align: left">1 star</td>
-    </tr>
-    <tr>
-      <td style="text-align: left">4</td>
-      <td style="text-align: left">2 stars</td>
-      <td style="text-align: left">2 stars</td>
-      <td style="text-align: left">3 stars</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>I believe the world will be a better place if everyone can communicate with each other freely. But it’s never easy. Even though we can deploy the services and make it accessible from China, the most popular Matrix client Element (Riot) is banned in China. There is a long way to go. I hope I can help even a little bit by sharing some technical information here.</p>
 
 </article>
 
 <footer id="post_footer">
   <table><tr>
     
-      <td id="prev"><a href="/2020-08-29-Build-An-Instant_Messaging-System-without-Censorship-Choose-An-Overview-of-Chinese-Internet-Censorship-Strategy.html">Prev: An Overview of China's Internet Censorship Strategy</a></td>
+      <td id="prev"><a href="/2025-01-13-A-2-Year-Reflection.html">Prev: A 2-Year Reflection for 2023 and 2024</a></td>
     
-    
-      <td id="next"><a href="/2020-09-16-Aurora-Database.html" id="next">Next: Aurora Database</a></td>
     
   </tr></table>
 </footer>
