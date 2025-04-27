@@ -1,4 +1,320 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2025-03-03T01:50:13-05:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Travel Back To China: 2025 Edition</title><link href="https://www.binwang.me/2025-02-28-Travel-Back-To-China-2025.html" rel="alternate" type="text/html" title="Travel Back To China: 2025 Edition" /><published>2025-02-28T00:00:00-05:00</published><updated>2025-02-28T00:00:00-05:00</updated><id>https://www.binwang.me/Travel-Back-To-China-2025</id><content type="html" xml:base="https://www.binwang.me/2025-02-28-Travel-Back-To-China-2025.html"><![CDATA[<p>As I mentioned in the <a href="/2025-01-13-A-2-Year-Reflection.html">last year-end retrospective blog</a>, I traveled back to China again this year (to be more accurate, at the end of 2024). I migrated to Canada just before the Covid, which is why I only started to go back since <a href="/2024-03-19-Travel-Back-to-China.html">last year</a> after the Covid measurements were all lifted. I think it’s worth a blog post every time I go back there since China, as a country I spent most of my life, not only made what I am today, but also still has so many connections with me. Most of my friends and extended family members are still there. I also find going back every year instead of living there all the time makes me a better observer. I can notice the changes easier since I’m comparing the things from year to year instead of from day to day. I can notice the things that may already get used to for the people living there all the time. I also have more motivation to observe since the short time of visiting is so valuable to me. So here it is, the 2025 edition of travelling back to China.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2025-04-27T06:56:19-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Use OpenAPI Instead of MCP for LLM Tools</title><link href="https://www.binwang.me/2025-04-27-Use-OpenAPI-Instead-of-MCP-for-LLM-Tools.html" rel="alternate" type="text/html" title="Use OpenAPI Instead of MCP for LLM Tools" /><published>2025-04-27T00:00:00-04:00</published><updated>2025-04-27T00:00:00-04:00</updated><id>https://www.binwang.me/Use-OpenAPI-Instead-of-MCP-for-LLM-Tools</id><content type="html" xml:base="https://www.binwang.me/2025-04-27-Use-OpenAPI-Instead-of-MCP-for-LLM-Tools.html"><![CDATA[<p><a href="https://modelcontextprotocol.io/introduction">Module Context Protocol (MCP)</a> is adopted by more and more people as a way to integrate tools to LLMs easily. However, I find it unintuitive and unnecessarily complex. So in this article, I’ll explore how to use existing API servers as tools of LLMs instead of writing the functions in a completely new protocol. This can potentially become a simpler standard that only needs implementation an additional authentication flow (if authentication is needed).</p>
+
+<p>The final result is in the repo <a href="https://github.com/wb14123/ai-tool-proto-experiment">ai-tool-proto-experiment</a>. It’s a single file Scala script with less than 300 lines of code.
+It doesn’t use any LLM SDK, just simple HTTP calls to the LLM providers. It doesn’t use any advance API either. Only chat completion API with structured output is needed.</p>
+
+<h2 id="goals-and-non-goals">Goals and Non-Goals</h2>
+
+<p>Tool server is only part of MCP. It has more like prompts and resources. Personally I don’t see much benefit to include so many use cases in a single protocol.</p>
+
+<p>For example, prompts are just a server API that you can get all the pre-defined prompts. That’s very easy to implement with any protocol and there is really no need to combine it with the LLM tool protocol.</p>
+
+<p>So in this article, we will only explore how to integrate other services as tools of LLM, without caring about the other parts of MCP like prompts and resources.</p>
+
+<p>There are also some other things that MCP doesn’t resolve, like security. <a href="https://elenacross7.medium.com/%EF%B8%8F-the-s-in-mcp-stands-for-security-91407b33ed6b">This post</a> summarized lots of security problems in MCP, and I don’t think there is an easy way around that even if we use existing protocols like OpenAPI. So the goal in this experiment is only use trusted OpenAPI servers, without worrying about attacks like tool shadowing. With that said, authentication is still necessary to the OpenAPI server, which is a protect of the server instead of the client. MCP only added authentication into the spec recently. As you can see later, the authentication workflow I tried here is much more simpler and generic.</p>
+
+<p>At last, use as little LLM API as possible is also a goal, so that it’s easier to port the implementation to other LLM providers.</p>
+
+<h2 id="the-implementation">The Implementation</h2>
+
+<p>Using something like OpenAPI is not a new idea. I’ve seen multiple people mentioned it on places like HackerNews. And during my implementation, I also found <a href="https://github.com/open-webui/open-webui">Open WebUI</a>, a tool I self hosted and used daily also added support to use OpenAPI servers as tools. Nevertheless, I still try to experiment my own implementation because I want to keep it as simple as possible, and also learn more details about the capability of such approach.</p>
+
+<p>In the experiment, I tried both a simple <a href="https://github.com/open-webui/openapi-servers/tree/main/servers/weather">open source weather OpenAPI server</a>, and my own project <a href="https://www.rssbrain.com/">RSS Brain</a>. I’ll try to explain how it is implemented and talk about an experiment result at the end.</p>
+
+<h2 id="define-the-tool-calling-structure">Define the Tool Calling Structure</h2>
+
+<p>Lots of LLM providers support tool calling APIs. We will avoid to use those APIs just to keep things simpler and make it more general available for other LLMs, including the self hosted ones. So instead, we define our own JSON schema that we want the LLM to follow and feed it as part of the system prompt, also use structured output API to enforce the LLM response follow the JSON schema. I said in the beginning that I want to use as little feature as possible, but I think structured output is an important enough feature I need to use in addition to the basic chat completion. Fortunately lots of other LLMs including the local ones like Ollama also support this feature.</p>
+
+<p>Here are the response structure we want, in the format of Scala class definition:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="k">class</span> <span class="nc">ToolParam</span><span class="o">(</span>
+    <span class="n">httpRequestEndpoint</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span>
+    <span class="n">httpRequestPath</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span>
+    <span class="n">httpRequestHeaders</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">Map</span><span class="o">[</span><span class="kt">String</span>, <span class="kt">String</span><span class="o">]],</span>
+    <span class="n">httpRequestMethod</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span>
+    <span class="nc">HttpPostBody</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">String</span><span class="o">],</span>
+<span class="o">)</span>
+
+<span class="k">case</span> <span class="k">class</span> <span class="nc">ChatResponse</span><span class="o">(</span>
+    <span class="n">callTool</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">ToolParam</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span><span class="o">,</span>
+    <span class="n">toUser</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span><span class="o">,</span>
+<span class="o">)</span>
+</code></pre></div></div>
+
+<p>The LLM should either response to the user directly using <code class="language-plaintext highlighter-rouge">toUser</code> field, or ask the agent to call a HTTP API with <code class="language-plaintext highlighter-rouge">callTool</code> field. You can see the <code class="language-plaintext highlighter-rouge">ToolParam</code> definition is pretty generic: it can basically do any HTTP call.</p>
+
+<p>For OpenAI, the structured output API only accept a subset of JSON schema definition. So instead of converting the structure to a JSON schema with a single line of Scala code, I need to manually write the OpenAI compatible one.</p>
+
+<p>I also find OpenAI models, gpt-4o-last at least, often failed to generate response that meet the structure requirement even structured output is enabled. You still need to include the JSON schema into the system prompt to get the best chance.</p>
+
+<p>Overall, here is the system prompt to let the system use the tools:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">systemPrompt</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="k">val</span> <span class="nv">timeStr</span> <span class="k">=</span> <span class="nv">ZonedDateTime</span><span class="o">.</span><span class="py">now</span><span class="o">().</span><span class="py">format</span><span class="o">(</span><span class="nv">DateTimeFormatter</span><span class="o">.</span><span class="py">ISO_ZONED_DATE_TIME</span><span class="o">)</span>
+  <span class="n">s</span><span class="s">"""You are a helpful assistant.
+     |
+     |The current time is $timeStr.
+     |
+     |You have many tools to use by sending a http request to some API servers. Your response must be Json that
+     |follows the Json schema definition:
+     |
+     |$chatResponseSchemaStr
+     |
+     |Either request a call to one of the APIs with `callTool` field, or
+     |response to user directly with `toUser` field if there is no need to request to any tool or you need more
+     |information from the user.
+     |
+     |Each tool has an optional authUrl that you can ask the user to open in the browser. If you get authentication
+     | related errors when calling a tool, ask the user to open the authUrl in browser and copy the instruction back,
+     | then use the instruction to try authentication again.
+     |
+     |Important:
+     |
+     |* Response only the JSON body. Never quote the response in something like json```...```.
+     |* Never response to user directly without using the `toUser` field with a Json response.
+     |* Only one of `callTool` and `toUser` field should be filled.
+     |* Always include the `http` or `https` part for the `httpRequestEndpoint` field.
+     |
+     |"""</span><span class="o">.</span><span class="py">stripMargin</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>You can see there are some extra points at the end, which are the cases I find the model hiccups very often.</p>
+
+<h2 id="feed-the-tool-information-into-llm">Feed the Tool Information Into LLM</h2>
+
+<p>Since OpenAPI can generate a structured document for the API server, either in JSON or YAML, we can feed the document directly into the LLM. In addition to the doc endpoint, we also need to provide the endpoint of the API servers, also an optional <code class="language-plaintext highlighter-rouge">authUrl</code> we will talk about later. Here is the definition of the tool in Scala classes, with the prompts:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="k">class</span> <span class="nc">ToolDef</span><span class="o">(</span>
+    <span class="n">httpEndpoint</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span>
+    <span class="n">openAPIPath</span><span class="k">:</span> <span class="kt">String</span><span class="o">,</span>
+    <span class="n">authUrl</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="nc">None</span><span class="o">,</span>
+<span class="o">)</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="nf">prompt</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="k">val</span> <span class="nv">authUrlPrompt</span> <span class="k">=</span> <span class="nv">authUrl</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="n">url</span> <span class="k">=&gt;</span> <span class="n">s</span><span class="s">"Tool login URL: $url\n"</span><span class="o">).</span><span class="py">getOrElse</span><span class="o">(</span><span class="s">""</span><span class="o">)</span>
+    <span class="n">s</span><span class="s">"""----
+       |Tool server endpoint: $httpEndpoint
+       |
+       |$authUrlPrompt
+       |Tool's OpenAPI definition:
+       |$openAPIDef
+       |
+       |----
+       |
+       |"""</span><span class="o">.</span><span class="py">stripMargin</span>
+  <span class="o">}</span>
+
+  <span class="k">private</span> <span class="k">def</span> <span class="nf">openAPIDef</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="nv">requests</span><span class="o">.</span><span class="py">get</span><span class="o">(</span><span class="n">httpEndpoint</span> <span class="o">+</span> <span class="n">openAPIPath</span><span class="o">).</span><span class="py">text</span><span class="o">()</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>After system prompt, the tools prompt is sent as the first chat message to the LLM with a role of <code class="language-plaintext highlighter-rouge">developer</code>. I find it works better than put it into the system prompt, maybe because of the tool definition sometimes can be too long:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">tools</span> <span class="k">=</span> <span class="nc">Seq</span><span class="o">(</span>
+  <span class="nc">ToolDef</span><span class="o">(</span><span class="n">httpEndpoint</span> <span class="k">=</span> <span class="s">"https://grpc-gateway.rssbrain.com"</span><span class="o">,</span> <span class="n">openAPIPath</span> <span class="k">=</span> <span class="s">"/swagger.json"</span><span class="o">,</span>
+    <span class="n">authUrl</span> <span class="k">=</span> <span class="nc">Some</span><span class="o">(</span><span class="s">"http://app.rssbrain.com/login?redirect_url=/llm_auth"</span><span class="o">)),</span>
+<span class="o">)</span>
+<span class="k">val</span> <span class="nv">toolsPrompt</span> <span class="k">=</span> <span class="nv">tools</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="nv">_</span><span class="o">.</span><span class="py">prompt</span><span class="o">).</span><span class="py">mkString</span><span class="o">(</span><span class="s">"\n"</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="nv">req</span> <span class="k">=</span> <span class="nc">ChatRequest</span><span class="o">(</span>
+  <span class="n">messages</span> <span class="k">=</span> <span class="nc">Seq</span><span class="o">(</span>
+    <span class="nc">ChatMessage</span><span class="o">(</span><span class="n">role</span> <span class="k">=</span> <span class="s">"system"</span><span class="o">,</span> <span class="n">content</span> <span class="k">=</span> <span class="n">systemPrompt</span><span class="o">),</span>
+    <span class="nc">ChatMessage</span><span class="o">(</span><span class="n">role</span> <span class="k">=</span> <span class="s">"developer"</span><span class="o">,</span> <span class="n">content</span> <span class="k">=</span>
+      <span class="n">s</span><span class="s">"""
+        |
+        |Here are the OpenAPI definition of the tools:
+        |
+        |$toolsPrompt
+        |
+        |"""</span><span class="o">.</span><span class="py">stripMargin</span><span class="o">),</span>
+  <span class="o">),</span>
+<span class="o">)</span>
+<span class="nf">loop</span><span class="o">(</span><span class="n">req</span><span class="o">,</span> <span class="nc">None</span><span class="o">,</span> <span class="n">waitForUser</span> <span class="k">=</span> <span class="kc">true</span><span class="o">)</span>
+</code></pre></div></div>
+
+<h2 id="authentication">Authentication</h2>
+
+<p>As you can see from the system prompt above:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Each tool has an optional authUrl that you can ask the user to open in the browser. If you get authentication
+related errors when calling a tool, ask the user to open the authUrl in browser and copy the instruction back,
+then use the instruction to try authentication again.
+</code></pre></div></div>
+
+<p>We actually take advantage of the flexible of LLMs for our authentication flow: we define a <code class="language-plaintext highlighter-rouge">authUrl</code> for a tool server, which user can open in the browser. The URL will do necessary authentication flow, then return a nature language description about credentials and how to use it to do authentications with the APIs.</p>
+
+<p>Ideally, the nature language instruction should be passed to the client in a secure way, for example, through callback to a local URL that the client serves. But for the simplicity of the experiment, I just ask the user the copy the instruction back to the conversation.</p>
+
+<p>So here is what it looks like in the example below:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>User input: Get all my RSS folders
+Calling tool https://grpc-gateway.rssbrain.com//rss.FolderAPI/GetMyFolders ...
+</code></pre></div></div>
+
+<p>The user asks for the RSS folders, so LLM response with a <code class="language-plaintext highlighter-rouge">callTool</code> action. When trying to call the http API, it returns an error about authentication. We feed the result back to the LLM, then it responses to the user:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Assistant: It seems like your request for fetching RSS folders requires authentication. Please log in to your RSS Brain account and provide the token to proceed. You can open [this login page](http://app.rssbrain.com/login?redirect_url=/llm_auth) to login and obtain the necessary token.
+</code></pre></div></div>
+
+<p>You can see the LLM is asking the user to open a URL in the browser. When user open this URL in the browser, the service will prompt the user to login and redirect the user to a page with nature language instruction for LLM. The user copy the instruction back to the chat:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>User input: Use `token` param in the APIs to do authentication. Your current token is `XXXXX`.
+</code></pre></div></div>
+
+<p>After added the user input to the LLM, LLM now knows how to fill in <code class="language-plaintext highlighter-rouge">callToo</code> params with necessary authentication info and the call finally succeed:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Calling tool https://grpc-gateway.rssbrain.com//rss.FolderAPI/GetMyFolders ...
+Assistant: Here are your RSS folders:
+...
+</code></pre></div></div>
+
+<p>The authentication flow makes it very flexible: the tool server can basically implement any kinds of authentication method as long as it provides a URL that contains the authentication instruction along credentials. You can even create a third party auth server if the original OpenAPI server doesn’t provide this auth workflow, so that you can integrate any OpenAPI service with authentication.</p>
+
+<h2 id="results">Results</h2>
+
+<p>Okay, everything is ready now. Let’s try to use it. Follow the <a href="https://github.com/wb14123/ai-tool-proto-experiment">readme</a> to install the dependencies and run the script.</p>
+
+<p>Here is a real world example of using RSS Brain as one of the tool server:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-&gt; ./ai-tool.sc
+Compiling /home/wangbin/hobbi_source/ai-tool-proto-experiment/ai-tool.sc
+User input: Hi
+Assistant: Hello! How can I assist you today?
+User input: Get all my RSS folders
+Calling tool https://grpc-gateway.rssbrain.com//rss.FolderAPI/GetMyFolders ...
+Assistant: It seems like your request for fetching RSS folders requires authentication. Please log in to your RSS Brain account and provide the token to proceed. You can open [this login page](http://app.rssbrain.com/login?redirect_url=/llm_auth) to login and obtain the necessary token.
+User input: Use `token` param in the APIs to do authentication. Your current token is `XXXXX`.
+Calling tool https://grpc-gateway.rssbrain.com//rss.FolderAPI/GetMyFolders ...
+Assistant: Here are your RSS folders:
+
+1. **Default Folder:**
+   - Name: Default
+   - Description: user default folder
+   - Layout: LIST
+   - Order: TIME
+
+2. **news-local:**
+   - Description: N/A
+   - Layout: LIST
+   - Order: TIME
+
+3. **local-forum:**
+   - Description: N/A
+   - Layout: LIST
+   - Order: SCORE
+
+4. **news-cn:**
+   - Description: N/A
+   - Layout: LIST
+   - Order: TIME
+
+5. **cn-podcast:**
+   - Description: N/A
+   - Layout: LIST
+   - Order: TIME
+
+6. **cn-media:**
+   - Description: N/A
+   - Layout: GRID
+   - Order: TIME
+
+7. **news:**
+   - Description: News around world
+   - Layout: LIST
+   - Order: TIME
+
+8. **news-Ukraine:**
+   - Description: N/A
+   - Search Term: "Ukraine" AND "Russia"
+   - Layout: LIST
+   - Order: TIME
+
+9. **blogs:**
+   - Description: N/A
+   - Layout: LIST
+   - Order: TIME
+
+10. **tech-blogs:**
+    - Description: N/A
+    - Layout: LIST
+    - Order: TIME
+
+11. **tech-news:**
+    - Description: N/A
+    - Layout: LIST
+    - Order: TIME
+
+... (and more)
+
+For a complete list or details about any specific folder, please let me know!
+User input: What happened today based on articles in local-news?    
+Calling tool https://grpc-gateway.rssbrain.com//rss.ArticleAPI/GetArticlesByFolderWithUserMarking ...
+Assistant: Here are some notable articles from today based on the 'local-news' folder:
+
+1. **A short history of airport gold heists (because Toronto's isn't the first)**
+   - **Source:** Canada - CBC News
+   - **Description:** Reflection on Toronto's Pearson International Airport's gold heist and similar historical events.
+   - [Read more](https://www.cbc.ca/news/world/airport-gold-heists-history-1.6817567)
+
+2. **Family of Nunavut woman says she was used to get Ontario twins Inuit status**
+   - **Source:** Canada - CBC News
+   - **Description:** A story about a family's reaction after a woman is allegedly used in a fraud to gain Inuit status for twins.
+   - [Read more](https://www.cbc.ca/news/canada/north/ontaro-twins-inuit-status-claims-1.6814782)
+
+3. **CBC partners with Markham Library to offer youth Radio Camp**
+   - **Source:** Toronto - CBC News
+   - **Description:** A creative initiative by CBC for youth in Markham, involving sound exploration and radio production.
+   - [Read more](https://www.cbc.ca/news/canada/toronto/community/cbc-partners-with-markham-library-to-offer-youth-radio-camp-1.6806360)
+
+4. **Federal government says it will restore funding to Hockey Canada — with conditions**
+   - **Source:** Canada - CBC News
+   - **Description:** Funding for Hockey Canada is restored with stipulations after controversy over handling of claims.
+   - [Read more](https://www.cbc.ca/news/politics/hockey-canada-federal-government-funding-restored-1.6812492)
+
+5. **Man dies after being hit by tow truck in York Region industrial accident, police say**
+   - **Source:** Toronto - CBC News
+   - **Description:** Tragic incident of a man being fatally struck by a tow truck, with ongoing investigation.
+   - [Read more](https://www.cbc.ca/news/canada/toronto/industrial-accident-york-region-tow-truck-death-1.6780204)
+
+For more details, you can click on the links provided with each summary.
+User input: Summarize the first article
+Assistant: The first article is titled **"A short history of airport gold heists (because Toronto's isn't the first)"** from "Canada - CBC News". It discusses a recent heist that took place
+ at Toronto's Pearson International Airport, where $20 million worth of gold and other valuables were stolen. This event is compared to similar high-profile historical heists at airports, highlighting
+ recurring vulnerabilities in airport security regarding valuable shipments. The article provides context and details on how such heists have occurred before in different parts of the world.
+
+</code></pre></div></div>
+
+<p>Since it’s pretty expensive when including the OpenAPI doc, I didn’t try it much. But there are a few things learnt:</p>
+
+<ul>
+  <li>Good document is really important. LLM doesn’t include some parameters if you don’t clarify on why it’s needed. I think it’s actually a good thing, since good document is not only for machines, but also for other people.</li>
+  <li>Structure output is not always forced. The json schema also needs to be in the system prompt to make it more reliable.</li>
+  <li>APIs need to be designed around the potential use cases. For example, the get articles from a feed API doesn’t have a time range since the UI of RSS Brain is infinite scroll. So it’s hard for LLM to get the articles in a specific time range, for example, last day.</li>
+</ul>
+
+<p>But overall, I think it’s safe to say with the additional authentication flow that can be added by third party, it’s easy to integrate any OpenAPI server as a tool to LLM agent without needing any new protocol.</p>
+
+<h2 id="more-about-protocol">More About Protocol</h2>
+
+<p>I want to add more details about choosing OpenAPI as the protocol. The obvious reason is it has been around for a long time and lots of tools and frameworks support it. But for RSS Brain, I only have a gRPC server. I implemented the gRPC server with my own library <a href="https://github.com/wb14123/scala2grpc">scala2grpc</a> and really liked it. However, a downside of gRPC is the serialized message is not human readable. So it’s hard to define a generic call tool structure. Also it’s more difficult to call the API without generated gRPC code. So at the end, I used <a href="https://github.com/grpc-ecosystem/grpc-gateway/tree/main">grpc-gateway</a> to proxy the gRPC server into an OpenAPI server. The code is released in <a href="https://github.com/wb14123/rss_brain_grpc_gateway">Github</a>.</p>
+
+<p>grpc-gateway has a tool to auto generate OpenAPI structured document, if you have the necessary comments in the gRPC protobuf files. So I added the feature in scala2grpc to add comments based on Scaladoc and it turned out wonderfully.</p>
+
+<p>With all that said, I still think gRPC has its advantage because of the ability of bi-directional streaming. The proto definition is also easier to understand for human, which is a plus for LLMs. Maybe with some more work and leverage things like <a href="https://grpc.io/docs/guides/reflection/">gRPC reflection</a>, we can also define a generic tool calling action with gRPC in the agent.</p>
+
+<h2 id="future-work">Future Work</h2>
+
+<p>This is only an experiment, so there are lots of work left to do to make it better.</p>
+
+<p>The first one is to have a better authentication flow, so that the auth URL can give the instructions to LLM agent without user copying it. This is not a hard thing to do but makes it much more secure.</p>
+
+<p>Another thing to try is to not include all the OpenAPI doc in the prompt at first. Instead, only include a summarization or description of it, and only gives more details when LLM agent asks for it. It should be able to save lots of cost.</p>
+
+<p>And there can be more validations for security purpose, for example, when calling a tool or let user open an auth URL in the browser, verify the hostname matches what we have defined in the tools.</p>
+
+<p>It also worth trying other protocols like gRPC since it supports bi directional stream, which may works better in some use cases.</p>]]></content><author><name></name></author><category term="machine learning" /><category term="LLM" /><category term="MCP" /><category term="OpenAPI" /><category term="gRPC" /><summary type="html"><![CDATA[Module Context Protocol (MCP) is adopted by more and more people as a way to integrate tools to LLMs easily. However, I find it unintuitive and unnecessarily complex. So in this article, I’ll explore how to use existing API servers as tools of LLMs instead of writing the functions in a completely new protocol. This can potentially become a simpler standard that only needs implementation an additional authentication flow (if authentication is needed).]]></summary></entry><entry><title type="html">Travel Back To China: 2025 Edition</title><link href="https://www.binwang.me/2025-02-28-Travel-Back-To-China-2025.html" rel="alternate" type="text/html" title="Travel Back To China: 2025 Edition" /><published>2025-02-28T00:00:00-05:00</published><updated>2025-02-28T00:00:00-05:00</updated><id>https://www.binwang.me/Travel-Back-To-China-2025</id><content type="html" xml:base="https://www.binwang.me/2025-02-28-Travel-Back-To-China-2025.html"><![CDATA[<p>As I mentioned in the <a href="/2025-01-13-A-2-Year-Reflection.html">last year-end retrospective blog</a>, I traveled back to China again this year (to be more accurate, at the end of 2024). I migrated to Canada just before the Covid, which is why I only started to go back since <a href="/2024-03-19-Travel-Back-to-China.html">last year</a> after the Covid measurements were all lifted. I think it’s worth a blog post every time I go back there since China, as a country I spent most of my life, not only made what I am today, but also still has so many connections with me. Most of my friends and extended family members are still there. I also find going back every year instead of living there all the time makes me a better observer. I can notice the changes easier since I’m comparing the things from year to year instead of from day to day. I can notice the things that may already get used to for the people living there all the time. I also have more motivation to observe since the short time of visiting is so valuable to me. So here it is, the 2025 edition of travelling back to China.</p>
 
 <h2 id="toronto">Toronto</h2>
 
@@ -2403,77 +2719,4 @@ word[n-1] --&gt; vector[n-1]
 <p>If you are sure this is the folder you want to delete, use this command to delete it:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ceph fs subvolume rm &lt;fs-name&gt; &lt;subvolume-name&gt; csi
-</code></pre></div></div>]]></content><author><name></name></author><category term="Kubernetes" /><category term="Ceph" /><category term="Distributed file system" /><summary type="html"><![CDATA[Ceph is a distributed file system. Rook is a project to deploy it with Kubernetes. I recently replaced GlusterFS in my Kubernetes cluster with Ceph. I will write a blog (or a series of blogs) for the migration. But in this article, I will just talk about a problem I encountered, just in case I forget it.]]></summary></entry><entry><title type="html">Linux Full Disk Encryption with Yubikey</title><link href="https://www.binwang.me/2023-10-22-Full-Disk-Encryption-with-Yubikey.html" rel="alternate" type="text/html" title="Linux Full Disk Encryption with Yubikey" /><published>2023-10-22T00:00:00-04:00</published><updated>2023-10-22T00:00:00-04:00</updated><id>https://www.binwang.me/Full-Disk-Encryption-with-Yubikey</id><content type="html" xml:base="https://www.binwang.me/2023-10-22-Full-Disk-Encryption-with-Yubikey.html"><![CDATA[<p><em>Updated at 2025-02-01: update the method to include using dracut.</em></p>
-
-<h2 id="background">Background</h2>
-
-<p>As mentioned in a previous blog <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability</a>, I’ve setup a high available cluster that has 3 machines. But one of them is on my laptop. I feel like I need a dedicated machine for my personal usage, especially I’m planning some travels. So I need to remove the laptop from the cluster. Its disk space is also very limited. With migrating Gluster to Ceph (more blogs to come on that) and not be able to use a disk partition with Ceph’s encryption, I need another machine with more disks. So I repurposed another small form factor machine to join the cluster.</p>
-
-<p>I want full disk encryption on it but I don’t want to input password every time it boots: this machine is put into a closet and it’s very inconvenient to plug/unplug keyboard and monitor. In another blog <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution</a>, I talked about a solution to boot encrypted Linxu without input password by setting up TPM. However, old machines only have TPM 1.x chips instead of newer TPM 2.0 chips, which is very tricky to setup and  with very limited support from Linux distros. I don’t want to do it again if not necessary. The thread model is also different since this machine is supposed to be at my home all the time. So this time, I found a new solution to use Yubikey to decrypt disks: I just need to keep Yubikey plugged in during the boot process and press it at the proper time. I can also fallback to the password method if there is anything wrong with Yubikey decryption.</p>
-
-<p>There are some great tutorials and wiki pages describe how to do it. I must give the credit to <a href="https://0pointer.net/blog/unlocking-luks2-volumes-with-tpm2-fido2-pkcs11-security-hardware-on-systemd-248.html">this article</a> that helped me a lot. But all of them are missing some details so I though it would be great to write down my setup so that it may help someone else. My setup is on Arch Linux but the steps should be portable to other Linux distros.</p>
-
-<p><strong>Warning: the steps may make your system not be able to boot if not setup properly. Make sure to back it up or have a recovery CD available to fix it if things went south.</strong></p>
-
-<h2 id="install-linux-with-luks2">Install Linux with LUKS2</h2>
-
-<p>First we need to install Linux with our root partition encrypted. If you are using an installer, most likely there is an option to encryption the disk. If so, select that option and input a passphrase for it. Even though we are using Yubikey to decrypt the disks, it’s always good to have a passphrase to decrypt it in case something goes wrong. However, if your threat model needs a solution that doesn’t involve a passphrase, I believe you can remove it later after setup Yubikey, though I’ve never tried it myself.</p>
-
-<p>Some installers will use LUKS1 instead of LUKS2 to encrypt the disk. Don’t worry, use <code class="language-plaintext highlighter-rouge">cryptsetup convert --type=LUKS2 &lt;device&gt;</code> to convert it to a LUKS2 setup after the OS is installed.</p>
-
-<p>Note: do not encrypt boot partition. It usually doesn’t have sensitive information and encrypting it doesn’t prevent evil maid attack anyway. If you want it to be more secure, considering setup secure boot, which is also mentioned in my previous blog <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution</a>.</p>
-
-<h2 id="enroll-yubikey-to-key-slot">Enroll Yubikey to Key Slot</h2>
-
-<p>We can enroll a FIDO2 (which is a protocol Yubikey supports) device by using <code class="language-plaintext highlighter-rouge">systemd-cryptenroll</code>.</p>
-
-<p>Plug in the Yubikey. You can use this command first to list all the FIDO2 devices to make sure the Yubikey is recognized:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemd-cryptenroll --fido2-device=list
-</code></pre></div></div>
-
-<p>Note: You may need to install <code class="language-plaintext highlighter-rouge">libfido2</code>.</p>
-
-<p>After confirm the Yubikey is recognized, use this command to enroll it:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemd-cryptenroll --fido2-device=auto &lt;disk-device&gt;
-</code></pre></div></div>
-
-<p>It will show hint about you may need to press the Yubikey during the process. So <strong>watch the Yubikey: when its LED flashes, press it to continue.</strong></p>
-
-<h2 id="setup-crypttab-with-mkinitcpio">Setup crypttab with mkinitcpio</h2>
-
-<p>Put a line like this into <code class="language-plaintext highlighter-rouge">/etc/crypttab.initramfs</code>. It will be copied to initramfs by mkinitcpio as <code class="language-plaintext highlighter-rouge">/etc/crypttab</code> so that your root partition can be decrypted before it is mounted:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>myvolume &lt;disk-device&gt; - fido2-device=auto
-</code></pre></div></div>
-
-<p><code class="language-plaintext highlighter-rouge">&lt;disk-device&gt;</code> can be something like <code class="language-plaintext highlighter-rouge">/dev/sda1</code> or using UUID format <code class="language-plaintext highlighter-rouge">UUID=&lt;disk-uuid&gt;</code>.</p>
-
-<p>If it’s not root partition, you can put it in <code class="language-plaintext highlighter-rouge">/etc/crypttab</code> so it will be used after root partition is mounted.</p>
-
-<p><code class="language-plaintext highlighter-rouge">mkinitcpio</code> is a tool to generate initramfs. <code class="language-plaintext highlighter-rouge">/etc/crypttab.initramfs</code> only works with it.</p>
-
-<p>Once making sure <code class="language-plaintext highlighter-rouge">mkinitcpio</code> is installed, we need to configure the hooks to make it read <code class="language-plaintext highlighter-rouge">crypttab</code> to decrypt the disks. We also need to make sure we are using systemd init instead of busybox init.</p>
-
-<p>Open <code class="language-plaintext highlighter-rouge">/etc/mkinitcpio.conf</code>, and find the line with <code class="language-plaintext highlighter-rouge">HOOKS=(...)</code>. Refer to <a href="https://wiki.archlinux.org/title/Mkinitcpio#Common_hooks">this wiki page</a> about the common hooks and replace busybox hooks with systemd ones. For example, in my setup, I replaced <code class="language-plaintext highlighter-rouge">udev</code> with <code class="language-plaintext highlighter-rouge">systemd</code> and <code class="language-plaintext highlighter-rouge">keymap</code> with <code class="language-plaintext highlighter-rouge">sd-vconsole</code>. Then add <code class="language-plaintext highlighter-rouge">sd-encrypt</code> to the hooks. The order matters: usually it comes after <code class="language-plaintext highlighter-rouge">sd-vconsole</code>.</p>
-
-<p>Then use <code class="language-plaintext highlighter-rouge">mkinitcpio -P</code> to regenerate initramfs images.</p>
-
-<h2 id="setup-crypttab-with-dracut">Setup crypttab with dracut</h2>
-
-<p>If the system come with <code class="language-plaintext highlighter-rouge">dracut</code> instead of <code class="language-plaintext highlighter-rouge">mkinitcpio</code> by default, you can add this line in <code class="language-plaintext highlighter-rouge">/etc/crypttab</code> directly to support both password and Yubikey:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>myvolume UUID=... none luks,fido2-device=auto
-</code></pre></div></div>
-
-<p>Then regenerate the initramfs using:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo dracut --force
-</code></pre></div></div>
-
-<h2 id="test-and-finish">Test and Finish!</h2>
-
-<p>Okay, now we have already setup everything. We can boot the system and test. Make sure Yubikey is plugged in before the boot. And watch for its LED light to flash and press it when it does! This little detail spent me lots of time to figure it out.</p>
-
-<p>You can also use password to decrypt the disk <strong>without Yubikey plugged in</strong>. Wait it for 30 seconds and it will prompt you to input the password. The time can be configured in <code class="language-plaintext highlighter-rouge">/etc/crypttab</code> (or <code class="language-plaintext highlighter-rouge">/etc/crypttab.initramfs</code>) by setting up <a href="https://man.archlinux.org/man/crypttab.5">token-timeout=</a>.</p>]]></content><author><name></name></author><category term="Yubikey" /><category term="Linux" /><category term="Encryption" /><summary type="html"><![CDATA[Updated at 2025-02-01: update the method to include using dracut.]]></summary></entry></feed>
+</code></pre></div></div>]]></content><author><name></name></author><category term="Kubernetes" /><category term="Ceph" /><category term="Distributed file system" /><summary type="html"><![CDATA[Ceph is a distributed file system. Rook is a project to deploy it with Kubernetes. I recently replaced GlusterFS in my Kubernetes cluster with Ceph. I will write a blog (or a series of blogs) for the migration. But in this article, I will just talk about a problem I encountered, just in case I forget it.]]></summary></entry></feed>
