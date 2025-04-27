@@ -4005,7 +4005,9 @@
     
   </header>
 
-  <p><a href="https://modelcontextprotocol.io/introduction">Module Context Protocol (MCP)</a> is adopted by more and more people as a way to integrate tools to LLMs easily. However, I find it unintuitive and unnecessarily complex. So in this article, I’ll explore how to use existing API servers as tools of LLMs instead of writing the functions in a completely new protocol. This can potentially become a simpler standard that only needs implementation an additional authentication flow (if authentication is needed).</p>
+  <p><a href="https://modelcontextprotocol.io/introduction">Module Context Protocol (MCP)</a> is adopted by more and more people as a way to integrate tools to LLMs easily. However, I find it unintuitive and unnecessarily complex. So in this article, I’ll explore how to use existing <a href="https://www.openapis.org/">OpenAPI</a> servers as tools of LLMs instead of writing the functions in a completely new protocol. This can potentially become a simpler standard that only needs implementation an additional authentication flow (if authentication is needed).</p>
+
+<p>For the people who are not familar with OpenAPI, it’s a formal way to descrit HTTP APIs. You may heard of Swagger which is basically the same thing. Lots of HTTP framework support it so that you can generate structured document in JSON or YAML format, and view it in tools like <a href="https://editor.swagger.io/">Swagger Editor</a>. Because of this structured document, it’s perfect to be feeded into LLM as tool definations.</p>
 
 <p>The final result is in the repo <a href="https://github.com/wb14123/ai-tool-proto-experiment">ai-tool-proto-experiment</a>. It’s a single file Scala script with less than 300 lines of code.
 It doesn’t use any LLM SDK, just simple HTTP calls to the LLM providers. It doesn’t use any advance API either. Only chat completion API with structured output is needed.</p>
