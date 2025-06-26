@@ -107,6 +107,42 @@ a:hover{
 }
 
 
+.books {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.book_card {
+  font-size: 18px;
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+  color: rgb(120, 120, 120);
+  font-family: mixFont,Georgia,serif;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: thin solid rgb(220, 220, 220);
+}
+
+
+.book_card .book_cover {
+  max-width: 100px;
+  max-height: 100px;
+}
+
+.book_card .book_info {
+  display: flex;
+  flex-direction: column;
+  font-size: 18px;
+  gap: 10px;
+}
+
+.book_card .book_desc {
+  display: flex;
+  flex-direction: row;
+}
+
+
 header#page_header{
   text-align: right;
   width: 100%;
