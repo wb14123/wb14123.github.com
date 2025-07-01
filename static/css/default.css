@@ -122,12 +122,13 @@ a:hover{
   padding-top: 20px;
   padding-bottom: 20px;
   border-bottom: thin solid rgb(220, 220, 220);
+  align-items: center;
 }
 
 
 .book_card .book_cover {
-  max-width: 100px;
-  max-height: 100px;
+  max-width: 120px;
+  max-height: 120px;
 }
 
 .book_card .book_info {
