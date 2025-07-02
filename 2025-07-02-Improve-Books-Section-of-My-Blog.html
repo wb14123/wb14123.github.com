@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> 约翰·克利斯朵夫（全2册）（傅雷经典译本） |  Bin Wang - My Personal Blog</title>
+    <title> Improve Books Section of My Blog |  Bin Wang - My Personal Blog</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
     <link rel="stylesheet" href="/static/css/asciinema-player.css" type="text/css" />
 
@@ -3326,7 +3326,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2025-07-02-Improve-Books-Section-of-My-Blog.html">Improve Books Section of My Blog <span class="publish-year">(2025)</span></a>
+        <div class="index-selected">Improve Books Section of My Blog <span class="publish-year">(2025)</span></div>
         
       
 
@@ -4016,28 +4016,124 @@
 
 
     <section id="page_content">
-        <div class="book_card">
-  <img class="book_cover" src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1499054606i/35575851.jpg"/>
-  <div class="book_info">
-    <a class="book_title" href="https://www.goodreads.com/book/show/35575851-2" target="_blank">约翰·克利斯朵夫（全2册）（傅雷经典译本）</a>
-    <div class="book_desc">
-        By
-        
-        罗曼·罗兰,&nbsp;
-        
-        傅雷,&nbsp;
-        
-      published in 2017
-    </div>
-    <div class="book_date">Finished reading on 01 Jan 2009</div>
-  </div>
+        <div id="content_table">
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#script-to-download-book-information">Script to Download Book Information</a></li><li><a href="#render-book-list-with-jekyll">Render Book List with Jekyll</a></li><li><a href="#book-reading-notes">Book Reading Notes</a></li><li><a href="#other-considerations">Other Considerations</a></li></ol>
 </div>
 
-<div id="article_content">
-  <article id="post">
+<div id="article_content" class="">
+<article id="post">
+  <header>
+    <h1>Improve Books Section of My Blog</h1>
     
+      <p class="description">Posted on 02 Jul 2025, tagged <code>blog</code><code>book</code><code>reading</code><code>life</code></p>
+    
+  </header>
 
-  </article>
+  <p>In my blog, I have a page called <a href="/read.html">Read</a> to keep the books I’ve read. At first, I used an API from <a href="https://book.douban.com">Douban</a> (a Chinese social media that has reviews and metadata of books, movies, TV shows). I was really happy about it since it’s easy to find and add books into a list on Douban, while still be able to render them in a custom layout. But a few years ago (cannot remember the exact time), the API became unavailable without an API key, and it’s impossible to find a way to get one. So I moved my reading list to Goodreads.</p>
+
+<p>Instead of using an API to render the books with a custom layout, I linked the page directly to Goodreads’ book collection I created. It was the fastest way to recover the page. Goodreads has a few pain points including the lack of info for some Chinese books. But it was acceptable to me. I thought I can do the custom render with API in the future, only waited Goodreads to close its public API as well. Since then, I always want to migrate the page into something else, but didn’t really have the time until recently.</p>
+
+<p>You should already be able to see the finished work when clicking the “Read” link at the top of the page. In this article, I’ll talk about how it’s implemented and the thoughts behind it.</p>
+
+<h2 id="script-to-download-book-information">Script to Download Book Information</h2>
+
+<p>Instead of migrating to another platform and use APIs to render the page, I think it’s better to take control of the data this time. So I wrote a Scala script to download the book information from websites like Goodreads and Douban. It saves the information into a YAML header of a Markdown file, which is a format Jekyll can read and use in a template. Here is an example of the output:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">---</span>
+<span class="na">layout</span><span class="pi">:</span> <span class="s">book</span>
+<span class="na">title</span><span class="pi">:</span> <span class="s2">"</span><span class="s">When</span><span class="nv"> </span><span class="s">America</span><span class="nv"> </span><span class="s">First</span><span class="nv"> </span><span class="s">Met</span><span class="nv"> </span><span class="s">China:</span><span class="nv"> </span><span class="s">An</span><span class="nv"> </span><span class="s">Exotic</span><span class="nv"> </span><span class="s">History</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">Tea,</span><span class="nv"> </span><span class="s">Drugs,</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">Money</span><span class="nv"> </span><span class="s">in</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">Age</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">Sail"</span>
+<span class="na">authors</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">Eric</span><span class="nv"> </span><span class="s">Jay</span><span class="nv"> </span><span class="s">Dolin"</span><span class="pi">]</span>
+<span class="na">isbn</span><span class="pi">:</span> <span class="s2">"</span><span class="s">9780871404336"</span>
+<span class="na">cover</span><span class="pi">:</span> <span class="s2">"</span><span class="s">https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1337692965i/13812169.jpg"</span>
+<span class="na">year</span><span class="pi">:</span> <span class="m">2012</span>
+<span class="na">external_links</span><span class="pi">:</span>
+  <span class="na">goodreads</span><span class="pi">:</span> <span class="s">https://www.goodreads.com/book/show/13812169-when-america-first-met-china</span>
+  <span class="na">date_read</span><span class="pi">:</span> <span class="s2">"</span><span class="s">2025-06-22"</span>
+<span class="nn">---</span>
+</code></pre></div></div>
+
+<p>The script is available in <a href="https://github.com/wb14123/blog/blob/master/add-book/add-book.sc">my blog’s repo</a>. With the command like</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./add-book/add-book.sc &lt;book_url&gt; jekyll/_books
+</code></pre></div></div>
+
+<p>It can download the book info files into the target directory <code class="language-plaintext highlighter-rouge">jekyll/_books</code>. Currently it can take a URL of a single book from Goodreads, or a book collection link from Goodreads, or a single book link from Douban.</p>
+
+<h2 id="render-book-list-with-jekyll">Render Book List with Jekyll</h2>
+
+<p>Once the book information is put into the blog’s folder, it’s easy to let Jekyll recognize it and render it.</p>
+
+<p>First let’s add the folder as a collection in <code class="language-plaintext highlighter-rouge">_config.yaml</code>:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">collections</span><span class="pi">:</span>
+  <span class="na">books</span><span class="pi">:</span>
+    <span class="na">output</span><span class="pi">:</span> <span class="kc">true</span>
+</code></pre></div></div>
+
+<p>After this you can use the variable <code class="language-plaintext highlighter-rouge">site.books</code> to get all the files under <code class="language-plaintext highlighter-rouge">_book</code> directory. And you can use each field in the file like <code class="language-plaintext highlighter-rouge">title</code> and <code class="language-plaintext highlighter-rouge">authors</code> as well. The template for the “Read” page is in Github repo’s <a href="https://github.com/wb14123/blog/blob/master/jekyll/read.html">read.html</a>.</p>
+
+<p>With <code class="language-plaintext highlighter-rouge">output</code> set to <code class="language-plaintext highlighter-rouge">true</code>, it will also creates a page for each of the books. If only showing the list of books is needed, <code class="language-plaintext highlighter-rouge">output</code> above can be set to <code class="language-plaintext highlighter-rouge">false</code>. But this options gives me a new idea: why not also write my reading notes in each book’s page?</p>
+
+<h2 id="book-reading-notes">Book Reading Notes</h2>
+
+<p>I’ve long wanted to write some notes on the books I’ve read on my blog. But most of the time it’s just not rich enough to become an article. I was also really hesitated to write it on third-party websites like Goodreads or Douban. So a lot of the thoughts just got lost.</p>
+
+<p>With this new script and folder format, it gives me a new idea to write the book notes in a separate section of my blog, separated from my main blog posts, much like what I have done for the <a href="/snippets">Snippets</a> page which are shorter random posts powered by Mastodon.</p>
+
+<p>It’s very easy to do that technically: just write the notes in the same file after the <code class="language-plaintext highlighter-rouge">---</code> separator of metadata. With <code class="language-plaintext highlighter-rouge">book.output</code> set to <code class="language-plaintext highlighter-rouge">true</code> like in <code class="language-plaintext highlighter-rouge">_config.yaml</code> above, it’s just a matter of adding a new layout template like <a href="https://github.com/wb14123/blog/blob/master/jekyll/_layouts/book.html">_layout/book.html</a> to render the notes pages.</p>
+
+<p>I don’t think it’s worth to write notes for every book. So in the read list, I only add a link to the note when there is one. The individual book pages will still be created by Jekyll even without note content but I’m okay with it since the users don’t see them. I also show how long the note is in the book list, so that it can save the visitors some time if they only care about in-depth notes.</p>
+
+<p>I don’t have interest to backfill the notes for all the books I’ve read, so I only did it for the recent ones. I was thinking about to just write a few sentences for each book, but it surprised me how much and how depth I’ve written at the end. It’s also very fun to write since it’s very causal. It makes me realize I truly lost lots of thoughts by not having a place to write book notes. Hopefully I can read and write more in the future and provide more insights to other readers.</p>
+
+<h2 id="other-considerations">Other Considerations</h2>
+
+<p>I thought about how the visitors of my blog can find the updates of the book notes. I don’t think it deserves to be listed in the index page (currently has all the posts in published time order) since it makes the writing less causal. Probably the best option is to have a separate RSS feed for them.</p>
+
+<p>I’m also considering how to best organize the books I’m reading, and books I’ve read a little bit but abandoned. It’s valuable to keep notes on the book when I’m still reading but not sure if it has value to be shown here on the website. Maybe it’s a place for my private notes and I can publish it once I finished the reading. For the books abandoned, maybe I can keep a special mark in the book info and has some short comments in the notes.</p>
+
+
+</article>
+
+<footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2025-04-27-Use-OpenAPI-Instead-of-MCP-for-LLM-Tools.html">Prev: Use OpenAPI Instead of MCP for LLM Tools</a></td>
+    
+    
+  </tr></table>
+</footer>
+
+<!--
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+-->
+
+
+
+<!-- MathJax -->
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
 </div>
 
     </section>
