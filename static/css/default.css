@@ -154,6 +154,37 @@ header#page_header{
   gap: 40px;
 }
 
+.poetry_list {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.poetry h2 {
+  font-size: 20px;
+}
+
+.poetry {
+  padding-bottom: 40px;
+  border-bottom: thin solid rgb(220, 220, 220);
+  font-size: 18px;
+}
+
+.poetry_date {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.poetry_comment {
+  color: rgb(100, 100, 100);
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+.poetry p {
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+}
+
 header#page_header nav ul{
   list-style: none;
   margin: 0;
