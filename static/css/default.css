@@ -160,23 +160,23 @@ header#page_header{
 }
 
 .poetry h2 {
-  font-size: 20px;
+  font-size: 22px;
 }
 
 .poetry {
   padding-bottom: 40px;
   border-bottom: thin solid rgb(220, 220, 220);
-  font-size: 18px;
+  font-size: 20px;
 }
 
 .poetry_date {
-  font-size: 16px;
+  font-size: 18px;
   margin-bottom: 20px;
 }
 
 .poetry_comment {
   color: rgb(100, 100, 100);
-  font-size: 16px;
+  font-size: 18px;
   margin-top: 20px;
 }
 
