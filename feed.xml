@@ -1,203 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2025-07-26T22:39:20-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Single Primary Architecture with Process Pause and Network Delay</title><link href="https://www.binwang.me/2025-07-19-Single-Primary-Architecture-with-Process-Pause-and-Network-Delay.html" rel="alternate" type="text/html" title="Single Primary Architecture with Process Pause and Network Delay" /><published>2025-07-19T00:00:00-04:00</published><updated>2025-07-19T00:00:00-04:00</updated><id>https://www.binwang.me/Single-Primary-Architecture-with-Process-Pause-and-Network-Delay</id><content type="html" xml:base="https://www.binwang.me/2025-07-19-Single-Primary-Architecture-with-Process-Pause-and-Network-Delay.html"><![CDATA[<p>Single primary architecture is very common in distributed systems, since the critical operations can be handled by a single node at all time, to avoid race conditions. However, implement such an architecture can be harder and easier to go wrong than many people thought. In this article, we will explore what can go wrong with some widely used implementations of single primary architecture.</p>
-
-<h2 id="challenges-in-distributed-systems">Challenges in Distributed Systems</h2>
-
-<p>Before we start to talk about the implementations, let’s review the challenges in distributed systems first, since they are critical in the discussion of this article.</p>
-
-<p>First, network messages can take arbitrarily long to be delivered, or even lost. This is widely understood by most of the people, however, the following two challenges are often overlooked:</p>
-
-<p>The second challenge is clock is not reliable. It’s easy to understand wall clock sync is not reliable through network because of the first challenge above. But even if you have a wonderful way to sync the clock, the speed of clock on each machine can still vary for reasons like hardware temperature, voltage and so on.</p>
-
-<p>The third challenge is the process running the code can be paused for arbitrary long as well. This can happen in case of GC like in JVM and Go. Even though there are better GC algorithms to avoid the pause, especially stop the world pause, that can still happen. Even more, even for platforms without GC, the process can still be starved from the operating system’s scheduler, or from some more under layer pauses like vmotion in a virtual machine.</p>
-
-<p>For the last two problems, it’s easy to be overlooked because in practise, the pause or clock skew is usually small. However, there is really no guarantee of the pause time or how much the clock can be off. So when designing an algorithm, we must take that into account if you want to design a correct system instead of a best effort system. When the latter can be useful in many cases, many people don’t know the implication.</p>
-
-<h2 id="a-naive-implementation-of-single-primary-architecture">A Naive Implementation of Single Primary Architecture</h2>
-
-<p>If we only want a hard coded single primary in a distributed cluster, the problem would be easy to resolve. However, it creates a single point of the failure. In order to resolve the it, we usually fail over the primary to another node if anything happens to the primary. In order to do so, every node needs to reach to a consensus about who is the new primary. This is a complex problem but fortunately there are already algorithms like Paxos to resolve it. Unfortunately, those algorithms are also complex and hard to implement. So in turn, most of the everyday services use an external service for leader election.</p>
-
-<p>The most common approach is to use a third party service as a lock service. So when doing leader election, each node just try to allocate a lock from the lock service and only one of them can be successful. This approach is talked in the paper <a href="https://static.googleusercontent.com/media/research.google.com/en//archive/chubby-osdi06.pdf">The Chubby lock service for loosely-coupled distributed systems</a>, then got popular with services like Zookeeper and etcd. Basically the lock service uses algorithms like Paxos to guarantee the cluster can reaches consensus, so when each node propose itself to be the leader, only one would successful to reach a consensus.</p>
-
-<p>Here is a common way to use the service using Java and etcd:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>lockService = ... // zookeeper, etcd or any other client
-
-// lock.isValid will become false after 10 seconds, the lockService will also
-// allow other nodes to acquire the lock after that.
-lock = lockService.acquire(ttl = 10s)
-
-// refresh the lock on a background thread
-new Thread() {
-  while (true) {
-    lockService.refresh(lock, ttl = 10s)
-    sleep(1s)
-  }
-}
-
-// whenever primary needs to do some operation
-if (lock.isValid) {
-  doThings() // do things that primary needs to do
-}
-</code></pre></div></div>
-
-<p>So in here, let’s assume <code class="language-plaintext highlighter-rouge">lockService</code> is a black box remote service that is able to grant a distributed lock to only one node at a time. The code requests a lock with a ttl of 10 seconds, and refresh the lock every second in a background thread. We give a ttl for the lock to handle primary failover: when the primary node dies, it gives opportunity for other nodes to become the primary by acquiring a new lock after the old one expired. At last, when there is any operation that only primary can do, it’s guarded by the check of lock.</p>
-
-<p>It looks good at the first look, but combined with the challenges we mentioned in the last section, we will see the problems.</p>
-
-<h2 id="problem-with-network-latency">Problem with Network Latency</h2>
-
-<p>First let’s look at what will happen when considering network latency. We can consider all <code class="language-plaintext highlighter-rouge">lockService.*</code> is going through network. So for example, when acquiring the lock, the acquire can be successful but the response only delivered after 10 seconds, when the lock is already expired.</p>
-
-<p>This problem can be resolved by setting proper timeout for network request. For example, if we set timeout of network request to be 1 second, the lock has at least 9 seconds until expired. With proper lock ttl and network timeout, it should resolve the problem of network delay.</p>
-
-<p>Another problem with network latency is if <code class="language-plaintext highlighter-rouge">doSomething</code> is calling another service, because of the network latency, when the service received the request, the node that sent the request may not be the primary anymore. Again, you can include a timestamp in the request and check it from the other service.</p>
-
-<p>Both of the timeouts touches the area of clock speed.</p>
-
-<h2 id="problem-with-various-clock-speed">Problem with Various Clock Speed</h2>
-
-<p>When using timeouts, we get another problem when processes on different nodes can run with various clock speed. For example, in an extreme scenario the client’s clock can be so slow that it thinks the network is not timed out yet when the lock is already expired in the lock service. While this scenario can happen in theory, and we would like to avoid relying on it when designing an algorithm, most people find it acceptable because it’s so rare in practise if we select a large enough difference between network timeout and lock TTL.</p>
-
-<h2 id="problem-with-paused-process">Problem with Paused Process</h2>
-
-<p>However, when considering the possibility of pause, the problem is more obvious since it can happen more often.</p>
-
-<p>Let’s say the process paused after we check the lock <code class="language-plaintext highlighter-rouge">if (lock.isValid)</code>, then when it starts to <code class="language-plaintext highlighter-rouge">doThings</code> after the check, the lock may already expired. You can add more checks before <code class="language-plaintext highlighter-rouge">doThings</code>, but as long as it pauses before <code class="language-plaintext highlighter-rouge">doThings</code>, there is no guarantee the lock is still valid when calling <code class="language-plaintext highlighter-rouge">doTings</code>.</p>
-
-<p>You can remediate it by set the lock TTL to be the longest possible time of pause. However, there is really no guarantee of the longest time of pause. The best you can do is to make the possibility of the pause time exceed TTL to be really small.</p>
-
-<p>So in short, there is no guarantee <code class="language-plaintext highlighter-rouge">doThings</code> will be executed on a single primary node when there is a process can be paused for an arbitrary long.</p>
-
-<p>In the following sections, we will see how we can operate with the mindset of single primary is not guaranteed.</p>
-
-<h2 id="use-external-service-with-lock-lease-id">Use External Service with Lock Lease ID</h2>
-
-<p>So if there is no guarantee there is a single primary at the same time, we need some external services to guarantee it. One of the methods is to let the external service to check the lease ID of the lock. This is actually a method talked in the Chubby paper above.</p>
-
-<p>Lots of the lock service including Zookeeper, etcd has the ability to generate a monotonic ID for the acquired lock. For example, if the primary writes a database in <code class="language-plaintext highlighter-rouge">doSomething</code>, it can do this in a <strong>transaction</strong>:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if (sql("select * from lock where id == $1", lock.id)) {
-  sqlUpdate() // do necessary updates in the same transaction
-}
-</code></pre></div></div>
-
-<p>The key above is the check and update should be in the same transaction, so that there is no race condition when there is a new lock updated the ID. So using this approach basically offload the consistency guarantee to another part of the system, either be a database that has transaction support, or just a single node like a file server mentioned the paper of Chubby.</p>
-
-<p>But such an external guarantee may not always be available. We will explore 2 more scenarios and the ways to resolve the problems when a single primary node cannot be guaranteed.</p>
-
-<h2 id="quorum-replication">Quorum Replication</h2>
-
-<p>What if there is no external service to guarantee <code class="language-plaintext highlighter-rouge">doSomething</code> will only be accepted for one node? For example, if we are writing a distributed database, how do save data when a single primary is not guaranteed? Write to a quorum is one of the solutions.</p>
-
-<p>Here is how it works: primary node accept write requests and need to replica it to a majority of nodes to consider the write to be successful. Replica only accept the writes from the current primary (in its view).</p>
-
-<p>The primary replicas the writes as logs. Each write has an ID keeps increasing by 1. So in case of 2 primary tries to replica with same write ID, the replica can detect the conflict and reject the later one.</p>
-
-<p>So what happens if there are 2 nodes think they are primary at the same time? Only one of them will be able to write to a majority of the nodes. It can be the new primary or be the old primary. Either way, who wins the majority is the primary at the time. The node that failed to write the majority can give up the primary role and see if there is a new round of leader election needed.</p>
-
-<p>A detail to notice in such scenario is, when doing leader election, only the node that can connect to a majority should request to be the primary. And during this, the node should negotiate what’s the committed writes. They should only consider the writes to be committed if a majority of the nodes have it, and abandon any newer ones.</p>
-
-<p><strong>TODO: how to check a node has a log that matches the majority?</strong>. There can be a race condition: A checks itself matches majority of nodes, then got paused. At the mean time, C also checks and become leader, then lost leader somehow. Then, A resumed and requested to be the primary and successful. Then A thinks it has the write log and force sync it to other nodes which results transaction lost during the time period when C was primary. This seems can be avoid with an epoch number and the lock service only grants lease when epoch number is the largest it has seen. Can the following rule do it?</p>
-
-<ul>
-  <li>Use zookeeper/etcd to elect a primary in the cluster.</li>
-  <li>Primary replicate write logs to other nodes. When a primary replicate logs, it uses the current lease ID as epoch.</li>
-  <li>Log is ordered with monotonic numbers and there is no hole in it.</li>
-  <li>Replicas only accept replication command with largest epoch it has ever seen.</li>
-  <li>Only consider writes to be committed when replicated to a quorum, and apply (save) the committed transaction on primary before response to client.</li>
-  <li>When read, confirm itself is still the primary from zookeeper/etcd with linearizable op before get and return the data.</li>
-  <li>If a node find out the primary is lost from zookeeper/etcd, it starts to do leader election by:
-    <ul>
-      <li>A node asks other nodes whether they have any newer log than itself. It needs to collect a majority of yes.</li>
-      <li>A node only replies yes to the ask if it doesn’t have newer log, AND if it doesn’t see any primary from zookeeper/etcd.</li>
-      <li>After a node replies yes, it only accept any replication command with larger epoch.</li>
-      <li>New leader can force sync logs to other nodes, which means if other nodes has conflicted logs, it will be resynced from new primary (only accept largest epoch it has ever seen).</li>
-      <li>Block queries until logs are replicated to a quorum.</li>
-    </ul>
-  </li>
-</ul>
-
-<p>Here is an example of the events of such an scenario (P means the current primary):</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>Time</th>
-      <th>Event</th>
-      <th>A</th>
-      <th>B</th>
-      <th>C</th>
-      <th>D</th>
-      <th>E</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>1</td>
-      <td>Init state</td>
-      <td>P: A<br />Data: []</td>
-      <td>P: A<br />Data: []</td>
-      <td>P: A<br />Data: []</td>
-      <td>P: A<br />Data: []</td>
-      <td>P: A<br />Data: []</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>New write request to set k1=v1</td>
-      <td>P: A<br />Data: [1: k1=v1]</td>
-      <td>P: A<br />Data: []</td>
-      <td>P: A<br />Data: []</td>
-      <td>P: A<br />Data: []</td>
-      <td>P: A<br />Data: []</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>Network partition happens, the clusters is divided to (A,B) and (C,D,E). C is elected as new primary.</td>
-      <td>P: A<br />Data: [1: k1=v1]</td>
-      <td>P: A<br />Data: []</td>
-      <td>P: C<br />Data: []</td>
-      <td>P: C<br />Data: []</td>
-      <td>P: C<br />Data: []</td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <td>New write request to set k1=v2</td>
-      <td>P: A<br />Data: [1: k1=v1]</td>
-      <td>P: A<br />Data: []</td>
-      <td>P: C<br />Data: [1: k1=v2]</td>
-      <td>P: C<br />Data: []</td>
-      <td>P: C<br />Data: []</td>
-    </tr>
-    <tr>
-      <td>5</td>
-      <td>Both write requests get replicated, k1=v1 is not considered committed since it’s not replicated to majority</td>
-      <td>P: A<br />Data: [1: k1=v1]</td>
-      <td>P: A<br />Data: [1: k1=v1]</td>
-      <td>P: C<br />Data: [1: k1=v2]</td>
-      <td>P: C<br />Data: [1: k1=v2]</td>
-      <td>P: C<br />Data: [1: k1=v2]</td>
-    </tr>
-    <tr>
-      <td>6</td>
-      <td>Network partition recovered, A and B found the transaction 1 is in conflict with the majority of nodes, so they abandon it and sync the history from other nodes</td>
-      <td>P: C<br />Data: [1: k1=v2]</td>
-      <td>P: C<br />Data: [1: k1=v2]</td>
-      <td>P: C<br />Data: [1: k1=v2]</td>
-      <td>P: C<br />Data: [1: k1=v2]</td>
-      <td>P: C<br />Data: [1: k1=v2]</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>So in the events above, even though A and C both think itself is the primary for a while, only 1 can win the primary. And only the data is written to a majority of nodes is considered to be committed.</p>
-
-<h2 id="quorum-reads-and-linearizability">Quorum Reads and Linearizability</h2>
-
-<p>If there is a read request between step 5 and 6 and if it happens to fall onto node A, since node A still thinks it’s the primary, it will happily return nothing since <code class="language-plaintext highlighter-rouge">k1=v1</code> is not considered committed. However, another transaction at step 5, which is strictly earlier than this read request, already knows <code class="language-plaintext highlighter-rouge">k1=v2</code> is committed. This is a violation of <a href="https://en.wikipedia.org/wiki/Linearizability">linearizability</a>. Which in practice can be confusing: thinking about a social network use case, the user may just posted something and found it disappeared in a following request.</p>
-
-<p>This can be resolved by checking the primary role before returning the read data. Note the primary role can be expired even after the checking, but that means the read request is at least started before the node is still primary, which makes the read and write request to be in parallel instead of having a strict order.</p>
-
-<h2 id="postgresql-leader-election">PostgreSQL Leader Election</h2>]]></content><author><name></name></author><category term="leader election" /><category term="zookeeper" /><category term="etcd" /><category term="paxos" /><category term="distributed system" /><summary type="html"><![CDATA[Single primary architecture is very common in distributed systems, since the critical operations can be handled by a single node at all time, to avoid race conditions. However, implement such an architecture can be harder and easier to go wrong than many people thought. In this article, we will explore what can go wrong with some widely used implementations of single primary architecture.]]></summary></entry><entry><title type="html">Improve Books Section of My Blog</title><link href="https://www.binwang.me/2025-07-02-Improve-Books-Section-of-My-Blog.html" rel="alternate" type="text/html" title="Improve Books Section of My Blog" /><published>2025-07-02T00:00:00-04:00</published><updated>2025-07-02T00:00:00-04:00</updated><id>https://www.binwang.me/Improve-Books-Section-of-My-Blog</id><content type="html" xml:base="https://www.binwang.me/2025-07-02-Improve-Books-Section-of-My-Blog.html"><![CDATA[<p>In my blog, I have a page called <a href="/read.html">Read</a> to keep the books I’ve read. At first, I used an API from <a href="https://book.douban.com">Douban</a> (a Chinese social media that has reviews and metadata of books, movies, TV shows). I was really happy about it since it’s easy to find and add books into a list on Douban, while still be able to render them in a custom layout. But a few years ago (cannot remember the exact time), the API became unavailable without an API key, and it’s impossible to find a way to get one. So I moved my reading list to Goodreads.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2025-07-26T22:42:21-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Improve Books Section of My Blog</title><link href="https://www.binwang.me/2025-07-02-Improve-Books-Section-of-My-Blog.html" rel="alternate" type="text/html" title="Improve Books Section of My Blog" /><published>2025-07-02T00:00:00-04:00</published><updated>2025-07-02T00:00:00-04:00</updated><id>https://www.binwang.me/Improve-Books-Section-of-My-Blog</id><content type="html" xml:base="https://www.binwang.me/2025-07-02-Improve-Books-Section-of-My-Blog.html"><![CDATA[<p>In my blog, I have a page called <a href="/read.html">Read</a> to keep the books I’ve read. At first, I used an API from <a href="https://book.douban.com">Douban</a> (a Chinese social media that has reviews and metadata of books, movies, TV shows). I was really happy about it since it’s easy to find and add books into a list on Douban, while still be able to render them in a custom layout. But a few years ago (cannot remember the exact time), the API became unavailable without an API key, and it’s impossible to find a way to get one. So I moved my reading list to Goodreads.</p>
 
 <p>Instead of using an API to render the books with a custom layout, I linked the page directly to Goodreads’ book collection I created. It was the fastest way to recover the page. Goodreads has a few pain points including the lack of info for some Chinese books. But it was acceptable to me. I thought I can do the custom render with API in the future, only waited Goodreads to close its public API as well. Since then, I always want to migrate the page into something else, but didn’t really have the time until recently.</p>
 
@@ -2930,4 +2731,28 @@ word[n-1] --&gt; vector[n-1]
 
 <h2 id="result">Result</h2>
 
-<p>It’s actually hard to have some metrics for the performance of finding related articles. I don’t believe metrics like click rate, since it doesn’t necessarily show the articles are related. I think the only way for me is to review the results manually and compute the score based on it. But I don’t think it has much value since supporting multiple language along would make it much better than the previous algorithm. But if you are using RSS Brain, you can see the results yourself and let me know what you think about the new algorithm!</p>]]></content><author><name></name></author><category term="RSS Brain" /><category term="Machine Learning" /><category term="Nerual Network" /><category term="Embeddings" /><category term="Python" /><summary type="html"><![CDATA[In the previous blog about RSS, How RSS Brain Shows Related Articles, I talked about how RSS Brain finds the related articles. I’ve updated the algorithm recently. This blog is about the details about the update. The basic idea is to replace tf-idf algorithm with text embeddings to represent the articles as vectors, and use ElastcSearch to store and query those vectors.]]></summary></entry></feed>
+<p>It’s actually hard to have some metrics for the performance of finding related articles. I don’t believe metrics like click rate, since it doesn’t necessarily show the articles are related. I think the only way for me is to review the results manually and compute the score based on it. But I don’t think it has much value since supporting multiple language along would make it much better than the previous algorithm. But if you are using RSS Brain, you can see the results yourself and let me know what you think about the new algorithm!</p>]]></content><author><name></name></author><category term="RSS Brain" /><category term="Machine Learning" /><category term="Nerual Network" /><category term="Embeddings" /><category term="Python" /><summary type="html"><![CDATA[In the previous blog about RSS, How RSS Brain Shows Related Articles, I talked about how RSS Brain finds the related articles. I’ve updated the algorithm recently. This blog is about the details about the update. The basic idea is to replace tf-idf algorithm with text embeddings to represent the articles as vectors, and use ElastcSearch to store and query those vectors.]]></summary></entry><entry><title type="html">Add Index Sidebar to My Blog</title><link href="https://www.binwang.me/2023-11-10-Index-Sidebar-on-My-Blog.html" rel="alternate" type="text/html" title="Add Index Sidebar to My Blog" /><published>2023-11-10T00:00:00-05:00</published><updated>2023-11-10T00:00:00-05:00</updated><id>https://www.binwang.me/Index-Sidebar-on-My-Blog</id><content type="html" xml:base="https://www.binwang.me/2023-11-10-Index-Sidebar-on-My-Blog.html"><![CDATA[<p>In a previous blog <a href="/2021-10-31-Add-Index-to-My-Blog.html">Add Index to My Blog</a>, I talked about how I added an index page to my blog that put all the articles into categories. I always wanted the index to be a sidebar instead of a single page, but I guess I didn’t wrap my head around about how to implement so I gave up at last. But recently, when I started to use <a href="https://obsidian.md/">Obsidian</a> and checked some demos of <a href="https://obsidian.md/publish">Obsidian Publish</a>, I found having a sidebar is so useful and beautiful so I decide I should implement it.</p>
+
+<p>You can see the result right now: if you are on a big screen device, the index is on the left side of the page. If you are on a small screen device like a mobile phone, it will show a menu button at the top left corner instead. Clicking it will take you to the index.</p>
+
+<p>When I implement it, I want to keep it simple and stupid. That means:</p>
+
+<ul>
+  <li>I want to be as simple as possible as long as it has the function: show articles in nested categories.</li>
+  <li>I want to use as little Javascript as possible so people can still use it with Javascript disabled.</li>
+</ul>
+
+<p>I found the design of Obsidian Publish is very good. So I copied lots of details from them with some modifications: I didn’t implement showing/hiding sub items when click on the index entry since I think it’s not necessary, and I like how it looks when all the articles are listed there: feels like I’ve written lots of things. The categories are sorted by alphabet order and the posts are ordered by publish date. I also added the publish year for each article entry: some articles can look outdated but if people noticed the published year they can understand the context.</p>
+
+<p>Since I’m using Jeykyll, I can generate plain HTML when possible to avoid the usage of Javascript. So the sidebar is generated for each page instead of using Javascript to keep the sidebar and replace the article content on the fly. Javascript is only used for 2 features:</p>
+
+<ol>
+  <li>Remember the position of the sidebar when jump pages.</li>
+  <li>Scroll the sidebar to show the entry for the current page if it’s not in the viewpoint.</li>
+</ol>
+
+<p>Both of the features are not that important so the sidebar is still usable without Javascript. Even for the menu button on small screens, it’s not popping up a dialog. It just jumps to a new static page that has all the index so no Javascript is needed.</p>
+
+<p>The previous implementation of the index page uses recursive templates: Since the nested index is a tree, rendering the content in a recursive manner is a nature thought. However, I made that mistake to put the complex logic into the template engine. So this time, I traverse the tree with Ruby code and generates a list for the template to render. It has all the information like entry type, the depth of the entry and so on. It makes the template code much simpler so it’s easier to implement other features on top of it.</p>
+
+<p>If you want to checkout the detailed implementation, go to my <a href="https://github.com/wb14123/blog">Github repo for the blog</a> and check <a href="https://github.com/wb14123/blog/blob/master/jekyll/_plugins/Index.rb"><code class="language-plaintext highlighter-rouge">jekyll/_plugins/Index.rb</code></a> and <a href="https://github.com/wb14123/blog/blob/master/jekyll/_includes/index_menu.html"><code class="language-plaintext highlighter-rouge">jekyll/_includes/index_menu.html</code></a>.</p>]]></content><author><name></name></author><category term="blog" /><category term="Jekyll" /><category term="Javascript" /><category term="desgin" /><summary type="html"><![CDATA[In a previous blog Add Index to My Blog, I talked about how I added an index page to my blog that put all the articles into categories. I always wanted the index to be a sidebar instead of a single page, but I guess I didn’t wrap my head around about how to implement so I gave up at last. But recently, when I started to use Obsidian and checked some demos of Obsidian Publish, I found having a sidebar is so useful and beautiful so I decide I should implement it.]]></summary></entry></feed>
