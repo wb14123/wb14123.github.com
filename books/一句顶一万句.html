@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> Migrate Scala2grpc to Cats Effect 3 |  Bin Wang - My Personal Blog</title>
+    <title> 一句顶一万句 |  Bin Wang - My Personal Blog</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
     <link rel="stylesheet" href="/static/css/asciinema-player.css" type="text/css" />
 
@@ -3530,7 +3530,7 @@
     <div class="index-entry index-post">
       
         
-        <div class="index-selected">Migrate Scala2grpc to Cats Effect 3 <span class="publish-year">(2023)</span></div>
+        <a href="/2023-09-23-Migrate-Scala2Grpc-to-Cats-Effect-3.html">Migrate Scala2grpc to Cats Effect 3 <span class="publish-year">(2023)</span></a>
         
       
 
@@ -4041,90 +4041,31 @@
 
 
     <section id="page_content">
-        <div id="content_table">
-  <h3>Table of Contents</h3><ol class="toc"><li><a href="#replace-akka-grpc-with-fs2-grpc">Replace Akka gRPC with fs2-grpc</a></li><li><a href="#add-hooks-to-grpc-calls">Add Hooks to gRPC Calls</a></li><li><a href="#non-invasive-nature-of-the-library">Non-invasive Nature of the Library</a></li></ol>
+        <div class="book_card">
+  <img class="book_cover" src="https://http-proxy.rssbrain.com/?link=https://img9.doubanio.com/view/subject/l/public/s29061215.jpg"/>
+  <div class="book_info">
+    <a class="book_title" href="https://book.douban.com/subject/26877012/" target="_blank">一句顶一万句</a>
+    <div class="book_desc">
+        By
+        
+        刘震云,&nbsp;
+        
+      published in 2016
+    </div>
+    <div class="book_date">Finished reading on 26 Jul 2025</div>
+  </div>
 </div>
 
-<div id="article_content" class="">
-<article id="post">
-  <header>
-    <h1>Migrate Scala2grpc to Cats Effect 3</h1>
-    
-      <p class="description">Posted on 23 Sep 2023, tagged <code>Programming</code><code>Scala</code><code>gRPC</code><code>Cats</code><code>Functional Programming</code></p>
-    
-  </header>
+<div id="article_content">
+  <article id="post">
+    <p>之前听说过刘震云和这本书，最近想找本书打法时间的时候正好又在豆瓣看到了，就读了一下。没想到一口气看到凌晨三点多看完了。</p>
 
-  <p><a href="https://github.com/wb14123/scala2grpc">Scala2grpc</a> is a library and SBT plugin I wrote so that you can integrate gRPC to Scala code in a non-invasive way. In a previous <a href="/2022-05-02-A-Library-to-Make-It-Easier-to-Use-Scala-with-GRPC.html">blog post</a>, I talked about the motivation behind it.</p>
+<p>这本书可以说是于无声处听惊雷。故事娓娓道来。没有什么英雄美人，也没什么江湖儿女，好像都是老家里面上几辈可能发生的事情。语言风格上和《俗世奇人》有点像，不过少了天津味和奇人，可以说是俗世俗人。但就是这样平实的语言和故事，才让人觉得摸得着看得见，才读着让人揪心，让人唏嘘。很多事情的起因都是鸡毛蒜皮、日常琐碎。但就是这些日常琐碎日积月累，积累出了一环又一环的弯弯绕绕。有人说《天龙八部》是“有情皆孽，无人不冤”，我觉得形容这本书可能还更合适。</p>
 
-<p>The library requires each service method to return Cats Effect’s <code class="language-plaintext highlighter-rouge">IO</code> or fs2 stream. However, it’s still using Cats Effect 2.x version. There are big changes in Cats Effect 3 and almost all up to date libraries already support it. So it’s time to migrate it to Cats Effect 3 as well.</p>
-
-<h2 id="replace-akka-grpc-with-fs2-grpc">Replace Akka gRPC with fs2-grpc</h2>
-
-<p>This library was using <a href="https://doc.akka.io/docs/akka-grpc/current/index.html">akka-grpc</a>. But I want to replace it for a few reasons:</p>
-
-<ul>
-  <li>It uses <a href="https://github.com/krasserm/streamz">streamz</a> to convert between Akka streams and fs2 streams. This library doesn’t support Cats Effect 3 and hasn’t been updated for a while. This is the biggest reason that I need to migrate from akka immediately.</li>
-  <li>Akka changed its open source license to a very expensive one which I didn’t know at the time writing this library. Even the license doesn’t cost anything if the revenue doesn’t reach a certain point, I don’t want it to be a liability.</li>
-  <li>It’s good to have a gRPC library that supports for Cats Effect and fs2 streams natively.</li>
-</ul>
-
-<p>So in the newer version, I replaced Akka gRPC with <a href="https://github.com/typelevel/fs2-grpc">fs2-grpc</a>, a library under Typelevel umbrella and natively supports Cats Effect and fs2. The document is not as good and I spent quite some time to figure out how to actually use it, but I’m happy it finally worked out.</p>
-
-<h2 id="add-hooks-to-grpc-calls">Add Hooks to gRPC Calls</h2>
-
-<p>In the previous version of Scala2grpc, there is a feature to log every request. But it is a pretty hacky implementation: I just throw the logging logic into the generated code. Since this version is a breaking change, it’s a good opportunity to revisit the approach and see how to add generic hooks before and after each gRPC calls.</p>
-
-<p>My implementation wraps the gRPC response into a context in the generated code. The context includes the response with type of <code class="language-plaintext highlighter-rouge">IO</code> or <code class="language-plaintext highlighter-rouge">fs2.Stream</code>. Because of the referential transparency, you can take the response and add hooks before or after it. More detailed document is in <a href="https://github.com/wb14123/scala2grpc#4-optional-define-custom-grpc-hook">this section of readme</a>.</p>
-
-<h2 id="non-invasive-nature-of-the-library">Non-invasive Nature of the Library</h2>
-
-<p>The migration brings lots of breaking changes, so it is a good test for the non-invasive nature of the library. I have 2 side projects that are using this library and I migrated one of them recently. Since it’s also using Cats Effect, there are some migration steps unrelated to this library. But regarding of the related parts, the migration process is very smooth: I don’t need to change any implementation code of the services. The generated gPRC protocol files are also not changed either. The only thing I need to change is the single object that implements <code class="language-plaintext highlighter-rouge">GRPCGenerator</code> to <a href="https://github.com/wb14123/scala2grpc#2-create-an-object-to-implement-grpcgenerator">pass in some new parameters</a>. It is impossible if I used akka gRPC directly and changed it to fs2-grpc since their interface are all different.</p>
-
-<p>I’m so happy with the result: it adds gRPC to pure Scala code so easily without ever touch it. It saves me so much time to build a service and keeps the code clean at the same time. It continue to be a must have for my future Scala gRPC projects.</p>
-
-</article>
-
-<footer id="post_footer">
-  <table><tr>
-    
-      <td id="prev"><a href="/2023-09-01-Build-a-Linux-Virtual-Machine-for-Windows-Apps.html">Prev: Build a Linux Virtual Machine for Windows Apps</a></td>
-    
-    
-      <td id="next"><a href="/2023-09-24-Jekyll-Plugin-to-Load-Asciicast-Locally.html" id="next">Next: Jekyll Plugin to Load Asciinema Recordings Locally</a></td>
-    
-  </tr></table>
-</footer>
-
-<!--
-<section id="comment">
-  <div id="disqus_thread"></div>
-  <script type="text/javascript">
-    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
-    /* * * DON'T EDIT BELOW THIS LINE * * */
-    (function() {
-      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
-  </script>
-  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-  <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-</section>
--->
+<p>不由的想到其实传统乡土和大家庭模式的人际关系真的复杂。一个大家庭几代人男女老少生活在一个屋檐下，一群家庭几辈子都生活在一个村子，怎么会没有矛盾。而矛盾的来源又是说不清道不明。城市化改变了这样的人际关系，至少对我来说，是个好事吧。在大城市，就算邻居也不一定认识，就算合租的人也不一定会有心思关心，就算生活在同一个城市的朋友也不一定有时间总是见面。人际关系的改变，不再需要背井离乡改名换姓，可能只是换个工作的事。成本变得前所未有的低。不得不说这是现代人的幸运。</p>
 
 
-
-<!-- MathJax -->
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  TeX: { equationNumbers: { autoNumber: "AMS" } }
-});
-</script>
-
+  </article>
 </div>
 
     </section>
