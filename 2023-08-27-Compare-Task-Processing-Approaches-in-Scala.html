@@ -300,7 +300,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong about Recommendation System <span class="publish-year">(2020)</span></a>
+        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong About Recommendation System <span class="publish-year">(2020)</span></a>
         
       
 
@@ -648,6 +648,30 @@
   
     <div class="index-intend">
   
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2025-08-13-Why-Consensus-Shortcuts-Fail.html">The Danger of Half-Implementing Raft: Why Consensus Shortcuts Fail <span class="publish-year">(2025)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
 
     <div class="index-entry index-index">
       
@@ -744,7 +768,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster <span class="publish-year">(2023)</span></a>
+        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Available Cluster <span class="publish-year">(2023)</span></a>
         
       
 
@@ -768,7 +792,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Available Cluster <span class="publish-year">(2025)</span></a>
+        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Availability Cluster <span class="publish-year">(2025)</span></a>
         
       
 
@@ -4039,7 +4063,7 @@
 <p>The easiest way to do it is producing and consuming the tasks in a sequence, for example:</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">feeds</span> <span class="k">=</span> <span class="nf">getPendingFeeds</span><span class="o">()</span> <span class="c1">// produce the tasks</span>
-<span class="nv">feeds</span><span class="o">.</span><span class="py">foreach</span><span class="o">(</span><span class="n">fetchFromNetwork</span><span class="o">)</span> <span class="c1">// consume the dtasks</span>
+<span class="nv">feeds</span><span class="o">.</span><span class="py">foreach</span><span class="o">(</span><span class="n">fetchFromNetwork</span><span class="o">)</span> <span class="c1">// consume the tasks</span>
 </code></pre></div></div>
 
 <p>However, it is unnecessarily slow. Network request doesn’t take lots of CPU and we can send multiple requests at the same time. Even if <code class="language-plaintext highlighter-rouge">fetchFromNetwork</code> is a CPU bound task, it can be parallelized if there are multiple CPU cores on a machine.</p>
@@ -4083,7 +4107,7 @@
 <span class="k">def</span> <span class="nf">consume</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">IO</span><span class="o">[</span><span class="kt">Unit</span><span class="o">]</span>
 
 <span class="c1">// Produce tasks as a stream</span>
-<span class="k">def</span> <span class="nf">def</span> <span class="nf">produceStream</span><span class="o">(</span><span class="n">start</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">end</span><span class="k">:</span> <span class="kt">Double</span><span class="o">)</span><span class="k">:</span> <span class="kt">fs2.Stream</span><span class="o">[</span><span class="kt">IO</span>, <span class="kt">Int</span><span class="o">]</span>
+<span class="k">def</span> <span class="nf">produceStream</span><span class="o">(</span><span class="n">start</span><span class="k">:</span> <span class="kt">Int</span><span class="o">,</span> <span class="n">end</span><span class="k">:</span> <span class="kt">Double</span><span class="o">)</span><span class="k">:</span> <span class="kt">fs2.Stream</span><span class="o">[</span><span class="kt">IO</span>, <span class="kt">Int</span><span class="o">]</span>
 </code></pre></div></div>
 
 <p><code class="language-plaintext highlighter-rouge">produce</code> simply produces tasks as <code class="language-plaintext highlighter-rouge">int</code>, and <code class="language-plaintext highlighter-rouge">consume</code> just print characters. In each of the functions, I use <code class="language-plaintext highlighter-rouge">IO.sleep</code> to create some delay to simulate the real world non-blocking IO. They also print characters <code class="language-plaintext highlighter-rouge">P</code> (produce) or <code class="language-plaintext highlighter-rouge">C</code> (consume) (based on the width of terminal, some of the <code class="language-plaintext highlighter-rouge">C</code> outputs may be skipped to fit the width) when being invoked, so that we can have an intuitive view of how quick tasks are produced and consumed.</p>
@@ -4169,7 +4193,7 @@
 
 <p>Here we have two IOs run in parallel with <code class="language-plaintext highlighter-rouge">parSequence</code>: the first one creates a task stream by <code class="language-plaintext highlighter-rouge">produceStream</code>, and append <code class="language-plaintext highlighter-rouge">None</code> at the end so that the consumer knows it should end processing. Another stream <code class="language-plaintext highlighter-rouge">dequeueStream</code> gets the tasks from the queue then consumes it in parallel with <code class="language-plaintext highlighter-rouge">parEvalmap(config.batchSize)(consume)</code>.</p>
 
-<p>When run it with <code class="language-plaintext highlighter-rouge">sbt "run -n BlockingQueueApp"</code>, we can see it’s much faster when the consumer is faster or has the same speed as the producer. Especially when the consumer is slow, it prints multiple <code class="language-plaintext highlighter-rouge">P</code> at first, which means the producers doesn’t wait all the consumers to finish in order to produce tasks.</p>
+<p>When run it with <code class="language-plaintext highlighter-rouge">sbt "run -n BlockingQueueApp"</code>, we can see it’s much faster when the consumer is faster or has the same speed as the producer. Especially when the consumer is slow, it prints multiple <code class="language-plaintext highlighter-rouge">P</code> at first, which means the producer doesn’t wait all the consumers to finish in order to produce tasks.</p>
 
 <div id="cast-tmp6dx2heu_-ascii"></div>
 <script src="/static/js/asciinema-player.min.js"></script>
@@ -4201,21 +4225,21 @@
 <span class="o">}</span>
 </code></pre></div></div>
 
-<p>Here we started two dequeue stream at first. Now the whole program will block when run it with <code class="language-plaintext highlighter-rouge">sbt "run -b"</code> .</p>
+<p>Here we started two dequeue streams at first. Now the whole program will block when run it with <code class="language-plaintext highlighter-rouge">sbt "run -b"</code>.</p>
 
-<p>The lesson learned here is that there is a big risk if any operation blocks the whole thread in cats effect. Even it doesn’t block the whole program, it may make a whole thread unavailable.</p>
+<p>The lesson learned here is that there is a big risk if any operation blocks the whole thread in cats effect. Even if it doesn’t block the whole program, it may make a whole thread unavailable.</p>
 
-<p>Actually in <a href="https://typelevel.org/cats-effect/docs/thread-model">Cats Effect’s thread model</a>, there is another thread pool for blocking tasks if we mark it explicitly. In <a href="https://github.com/wb14123/scala-stream-demo/blob/master/src/main/scala/AsyncConsole.scala">AsyncConsole.scala</a>, I use this exact block mode to run console output so that it won’t effect other non blocking IO operations:</p>
+<p>Actually in <a href="https://typelevel.org/cats-effect/docs/thread-model">Cats Effect’s thread model</a>, there is another thread pool for blocking tasks if we mark it explicitly. In <a href="https://github.com/wb14123/scala-stream-demo/blob/master/src/main/scala/AsyncConsole.scala">AsyncConsole.scala</a>, I use this exact block mode to run console output so that it won’t affect other non blocking IO operations:</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">asyncPrintln</span><span class="o">(</span><span class="n">s</span><span class="k">:</span> <span class="kt">String</span><span class="o">)(</span>
     <span class="k">implicit</span> <span class="n">cs</span><span class="k">:</span> <span class="kt">ContextShift</span><span class="o">[</span><span class="kt">IO</span><span class="o">],</span> <span class="n">blocker</span><span class="k">:</span> <span class="kt">Blocker</span><span class="o">)</span><span class="k">:</span> <span class="kt">IO</span><span class="o">[</span><span class="kt">Unit</span><span class="o">]</span> <span class="k">=</span> <span class="nv">blocker</span><span class="o">.</span><span class="py">blockOn</span><span class="o">(</span><span class="nc">IO</span><span class="o">(</span><span class="nf">println</span><span class="o">(</span><span class="n">s</span><span class="o">)))</span>
 </code></pre></div></div>
 
-<p>However, if a thread is blocked in this pool, it will start another thread for the next operation. Based on the document, there is no limit on how many threads will be created. So if the producer is much slower than consumer, there will be more and more consume operations blocked on dequeue, so it will generate a large amount of threads, which is not ideal and eventually even will blow up the memory.</p>
+<p>However, if a thread is blocked in this pool, it will start another thread for the next operation. Based on the document, there is no limit on how many threads will be created. So if the producer is much slower than the consumer, there will be more and more consume operations blocked on dequeue, so it will generate a large number of threads, which is not ideal and eventually will even blow up the memory.</p>
 
 <h2 id="approach-3-use-cats-effect-friendly-queue">Approach 3: Use Cats Effect Friendly Queue</h2>
 
-<p>What if we have a queue that only block the dequeue <code class="language-plaintext highlighter-rouge">IO</code> when empty instead of blocking the whole thread? Luckily, FS2 provides such a queue. (Cats Effect 3.x also provides such a queue). The implementation is basically the same as above (code in <a href="https://github.com/wb14123/scala-stream-demo/blob/master/src/main/scala/StreamQueueApp.scala">StreamQueueApp.scala</a>):</p>
+<p>What if we have a queue that only blocks the dequeue <code class="language-plaintext highlighter-rouge">IO</code> when empty instead of blocking the whole thread? Luckily, FS2 provides such a queue. (Cats Effect 3.x also provides such a queue). The implementation is basically the same as above (code in <a href="https://github.com/wb14123/scala-stream-demo/blob/master/src/main/scala/StreamQueueApp.scala">StreamQueueApp.scala</a>):</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">fs2.concurrent.Queue</span>
 
@@ -4286,9 +4310,9 @@
 <span class="o">}</span>
 </code></pre></div></div>
 
-<p>It has 2 concurrent producers but in theory you can create as many as you want, just be careful with the parameters of <code class="language-plaintext highlighter-rouge">produceStream</code>.</p>
+<p>It has 2 concurrent producers, but in theory you can create as many as you want, just be careful with the parameters of <code class="language-plaintext highlighter-rouge">produceStream</code>.</p>
 
-<p>If you run this with <code class="language-plaintext highlighter-rouge">sbt "run -n ConcurrentProduceQueueApp"</code>, you can find the performance is much better with slower producer. However, with the help of fs2 library, we can make the code cleaner without depends on any queue explicitly. Here is what I did in <a href="https://github.com/wb14123/scala-stream-demo/blob/master/src/main/scala/ConcurrentProducerApp.scala">ConcurrentProducerApp.scala</a>:</p>
+<p>If you run this with <code class="language-plaintext highlighter-rouge">sbt "run -n ConcurrentProduceQueueApp"</code>, you can find the performance is much better with a slower producer. However, with the help of the fs2 library, we can make the code cleaner without depending on any queue explicitly. Here is what I did in <a href="https://github.com/wb14123/scala-stream-demo/blob/master/src/main/scala/ConcurrentProducerApp.scala">ConcurrentProducerApp.scala</a>:</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">work</span><span class="o">()</span><span class="k">:</span> <span class="kt">IO</span><span class="o">[</span><span class="kt">Unit</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
   <span class="nv">fs2</span><span class="o">.</span><span class="py">Stream</span><span class="o">.</span><span class="py">emits</span><span class="o">(</span><span class="nc">Range</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">produceParallelism</span><span class="o">))</span>
@@ -4305,7 +4329,7 @@
 
 <h2 id="more">More</h2>
 
-<p>All the approaches above other than the first one uses a queue either implicitly or explicitly. However, under high parallelism and load, every job operating on a single queue may makes this queue a bottleneck. In this case, there is a <a href="https://en.wikipedia.org/wiki/Work_stealing">work stealing</a> algorithm that each consumers can has its own queue, and whenever a consumer’s queue is empty, it steal some tasks from another one. But it’s a little bit complex and unnecessary if the load is not so high, so I will not cover it in this article.</p>
+<p>All the approaches above other than the first one use a queue either implicitly or explicitly. However, under high parallelism and load, every job operating on a single queue may make this queue a bottleneck. In this case, there is a <a href="https://en.wikipedia.org/wiki/Work_stealing">work stealing</a> algorithm where each consumer can have its own queue, and whenever a consumer’s queue is empty, it steals some tasks from another one. But it’s a little bit complex and unnecessary if the load is not so high, so I will not cover it in this article.</p>
 
 <h2 id="test-results">Test Results</h2>
 

@@ -300,7 +300,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong about Recommendation System <span class="publish-year">(2020)</span></a>
+        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong About Recommendation System <span class="publish-year">(2020)</span></a>
         
       
 
@@ -648,6 +648,30 @@
   
     <div class="index-intend">
   
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2025-08-13-Why-Consensus-Shortcuts-Fail.html">The Danger of Half-Implementing Raft: Why Consensus Shortcuts Fail <span class="publish-year">(2025)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
 
     <div class="index-entry index-index">
       
@@ -744,7 +768,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster <span class="publish-year">(2023)</span></a>
+        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Available Cluster <span class="publish-year">(2023)</span></a>
         
       
 
@@ -768,7 +792,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Available Cluster <span class="publish-year">(2025)</span></a>
+        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Availability Cluster <span class="publish-year">(2025)</span></a>
         
       
 
@@ -4032,31 +4056,31 @@
 
   <p><a href="https://github.com/wb14123/scala2grpc">Scala2grpc</a> is a library and SBT plugin I wrote so that you can integrate gRPC to Scala code in a non-invasive way. In a previous <a href="/2022-05-02-A-Library-to-Make-It-Easier-to-Use-Scala-with-GRPC.html">blog post</a>, I talked about the motivation behind it.</p>
 
-<p>The library requires each service method to return Cats Effect’s <code class="language-plaintext highlighter-rouge">IO</code> or fs2 stream. However, it’s still using Cats Effect 2.x version. There are big changes in Cats Effect 3 and almost all up to date libraries already support it. So it’s time to migrate it to Cats Effect 3 as well.</p>
+<p>The library requires each service method to return Cats Effect’s <code class="language-plaintext highlighter-rouge">IO</code> or fs2 stream. However, it’s still using Cats Effect 2.x version. There are big changes in Cats Effect 3 and almost all up-to-date libraries already support it. So it’s time to migrate it to Cats Effect 3 as well.</p>
 
 <h2 id="replace-akka-grpc-with-fs2-grpc">Replace Akka gRPC with fs2-grpc</h2>
 
 <p>This library was using <a href="https://doc.akka.io/docs/akka-grpc/current/index.html">akka-grpc</a>. But I want to replace it for a few reasons:</p>
 
 <ul>
-  <li>It uses <a href="https://github.com/krasserm/streamz">streamz</a> to convert between Akka streams and fs2 streams. This library doesn’t support Cats Effect 3 and hasn’t been updated for a while. This is the biggest reason that I need to migrate from akka immediately.</li>
-  <li>Akka changed its open source license to a very expensive one which I didn’t know at the time writing this library. Even the license doesn’t cost anything if the revenue doesn’t reach a certain point, I don’t want it to be a liability.</li>
-  <li>It’s good to have a gRPC library that supports for Cats Effect and fs2 streams natively.</li>
+  <li>It uses <a href="https://github.com/krasserm/streamz">streamz</a> to convert between Akka streams and fs2 streams. This library doesn’t support Cats Effect 3 and hasn’t been updated for a while. This is the biggest reason that I need to migrate from Akka immediately.</li>
+  <li>Akka changed its open source license to a very expensive one which I didn’t know at the time of writing this library. Even though the license doesn’t cost anything if the revenue doesn’t reach a certain point, I don’t want it to be a liability.</li>
+  <li>It’s good to have a gRPC library that supports Cats Effect and fs2 streams natively.</li>
 </ul>
 
-<p>So in the newer version, I replaced Akka gRPC with <a href="https://github.com/typelevel/fs2-grpc">fs2-grpc</a>, a library under Typelevel umbrella and natively supports Cats Effect and fs2. The document is not as good and I spent quite some time to figure out how to actually use it, but I’m happy it finally worked out.</p>
+<p>So in the newer version, I replaced Akka gRPC with <a href="https://github.com/typelevel/fs2-grpc">fs2-grpc</a>, a library under the Typelevel umbrella that natively supports Cats Effect and fs2. The documentation is not as good and I spent quite some time to figure out how to actually use it, but I’m happy it finally worked out.</p>
 
 <h2 id="add-hooks-to-grpc-calls">Add Hooks to gRPC Calls</h2>
 
-<p>In the previous version of Scala2grpc, there is a feature to log every request. But it is a pretty hacky implementation: I just throw the logging logic into the generated code. Since this version is a breaking change, it’s a good opportunity to revisit the approach and see how to add generic hooks before and after each gRPC calls.</p>
+<p>In the previous version of Scala2grpc, there is a feature to log every request. But it is a pretty hacky implementation: I just throw the logging logic into the generated code. Since this version is a breaking change, it’s a good opportunity to revisit the approach and see how to add generic hooks before and after each gRPC call.</p>
 
-<p>My implementation wraps the gRPC response into a context in the generated code. The context includes the response with type of <code class="language-plaintext highlighter-rouge">IO</code> or <code class="language-plaintext highlighter-rouge">fs2.Stream</code>. Because of the referential transparency, you can take the response and add hooks before or after it. More detailed document is in <a href="https://github.com/wb14123/scala2grpc#4-optional-define-custom-grpc-hook">this section of readme</a>.</p>
+<p>My implementation wraps the gRPC response into a context in the generated code. The context includes the response with type of <code class="language-plaintext highlighter-rouge">IO</code> or <code class="language-plaintext highlighter-rouge">fs2.Stream</code>. Because of the referential transparency, you can take the response and add hooks before or after it. More detailed documentation is in <a href="https://github.com/wb14123/scala2grpc#4-optional-define-custom-grpc-hook">this section of readme</a>.</p>
 
 <h2 id="non-invasive-nature-of-the-library">Non-invasive Nature of the Library</h2>
 
-<p>The migration brings lots of breaking changes, so it is a good test for the non-invasive nature of the library. I have 2 side projects that are using this library and I migrated one of them recently. Since it’s also using Cats Effect, there are some migration steps unrelated to this library. But regarding of the related parts, the migration process is very smooth: I don’t need to change any implementation code of the services. The generated gPRC protocol files are also not changed either. The only thing I need to change is the single object that implements <code class="language-plaintext highlighter-rouge">GRPCGenerator</code> to <a href="https://github.com/wb14123/scala2grpc#2-create-an-object-to-implement-grpcgenerator">pass in some new parameters</a>. It is impossible if I used akka gRPC directly and changed it to fs2-grpc since their interface are all different.</p>
+<p>The migration brings lots of breaking changes, so it is a good test for the non-invasive nature of the library. I have 2 side projects that are using this library and I migrated one of them recently. Since it’s also using Cats Effect, there are some migration steps unrelated to this library. But regarding the related parts, the migration process is very smooth: I don’t need to change any implementation code of the services. The generated gRPC protocol files are also not changed either. The only thing I need to change is the single object that implements <code class="language-plaintext highlighter-rouge">GRPCGenerator</code> to <a href="https://github.com/wb14123/scala2grpc#2-create-an-object-to-implement-grpcgenerator">pass in some new parameters</a>. It would be impossible if I used Akka gRPC directly and changed it to fs2-grpc since their interfaces are all different.</p>
 
-<p>I’m so happy with the result: it adds gRPC to pure Scala code so easily without ever touch it. It saves me so much time to build a service and keeps the code clean at the same time. It continue to be a must have for my future Scala gRPC projects.</p>
+<p>I’m so happy with the result: it adds gRPC to pure Scala code so easily without ever touching it. It saves me so much time to build a service and keeps the code clean at the same time. It continues to be a must have for my future Scala gRPC projects.</p>
 
 </article>
 

@@ -300,7 +300,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong about Recommendation System <span class="publish-year">(2020)</span></a>
+        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong About Recommendation System <span class="publish-year">(2020)</span></a>
         
       
 
@@ -648,6 +648,30 @@
   
     <div class="index-intend">
   
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2025-08-13-Why-Consensus-Shortcuts-Fail.html">The Danger of Half-Implementing Raft: Why Consensus Shortcuts Fail <span class="publish-year">(2025)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
 
     <div class="index-entry index-index">
       
@@ -744,7 +768,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster <span class="publish-year">(2023)</span></a>
+        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Available Cluster <span class="publish-year">(2023)</span></a>
         
       
 
@@ -768,7 +792,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Available Cluster <span class="publish-year">(2025)</span></a>
+        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Availability Cluster <span class="publish-year">(2025)</span></a>
         
       
 
@@ -4032,22 +4056,22 @@
 
   <p>I’ve written yet another RSS Reader called RSS Brain recently. If you just want to take a quick look at the main features and try it, <a href="https://rssbrain.com/">the official website</a> is the best place to start. Though most of the main features are already finished and I’ve used it personally for a few months, be aware it’s still in beta stage and hasn’t been tested by a larger group yet. So please let me know if you run into any issues. I will open source it as well in the future (for non commercial usage) but it’s not ready yet for now.</p>
 
-<p>In this article, I’ll give an introduction to the motivation behind it. You may have a better reason to try it after read this.</p>
+<p>In this article, I’ll give an introduction to the motivation behind it. You may have a better reason to try it after reading this.</p>
 
-<p>RSS is just a protocol to aggregate news. But how to organize them depends on the RSS reader.  While lots of RSS readers have the basic organization features like folders to manage the feeds, it is not enough. Not a lot of them have taken new technologies from fields like information retrieval and machine learning. Even a few them have done that, they are using some complex and black box algorithms which we don’t know what is going on behind the sense. I’ve written <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">an article</a> that talks about the harm of letting black box algorithm decide what we read. So in RSS Brain, I use transparent algorithms to help organize the feeds and articles without use clicks or read time as the optimization target, so that we can have a good understanding about why it behaves in that way, in that way we can decide whether it’s good for us or not.</p>
+<p>RSS is just a protocol to aggregate news. But how to organize them depends on the RSS reader.  While lots of RSS readers have the basic organization features like folders to manage the feeds, it is not enough. Not a lot of them have taken new technologies from fields like information retrieval and machine learning. Even a few of them have done that, they are using some complex and black box algorithms which we don’t know what is going on behind the scenes. I’ve written <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">an article</a> that talks about the harm of letting black box algorithm decide what we read. So in RSS Brain, I use transparent algorithms to help organize the feeds and articles without use clicks or read time as the optimization target, so that we can have a good understanding about why it behaves in that way, and in that way we can decide whether it’s good for us or not.</p>
 
 <p>Here are some pain points in the traditional RSS readers and how I solve them in RSS Brain with transparent algorithms.</p>
 
 <h2 id="1-traditional-rss-readers-dont-rank-articles-by-weight">1. Traditional RSS Readers Don’t Rank Articles by Weight</h2>
 
-<p>The mainstream RSS protocol don’t have a field to indicate how important an article is in a feed. It is very different from news papers or news websites, which have head line for the most important news. When it comes to RSS, there is no difference between the importance of the articles. It is a smaller problem when there are not so many articles in a feed, but for feeds that have lots of articles, or forums like Reddit and Hacker News, that is a very big problem.</p>
+<p>The mainstream RSS protocol doesn’t have a field to indicate how important an article is in a feed. It is very different from news papers or news websites, which have headlines for the most important news. When it comes to RSS, there is no difference between the importance of the articles. It is a smaller problem when there are not so many articles in a feed, but for feeds that have lots of articles, or forums like Reddit and Hacker News, that is a very big problem.</p>
 
-<p>Reddit and Hacker News sort the articles by both votes and timeline. The algorithm is relatively transparent (although less and less transparent in the case of Reddit). Some people don’t want the rank to be effected by other users at all, but I’m okay for other this kind of ranking for these reasons:</p>
+<p>Reddit and Hacker News sort the articles by both votes and timeline. The algorithm is relatively transparent (although less and less transparent in the case of Reddit). Some people don’t want the rank to be affected by other users at all, but I’m okay with this kind of ranking for these reasons:</p>
 
 <ol>
   <li>The posts are just too many to read them all without some kind of priority.</li>
   <li>The community is part of the forum. If I like a subreddit, it means I trust the community and mods to promote high quality posts. Otherwise I will just not subscribe to it.</li>
-  <li>If you think about it, the traditional media also rank news for you, even khough it is selected by more professional people. But like I said in point 2, if you trust the community of a subreddit, then it doesn’t make a big difference.</li>
+  <li>If you think about it, the traditional media also rank news for you, even though it is selected by more professional people. But like I said in point 2, if you trust the community of a subreddit, then it doesn’t make a big difference.</li>
 </ol>
 
 <h3 id="11-ranking-algorithm">1.1 Ranking Algorithm</h3>
@@ -4060,9 +4084,9 @@
 
 \[S = S_{vote} + S_{time}\]
 
-<p>Which <code class="language-plaintext highlighter-rouge">v</code> means how many votes this article has. <code class="language-plaintext highlighter-rouge">time</code> means when this article is posted. <code class="language-plaintext highlighter-rouge">C</code> is a constant number that indicate how much wait time contributes to the whole score. I’m using 12.5 hours in my implementation.</p>
+<p>Where <code class="language-plaintext highlighter-rouge">v</code> means how many votes this article has. <code class="language-plaintext highlighter-rouge">time</code> means when this article is posted. <code class="language-plaintext highlighter-rouge">C</code> is a constant number that indicates how much time contributes to the whole score. I’m using 12.5 hours in my implementation.</p>
 
-<p>For \(S_{vote}\), it means the first 10 votes will get the most weights, the next 100 votes has the same weight as the first 10 votes, and so on. It’s not a perfect algorithm but works good enough, and is easy to implement. Most importantly it’s very easy to be understood.</p>
+<p>For \(S_{vote}\), it means the first 10 votes will get the most weight, the next 100 votes have the same weight as the first 10 votes, and so on. It’s not a perfect algorithm but works well enough, and is easy to implement. Most importantly it’s very easy to be understood.</p>
 
 <p>Once you have the score, you have the option to sort the articles in a folder or feed based on score instead of time.</p>
 
@@ -4070,41 +4094,41 @@
 
 <h3 id="12-data-source">1.2 Data Source</h3>
 
-<p>Another obvious problem is how to get the votes. The traditional RSS protocols don’t have a specific field for vote count, luckily atom protocol has the ability to extend it with custom tags. So RSS Brain will parse these tags in <code class="language-plaintext highlighter-rouge">&lt;entry&gt;</code> tag if exists: <code class="language-plaintext highlighter-rouge">&lt;*:comments&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;*:upvotes&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;*:downvotes&gt;</code>. <code class="language-plaintext highlighter-rouge">*</code> can be any namespace. I’ve added <a href="https://docs.rsshub.app/en/joinus/quick-start.html#submit-new-rss-rule-code-the-script-produce-rss-feed-interactions">these fields</a> to a very popular RSS generator <a href="https://rsshub.app/">RSSHub</a> in namespace <code class="language-plaintext highlighter-rouge">RSSHub</code>. So if someone include these fields when implement a RSS, RSS Brain will be able to parse it and use <code class="language-plaintext highlighter-rouge">upvotes - downvotes</code> as the votes. If they are not available, RSS Brain will try to use <code class="language-plaintext highlighter-rouge">comments</code> instead.</p>
+<p>Another obvious problem is how to get the votes. The traditional RSS protocols don’t have a specific field for vote count, luckily atom protocol has the ability to extend it with custom tags. So RSS Brain will parse these tags in <code class="language-plaintext highlighter-rouge">&lt;entry&gt;</code> tag if exists: <code class="language-plaintext highlighter-rouge">&lt;*:comments&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;*:upvotes&gt;</code>, <code class="language-plaintext highlighter-rouge">&lt;*:downvotes&gt;</code>. <code class="language-plaintext highlighter-rouge">*</code> can be any namespace. I’ve added <a href="https://docs.rsshub.app/en/joinus/quick-start.html#submit-new-rss-rule-code-the-script-produce-rss-feed-interactions">these fields</a> to a very popular RSS generator <a href="https://rsshub.app/">RSSHub</a> in namespace <code class="language-plaintext highlighter-rouge">RSSHub</code>. So if someone includes these fields when implementing RSS, RSS Brain will be able to parse it and use <code class="language-plaintext highlighter-rouge">upvotes - downvotes</code> as the votes. If they are not available, RSS Brain will try to use <code class="language-plaintext highlighter-rouge">comments</code> instead.</p>
 
-<p>Reddit and HackerNews are two of my main daily reading websites, and I believe it’s the same for many other people, so I also included an implementation to fetch the posts from Reddit and HackerNews JSON API. You can just input HackerNews or subreddit URL when add a new source, it will has an option to use the JSON feed when it tries to find the feeds. I know it’s not a very standard way, but it’s easier for me to implement rather than do it in RSSHub. Once there is a RSS implementation that contains the fields above, you have no trouble to use the RSS feed.</p>
+<p>Reddit and HackerNews are two of my main daily reading websites, and I believe it’s the same for many other people, so I also included an implementation to fetch the posts from Reddit and HackerNews JSON API. You can just input HackerNews or subreddit URL when adding a new source, it will have an option to use the JSON feed when it tries to find the feeds. I know it’s not a very standard way, but it’s easier for me to implement rather than do it in RSSHub. Once there is a RSS implementation that contains the fields above, you have no trouble to use the RSS feed.</p>
 
 <p>Since RSS Brain is parsing the tags in the RSS feed, for data sources other than forum, the RSS generator can also try to generate the votes in some way if necessary. For example, some score based on the article position of the website, the font size and so on. I haven’t done any experiment with it yet but I think it’s an interesting idea to explore.</p>
 
 <h2 id="2-filter-articles-with-search-terms">2. Filter Articles With Search Terms</h2>
 
-<p>Ranking the articles is one way to get the interested aritcles pop up. Another way is to filter the articles: sometimes we only care about a topic in a feed. In traditional RSS readers, there is no easy way to filter the topic out if there is no feed for that topic. In RSS Brain, you can define a search term on a folder, so that when you check the articles in this folder, it will only show the articles that matches the search term.</p>
+<p>Ranking the articles is one way to get the interesting articles to pop up. Another way is to filter the articles: sometimes we only care about a topic in a feed. In traditional RSS readers, there is no easy way to filter the topic out if there is no feed for that topic. In RSS Brain, you can define a search term on a folder, so that when you check the articles in this folder, it will only show the articles that match the search term.</p>
 
 <p>For example, you’ve got a few news feed, but only care reports about the war between Ukraine and Russia, then you can just set the search term as <code class="language-plaintext highlighter-rouge">"Ukraine" AND "Russia"</code> on the folder and enable search filter. After that, when you click on the folder to see articles, it will only show the articles about those news.</p>
 
 <p><img src="https://www.rssbrain.com/images/filter_folder.png" alt="filter folder" /></p>
 
-<p>By the way, you can also just search in a folder or source. This is very useful for me to search some news, since the search quality of search engineers for some news is very bad, especially for Chinese news, which very suspicious news agencies are always shown in the top results.</p>
+<p>By the way, you can also just search in a folder or source. This is very useful for me to search some news, since the search quality of search engines for some news is very bad, especially for Chinese news, where very suspicious news agencies are always shown in the top results.</p>
 
 <h2 id="3-show-related-articles">3. Show Related Articles</h2>
 
-<p>This is a feature I found to be pretty interesting while Google News included it. But Google News selects the news source for you. In RSS Brain, you get get related articles from the feeds you subscribed, so that you can decide which sources are valuable to you instead of letting a big corp decide that.</p>
+<p>This is a feature I found to be pretty interesting when Google News included it. But Google News selects the news source for you. In RSS Brain, you can get related articles from the feeds you subscribed to, so that you can decide which sources are valuable to you instead of letting a big corp decide that.</p>
 
 <p>Currently the implementation only has the ability to select from all your subscribed feeds. But even with this implementation, I find it is very useful in some ways:</p>
 
 <ul>
   <li>When I check the news, the related articles will show a post related to this in forums like Reddit and HackerNews, so that I can check other people’s opinion.</li>
   <li>I can compare the report coverage from both left and right news agencies, to get a whole picture. I don’t use this feature a lot myself, but I know a lot of people like that and there are some popular apps do just that.</li>
-  <li>I usually read news from a high quality source. But if I find some news to be interesting, I’d like to read more coverage on that. Those coverage doesn’t need to be high quality but might have more details.</li>
+  <li>I usually read news from a high quality source. But if I find some news to be interesting, I’d like to read more coverage on that. That coverage doesn’t need to be high quality but might have more details.</li>
 </ul>
 
-<p>I have plan to extend this feature. (<em>Update: this feature has been implemented. Check the <a href="/2022-12-03-How-RSS-Brain-Shows-Related-Articles.html">blog post here</a>.</em>) It will be much better after that: RSS Brain will support related articles groups, so that you can show related articles not only from all the subscriptions, but also from the folders of your choice. So you can configure it to show related forum posts in one group, left/right news coverage on another group, and so on. I’ll also implement a feature to show related articles from a time range, so that it can filter the matches based on time, to make the news more related if you want.</p>
+<p>I have plans to extend this feature. (<em>Update: this feature has been implemented. Check the <a href="/2022-12-03-How-RSS-Brain-Shows-Related-Articles.html">blog post here</a>.</em>) It will be much better after that: RSS Brain will support related articles groups, so that you can show related articles not only from all the subscriptions, but also from the folders of your choice. So you can configure it to show related forum posts in one group, left/right news coverage on another group, and so on. I’ll also implement a feature to show related articles from a time range, so that it can filter the matches based on time, to make the news more related if you want.</p>
 
 <h2 id="4-just-want-to-write-something">4. Just Want to Write Something</h2>
 
 <p>Last but not least, I just want to write something and feel the happiness of coding. I really enjoy myself a lot while writing this project: coding, choosing the tech stack to use, setting up high availability cluster and database, and so on. Everything is so elegant because I can decide how to do it.</p>
 
-<p>While enjoy myself during the development of the project, I find the product is pretty useful as well. So I decided to share it, and if it benefits more people I’m happier. As I said at the beginning of the article, I’ll open source the whole project and allow non commercial usages when it’s ready. But at the mean time, you can pay a monthly fee to use the software. The reason of this payment mode is two fold: I don’t want this software to be flooded with terrible ads, but I still need some revenue to keep the infrastructure running (for both hardware cost and my time). So I want to set some barriers at first to limit the user base, so that the users can have a better experience. Hope you enjoy this app and let me know if you run into any issues or have any question.</p>
+<p>While enjoying myself during the development of the project, I find the product is pretty useful as well. So I decided to share it, and if it benefits more people I’m happier. As I said at the beginning of the article, I’ll open source the whole project and allow non commercial usages when it’s ready. But in the meantime, you can pay a monthly fee to use the software. The reason for this payment mode is twofold: I don’t want this software to be flooded with terrible ads, but I still need some revenue to keep the infrastructure running (for both hardware cost and my time). So I want to set some barriers at first to limit the user base, so that the users can have a better experience. Hope you enjoy this app and let me know if you run into any issues or have any question.</p>
 
 </article>
 

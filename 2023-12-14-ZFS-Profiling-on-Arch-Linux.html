@@ -300,7 +300,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong about Recommendation System <span class="publish-year">(2020)</span></a>
+        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong About Recommendation System <span class="publish-year">(2020)</span></a>
         
       
 
@@ -648,6 +648,30 @@
   
     <div class="index-intend">
   
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2025-08-13-Why-Consensus-Shortcuts-Fail.html">The Danger of Half-Implementing Raft: Why Consensus Shortcuts Fail <span class="publish-year">(2025)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
 
     <div class="index-entry index-index">
       
@@ -744,7 +768,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster <span class="publish-year">(2023)</span></a>
+        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Available Cluster <span class="publish-year">(2023)</span></a>
         
       
 
@@ -768,7 +792,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Available Cluster <span class="publish-year">(2025)</span></a>
+        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Availability Cluster <span class="publish-year">(2025)</span></a>
         
       
 
@@ -4030,9 +4054,9 @@
     
   </header>
 
-  <p>I bought a new video game recently but found <code class="language-plaintext highlighter-rouge">z_rd_int</code> processes took almost all the CPU time when I was playing it. That doesn’t make much sense to me since I install games on a non compressed ZFS dataset. Even though I don’t have a powerful CPU, I don’t expect ZFS to use all of them and only reads about 60-70MiB/s from each of the NVME SSDs. To double check, I used <code class="language-plaintext highlighter-rouge">iostat -x 1</code> to confirm the iowait is very low. So disk IO is not the bottleneck.</p>
+  <p>I bought a new video game recently but found <code class="language-plaintext highlighter-rouge">z_rd_int</code> processes took almost all the CPU time when I was playing it. That doesn’t make much sense to me since I install games on a non-compressed ZFS dataset. Even though I don’t have a powerful CPU, I don’t expect ZFS to use all of them and only read about 60-70MiB/s from each of the NVMe SSDs. To double-check, I used <code class="language-plaintext highlighter-rouge">iostat -x 1</code> to confirm the iowait is very low. So disk IO is not the bottleneck.</p>
 
-<p>Without finding any root cause from Internet, I decide to do some profiling by myself. From OpenZFS’ Github issues, people are using <a href="https://perf.wiki.kernel.org/index.php/Main_Page">perf</a> to do profiling. It is trivial enough to do it from a glance. But let <code class="language-plaintext highlighter-rouge">perf</code> showing debug symbols for ZFS spent me a lot of time. So in this article, I will document the steps to enable debug symbols for ZFS and hopefully it can help more people that facing difficulties to do it. After that, I will continue with how do I find the root cause and the solution. If you’ve seen my previous blog <a href="/2023-09-30-A-Boring-JVM-Memory-Profiling-Story.html">A Boring JVM Memory Profiling Story</a>, this is an even more boring profiling story. But the tool set is important. Use them efficiently and hopefully all the profiling stories become boring.</p>
+<p>Without finding any root cause from the Internet, I decided to do some profiling by myself. From OpenZFS’ GitHub issues, people are using <a href="https://perf.wiki.kernel.org/index.php/Main_Page">perf</a> to do profiling. It is trivial enough to do it from a glance. But letting <code class="language-plaintext highlighter-rouge">perf</code> show debug symbols for ZFS spent me a lot of time. So in this article, I will document the steps to enable debug symbols for ZFS and hopefully it can help more people that are facing difficulties doing it. After that, I will continue with how I find the root cause and the solution. If you’ve seen my previous blog <a href="/2023-09-30-A-Boring-JVM-Memory-Profiling-Story.html">A Boring JVM Memory Profiling Story</a>, this is an even more boring profiling story. But the tool set is important. Use them efficiently and hopefully all the profiling stories become boring.</p>
 
 <h2 id="1-enable-debug-info-for-zfs">1. Enable Debug Info for ZFS</h2>
 
@@ -4041,16 +4065,16 @@
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2.95%  [kernel]                                        [k] entry_SYSCALL_64
 </code></pre></div></div>
 
-<p>But for some other processes like zfs ones, it only has an address like this:</p>
+<p>But for some other processes like ZFS ones, it only has an address like this:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2.65%  [zfs]                                           [k] 0x00000000002990cf
 </code></pre></div></div>
 
-<p>This is because perf cannot find debug info for zfs module. Let’s enable it now.</p>
+<p>This is because perf cannot find debug info for the ZFS module. Let’s enable it now.</p>
 
 <h3 id="11-use-dkms-package">1.1 Use DKMS Package</h3>
 
-<p>First we need to use <a href="https://wiki.archlinux.org/title/Dynamic_Kernel_Module_Support">DKMS</a> package instead a pre compiled one so that we can control the compiling behaviour when build the zfs kernel module. In Arch Linux, the package name is <code class="language-plaintext highlighter-rouge">zfs-dkms</code> either in AUR or <a href="https://github.com/archzfs/archzfs">archzfs</a> repo. Be aware packages are different from those different repos even they have the same name. Personally I like archzfs repo more since it’s more well maintained and has better dependency management.</p>
+<p>First we need to use <a href="https://wiki.archlinux.org/title/Dynamic_Kernel_Module_Support">DKMS</a> package instead of a pre-compiled one so that we can control the compiling behavior when building the ZFS kernel module. In Arch Linux, the package name is <code class="language-plaintext highlighter-rouge">zfs-dkms</code> either in AUR or <a href="https://github.com/archzfs/archzfs">archzfs</a> repo. Be aware packages are different from those different repos even though they have the same name. Personally I like the archzfs repo more since it’s more well maintained and has better dependency management.</p>
 
 <h3 id="12-enable-debuginfo-flags">1.2 Enable debuginfo Flags</h3>
 
@@ -4068,15 +4092,15 @@
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>unzstd /lib/modules/&lt;your kernel version&gt;/updates/dkms/zfs.ko.zst
 </code></pre></div></div>
 
-<p>Now you should be able to see zfs symbols in <code class="language-plaintext highlighter-rouge">perf top</code>.</p>
+<p>Now you should be able to see ZFS symbols in <code class="language-plaintext highlighter-rouge">perf top</code>.</p>
 
 <p>Remember to cleanup the files after profiling.</p>
 
-<p>If you care about the reason behind these changes, continue reading. Otherwise you can skip the remaining of this section.</p>
+<p>If you care about the reason behind these changes, continue reading. Otherwise you can skip the rest of this section.</p>
 
 <h4 id="what-is-etcsysconfigzfs">What is <code class="language-plaintext highlighter-rouge">/etc/sysconfig/zfs</code>?</h4>
 
-<p>The package <code class="language-plaintext highlighter-rouge">zfs-dkms</code> only installs the code that will be compiled by dkms to <code class="language-plaintext highlighter-rouge">/usr/src/zfs-&lt;zfs-version&gt;</code>. (I learned this by reading <code class="language-plaintext highlighter-rouge">PKGBUILD</code> of the aur package). Then when <code class="language-plaintext highlighter-rouge">dkms</code> commands are run, <code class="language-plaintext highlighter-rouge">dkms</code> copies the files to <code class="language-plaintext highlighter-rouge">/var/lib/dkms/zfs/&lt;zfs-version&gt;/build</code> to build it and then install the built ko files to <code class="language-plaintext highlighter-rouge">/lib/modules/&lt;your kernel version&gt;/updates/dkms</code>. So in order to build zfs module with debug symbols, we need to let dkms uses correct compile flags.</p>
+<p>The package <code class="language-plaintext highlighter-rouge">zfs-dkms</code> only installs the code that will be compiled by dkms to <code class="language-plaintext highlighter-rouge">/usr/src/zfs-&lt;zfs-version&gt;</code>. (I learned this by reading <code class="language-plaintext highlighter-rouge">PKGBUILD</code> of the AUR package). Then when <code class="language-plaintext highlighter-rouge">dkms</code> commands are run, <code class="language-plaintext highlighter-rouge">dkms</code> copies the files to <code class="language-plaintext highlighter-rouge">/var/lib/dkms/zfs/&lt;zfs-version&gt;/build</code> to build it and then install the built ko files to <code class="language-plaintext highlighter-rouge">/lib/modules/&lt;your kernel version&gt;/updates/dkms</code>. So in order to build the ZFS module with debug symbols, we need to let dkms use the correct compile flags.</p>
 
 <p>Under <code class="language-plaintext highlighter-rouge">/usr/src/zfs-&lt;zfs-version&gt;</code>, there is <code class="language-plaintext highlighter-rouge">dkms.conf</code> that tells DKMS how to use the source code to build and install modules. We can find some key information there:</p>
 
@@ -4123,9 +4147,9 @@
   --enable-debuginfo      Force generation of debuginfo [default=no]
 </code></pre></div></div>
 
-<p>So if those two flags are enabled, the zfs module should be built with debug info. The code above checks <code class="language-plaintext highlighter-rouge">ZFS_DKMS_ENABLE_DEBUG</code> and <code class="language-plaintext highlighter-rouge">ZFS_DKMS_ENABLE_DEBUGINFO</code> in file <code class="language-plaintext highlighter-rouge">${PACKAGE_CONFIG}</code>. If they are <code class="language-plaintext highlighter-rouge">y</code> or <code class="language-plaintext highlighter-rouge">yes</code>, the corresponding flags are enabled. At the beginning of <code class="language-plaintext highlighter-rouge">dkms.conf</code> we can find <code class="language-plaintext highlighter-rouge">PACKAGE_CONFIG</code> is defined as <code class="language-plaintext highlighter-rouge">/etc/sysconfig/zfs</code>.</p>
+<p>So if those two flags are enabled, the ZFS module should be built with debug info. The code above checks <code class="language-plaintext highlighter-rouge">ZFS_DKMS_ENABLE_DEBUG</code> and <code class="language-plaintext highlighter-rouge">ZFS_DKMS_ENABLE_DEBUGINFO</code> in file <code class="language-plaintext highlighter-rouge">${PACKAGE_CONFIG}</code>. If they are <code class="language-plaintext highlighter-rouge">y</code> or <code class="language-plaintext highlighter-rouge">yes</code>, the corresponding flags are enabled. At the beginning of <code class="language-plaintext highlighter-rouge">dkms.conf</code> we can find <code class="language-plaintext highlighter-rouge">PACKAGE_CONFIG</code> is defined as <code class="language-plaintext highlighter-rouge">/etc/sysconfig/zfs</code>.</p>
 
-<p>However, only defining <code class="language-plaintext highlighter-rouge">ZFS_DKMS_ENABLE_DEBUG</code> and <code class="language-plaintext highlighter-rouge">ZFS_DKMS_ENABLE_DEBUGINFO</code> is not enough. I learnt it the hard way. Checking <code class="language-plaintext highlighter-rouge">dkms.conf</code> more closely, we can see these code below:</p>
+<p>However, only defining <code class="language-plaintext highlighter-rouge">ZFS_DKMS_ENABLE_DEBUG</code> and <code class="language-plaintext highlighter-rouge">ZFS_DKMS_ENABLE_DEBUGINFO</code> is not enough. I learned it the hard way. Checking <code class="language-plaintext highlighter-rouge">dkms.conf</code> more closely, we can see this code below:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>STRIP[0]<span class="o">=</span><span class="s2">"</span><span class="se">\$</span><span class="s2">(
   [[ -r </span><span class="se">\$</span><span class="s2">{PACKAGE_CONFIG} ]] </span><span class="se">\\</span><span class="s2">
@@ -4145,7 +4169,7 @@
        array.
 </code></pre></div></div>
 
-<p>If <code class="language-plaintext highlighter-rouge">STRIP</code> is not set to <code class="language-plaintext highlighter-rouge">no</code>, <code class="language-plaintext highlighter-rouge">dkms</code> will stripe the debug info! So we also need to set <code class="language-plaintext highlighter-rouge">ZFS_DKMS_DISABLE_STRIP</code> in <code class="language-plaintext highlighter-rouge">/etc/sysconfig/zfs</code> to <code class="language-plaintext highlighter-rouge">y</code> or <code class="language-plaintext highlighter-rouge">yes</code> so that <code class="language-plaintext highlighter-rouge">STRIP[0]</code> will be <code class="language-plaintext highlighter-rouge">no</code>.</p>
+<p>If <code class="language-plaintext highlighter-rouge">STRIP</code> is not set to <code class="language-plaintext highlighter-rouge">no</code>, <code class="language-plaintext highlighter-rouge">dkms</code> will strip the debug info! So we also need to set <code class="language-plaintext highlighter-rouge">ZFS_DKMS_DISABLE_STRIP</code> in <code class="language-plaintext highlighter-rouge">/etc/sysconfig/zfs</code> to <code class="language-plaintext highlighter-rouge">y</code> or <code class="language-plaintext highlighter-rouge">yes</code> so that <code class="language-plaintext highlighter-rouge">STRIP[0]</code> will be <code class="language-plaintext highlighter-rouge">no</code>.</p>
 
 <h4 id="why-unzstd">Why unzstd?</h4>
 
@@ -4153,7 +4177,7 @@
 
 <h2 id="2-profiling-zfs">2. Profiling ZFS</h2>
 
-<p><code class="language-plaintext highlighter-rouge">perf top</code> can show the CPU usage for each function in real time. But in order to analysis it better, we can record it with <code class="language-plaintext highlighter-rouge">perf record -g -p &lt;pid&gt;</code>. It should generate <code class="language-plaintext highlighter-rouge">perf.data</code> file in the current directory. Press <code class="language-plaintext highlighter-rouge">Ctrl + C</code> to stop the recording and flush the file.</p>
+<p><code class="language-plaintext highlighter-rouge">perf top</code> can show the CPU usage for each function in real time. But in order to analyze it better, we can record it with <code class="language-plaintext highlighter-rouge">perf record -g -p &lt;pid&gt;</code>. It should generate a <code class="language-plaintext highlighter-rouge">perf.data</code> file in the current directory. Press <code class="language-plaintext highlighter-rouge">Ctrl + C</code> to stop the recording and flush the file.</p>
 
 <p>Then use <code class="language-plaintext highlighter-rouge">sudo perf report</code> to show the report of the recording. Mine is like this (press <code class="language-plaintext highlighter-rouge">+</code> to extend a row of interest in <code class="language-plaintext highlighter-rouge">perf report</code>):</p>
 
@@ -4206,7 +4230,7 @@ Children      Self  Command   Shared Object     Symbol
 
 <h2 id="3-find-root-cause">3. Find Root Cause</h2>
 
-<p>From the profiling report, we can easily see that the CPU is mostly used on decrypting the content on ZFS. That makes some sense because decryption do need CPU power. But there is no reason it uses so much CPU at that throughput. In fact found some performance issues related encryption and did something to rule out some causes:</p>
+<p>From the profiling report, we can easily see that the CPU is mostly used on decrypting the content on ZFS. That makes some sense because decryption does need CPU power. But there is no reason it uses so much CPU at that throughput. In fact, I found some performance issues related to encryption and did something to rule out some causes:</p>
 
 <ol>
   <li>I made sure the AES hardware acceleration is enabled for my CPU by checking <code class="language-plaintext highlighter-rouge">lscpu | grep aes</code>.</li>
@@ -4215,18 +4239,18 @@ Children      Self  Command   Shared Object     Symbol
 
 <p>That’s why I need the profiling to confirm where the bottleneck comes from.</p>
 
-<p>Even though the code path is related to decryption, the hotspot is at <code class="language-plaintext highlighter-rouge">kfpu_begin</code> and <code class="language-plaintext highlighter-rouge">kfpu_end</code>. I read the code and have totally no idea what they are doing. I asked ChatGPT and it explains to me that it’s saving and restoring FPU state. I don’t know if its answer is correct or not, but that at least gave me some direction to search issues. At last I found this Github issue <a href="https://github.com/openzfs/zfs/pull/9749">ICP: Improve AES-GCM performance</a>. It says exactly that there is performance issue with saving FPU state when doing encryption. And the PR improves it for AES-GCM algorithm. It states AES-CCM can benifit from similar fix but the performance improvement will not be as great. So in the discussion of the PR, they decide to change the default encryption algorithm to AES-GCM instead of AES-CCM.</p>
+<p>Even though the code path is related to decryption, the hotspot is at <code class="language-plaintext highlighter-rouge">kfpu_begin</code> and <code class="language-plaintext highlighter-rouge">kfpu_end</code>. I read the code and have totally no idea what they are doing. I asked ChatGPT and it explained to me that it’s saving and restoring FPU state. I don’t know if its answer is correct or not, but that at least gave me some direction to search for issues. At last I found this GitHub issue <a href="https://github.com/openzfs/zfs/pull/9749">ICP: Improve AES-GCM performance</a>. It says exactly that there is a performance issue with saving FPU state when doing encryption. And the PR improves it for the AES-GCM algorithm. It states AES-CCM can benefit from a similar fix but the performance improvement will not be as great. So in the discussion of the PR, they decided to change the default encryption algorithm to AES-GCM instead of AES-CCM.</p>
 
-<p>I <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">started use zfs</a> before this PR. So I checked the encryption algorithm on my system by <code class="language-plaintext highlighter-rouge">zfs get all &lt;dataset&gt; | grep encryption</code>. And it is indeed using AES-CCM. In order to confirm it is causing performance issue, I did some benchmark on AES-CCM, AES-GCM and not encrypted datasets.</p>
+<p>I <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">started using ZFS</a> before this PR. So I checked the encryption algorithm on my system by <code class="language-plaintext highlighter-rouge">zfs get all &lt;dataset&gt; | grep encryption</code>. And it is indeed using AES-CCM. In order to confirm it is causing a performance issue, I did some benchmarks on AES-CCM, AES-GCM and non-encrypted datasets.</p>
 
-<p>First, created the datasets:</p>
+<p>First, I created the datasets:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>zfs create <span class="nt">-o</span> <span class="nv">encryption</span><span class="o">=</span>aes-256-ccm <span class="nt">-o</span> <span class="nv">compression</span><span class="o">=</span>off <span class="nt">-o</span> <span class="nv">atime</span><span class="o">=</span>off zroot/root/ccm-test
 <span class="nb">sudo </span>zfs create <span class="nt">-o</span> <span class="nv">encryption</span><span class="o">=</span>aes-256-gcm <span class="nt">-o</span> <span class="nv">compression</span><span class="o">=</span>off <span class="nt">-o</span> <span class="nv">atime</span><span class="o">=</span>off zroot/root/gcm-test
 <span class="nb">sudo </span>zfs create <span class="nt">-o</span> <span class="nv">encryption</span><span class="o">=</span>off <span class="nt">-o</span> <span class="nv">compression</span><span class="o">=</span>off <span class="nt">-o</span> <span class="nv">atime</span><span class="o">=</span>off zroot/local_steam_unencrypt
 </code></pre></div></div>
 
-<p>Then I write a script to benchmark it:</p>
+<p>Then I wrote a script to benchmark it:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
 
@@ -4252,14 +4276,14 @@ Children      Self  Command   Shared Object     Symbol
 	print_cputime z_wr_iss
 	<span class="nb">echo</span> <span class="s2">"### Start write test"</span>
 	<span class="nb">time dd </span><span class="k">if</span><span class="o">=</span>/dev/random <span class="nv">of</span><span class="o">=</span><span class="nv">$test_file</span> <span class="nv">bs</span><span class="o">=</span>1M <span class="nv">count</span><span class="o">=</span><span class="nv">$file_size</span> <span class="nv">oflag</span><span class="o">=</span>direct
-	<span class="nb">echo</span> <span class="s2">"### Pring z_wr_iss cpu time afte the write test"</span>
+	<span class="nb">echo</span> <span class="s2">"### Print z_wr_iss cpu time after the write test"</span>
 	print_cputime z_wr_iss
 
 	<span class="nb">echo</span> <span class="s2">"### Print z_rd_int cpu time before the read test"</span>
 	print_cputime z_rd_int
 	<span class="nb">echo</span> <span class="s2">"### Start read test"</span>
 	<span class="nb">time dd </span><span class="k">if</span><span class="o">=</span><span class="nv">$test_file</span> <span class="nv">of</span><span class="o">=</span>/dev/null <span class="nv">bs</span><span class="o">=</span>1M <span class="nv">count</span><span class="o">=</span><span class="nv">$file_size</span>
-	<span class="nb">echo</span> <span class="s2">"### Print z_rd_int cpu time before the read test"</span>
+	<span class="nb">echo</span> <span class="s2">"### Print z_rd_int cpu time after the read test"</span>
 	print_cputime z_rd_int
 <span class="o">}</span>
 
@@ -4268,7 +4292,7 @@ benchmark gcm-test /gcm-test/test-file
 benchmark non-encrypt-test /data/local_steam/test-file
 </code></pre></div></div>
 
-<p>My ZFS cache is set to 8GB. So I write and read files with 20GB. It uses dd to write and read a file. Before the read and write, it uses <code class="language-plaintext highlighter-rouge">ps -o cputime,etime</code> to print out CPU time and wall time used by each related ZFS processes.</p>
+<p>My ZFS cache is set to 8GB. So I write and read files with 20GB. It uses dd to write and read a file. Before the read and write, it uses <code class="language-plaintext highlighter-rouge">ps -o cputime,etime</code> to print out CPU time and wall time used by each related ZFS process.</p>
 
 <p>Running this script creates lots of output. The full output can be found in the appendix at the end. Here are the key lines:</p>
 
@@ -4286,13 +4310,13 @@ benchmark non-encrypt-test /data/local_steam/test-file
 // ... output omitted ...
 </code></pre></div></div>
 
-<p>During the test, AES-CCM makes <code class="language-plaintext highlighter-rouge">z_rd_int</code> takes all CPU time as observed before. For AES-GCM, it’s much better, <code class="language-plaintext highlighter-rouge">z_rd_int</code> takes less than 50% and for non encrypted it’s less than 20%. The testing output prints the CPU time and wall time for each of the <code class="language-plaintext highlighter-rouge">z_rd_int</code> processes before and after the test. So you can count the percentage.</p>
+<p>During the test, AES-CCM makes <code class="language-plaintext highlighter-rouge">z_rd_int</code> take all CPU time as observed before. For AES-GCM, it’s much better, <code class="language-plaintext highlighter-rouge">z_rd_int</code> takes less than 50% and for non-encrypted it’s less than 20%. The testing output prints the CPU time and wall time for each of the <code class="language-plaintext highlighter-rouge">z_rd_int</code> processes before and after the test. So you can calculate the percentage.</p>
 
-<p>From the test result, we can see AES-CCM indeed affect read performance a lot. It’s even slower than writes. We can confirm this is the root cause for our problem.</p>
+<p>From the test result, we can see AES-CCM indeed affects read performance a lot. It’s even slower than writes. We can confirm this is the root cause of our problem.</p>
 
 <h2 id="4-solution-and-workaround">4. Solution and Workaround</h2>
 
-<p>The solution is obvious: just change the encryption from AES-CCM to AES-GCM. But it cannot be done without migrating the dataset to another place and then move it back. It takes time. At the mean time, I moved my Steam library to a non encrypted dataset since I have enough disk space to do the migration. It doesn’t have sensitive information. Yes it exposes the machine to <a href="https://en.wikipedia.org/wiki/Evil_maid_attack">evil maid attack</a>, but my setup on the machine doesn’t prevent it anyway. See my previous blog <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution</a> for more information on putting a machine into a not trusted environment.</p>
+<p>The solution is obvious: just change the encryption from AES-CCM to AES-GCM. But it cannot be done without migrating the dataset to another place and then moving it back. It takes time. In the meantime, I moved my Steam library to a non-encrypted dataset since I have enough disk space to do the migration. It doesn’t have sensitive information. Yes it exposes the machine to <a href="https://en.wikipedia.org/wiki/Evil_maid_attack">evil maid attack</a>, but my setup on the machine doesn’t prevent it anyway. See my previous blog <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution</a> for more information on putting a machine into an untrusted environment.</p>
 
 <p>I’ll do the migration from AES-CCM to AES-GCM in the future and report back how it works. Stay tuned!</p>
 
@@ -4334,7 +4358,7 @@ benchmark non-encrypt-test /data/local_steam/test-file
 real	1m31.414s
 user	0m0.059s
 sys	0m53.252s
-### Pring z_wr_iss cpu time afte the write test
+### Print z_wr_iss cpu time after the write test
     TIME     ELAPSED
 00:49:23  3-03:40:53
     TIME     ELAPSED
@@ -4419,7 +4443,7 @@ sys	0m8.091s
 real	0m56.960s
 user	0m0.045s
 sys	0m53.566s
-### Pring z_wr_iss cpu time afte the write test
+### Print z_wr_iss cpu time after the write test
     TIME     ELAPSED
 00:49:42  3-03:43:38
     TIME     ELAPSED
@@ -4504,7 +4528,7 @@ sys	0m11.215s
 real	0m56.052s
 user	0m0.042s
 sys	0m53.060s
-### Pring z_wr_iss cpu time afte the write test
+### Print z_wr_iss cpu time after the write test
     TIME     ELAPSED
 00:49:46  3-03:44:49
     TIME     ELAPSED
@@ -4562,7 +4586,7 @@ sys	0m8.207s
 <footer id="post_footer">
   <table><tr>
     
-      <td id="prev"><a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Prev: Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster</a></td>
+      <td id="prev"><a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Prev: Introduce K3s, CephFS and MetalLB to My High Available Cluster</a></td>
     
     
       <td id="next"><a href="/2023-12-29-Scala-Macro-Tutorial.html" id="next">Next: Scala 2 Macro Tutorial</a></td>

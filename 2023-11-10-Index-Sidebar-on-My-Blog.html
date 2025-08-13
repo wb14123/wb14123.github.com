@@ -300,7 +300,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong about Recommendation System <span class="publish-year">(2020)</span></a>
+        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong About Recommendation System <span class="publish-year">(2020)</span></a>
         
       
 
@@ -648,6 +648,30 @@
   
     <div class="index-intend">
   
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2025-08-13-Why-Consensus-Shortcuts-Fail.html">The Danger of Half-Implementing Raft: Why Consensus Shortcuts Fail <span class="publish-year">(2025)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
 
     <div class="index-entry index-index">
       
@@ -744,7 +768,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster <span class="publish-year">(2023)</span></a>
+        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Available Cluster <span class="publish-year">(2023)</span></a>
         
       
 
@@ -768,7 +792,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Available Cluster <span class="publish-year">(2025)</span></a>
+        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Availability Cluster <span class="publish-year">(2025)</span></a>
         
       
 
@@ -4026,11 +4050,11 @@
   <header>
     <h1>Add Index Sidebar to My Blog</h1>
     
-      <p class="description">Posted on 10 Nov 2023, tagged <code>blog</code><code>Jekyll</code><code>Javascript</code><code>desgin</code></p>
+      <p class="description">Posted on 10 Nov 2023, tagged <code>blog</code><code>Jekyll</code><code>Javascript</code><code>design</code></p>
     
   </header>
 
-  <p>In a previous blog <a href="/2021-10-31-Add-Index-to-My-Blog.html">Add Index to My Blog</a>, I talked about how I added an index page to my blog that put all the articles into categories. I always wanted the index to be a sidebar instead of a single page, but I guess I didn’t wrap my head around about how to implement so I gave up at last. But recently, when I started to use <a href="https://obsidian.md/">Obsidian</a> and checked some demos of <a href="https://obsidian.md/publish">Obsidian Publish</a>, I found having a sidebar is so useful and beautiful so I decide I should implement it.</p>
+  <p>In a previous blog <a href="/2021-10-31-Add-Index-to-My-Blog.html">Add Index to My Blog</a>, I talked about how I added an index page to my blog that put all the articles into categories. I always wanted the index to be a sidebar instead of a single page, but I guess I didn’t wrap my head around how to implement it so I gave up at last. But recently, when I started to use <a href="https://obsidian.md/">Obsidian</a> and checked some demos of <a href="https://obsidian.md/publish">Obsidian Publish</a>, I found having a sidebar is so useful and beautiful so I decide I should implement it.</p>
 
 <p>You can see the result right now: if you are on a big screen device, the index is on the left side of the page. If you are on a small screen device like a mobile phone, it will show a menu button at the top left corner instead. Clicking it will take you to the index.</p>
 
@@ -4043,16 +4067,16 @@
 
 <p>I found the design of Obsidian Publish is very good. So I copied lots of details from them with some modifications: I didn’t implement showing/hiding sub items when click on the index entry since I think it’s not necessary, and I like how it looks when all the articles are listed there: feels like I’ve written lots of things. The categories are sorted by alphabet order and the posts are ordered by publish date. I also added the publish year for each article entry: some articles can look outdated but if people noticed the published year they can understand the context.</p>
 
-<p>Since I’m using Jeykyll, I can generate plain HTML when possible to avoid the usage of Javascript. So the sidebar is generated for each page instead of using Javascript to keep the sidebar and replace the article content on the fly. Javascript is only used for 2 features:</p>
+<p>Since I’m using Jekyll, I can generate plain HTML when possible to avoid the usage of Javascript. So the sidebar is generated for each page instead of using Javascript to keep the sidebar and replace the article content on the fly. Javascript is only used for 2 features:</p>
 
 <ol>
   <li>Remember the position of the sidebar when jump pages.</li>
   <li>Scroll the sidebar to show the entry for the current page if it’s not in the viewpoint.</li>
 </ol>
 
-<p>Both of the features are not that important so the sidebar is still usable without Javascript. Even for the menu button on small screens, it’s not popping up a dialog. It just jumps to a new static page that has all the index so no Javascript is needed.</p>
+<p>Both of the features are not that important so the sidebar is still usable without Javascript. Even for the menu button on small screens, it’s not popping up a dialog. It just jumps to a new static page that has the entire index so no Javascript is needed.</p>
 
-<p>The previous implementation of the index page uses recursive templates: Since the nested index is a tree, rendering the content in a recursive manner is a nature thought. However, I made that mistake to put the complex logic into the template engine. So this time, I traverse the tree with Ruby code and generates a list for the template to render. It has all the information like entry type, the depth of the entry and so on. It makes the template code much simpler so it’s easier to implement other features on top of it.</p>
+<p>The previous implementation of the index page uses recursive templates: Since the nested index is a tree, rendering the content in a recursive manner is a natural thought. However, I made that mistake to put the complex logic into the template engine. So this time, I traverse the tree with Ruby code and generate a list for the template to render. It has all the information like entry type, the depth of the entry and so on. It makes the template code much simpler so it’s easier to implement other features on top of it.</p>
 
 <p>If you want to checkout the detailed implementation, go to my <a href="https://github.com/wb14123/blog">Github repo for the blog</a> and check <a href="https://github.com/wb14123/blog/blob/master/jekyll/_plugins/Index.rb"><code class="language-plaintext highlighter-rouge">jekyll/_plugins/Index.rb</code></a> and <a href="https://github.com/wb14123/blog/blob/master/jekyll/_includes/index_menu.html"><code class="language-plaintext highlighter-rouge">jekyll/_includes/index_menu.html</code></a>.</p>
 

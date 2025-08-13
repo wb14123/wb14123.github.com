@@ -300,7 +300,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong about Recommendation System <span class="publish-year">(2020)</span></a>
+        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong About Recommendation System <span class="publish-year">(2020)</span></a>
         
       
 
@@ -648,6 +648,30 @@
   
     <div class="index-intend">
   
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2025-08-13-Why-Consensus-Shortcuts-Fail.html">The Danger of Half-Implementing Raft: Why Consensus Shortcuts Fail <span class="publish-year">(2025)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
 
     <div class="index-entry index-index">
       
@@ -744,7 +768,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster <span class="publish-year">(2023)</span></a>
+        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Available Cluster <span class="publish-year">(2023)</span></a>
         
       
 
@@ -768,7 +792,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Available Cluster <span class="publish-year">(2025)</span></a>
+        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Availability Cluster <span class="publish-year">(2025)</span></a>
         
       
 
@@ -4030,7 +4054,7 @@
     
   </header>
 
-  <p>In the new version of <a href="https://rssbrain.com">RSS Brain</a>, I added a new feature to show related articles from folders or feeds of your choice, instead of only show related articles from all feeds.</p>
+  <p>In the new version of <a href="https://rssbrain.com">RSS Brain</a>, I added a new feature to show related articles from folders or feeds of your choice, instead of only showing related articles from all feeds.</p>
 
 <p>I have mentioned this feature in the <a href="/2022-10-29-RSS-Brain-Yet-Another-RSS-Reader-With-More-Features.html">previous blog post</a>. I also mentioned the algorithms in RSS Brain will be transparent. So in this article, I will talk about the details of this feature, how it can be used, the algorithm that backs it and how RSS Brain implements it.</p>
 
@@ -4040,7 +4064,7 @@
 
 <ol>
   <li>You can configure where the related articles come from.</li>
-  <li>The implementation is transparent. That includes both the algorithm, which I will introduce in this article, and the code, which I will open source it in the future.</li>
+  <li>The implementation is transparent. That includes both the algorithm, which I will introduce in this article, and the code, which I will open source in the future.</li>
 </ol>
 
 <p>How do you configure the related articles? By default, there will be no recommended articles. But there is a button to let you add a recommendation section at the end of an article:</p>
@@ -4053,7 +4077,7 @@
 
 <p><img src="https://rssbrain.com/images/screenshot_multi_recommend.png" alt="screenshot-sections" /></p>
 
-<p>The recommendation configuration is attached to the feed that this article belongs. So if you read another article from the same feed, it will show related articles from the same recommendation sections.</p>
+<p>The recommendation configuration is attached to the feed that this article belongs to. So if you read another article from the same feed, it will show related articles from the same recommendation sections.</p>
 
 <h2 id="why-the-feature-is-useful">Why the Feature is Useful</h2>
 
@@ -4061,28 +4085,28 @@
 
 <p>Another way to use it is to check the coverage from different sources. For example, you can add a recommendation section that contains left wing media and another section that has right wing media, so that you can compare the coverage and get a whole picture.</p>
 
-<p>Last but not least, the recommendation is useful in its traditional way: just show related articles about the same topic so that you can read more details about the same topic. I often just read folders that has high quality sources, and when I want to know more, I will add a recommendation section that has more sources and find articles to read from there.</p>
+<p>Last but not least, the recommendation is useful in its traditional way: just show related articles about the same topic so that you can read more details about the same topic. I often just read folders that have high quality sources, and when I want to know more, I will add a recommendation section that has more sources and find articles to read from there.</p>
 
 <h2 id="how-the-feature-is-implemented">How the Feature is Implemented</h2>
 
 <p><em>Update: see <a href="/2023-11-14-Update-On-RSS-Brain-to-Find-Related-Articles-with-Machine-Learning.html">this blog</a> for updated algorithm.</em></p>
 
-<p>The algorithm to find recommended feature is content based instead of user based. RSS Brain doesn’t collect any user’s information in order to make personalized recommendation. It just find the related articles by how similar they are.</p>
+<p>The algorithm to find recommended features is content based instead of user based. RSS Brain doesn’t collect any user’s information in order to make personalized recommendation. It just finds the related articles by how similar they are.</p>
 
-<p>Each of the article can be represented by a term vector. The values in this vector are scores of the terms. For example, if article A has the content of “apple boy cat” and article B has the content of “apple boy dog”, the term vectors for each of the articles can be:</p>
+<p>Each article can be represented by a term vector. The values in this vector are scores of the terms. For example, if article A has the content of “apple boy cat” and article B has the content of “apple boy dog”, the term vectors for each of the articles can be:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   apple, boy, cat, dog
 A: [0.5,  0.5,   1,   0]
 B: [0.5,  0.5,   0,   1]
 </code></pre></div></div>
 
-<p>The score is computed by <a href="https://en.wikipedia.org/wiki/Tf%E2%80%93idf">tf-idf</a>, which is basically a score considers both the frequent of the term in this article, and the frequent in all the articles: the more frequent it is in this article, the bigger the score since it can better represent the article. However the more frequent it is in all the articles, the score should be smaller since it’s not unique enough to represent the feature of this article. Once we have a term vector for each of the article, we can find the similarity by counting the distance between these vectors.</p>
+<p>The score is computed by <a href="https://en.wikipedia.org/wiki/Tf%E2%80%93idf">tf-idf</a>, which is basically a score that considers both the frequency of the term in this article, and the frequency in all the articles: the more frequent it is in this article, the bigger the score since it can better represent the article. However the more frequent it is in all the articles, the score should be smaller since it’s not unique enough to represent the feature of this article. Once we have a term vector for each article, we can find the similarity by counting the distance between these vectors.</p>
 
-<p>So we have the algorithm, how RSS Brain implements it in the code? We are using <a href="https://www.elastic.co/">ElasticSearch</a> under the hood. It’s widely used and open source. So for the APIs that RSS Brain is using, you can check the code for implementation details if you want. It has <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-termvectors.html">an API to find the term vector</a> for an article, and we use the scores in the term vector to do a <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-boosting-query.html">boosting query</a>, which means do a search with different weights for each query term. For example, in the example above, if we want to find related articles for article A, we would find its term vector first, then convert the term vector into a boosting query that searches related articles by the query <code class="language-plaintext highlighter-rouge">apple^0.5 boy^0.5 cat^1</code>.</p>
+<p>So we have the algorithm, but how does RSS Brain implement it in the code? We are using <a href="https://www.elastic.co/">ElasticSearch</a> under the hood. It’s widely used and open source. So for the APIs that RSS Brain is using, you can check the code for implementation details if you want. It has <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-termvectors.html">an API to find the term vector</a> for an article, and we use the scores in the term vector to do a <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-boosting-query.html">boosting query</a>, which means do a search with different weights for each query term. For example, in the example above, if we want to find related articles for article A, we would find its term vector first, then convert the term vector into a boosting query that searches related articles by the query <code class="language-plaintext highlighter-rouge">apple^0.5 boy^0.5 cat^1</code>.</p>
 
-<p>There are more details in this implementation, like adding filter on feed or folder in the query, limiting the term vector size and so on. The details can be found in the code once it’s open sourced. But the main idea doesn’t change.</p>
+<p>There are more details in this implementation, like adding filters on feed or folder in the query, limiting the term vector size and so on. The details can be found in the code once it’s open sourced. But the main idea doesn’t change.</p>
 
-<p>With this simple and content based recommendation algorithm, instead of letting a black box AI decides what content are shown to you, I believe users can understand why an article is recommended, and judge whether the recommendation can benefit them or not.</p>
+<p>With this simple and content based recommendation algorithm, instead of letting a black box AI decide what content is shown to you, I believe users can understand why an article is recommended, and judge whether the recommendation can benefit them or not.</p>
 
 </article>
 

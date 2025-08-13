@@ -300,7 +300,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong about Recommendation System <span class="publish-year">(2020)</span></a>
+        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong About Recommendation System <span class="publish-year">(2020)</span></a>
         
       
 
@@ -648,6 +648,30 @@
   
     <div class="index-intend">
   
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2025-08-13-Why-Consensus-Shortcuts-Fail.html">The Danger of Half-Implementing Raft: Why Consensus Shortcuts Fail <span class="publish-year">(2025)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
 
     <div class="index-entry index-index">
       
@@ -744,7 +768,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster <span class="publish-year">(2023)</span></a>
+        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Available Cluster <span class="publish-year">(2023)</span></a>
         
       
 
@@ -768,7 +792,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Available Cluster <span class="publish-year">(2025)</span></a>
+        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Availability Cluster <span class="publish-year">(2025)</span></a>
         
       
 
@@ -4030,7 +4054,7 @@
     
   </header>
 
-  <p>Even writing a website using something else than Javascript to render content from server, sometimes it’s inevitable to have some Javascript or CSS code. So managing Javascript dependencies and build packages is needed. The easiest way may be just don’t use any tool: download all the dependency files into a directory and import them in the html file directly. That’s what I was doing for <a href="https://rssbrain.com">RSS Bran</a> before. But it get messy pretty quickly and it’s hard to keep track of the dependencies. So it’s time for me to resolve the problem. Since the project is written in Scala, I’ll note down how I do it with Scala’s build tool SBT.</p>
+  <p>Even when writing a website using something other than Javascript to render content from the server, sometimes it’s inevitable to have some Javascript or CSS code. So managing Javascript dependencies and build packages is needed. The easiest way may be to just not use any tool: download all the dependency files into a directory and import them in the html file directly. That’s what I was doing for <a href="https://rssbrain.com">RSS Brain</a> before. But it gets messy pretty quickly and it’s hard to keep track of the dependencies. So it’s time for me to resolve the problem. Since the project is written in Scala, I’ll note down how I do it with Scala’s build tool SBT.</p>
 
 <h2 id="frontend-package-management-and-build">Frontend Package Management and Build</h2>
 
@@ -4075,7 +4099,7 @@
 
 <p>You can see other than the <code class="language-plaintext highlighter-rouge">js</code> directory, it’s a pretty standard structure for a Scala project managed by SBT.</p>
 
-<p>When look into <code class="language-plaintext highlighter-rouge">js</code> directory, it’s a frontend project managed by npm and built with webpack.</p>
+<p>When you look into the <code class="language-plaintext highlighter-rouge">js</code> directory, it’s a frontend project managed by npm and built with webpack.</p>
 
 <p><code class="language-plaintext highlighter-rouge">js/src/index.js</code> bundles all the dependencies in node modules and local files. Here is an example:</p>
 
@@ -4144,7 +4168,7 @@
 <span class="p">};</span>
 </code></pre></div></div>
 
-<p>Since this is more related to frontend tech and is very basic, I will not go too much into details. But the point is, when run <code class="language-plaintext highlighter-rouge">npx webpack</code> under <code class="language-plaintext highlighter-rouge">js</code> directory, it will build bundled files into <code class="language-plaintext highlighter-rouge">js/dist</code>. We will write a SBT task to trigger this command and copy the dist files into resources to package.</p>
+<p>Since this is more related to frontend tech and is very basic, I will not go too much into details. But the point is, when you run <code class="language-plaintext highlighter-rouge">npx webpack</code> under the <code class="language-plaintext highlighter-rouge">js</code> directory, it will build bundled files into <code class="language-plaintext highlighter-rouge">js/dist</code>. We will write a SBT task to trigger this command and copy the dist files into resources to package.</p>
 
 <h2 id="sbt-task-to-trigger-build-and-package-dist-files">SBT Task to Trigger Build and Package Dist Files</h2>
 
@@ -4169,9 +4193,9 @@
 <span class="o">}.</span><span class="py">taskValue</span>
 </code></pre></div></div>
 
-<p>Here we added some steps when SBT generate resource files: first we let it run <code class="language-plaintext highlighter-rouge">webpack</code> task we defined above, then copy all the files under <code class="language-plaintext highlighter-rouge">js/dist</code> to <code class="language-plaintext highlighter-rouge">webview/static/dist</code> under generated resources. Here resources means Java resource files, like the files under <code class="language-plaintext highlighter-rouge">src/main/resources</code>, but auto generated to <code class="language-plaintext highlighter-rouge">target/scala-2.13/resource_managed</code> and will be packaged together as resource files.</p>
+<p>Here we added some steps when SBT generates resource files: first we let it run the <code class="language-plaintext highlighter-rouge">webpack</code> task we defined above, then copy all the files under <code class="language-plaintext highlighter-rouge">js/dist</code> to <code class="language-plaintext highlighter-rouge">webview/static/dist</code> under generated resources. Here resources means Java resource files, like the files under <code class="language-plaintext highlighter-rouge">src/main/resources</code>, but auto-generated to <code class="language-plaintext highlighter-rouge">target/scala-2.13/resource_managed</code> and will be packaged together as resource files.</p>
 
-<p>So when you run <code class="language-plaintext highlighter-rouge">sbt package</code> here, the generated jar package will include all those files as resource files. For example, in my project, the generated jar package have these if you open it with vim (which can view zipped package):</p>
+<p>So when you run <code class="language-plaintext highlighter-rouge">sbt package</code> here, the generated jar package will include all those files as resource files. For example, in my project, the generated jar package has these if you open it with vim (which can view zipped packages):</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>81663 webview/static/dist/f20305dee9d396fea5c7.ttf
 81664 webview/static/dist/f5ef242406fdcf40a232.otf
@@ -4182,10 +4206,10 @@
 
 <h2 id="serve-resource-files-in-http-server">Serve Resource Files in Http Server</h2>
 
-<p>Now you can serve the files under <code class="language-plaintext highlighter-rouge">webview/static/dist</code> with your web server. Different web server or framework do it differently. Here is an example of http4s:</p>
+<p>Now you can serve the files under <code class="language-plaintext highlighter-rouge">webview/static/dist</code> with your web server. Different web servers or frameworks do it differently. Here is an example of http4s:</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// include the following route into the http4s web server</span>
-<span class="c1">// IMPORTANT: every resource file under `/webview` will be public accessible</span>
+<span class="c1">// IMPORTANT: every resource file under `/webview` will be publicly accessible</span>
 <span class="k">val</span> <span class="nv">assetsRoutes</span> <span class="k">=</span> <span class="n">resourceServiceBuilder</span><span class="o">[</span><span class="kt">IO</span><span class="o">](</span><span class="s">"/webview"</span><span class="o">).</span><span class="py">toRoutes</span>
 </code></pre></div></div>
 

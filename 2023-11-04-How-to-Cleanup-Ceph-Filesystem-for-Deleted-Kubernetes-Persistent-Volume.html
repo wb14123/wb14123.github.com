@@ -300,7 +300,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong about Recommendation System <span class="publish-year">(2020)</span></a>
+        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong About Recommendation System <span class="publish-year">(2020)</span></a>
         
       
 
@@ -648,6 +648,30 @@
   
     <div class="index-intend">
   
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2025-08-13-Why-Consensus-Shortcuts-Fail.html">The Danger of Half-Implementing Raft: Why Consensus Shortcuts Fail <span class="publish-year">(2025)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
 
     <div class="index-entry index-index">
       
@@ -744,7 +768,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster <span class="publish-year">(2023)</span></a>
+        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Available Cluster <span class="publish-year">(2023)</span></a>
         
       
 
@@ -768,7 +792,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Available Cluster <span class="publish-year">(2025)</span></a>
+        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Availability Cluster <span class="publish-year">(2025)</span></a>
         
       
 
@@ -4032,9 +4056,9 @@
 
   <p><a href="https://docs.ceph.com">Ceph</a> is a distributed file system. <a href="https://rook.io/">Rook</a> is a project to deploy it with Kubernetes. I recently replaced GlusterFS in my Kubernetes cluster with Ceph. I will write a blog (or a series of blogs) for the migration. But in this article, I will just talk about a problem I encountered, just in case I forget it.</p>
 
-<p>Once Rook is deployed in Kubernetes, you can create a <a href="https://rook.io/docs/rook/v1.11/Storage-Configuration/Shared-Filesystem-CephFS/filesystem-storage/">Ceph Filesystem</a> and use it to <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes">persistent volume (PV)</a>. Each PV’s data will be stored in a folder in the filesystem. If the PV’s reclaiming policy is set to <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#retain">retain</a>, the data will not be deleted after the persistent volume is manually deleted. It’s safer in this way. But what could you do if you want to cleanup the data? Normally you should change the PV’s reclaim policy before you delete the PV, then Rook’s operator will auto reclaim the storage in Ceph. But what if you forget or didn’t know that (like me), and want to cleanup the data after?</p>
+<p>Once Rook is deployed in Kubernetes, you can create a <a href="https://rook.io/docs/rook/v1.11/Storage-Configuration/Shared-Filesystem-CephFS/filesystem-storage/">Ceph Filesystem</a> and use it for <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes">persistent volume (PV)</a>. Each PV’s data will be stored in a folder in the filesystem. If the PV’s reclaim policy is set to <a href="https://kubernetes.io/docs/concepts/storage/persistent-volumes/#retain">retain</a>, the data will not be deleted after the persistent volume is manually deleted. It’s safer in this way. But what could you do if you want to clean up the data? Normally you should change the PV’s reclaim policy before you delete the PV, then Rook’s operator will automatically reclaim the storage in Ceph. But what if you forgot or didn’t know that (like me), and want to clean up the data after?</p>
 
-<p>First, we need to the folder/subvolume names in Ceph that store’s each PV’s data. We an get that by using <code class="language-plaintext highlighter-rouge">kubectl describe pv &lt;pv-name&gt;</code> and look for the field <code class="language-plaintext highlighter-rouge">subvolumeName</code>. But since the PV is deleted, we need to find the mappings for existing PVs and compare that with the folders/subvolumes in Ceph. This is the command to show all of the existing ones:</p>
+<p>First, we need to find the folder/subvolume names in Ceph that store each PV’s data. We can get that by using <code class="language-plaintext highlighter-rouge">kubectl describe pv &lt;pv-name&gt;</code> and look for the field <code class="language-plaintext highlighter-rouge">subvolumeName</code>. But since the PV is deleted, we need to find the mappings for existing PVs and compare that with the folders/subvolumes in Ceph. This is the command to show all of the existing ones:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get pv -o yaml | grep subvolumeName  | sort
 </code></pre></div></div>
@@ -4044,7 +4068,7 @@
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ceph fs ls
 </code></pre></div></div>
 
-<p>After getting the filesystem’s name, get all the subvolumegroup from it:</p>
+<p>After getting the filesystem’s name, get all the subvolumes from it:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ceph fs subvolume ls &lt;fs-name&gt; csi | grep 'name' | sort
 </code></pre></div></div>

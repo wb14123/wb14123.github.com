@@ -300,7 +300,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong about Recommendation System <span class="publish-year">(2020)</span></a>
+        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong About Recommendation System <span class="publish-year">(2020)</span></a>
         
       
 
@@ -648,6 +648,30 @@
   
     <div class="index-intend">
   
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2025-08-13-Why-Consensus-Shortcuts-Fail.html">The Danger of Half-Implementing Raft: Why Consensus Shortcuts Fail <span class="publish-year">(2025)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
 
     <div class="index-entry index-index">
       
@@ -744,7 +768,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster <span class="publish-year">(2023)</span></a>
+        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Available Cluster <span class="publish-year">(2023)</span></a>
         
       
 
@@ -768,7 +792,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Available Cluster <span class="publish-year">(2025)</span></a>
+        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Availability Cluster <span class="publish-year">(2025)</span></a>
         
       
 
@@ -4055,7 +4079,7 @@
 
 <h3 id="transparent-algorithm">Transparent Algorithm</h3>
 
-<p>In a past blog post <a href="https://www.binwang.me/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong about Recommendation System</a>, I mentioned I don’t want to manipulated by recommendation systems. Ant that’s one of the main motivations for me to start write my own RSS reader. While there are still ranking and recommendation algorithms in RSS Brain, it’s aimed to provider better information instead of making the user more addicted to the product. In order to approve that, the algorithm needs to be available so that the users can inspect it and decide whether it’s the right one for them.</p>
+<p>In a past blog post <a href="https://www.binwang.me/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong about Recommendation System</a>, I mentioned I don’t want to be manipulated by recommendation systems. And that’s one of the main motivations for me to start writing my own RSS reader. While there are still ranking and recommendation algorithms in RSS Brain, it tries to provide better information instead of making the user more addicted to the product. In order to prove that, the algorithm needs to be available so that the users can inspect it and decide whether it’s the right one for them.</p>
 
 <p>Be aware even the source code is available, it still needs some level of trust since the code running on my server <a href="https://app.rssbrain.com">app.rssbrain.com</a> can theoretically be different from what is being released. But it’s good enough for most people. However, if you want absolute control, you can always run it on your own server with the source code available.</p>
 
@@ -4069,17 +4093,17 @@
 
 <h3 id="considerations-of-contributors">Considerations of Contributors</h3>
 
-<p>One big advantage of open source project is it can attract contributors to make the software better. And it can sometimes justify the free commercial usage because all the competitors are contributing to the software. But because this is a software I am and will use daily, I want to have 100% control of the roadmap of it. Not only the product aspect, but also technology aspect. It’s just easier to write all the things by myself, at least for now. So I’m fine to chose a non open source license even with less potential contributors.</p>
+<p>One big advantage of open source project is it can attract contributors to make the software better. And it can sometimes justify the free commercial usage because all the competitors are contributing to the software. But because this is a software I am and will use daily, I want to have 100% control of its roadmap. Not only the product aspect, but also technology aspect. It’s just easier to write all the things by myself, at least for now. So I’m fine to choose a non open source license even with less potential contributors.</p>
 
 <h2 id="release-process">Release Process</h2>
 
-<p>You may notice the source code has very few commit history. The release process will be only one commit for each release. The release cycle will be one release every few weeks, depends on how much process I make. The regular releases will mostly on the weekend. If there is a bug or a security risk, the release maybe more frequent.</p>
+<p>You may notice the source code has very few commit history. The release process will be only one commit for each release. The release cycle will be one release every few weeks, depends on how much progress I make. The regular releases will mostly on the weekend. If there is a bug or a security risk, the release may be more frequent.</p>
 
 <p>The version number is in the format of <code class="language-plaintext highlighter-rouge">X.Y.Z</code>. Where Y will be increased for every feature release and Z will be increased for every bug fix. X will only be increased for breaking changes or really major update.</p>
 
 <p>I’ll make my hosted version at <a href="https://app.rssbrain.com">app.rssbrain.com</a> the same as the source code. Which means at each release, I’ll update the app first, and release the source code just after it. I’ll add a section in the app’s setting page to indicate the current version.</p>
 
-<p>The reason I chose this release mode is the same reason as I released it under SSPL. I only want the source code be available to users, but I don’t really care about whether there will be contributions from other people. So hide the commit history between releases just make my life easier since I don’t need to care too much about keep my commit messages clean.</p>
+<p>The reason I chose this release mode is the same reason as I released it under SSPL. I only want the source code be available to users, but I don’t really care about whether there will be contributions from other people. So hiding the commit history between releases just makes my life easier since I don’t need to care too much about keep my commit messages clean.</p>
 
 <h2 id="roadmap">Roadmap</h2>
 

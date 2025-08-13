@@ -300,7 +300,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong about Recommendation System <span class="publish-year">(2020)</span></a>
+        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong About Recommendation System <span class="publish-year">(2020)</span></a>
         
       
 
@@ -648,6 +648,30 @@
   
     <div class="index-intend">
   
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2025-08-13-Why-Consensus-Shortcuts-Fail.html">The Danger of Half-Implementing Raft: Why Consensus Shortcuts Fail <span class="publish-year">(2025)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
 
     <div class="index-entry index-index">
       
@@ -744,7 +768,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster <span class="publish-year">(2023)</span></a>
+        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Available Cluster <span class="publish-year">(2023)</span></a>
         
       
 
@@ -768,7 +792,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Available Cluster <span class="publish-year">(2025)</span></a>
+        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Availability Cluster <span class="publish-year">(2025)</span></a>
         
       
 
@@ -4030,14 +4054,14 @@
     
   </header>
 
-  <p><a href="https://asciinema.org/">Asciinema</a> is a wonderful tool to record Linux terminal. It saves the records as a text format called Asciicast. However, it has a strong integration with its website. Especially if you want to embed the recordings into the web page use some simple JS code like this:</p>
+  <p><a href="https://asciinema.org/">Asciinema</a> is a wonderful tool to record Linux terminal. It saves the records as a text format called Asciicast. However, it has a strong integration with its website. Especially if you want to embed the recordings into the web page using some simple JS code like this:</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://asciinema.org/a/14.js"</span> <span class="na">id=</span><span class="s">"asciicast-14"</span> <span class="na">async</span><span class="nt">&gt;&lt;/script&gt;</span>
 </code></pre></div></div>
 
 <p>You need to share the recordings to Asciinema’s website and need to link an account with the recordings, otherwise they will be deleted after 7 days, which I just found out yesterday. I don’t want my blog to rely on some third party website for core content, so I need a way to load the recordings from my website itself.</p>
 
-<p>Lucky, the <a href="https://github.com/asciinema/asciinema-player">Asciinema Javascript player</a> is open source and support to load recordings from a url out of box. First you need to import the CSS:</p>
+<p>Luckily, the <a href="https://github.com/asciinema/asciinema-player">Asciinema Javascript player</a> is open source and supports loading recordings from a URL out of the box. First you need to import the CSS:</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">type=</span><span class="s">"text/css"</span> <span class="na">href=</span><span class="s">"/asciinema-player.css"</span> <span class="nt">/&gt;</span>
 </code></pre></div></div>
@@ -4052,7 +4076,7 @@
 <span class="nt">&lt;/script&gt;</span>
 </code></pre></div></div>
 
-<p>It’s a little bit too much for embedding a terminal recording in a blog. However, with the powerful Jekyll plugin system, We can write a plugin to make it simpler so that we can just use a tag to include it:</p>
+<p>It’s a little bit too much for embedding a terminal recording in a blog. However, with the powerful Jekyll plugin system, we can write a plugin to make it simpler so that we can just use a tag to include it:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 {% asciicast &lt;id&gt; %}

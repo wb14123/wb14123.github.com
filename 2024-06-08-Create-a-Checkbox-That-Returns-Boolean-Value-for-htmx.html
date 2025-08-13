@@ -300,7 +300,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong about Recommendation System <span class="publish-year">(2020)</span></a>
+        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong About Recommendation System <span class="publish-year">(2020)</span></a>
         
       
 
@@ -648,6 +648,30 @@
   
     <div class="index-intend">
   
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2025-08-13-Why-Consensus-Shortcuts-Fail.html">The Danger of Half-Implementing Raft: Why Consensus Shortcuts Fail <span class="publish-year">(2025)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
 
     <div class="index-entry index-index">
       
@@ -744,7 +768,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster <span class="publish-year">(2023)</span></a>
+        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Available Cluster <span class="publish-year">(2023)</span></a>
         
       
 
@@ -768,7 +792,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Available Cluster <span class="publish-year">(2025)</span></a>
+        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Availability Cluster <span class="publish-year">(2025)</span></a>
         
       
 
@@ -4018,7 +4042,7 @@
 
     <section id="page_content">
         <div id="content_table">
-  <h3>Table of Contents</h3><ol class="toc"><li><a href="#the-problem-of-checkbox">The Problem of Checkbox</a></li><li><a href="#how-htmx-submit-the-checkbox-value">How htmx Submit the Checkbox Value</a></li><li><a href="#create-a-custom-checkbox-element-with-web-component">Create a Custom Checkbox Element with Web Component</a></li><li><a href="#what-about-the-native-html-form-action">What About the Native HTML Form Action</a></li></ol>
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#the-problem-of-checkbox">The Problem of Checkbox</a></li><li><a href="#how-htmx-submits-the-checkbox-value">How htmx Submits the Checkbox Value</a></li><li><a href="#create-a-custom-checkbox-element-with-web-component">Create a Custom Checkbox Element with Web Component</a></li><li><a href="#what-about-the-native-html-form-action">What About the Native HTML Form Action</a></li></ol>
 </div>
 
 <div id="article_content" class="">
@@ -4034,13 +4058,13 @@
 
 <p><a href="https://htmx.org/">htmx</a> is a lightweight Javascript framework. We all know in native HTML, a <code class="language-plaintext highlighter-rouge">form</code> element can send a HTTP request to a server with the values of <code class="language-plaintext highlighter-rouge">input</code> elements. In htmx, this feature is made more powerful and flexible: you can include the value of any element, and with the help with htmx extensions like <a href="https://htmx.org/extensions/json-enc/">json-enc</a>, it can also post JSON data.</p>
 
-<p>However, there is one thing that htmx inherited from the native HTML form behaviour: for checkboxes, it only includes its value when the checkbox is checked. And the default value for checkbox is <code class="language-plaintext highlighter-rouge">"on"</code> instead of <code class="language-plaintext highlighter-rouge">true</code> (even though you can change it to another value). I understand this decision because it wants to keep the same behaviour so there is no surprise, but it also makes the backend parsing very inconvenient. The checkbox field needs some special treatment at the backend: you need to know there is a checkbox field so that you can set it to false when it’s not submitted with the request, and set it to true otherwise.</p>
+<p>However, there is one thing that htmx inherited from the native HTML form behavior: for checkboxes, it only includes its value when the checkbox is checked. And the default value for checkbox is <code class="language-plaintext highlighter-rouge">"on"</code> instead of <code class="language-plaintext highlighter-rouge">true</code> (even though you can change it to another value). I understand this decision because it wants to keep the same behavior so there is no surprise, but it also makes the backend parsing very inconvenient. The checkbox field needs some special treatment at the backend: you need to know there is a checkbox field so that you can set it to false when it’s not submitted with the request, and set it to true otherwise.</p>
 
 <p>In this article, we will explore how to define a custom checkbox element so that it has a boolean value and will always be submitted with the HTTP request. We first explore the implementation for htmx and then for native HTML.</p>
 
-<h2 id="how-htmx-submit-the-checkbox-value">How htmx Submit the Checkbox Value</h2>
+<h2 id="how-htmx-submits-the-checkbox-value">How htmx Submits the Checkbox Value</h2>
 
-<p>In order to make it work with htmx, we first need to know how htmx do the HTTP request with parameters. The document doesn’t have a lot of details but we can always check the source code. The code that processes input values is in the function <a href="https://github.com/bigskysoftware/htmx/blob/d6afc5b8dbd7213037d0bc4213aa0b7b469bcd62/src/htmx.js#L2549"><code class="language-plaintext highlighter-rouge">processInputValue</code></a>:</p>
+<p>In order to make it work with htmx, we first need to know how htmx does the HTTP request with parameters. The document doesn’t have a lot of details but we can always check the source code. The code that processes input values is in the function <a href="https://github.com/bigskysoftware/htmx/blob/d6afc5b8dbd7213037d0bc4213aa0b7b469bcd62/src/htmx.js#L2549"><code class="language-plaintext highlighter-rouge">processInputValue</code></a>:</p>
 
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">processInputValue</span><span class="p">(</span><span class="nx">processed</span><span class="p">,</span> <span class="nx">values</span><span class="p">,</span> <span class="nx">errors</span><span class="p">,</span> <span class="nx">elt</span><span class="p">,</span> <span class="nx">validate</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if </span><span class="p">(</span><span class="nx">elt</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="nf">haveSeenNode</span><span class="p">(</span><span class="nx">processed</span><span class="p">,</span> <span class="nx">elt</span><span class="p">))</span> <span class="p">{</span>
@@ -4072,7 +4096,7 @@
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p>So it checks whether the element should be included through function <code class="language-plaintext highlighter-rouge">shouldInclude(elt)</code> and get its value if so (some additional logic for <code class="language-plaintext highlighter-rouge">select</code> and <code class="language-plaintext highlighter-rouge">file</code> but it’s not a concern here). In <a href="https://github.com/bigskysoftware/htmx/blob/d6afc5b8dbd7213037d0bc4213aa0b7b469bcd62/src/htmx.js#L2512"><code class="language-plaintext highlighter-rouge">shouldInclude</code></a>, it will only include a checkbox if it’s checked:</p>
+<p>So it checks whether the element should be included through function <code class="language-plaintext highlighter-rouge">shouldInclude(elt)</code> and gets its value if so (some additional logic for <code class="language-plaintext highlighter-rouge">select</code> and <code class="language-plaintext highlighter-rouge">file</code> but it’s not a concern here). In <a href="https://github.com/bigskysoftware/htmx/blob/d6afc5b8dbd7213037d0bc4213aa0b7b469bcd62/src/htmx.js#L2512"><code class="language-plaintext highlighter-rouge">shouldInclude</code></a>, it will only include a checkbox if it’s checked:</p>
 
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">shouldInclude</span><span class="p">(</span><span class="nx">elt</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span><span class="nx">elt</span><span class="p">.</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">""</span> <span class="o">||</span> <span class="nx">elt</span><span class="p">.</span><span class="nx">name</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="nx">elt</span><span class="p">.</span><span class="nx">disabled</span> <span class="o">||</span> <span class="nf">closest</span><span class="p">(</span><span class="nx">elt</span><span class="p">,</span> <span class="dl">"</span><span class="s2">fieldset[disabled]</span><span class="dl">"</span><span class="p">))</span> <span class="p">{</span>
@@ -4091,7 +4115,7 @@
 
 <h2 id="create-a-custom-checkbox-element-with-web-component">Create a Custom Checkbox Element with Web Component</h2>
 
-<p>I tried to find or write an extension for htmx to include checkbox elements with boolean values, but from what I learnt in <a href="https://htmx.org/extensions/">the htmx extension doc</a>, there is no good way to do that. So I decided to create a custom HTML element that extends <code class="language-plaintext highlighter-rouge">input</code> to return boolean values for htmx to get.</p>
+<p>I tried to find or write an extension for htmx to include checkbox elements with boolean values, but from what I learned in <a href="https://htmx.org/extensions/">the htmx extension doc</a>, there is no good way to do that. So I decided to create a custom HTML element that extends <code class="language-plaintext highlighter-rouge">input</code> to return boolean values for htmx to get.</p>
 
 <p>With <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_components#attributechangedcallback">web component</a>, we can create a HTML tag that can be used just like any other built-in HTML tags. The <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements">MDN guide</a> does a good job to explain how to do it so I will not repeat it here. I’ll just put my implementation of the customized checkbox here:</p>
 
@@ -4116,7 +4140,7 @@
 <span class="nx">customElements</span><span class="p">.</span><span class="nf">define</span><span class="p">(</span><span class="dl">"</span><span class="s2">boolean-checkbox</span><span class="dl">"</span><span class="p">,</span> <span class="nx">BooleanCheckbox</span><span class="p">,</span> <span class="p">{</span> <span class="na">extends</span><span class="p">:</span> <span class="dl">"</span><span class="s2">input</span><span class="dl">"</span> <span class="p">});</span>
 </code></pre></div></div>
 
-<p>You can see it’s very simple. It extends the <code class="language-plaintext highlighter-rouge">input</code> element. It overwrite <code class="language-plaintext highlighter-rouge">checked</code> to always return <code class="language-plaintext highlighter-rouge">true</code> so that htmx will always include it in the request. And for <code class="language-plaintext highlighter-rouge">value</code>, it returns a boolean depends on <code class="language-plaintext highlighter-rouge">super.checked</code>. At last it register the customized element as a tag namedj<code class="language-plaintext highlighter-rouge">boolean-checkbox</code>, so that we can just use it like this in HTML:</p>
+<p>You can see it’s very simple. It extends the <code class="language-plaintext highlighter-rouge">input</code> element. It overwrites <code class="language-plaintext highlighter-rouge">checked</code> to always return <code class="language-plaintext highlighter-rouge">true</code> so that htmx will always include it in the request. And for <code class="language-plaintext highlighter-rouge">value</code>, it returns a boolean depending on <code class="language-plaintext highlighter-rouge">super.checked</code>. At last it registers the customized element as a tag named <code class="language-plaintext highlighter-rouge">boolean-checkbox</code>, so that we can just use it like this in HTML:</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"checkbox"</span> <span class="na">is=</span><span class="s">"boolean-checkbox"</span> <span class="nt">/&gt;</span>Boolean checkbox
 </code></pre></div></div>
@@ -4163,7 +4187,7 @@
 <span class="nt">&lt;/html&gt;</span>
 </code></pre></div></div>
 
-<p>It defines two checkboxes: a native one and a customized one. We use the <code class="language-plaintext highlighter-rouge">json-enc</code> extension so it will post JSON as request body. When click the submit button, if both of them are unchecked, the post body looks like this:</p>
+<p>It defines two checkboxes: a native one and a customized one. We use the <code class="language-plaintext highlighter-rouge">json-enc</code> extension so it will post JSON as request body. When clicking the submit button, if both of them are unchecked, the post body looks like this:</p>
 
 <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="nl">"boolean-checkbox"</span><span class="p">:</span><span class="kc">false</span><span class="p">}</span><span class="w">
 </span></code></pre></div></div>
@@ -4183,7 +4207,7 @@
 <span class="nt">&lt;/form&gt;</span>
 </code></pre></div></div>
 
-<p>The behaviour is still like the native checkbox, which only posts value “on” when it’s checked.</p>
+<p>The behavior is still like the native checkbox, which only posts value “on” when it’s checked.</p>
 
 <p>Even though I don’t use the native form action, it still makes me wonder if I can support it. (Disclaimer: all the code below are experiments and I don’t recommend anyone uses it on production without careful tests.)</p>
 
@@ -4199,7 +4223,7 @@
   <p>Since Apple’s WebKit team’s position is that customized builtins shouldn’t exist in the first place, we don’t support this proposal.</p>
 </blockquote>
 
-<p>Anyway, it is what it is. So I need to workaround it. The solution I came up is to include another checkbox element as a child instead of inherit it. Here is the code:</p>
+<p>Anyway, it is what it is. So I need to work around it. The solution I came up with is to include another checkbox element as a child instead of inheriting it. Here is the code:</p>
 
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">BooleanCheckbox</span> <span class="kd">extends</span> <span class="nc">HTMLElement</span> <span class="p">{</span>
 
@@ -4246,7 +4270,7 @@
 <span class="nx">customElements</span><span class="p">.</span><span class="nf">define</span><span class="p">(</span><span class="dl">"</span><span class="s2">boolean-checkbox</span><span class="dl">"</span><span class="p">,</span> <span class="nx">BooleanCheckbox</span><span class="p">);</span>
 </code></pre></div></div>
 
-<p>It listens on the <code class="language-plaintext highlighter-rouge">checked</code> attribute on the child checkbox and update the form value based on it. <code class="language-plaintext highlighter-rouge">static formAssociated = true;</code> is needed so that we can set form values.</p>
+<p>It listens to the <code class="language-plaintext highlighter-rouge">checked</code> attribute on the child checkbox and updates the form value based on it. <code class="language-plaintext highlighter-rouge">static formAssociated = true;</code> is needed so that we can set form values.</p>
 
 <p>Then in HTML, we can use it like this:</p>
 
@@ -4257,7 +4281,7 @@
 <span class="nt">&lt;/form&gt;</span>
 </code></pre></div></div>
 
-<p>When click the submit button, it calls <code class="language-plaintext highlighter-rouge">/test-call?boolean-checkbox=false</code> if both checkboxes are unchecked and <code class="language-plaintext highlighter-rouge">/test-call?default-checkbox=on&amp;boolean-checkbox=true</code> if both are checked.</p>
+<p>When clicking the submit button, it calls <code class="language-plaintext highlighter-rouge">/test-call?boolean-checkbox=false</code> if both checkboxes are unchecked and <code class="language-plaintext highlighter-rouge">/test-call?default-checkbox=on&amp;boolean-checkbox=true</code> if both are checked.</p>
 
 </article>
 

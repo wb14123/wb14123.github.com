@@ -300,7 +300,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong about Recommendation System <span class="publish-year">(2020)</span></a>
+        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong About Recommendation System <span class="publish-year">(2020)</span></a>
         
       
 
@@ -648,6 +648,30 @@
   
     <div class="index-intend">
   
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2025-08-13-Why-Consensus-Shortcuts-Fail.html">The Danger of Half-Implementing Raft: Why Consensus Shortcuts Fail <span class="publish-year">(2025)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
 
     <div class="index-entry index-index">
       
@@ -744,7 +768,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster <span class="publish-year">(2023)</span></a>
+        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Available Cluster <span class="publish-year">(2023)</span></a>
         
       
 
@@ -768,7 +792,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Available Cluster <span class="publish-year">(2025)</span></a>
+        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Availability Cluster <span class="publish-year">(2025)</span></a>
         
       
 
@@ -4030,14 +4054,14 @@
     
   </header>
 
-  <p>In the <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">last blog post</a>, I introduced using Kubernetes to setup high available infrastructure. I had that setup a long time ago. I did the long overdue upgrade for Kubernetes from 1.23 to 1.24 recently. Since GlusterFS is <a href="https://github.com/kubernetes/kubernetes/pull/111485">deprecated</a>(though not removed) in 1.25, I have no plans to continue the upgrade without exploring alternative storage options.</p>
+  <p>In the <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">last blog post</a>, I introduced using Kubernetes to set up highly available infrastructure. I had that setup a long time ago. I did the long overdue upgrade for Kubernetes from 1.23 to 1.24 recently. Since GlusterFS is <a href="https://github.com/kubernetes/kubernetes/pull/111485">deprecated</a>(though not removed) in 1.25, I have no plans to continue the upgrade without exploring alternative storage options.</p>
 
-<p>There is a big change from 1.23 to 1.24 as well, namely, <a href="https://kubernetes.io/blog/2022/03/31/ready-for-dockershim-removal/">Docker Engine support has been removed</a>. I migrated the container engine to containerd. But the process is not without pain. I need to search different sources to fix the issues. So I list my upgrade steps so that if anyone has the same issue, this may help.</p>
+<p>There is a big change from 1.23 to 1.24 as well, namely, <a href="https://kubernetes.io/blog/2022/03/31/ready-for-dockershim-removal/">Docker Engine support has been removed</a>. I migrated the container engine to containerd. But the process is not without pain. I needed to search different sources to fix the issues. So I list my upgrade steps so that if anyone has the same issue, this may help.</p>
 
-<p>My Kubernetes cluster is set up locally with <code class="language-plaintext highlighter-rouge">kubeadm</code>. There is an <a href="https://v1-24.docs.kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/">official upgrade guide</a> for kubeadm to upgrade from 1.23 to 1.24, but it doesn’t mention any steps to remove Docker and setup containerd. So here are the steps I took:</p>
+<p>My Kubernetes cluster is set up locally with <code class="language-plaintext highlighter-rouge">kubeadm</code>. There is an <a href="https://v1-24.docs.kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-upgrade/">official upgrade guide</a> for kubeadm to upgrade from 1.23 to 1.24, but it doesn’t mention any steps to remove Docker and set up containerd. So here are the steps I took:</p>
 
 <ol>
-  <li>Add <code class="language-plaintext highlighter-rouge">--container-runtime-endpoint</code> option to kubelet. The way I did it is adding <code class="language-plaintext highlighter-rouge">KUBELET_ARGS="--container-runtime-endpoint=/run/containerd/containerd.sock"</code> to <code class="language-plaintext highlighter-rouge">/etc/kubernetes/kublet.env</code>. Without this, Kubelet will fail to start.</li>
+  <li>Add <code class="language-plaintext highlighter-rouge">--container-runtime-endpoint</code> option to kubelet. The way I did it is by adding <code class="language-plaintext highlighter-rouge">KUBELET_ARGS="--container-runtime-endpoint=/run/containerd/containerd.sock"</code> to <code class="language-plaintext highlighter-rouge">/etc/kubernetes/kubelet.env</code>. Without this, Kubelet will fail to start.</li>
   <li>Remove <code class="language-plaintext highlighter-rouge">--network-plugin=cni</code> from  <code class="language-plaintext highlighter-rouge">/var/lib/kubelet/kubeadm-flags.env</code>.</li>
   <li>Add the following configuration in <code class="language-plaintext highlighter-rouge">/etc/crictl.yaml</code>, otherwise kubeadm will not be able to pull needed images:
     <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>runtime-endpoint: unix:///run/containerd/containerd.sock
@@ -4046,7 +4070,7 @@ timeout: 10
 debug: false
 </code></pre></div>    </div>
   </li>
-  <li>Configure <code class="language-plaintext highlighter-rouge">SystemdCgroup</code> permission for containerd. Otherwise kube-apiserver will always be restarted because of “sandbox environment changes” (see more in <a href="https://github.com/kubernetes/kubernetes/issues/110177">Github issue</a>):
+  <li>Configure <code class="language-plaintext highlighter-rouge">SystemdCgroup</code> permission for containerd. Otherwise kube-apiserver will always be restarted because of “sandbox environment changes” (see more in <a href="https://github.com/kubernetes/kubernetes/issues/110177">GitHub issue</a>):
     <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo mkdir -p /etc/containerd/
 containerd config default | sudo tee /etc/containerd/config.toml
 sudo sed -i 's/SystemdCgroup \= false/SystemdCgroup \= true/g' /etc/containerd/config.toml

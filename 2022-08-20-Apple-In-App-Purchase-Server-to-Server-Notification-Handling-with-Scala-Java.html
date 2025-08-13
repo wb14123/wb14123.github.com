@@ -300,7 +300,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong about Recommendation System <span class="publish-year">(2020)</span></a>
+        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong About Recommendation System <span class="publish-year">(2020)</span></a>
         
       
 
@@ -648,6 +648,30 @@
   
     <div class="index-intend">
   
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2025-08-13-Why-Consensus-Shortcuts-Fail.html">The Danger of Half-Implementing Raft: Why Consensus Shortcuts Fail <span class="publish-year">(2025)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
 
     <div class="index-entry index-index">
       
@@ -744,7 +768,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster <span class="publish-year">(2023)</span></a>
+        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Available Cluster <span class="publish-year">(2023)</span></a>
         
       
 
@@ -768,7 +792,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Available Cluster <span class="publish-year">(2025)</span></a>
+        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Availability Cluster <span class="publish-year">(2025)</span></a>
         
       
 
@@ -4030,15 +4054,15 @@
     
   </header>
 
-  <p>When you write an app for iOS, publish it to Apple App Store and want to sell something within it, Apple makes it mandatory to use its own in app purchase framework for non consumable items and subscriptions. If the app has a server, it’s very usual that the server wants to know the payment events and have some followup logic with them. But how to do that? There is always an option to let the app send a request to server, but anyone can use the same endpoint to make false claims. To prevent this, Apple has a server to server notification mechanism: Instead the app itself, a server from Apple will send a request to your server to notify the payment events. Since the message is signed by Apple, you can make sure no one else can fake it by verifying the signature.</p>
+  <p>When you write an app for iOS, publish it to Apple App Store and want to sell something within it, Apple makes it mandatory to use its own in-app purchase framework for non-consumable items and subscriptions. If the app has a server, it’s very usual that the server wants to know the payment events and have some follow-up logic with them. But how to do that? There is always an option to let the app send a request to the server, but anyone can use the same endpoint to make false claims. To prevent this, Apple has a server-to-server notification mechanism: Instead of the app itself, a server from Apple will send a request to your server to notify the payment events. Since the message is signed by Apple, you can make sure no one else can fake it by verifying the signature.</p>
 
-<p>While this framework should in theory makes developer’s life easier, the lack of documentation makes it very painful to use. There is also little and often wrong information on the Internet about how to verify the signature, especially for a server written with Java related tech stack. So in this article, I will give an example about how to decode and verify the payment notification messages sent by Apple with Scala. The library we are using is <a href="https://connect2id.com/products/nimbus-jose-jwt">Nimbus JOSE + JWT</a> which is written in Java, so the method applies to other JVM languages as well. Hopefully this can help other developers who are facing the same problem.</p>
+<p>While this framework should in theory make developer’s life easier, the lack of documentation makes it very painful to use. There is also little and often wrong information on the Internet about how to verify the signature, especially for a server written with Java-related tech stack. So in this article, I will give an example about how to decode and verify the payment notification messages sent by Apple with Scala. The library we are using is <a href="https://connect2id.com/products/nimbus-jose-jwt">Nimbus JOSE + JWT</a> which is written in Java, so the method applies to other JVM languages as well. Hopefully this can help other developers who are facing the same problem.</p>
 
 <h2 id="1-how-to-trigger-a-server-notification">1. How to Trigger a Server Notification</h2>
 
-<p>Needless to say, to receive a payment notification you must initiate a payment from the app. There are various ways to do it and we will not discuss it in this article. But be aware there are two ways to test the in app payment: create a <a href="https://developer.apple.com/documentation/xcode/setting-up-storekit-testing-in-xcode">StoreKit configuration in Xcode</a> or <a href="https://developer.apple.com/documentation/storekit/in-app_purchase/testing_in-app_purchases_with_sandbox">use a sandbox environment</a>. Only the later one will trigger a server to server notification.</p>
+<p>Needless to say, to receive a payment notification you must initiate a payment from the app. There are various ways to do it and we will not discuss it in this article. But be aware there are two ways to test the in-app payment: create a <a href="https://developer.apple.com/documentation/xcode/setting-up-storekit-testing-in-xcode">StoreKit configuration in Xcode</a> or <a href="https://developer.apple.com/documentation/storekit/in-app_purchase/testing_in-app_purchases_with_sandbox">use a sandbox environment</a>. Only the latter one will trigger a server-to-server notification.</p>
 
-<p>Another requirement is to set up the notification endpoint in Apple Connection settings. The endpoint is a https URL that Apple will send a http post request to. <a href="https://developer.apple.com/documentation/storekit/in-app_purchase/original_api_for_in-app_purchase/subscriptions_and_offers/enabling_app_store_server_notifications">Here</a> is the Apple document about how to do it.</p>
+<p>Another requirement is to set up the notification endpoint in Apple Connection settings. The endpoint is an HTTPS URL that Apple will send an HTTP POST request to. <a href="https://developer.apple.com/documentation/storekit/in-app_purchase/original_api_for_in-app_purchase/subscriptions_and_offers/enabling_app_store_server_notifications">Here</a> is the Apple document about how to do it.</p>
 
 <h2 id="2-server-notification-workflow">2. Server Notification Workflow</h2>
 
@@ -4046,13 +4070,13 @@
 
 <p><img src="/static/images/2022-08-20-Apple-In-App-Purchase-Server-to-Server-Notification-Handling-with-Scala-Java/iap-server-notification.png" alt="iap-server-notification" /></p>
 
-<p>When Apple receives some payment information, whether it’s from the app, or from subscription renew, or subscription expiration or other events, it will try to send the event to your server by sending an http POST request. In order to make sure no other people can fake a request to the same http endpoint, Apple signs the request payload with a private key that only Apple has access, so that when your server received the message, you can verify it by Apple’s public key.</p>
+<p>When Apple receives some payment information, whether it’s from the app, or from subscription renewal, or subscription expiration or other events, it will try to send the event to your server by sending an HTTP POST request. In order to make sure no other people can fake a request to the same HTTP endpoint, Apple signs the request payload with a private key that only Apple has access to, so that when your server receives the message, you can verify it by Apple’s public key.</p>
 
-<p>The way Apple signs the message is using a standard called <a href="https://www.rfc-editor.org/rfc/rfc7515.html">JWS</a>. This is a complex standard with multiple implementation options. To fully understand it you also need to know things like <a href="https://www.rfc-editor.org/rfc/rfc7518.html">JWA</a> and <a href="https://www.rfc-editor.org/rfc/rfc7517">JWK</a>. Apple has very little document about how to decode its own message other than throw this RFC page into the document. Even in support forums, their response is like “use your favourite crypto library”, which doesn’t really help anything.</p>
+<p>The way Apple signs the message is using a standard called <a href="https://www.rfc-editor.org/rfc/rfc7515.html">JWS</a>. This is a complex standard with multiple implementation options. To fully understand it you also need to know things like <a href="https://www.rfc-editor.org/rfc/rfc7518.html">JWA</a> and <a href="https://www.rfc-editor.org/rfc/rfc7517">JWK</a>. Apple has very little documentation about how to decode its own message other than throwing this RFC page into the document. Even in support forums, their response is like “use your favorite crypto library”, which doesn’t really help anything.</p>
 
 <h3 id="3-jws-overview">3. JWS Overview</h3>
 
-<p>To make it easy, I will give a very simple overview of JWS, JWS has three parts: a header that contains metadata like keys and algorithm to use, the actual payload, and a signature:</p>
+<p>To make it easy, I will give a very simple overview of JWS. JWS has three parts: a header that contains metadata like keys and algorithm to use, the actual payload, and a signature:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>header (metadata)
 
@@ -4062,23 +4086,23 @@ payload (actual message we want, base64 encoded JSON)
 
 -----------
 
-signature (generated by applying crypto algrithm on payload with keys in header)
+signature (generated by applying crypto algorithm on payload with keys in header)
 </code></pre></div></div>
 
 <p>So in order to make sure the whole message is actually sent by Apple, we need to verify:</p>
 
 <ul>
   <li>The signature is generated by the keys in header and the payload.</li>
-  <li>The keys in header is generated by Apple.</li>
+  <li>The keys in header are generated by Apple.</li>
 </ul>
 
-<p>Since the payload is only base64 encoded, for a developer that is not familiar with JWS, even with the help of a JWS library, both verification steps can be easily missed since it only affects the verification, not the decoding of the message.</p>
+<p>Since the payload is only base64 encoded, for a developer who is not familiar with JWS, even with the help of a JWS library, both verification steps can be easily missed since they only affect the verification, not the decoding of the message.</p>
 
-<p>In the section next, we will have an example about how to decode the message while really verify the message is sent by Apple as well.</p>
+<p>In the next section, we will have an example about how to decode the message while really verifying the message is sent by Apple as well.</p>
 
 <h2 id="4-decode-and-verify-notification">4. Decode and Verify Notification</h2>
 
-<p>Here we are using <a href="https://developer.apple.com/documentation/appstoreservernotifications/app_store_server_notifications_v2">App Store server notifications v2</a>. Let’s say you’ve already got the http POST body from your configured endpoint:</p>
+<p>Here we are using <a href="https://developer.apple.com/documentation/appstoreservernotifications/app_store_server_notifications_v2">App Store server notifications v2</a>. Let’s say you’ve already got the HTTP POST body from your configured endpoint:</p>
 
 <pre><code class="language-Scala">val responseBodyV2Str: String = ... // your code to get POST body from HTTP request
 </code></pre>
@@ -4135,12 +4159,12 @@ object ApplePaymentService {
 }
 </code></pre>
 
-<p>With the help with the classes and JSON parser, we can get the value of <code class="language-plaintext highlighter-rouge">signedPayload</code>. (I removed <code class="language-plaintext highlighter-rouge">\n</code> from the JSON string since it’s not valid to have newlines in JSON string, not sure why Apple’s request body has newline in it):</p>
+<p>With the help of the classes and JSON parser, we can get the value of <code class="language-plaintext highlighter-rouge">signedPayload</code>. (I removed <code class="language-plaintext highlighter-rouge">\n</code> from the JSON string since it’s not valid to have newlines in JSON string, not sure why Apple’s request body has newlines in it):</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val responseBodyV2 = parser.parse(responseBodyV2Str.replace("\n", "")).flatMap(_.as[AppleResponseBodyV2]).toTry.get
 </code></pre></div></div>
 
-<p>After get the JWS string, we can parse it with <a href="https://connect2id.com/products/nimbus-jose-jwt/examples">Numbus Jose + JWT</a> (follow the document to add this dependency into your project first):</p>
+<p>After getting the JWS string, we can parse it with <a href="https://connect2id.com/products/nimbus-jose-jwt/examples">Nimbus Jose + JWT</a> (follow the documentation to add this dependency into your project first):</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import com.nimbusds.jose.JWSObject
 import com.nimbusds.jose.crypto.ECDSAVerifier
@@ -4153,16 +4177,16 @@ val jwsObject = JWSObject.parse(responseBodyV2.signedPayload)
 val jwsCerts = jwsObject.getHeader.getX509CertChain.asScala.map(c =&gt; X509CertUtils.parse(c.decode()))
 </code></pre></div></div>
 
-<h3 id="41-verify-keys-in-jws-header-is-signed-by-apple">4.1 Verify keys in JWS header is signed by Apple</h3>
+<h3 id="41-verify-keys-in-jws-header-are-signed-by-apple">4.1 Verify keys in JWS header are signed by Apple</h3>
 
-<p><code class="language-plaintext highlighter-rouge">jwsCerts</code> is a list of <code class="language-plaintext highlighter-rouge">X509Certificate</code>, which is the key chain in JWS header. A cert in the list can be verified by the cert behind it. And the last cert should be verified by Apple’s public key so that we can make sure the whole key chain is signed by Apple.</p>
+<p><code class="language-plaintext highlighter-rouge">jwsCerts</code> is a list of <code class="language-plaintext highlighter-rouge">X509Certificate</code>, which is the key chain in the JWS header. A cert in the list can be verified by the cert behind it. And the last cert should be verified by Apple’s public key so that we can make sure the whole key chain is signed by Apple.</p>
 
-<p>So let’s first get the root cert of Apple first: download <a href="https://www.apple.com/certificateauthority/AppleRootCA-G3.cer">Apple Root CA - G3 Root</a> from <a href="https://www.apple.com/certificateauthority/">Apple PKI website</a> and put it under your project’s <code class="language-plaintext highlighter-rouge">src/resources/certs</code> (or any where the program can read, we are just using it as an example here). Then we can read the Apple root cert with this code:</p>
+<p>So let’s first get the root cert of Apple: download <a href="https://www.apple.com/certificateauthority/AppleRootCA-G3.cer">Apple Root CA - G3 Root</a> from <a href="https://www.apple.com/certificateauthority/">Apple PKI website</a> and put it under your project’s <code class="language-plaintext highlighter-rouge">src/resources/certs</code> (or anywhere the program can read, we are just using it as an example here). Then we can read the Apple root cert with this code:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val appleRootCa = X509CertUtils.parse(getClass.getResourceAsStream("/certs/AppleRootCA-G3.cer").readAllBytes())
 </code></pre></div></div>
 
-<p>With both the key chain and root cert, we can verify the key chain is both valid and signed by Apple:</p>
+<p>With both the key chain and root cert, we can verify that the key chain is both valid and signed by Apple:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jwsCerts.sliding(2).foreach { x =&gt;
   x.head.verify(x.last.getPublicKey)
@@ -4170,11 +4194,11 @@ val jwsCerts = jwsObject.getHeader.getX509CertChain.asScala.map(c =&gt; X509Cert
 jwsCerts.last.verify(appleRootCa.getPublicKey)
 </code></pre></div></div>
 
-<p>It will throw exception if the verify doesn’t pass.</p>
+<p>It will throw an exception if the verification doesn’t pass.</p>
 
-<h3 id="42-verify-jws-is-signed-by-keys-in-jws-header">4.2 Verify JWS is signed by keys in JWS header</h3>
+<h3 id="42-verify-jws-is-signed-by-keys-in-the-jws-header">4.2 Verify JWS is signed by keys in the JWS header</h3>
 
-<p>Once we verified the keys in JWS header is signed by Apple, we need to verify JWS itself is signed by these keys. Since the <code class="language-plaintext highlighter-rouge">alg</code> field in this JWS header is <code class="language-plaintext highlighter-rouge">ES256</code>, we will use <code class="language-plaintext highlighter-rouge">ECDSAVerifier</code> to verify it:</p>
+<p>Once we have verified the keys in the JWS header are signed by Apple, we need to verify the JWS itself is signed by these keys. Since the <code class="language-plaintext highlighter-rouge">alg</code> field in this JWS header is <code class="language-plaintext highlighter-rouge">ES256</code>, we will use <code class="language-plaintext highlighter-rouge">ECDSAVerifier</code> to verify it:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val jwk = ECKey.parse(jwsCerts.head)
 val jwsVerifier = new ECDSAVerifier(jwk)
@@ -4185,7 +4209,7 @@ if (!jwsObject.verify(jwsVerifier)) {
 
 <h3 id="43-parse-the-payload">4.3 Parse the payload</h3>
 
-<p>After verify the JWS is valid, we can start to parse the payload. I’m using the JSON parser and the structure I defined above. Please refer to Apple’s document about the actual fields in the payload:</p>
+<p>After verifying the JWS is valid, we can start to parse the payload. I’m using the JSON parser and the structure I defined above. Please refer to Apple’s documentation about the actual fields in the payload:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>val responseBodyV2Payload = jwsObject.getPayload.toString
 val responseBodyV2DecodedPayload = parser.parse(responseBodyV2Payload).flatMap(_.as[AppleResponseBodyV2DecodedPayload]).toTry.get
@@ -4194,13 +4218,13 @@ val transactionDecodedPayloadStr = JWSObject.parse(transactionPayload).getPayloa
 val transactionDecodedPayload = parser.parse(transactionDecodedPayloadStr).flatMap(_.as[AppleJWSTransactionDecodedPayload]).toTry.get
 </code></pre></div></div>
 
-<p>Here we have the detailed transaction information in <code class="language-plaintext highlighter-rouge">transactionDecodedPayload</code> and can hand it with our business logic.</p>
+<p>Here we have the detailed transaction information in <code class="language-plaintext highlighter-rouge">transactionDecodedPayload</code> and can handle it with our business logic.</p>
 
-<p>There is an interesting thing: <code class="language-plaintext highlighter-rouge">signedRenewInfo</code> and <code class="language-plaintext highlighter-rouge">signedTrasactionInfo</code> are both encoded with JWS again in payload data. I don’t know why: since we’ve already verified the whole payload is signed by Apple, all the content in it should already be valid as well, what’s the point to sign the fields again? I just decoded the fields with <code class="language-plaintext highlighter-rouge">JWSObject.parse</code> but you can always verify it with the same method above just to be safe.</p>
+<p>There is an interesting thing: <code class="language-plaintext highlighter-rouge">signedRenewalInfo</code> and <code class="language-plaintext highlighter-rouge">signedTransactionInfo</code> are both encoded with JWS again in the payload data. I don’t know why: since we’ve already verified the whole payload is signed by Apple, all the content in it should already be valid as well, what’s the point of signing the fields again? I just decoded the fields with <code class="language-plaintext highlighter-rouge">JWSObject.parse</code> but you can always verify it with the same method above just to be safe.</p>
 
 <h2 id="5-other-thoughts">5. Other Thoughts</h2>
 
-<p>As I said about a <a href="/2020-11-08-DNS-Resolving-Bug-in-iOS-14.html">previous blog about an iOS bug</a>, I really hate Apple’s close ecosystem. But Apple’s hardware is good and has a large user space, so we cannot avoid it. Hopefully Android can be better at permission management and other mobile OS can also catch up.</p>
+<p>As I said in a <a href="/2020-11-08-DNS-Resolving-Bug-in-iOS-14.html">previous blog about an iOS bug</a>, I really hate Apple’s closed ecosystem. But Apple’s hardware is good and has a large user base, so we cannot avoid it. Hopefully Android can be better at permission management and other mobile OS can also catch up.</p>
 
 </article>
 

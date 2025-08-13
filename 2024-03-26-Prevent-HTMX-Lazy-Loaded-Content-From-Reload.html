@@ -300,7 +300,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong about Recommendation System <span class="publish-year">(2020)</span></a>
+        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong About Recommendation System <span class="publish-year">(2020)</span></a>
         
       
 
@@ -648,6 +648,30 @@
   
     <div class="index-intend">
   
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2025-08-13-Why-Consensus-Shortcuts-Fail.html">The Danger of Half-Implementing Raft: Why Consensus Shortcuts Fail <span class="publish-year">(2025)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
 
     <div class="index-entry index-index">
       
@@ -744,7 +768,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster <span class="publish-year">(2023)</span></a>
+        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Available Cluster <span class="publish-year">(2023)</span></a>
         
       
 
@@ -768,7 +792,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Available Cluster <span class="publish-year">(2025)</span></a>
+        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Availability Cluster <span class="publish-year">(2025)</span></a>
         
       
 
@@ -4034,7 +4058,7 @@
 
 <h2 id="1-problem">1. Problem</h2>
 
-<p>I’ll briefly introduce two features of htmx in order the explain the problem. You can go to official website for more details about the features.</p>
+<p>I’ll briefly introduce two features of htmx in order to explain the problem. You can go to official website for more details about the features.</p>
 
 <h3 id="11-browser-history">1.1. Browser History</h3>
 
@@ -4043,11 +4067,11 @@
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">hx-get=</span><span class="s">"/blog"</span> <span class="na">hx-push-url=</span><span class="s">"true"</span><span class="nt">&gt;</span>Blog<span class="nt">&lt;/a&gt;</span>
 </code></pre></div></div>
 
-<p>This will change the url in browser to <code class="language-plaintext highlighter-rouge">/blog</code> when you click the link and save a snapshot of current page into local storage. When you click back button in browser, htmx will try to find the cache in local storage, and swap it out so you don’t need to reload the whole page.</p>
+<p>This will change the url in browser to <code class="language-plaintext highlighter-rouge">/blog</code> when you click the link and save a snapshot of current page into local storage. When you click the back button in browser, htmx will try to find the cache in local storage, and swap it out so you don’t need to reload the whole page.</p>
 
 <h3 id="12-lazy-load">1.2. Lazy Load</h3>
 
-<p>htmx sends requests when an event is triggered on an element. The rule is defined by <a href="https://htmx.org/attributes/hx-trigger/">hx-trigger</a> attribute. There are some special events can be used for lazy loading:</p>
+<p>htmx sends requests when an event is triggered on an element. The rule is defined by <a href="https://htmx.org/attributes/hx-trigger/">hx-trigger</a> attribute. There are some special events that can be used for lazy loading:</p>
 
 <ul>
   <li>load - triggered on load (useful for lazy-loading something).</li>
@@ -4055,13 +4079,13 @@
   <li>intersect - fires once when an element first intersects the viewport.</li>
 </ul>
 
-<p>However, when combined this with history support, the lazy loaded elements will be requested again when the pages are navigated in history. Here is an example:</p>
+<p>However, when combining this with history support, the lazy loaded elements will be requested again when the pages are navigated in history. Here is an example:</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">hx-get=</span><span class="s">"/page1"</span> <span class="na">hx-push-url=</span><span class="s">"true"</span> <span class="na">hx-target=</span><span class="s">"#content"</span><span class="nt">&gt;</span>page1<span class="nt">&lt;/a&gt;</span>
 <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"content"</span> <span class="na">hx-get=</span><span class="s">"/content"</span> <span class="na">hx-trigger=</span><span class="s">"load"</span><span class="nt">&gt;&lt;/div&gt;</span>
 </code></pre></div></div>
 
-<p>When you click on <code class="language-plaintext highlighter-rouge">page1</code>, it will replace <code class="language-plaintext highlighter-rouge">#content</code> with the response from <code class="language-plaintext highlighter-rouge">/page1</code> and change the URL. However, when you click on back in browser, htmx will send a request to <code class="language-plaintext highlighter-rouge">/content</code> again even though it’s already in history cache, because technically, <code class="language-plaintext highlighter-rouge">#content</code> <strong>is</strong> loaded again so <code class="language-plaintext highlighter-rouge">hx-get</code> is triggered based on <code class="language-plaintext highlighter-rouge">hx-trigger</code> rule. This results a waste of resource and can sometimes make the webpage lost previous scroll position.</p>
+<p>When you click on <code class="language-plaintext highlighter-rouge">page1</code>, it will replace <code class="language-plaintext highlighter-rouge">#content</code> with the response from <code class="language-plaintext highlighter-rouge">/page1</code> and change the URL. However, when you click the back button in browser, htmx will send a request to <code class="language-plaintext highlighter-rouge">/content</code> again even though it’s already in history cache, because technically, <code class="language-plaintext highlighter-rouge">#content</code> <strong>is</strong> loaded again so <code class="language-plaintext highlighter-rouge">hx-get</code> is triggered based on the <code class="language-plaintext highlighter-rouge">hx-trigger</code> rule. This results in a waste of resources and can sometimes make the webpage lose its previous scroll position.</p>
 
 <p>In this article, I’ll show some tricks to prevent this. They are very simple once you know them but sometimes it’s just hard to get when you are new to the framework.</p>
 
@@ -4069,7 +4093,7 @@
 
 <p>I think this is the best solution. It’s so simple that I don’t know why I didn’t get it earlier. Anyway, that’s why I write this blog so that it can help more people like me.</p>
 
-<p>By default, htmx swap the inner HTML of the element. So the <code class="language-plaintext highlighter-rouge">hx-trigger="load"</code> attribute is still there after the content is loaded and will be triggered again when load from history. The solution is to just let htmx swap the outer HTML instead. Using the same example, the code will be changed to this:</p>
+<p>By default, htmx swaps the inner HTML of the element. So the <code class="language-plaintext highlighter-rouge">hx-trigger="load"</code> attribute is still there after the content is loaded and will be triggered again when loading from history. The solution is to just let htmx swap the outer HTML instead. Using the same example, the code will be changed to this:</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">hx-get=</span><span class="s">"/page1"</span> <span class="na">hx-push-url=</span><span class="s">"true"</span> <span class="na">hx-target=</span><span class="s">"#content"</span><span class="nt">&gt;</span>page1<span class="nt">&lt;/a&gt;</span>
 <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"content"</span> <span class="na">hx-get=</span><span class="s">"/content"</span><span class="nt">&gt;</span>
@@ -4083,16 +4107,16 @@
 
 <h2 id="3-solution-b-dont-snapshot-the-whole-body">3. Solution B: Don’t Snapshot the Whole Body</h2>
 
-<p>The solution above removes the htmx attributes. The solution in section tackles the problem in another direction: it prevents the element from loading again when go back in history.</p>
+<p>The solution above removes the htmx attributes. The solution in this section tackles the problem in another direction: it prevents the element from loading again when going back in history.</p>
 
-<p>By default, htmx will take the snapshot of <code class="language-plaintext highlighter-rouge">body</code> and put it into history cache. That’s why when go back in history, the <code class="language-plaintext highlighter-rouge">load</code> event of the element is triggered again. To prevent it, we can let htmx only snapshot children of <code class="language-plaintext highlighter-rouge">#content</code>. <a href="https://htmx.org/docs/#specifying-history-snapshot-element">Here</a> is the official doc about how to do it. Using the same example, the code will be changed into:</p>
+<p>By default, htmx will take the snapshot of <code class="language-plaintext highlighter-rouge">body</code> and put it into history cache. That’s why when going back in history, the <code class="language-plaintext highlighter-rouge">load</code> event of the element is triggered again. To prevent it, we can let htmx only snapshot children of <code class="language-plaintext highlighter-rouge">#content</code>. <a href="https://htmx.org/docs/#specifying-history-snapshot-element">Here</a> is the official doc about how to do it. Using the same example, the code will be changed into:</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">hx-get=</span><span class="s">"/page1"</span> <span class="na">hx-push-url=</span><span class="s">"true"</span> <span class="na">hx-target=</span><span class="s">"#content"</span><span class="nt">&gt;</span>page1<span class="nt">&lt;/a&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"content-load"</span> <span class="na">hx-get=</span><span class="s">"/content"</span> <span class="na">hx-trigger=</span><span class="s">"load"</span> <span class="na">hx-target=</span><span class="s">"#content"</span><span class="nt">&gt;&lt;/div&gt;</span>&gt;
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"content-load"</span> <span class="na">hx-get=</span><span class="s">"/content"</span> <span class="na">hx-trigger=</span><span class="s">"load"</span> <span class="na">hx-target=</span><span class="s">"#content"</span><span class="nt">&gt;&lt;/div&gt;</span>
 <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"content"</span> <span class="na">hx-history-elt</span><span class="nt">&gt;&lt;/div&gt;</span>
 </code></pre></div></div>
 
-<p>Here we load the content with <code class="language-plaintext highlighter-rouge">#content-load</code> element. htmx will only swap out <code class="language-plaintext highlighter-rouge">#content</code> when we forward or go back in browser history since we added <code class="language-plaintext highlighter-rouge">hx-history-elt</code> on <code class="language-plaintext highlighter-rouge">#content</code>. This prevents <code class="language-plaintext highlighter-rouge">load</code> event from being triggered on <code class="language-plaintext highlighter-rouge">#content-load</code> so it will not send a new request.</p>
+<p>Here we load the content with <code class="language-plaintext highlighter-rouge">#content-load</code> element. htmx will only swap out <code class="language-plaintext highlighter-rouge">#content</code> when we go forward or back in browser history since we added <code class="language-plaintext highlighter-rouge">hx-history-elt</code> on <code class="language-plaintext highlighter-rouge">#content</code>. This prevents <code class="language-plaintext highlighter-rouge">load</code> event from being triggered on <code class="language-plaintext highlighter-rouge">#content-load</code> so it will not send a new request.</p>
 
 <p>But this solution has great limitations: you need to change the snapshot element which is not always possible.</p>
 
@@ -4100,10 +4124,10 @@
 
 <p>This is a solution that could work in theory but I didn’t test it, because I came up with the best solution when thinking about it.</p>
 
-<p>The idea is similar: we don’t want htmx action attributes like <code class="language-plaintext highlighter-rouge">hx-get</code> when we load the history. Other than swap the whole outerHTML, there is a htmx event you can catch in Javascript to remove the attribute before taking a snapshot:</p>
+<p>The idea is similar: we don’t want htmx action attributes like <code class="language-plaintext highlighter-rouge">hx-get</code> when we load the history. Other than swapping the whole outerHTML, there is a htmx event you can catch in Javascript to remove the attribute before taking a snapshot:</p>
 
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">htmx</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">htmx:beforeHistorySave</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nb">document</span><span class="p">.</span><span class="nf">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">#content</span><span class="dl">'</span><span class="p">).</span><span class="nf">removeAttributes</span><span class="p">(</span><span class="dl">"</span><span class="s2">hx-get</span><span class="dl">"</span><span class="p">))</span>
+  <span class="nb">document</span><span class="p">.</span><span class="nf">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">#content</span><span class="dl">'</span><span class="p">).</span><span class="nf">removeAttribute</span><span class="p">(</span><span class="dl">"</span><span class="s2">hx-get</span><span class="dl">"</span><span class="p">)</span>
 <span class="p">})</span>
 </code></pre></div></div>
 

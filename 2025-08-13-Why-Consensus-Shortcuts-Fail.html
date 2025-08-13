@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> Bin Wang - My Personal Blog</title>
+    <title> The Danger of Half-Implementing Raft: Why Consensus Shortcuts Fail |  Bin Wang - My Personal Blog</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
     <link rel="stylesheet" href="/static/css/asciinema-player.css" type="text/css" />
 
@@ -654,7 +654,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2025-08-13-Why-Consensus-Shortcuts-Fail.html">The Danger of Half-Implementing Raft: Why Consensus Shortcuts Fail <span class="publish-year">(2025)</span></a>
+        <div class="index-selected">The Danger of Half-Implementing Raft: Why Consensus Shortcuts Fail <span class="publish-year">(2025)</span></div>
         
       
 
@@ -4041,146 +4041,246 @@
 
 
     <section id="page_content">
-        <nav id="post_list">
-  
-<div class="per_post">
-  <h2 class="title "><a href="/2024-03-19-Travel-Back-to-China.html">Travel Back to China</a></h2>
-  <div class="description">Posted on 19 Mar 2024, tagged <code>life</code><code>travel</code><code>China</code><code>Japan</code><code>Beijing</code><code>Tokyo</code></div>
+        <div id="content_table">
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#goal-of-the-system">Goal of the System</a></li><li><a href="#what-does-the-system-do">What Does the System Do</a></li><li><a href="#no-guarantee-of-a-single-leader">No Guarantee of A Single Leader</a></li><li><a href="#a-naive-implementation-with-existing-raft-system">A Naive Implementation with Existing Raft System</a></li><li><a href="#leader-terms">Leader Terms</a></li><li><a href="#highly-available-postgresql-cluster">Highly Available PostgreSQL Cluster</a></li><li><a href="#quorum">Quorum</a></li><li><a href="#save-the-last-log-entry-to-external-raft-system">Save the Last Log Entry to External Raft System</a></li><li><a href="#leader-terms-in-logs">Leader Terms in Logs</a></li><li><a href="#linearizable-guarantee-for-reads">Linearizable Guarantee for Reads</a></li><li><a href="#conclusion">Conclusion</a></li></ol>
 </div>
 
-<div class="per_post">
-  <h2 class="title "><a href="/2023-12-29-Scala-Macro-Tutorial.html">Scala 2 Macro Tutorial</a></h2>
-  <div class="description">Posted on 29 Dec 2023, tagged <code>Scala</code><code>macro</code><code>meta programming</code><code>AOP</code></div>
-</div>
+<div id="article_content" class="">
+<article id="post">
+  <header>
+    <h1>The Danger of Half-Implementing Raft: Why Consensus Shortcuts Fail</h1>
+    
+      <p class="description">Posted on 13 Aug 2025, tagged <code>distributed system</code><code>raft</code><code>paxos</code><code>etcd</code><code>postgresql</code></p>
+    
+  </header>
 
-<div class="per_post">
-  <h2 class="title "><a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html">ZFS Profiling on Arch Linux</a></h2>
-  <div class="description">Posted on 14 Dec 2023, tagged <code>ZFS</code><code>Linux</code><code>Profiling</code><code>dkms</code><code>kernel</code></div>
-</div>
+  <p>There are some battle-tested consensus algorithms like Paxos and Raft to ensure a consistent view will be reached in a distributed system, even with scenarios like node failure, network partition, clock skew, and so on. There are existing systems like etcd and Zookeeper that implement these algorithms so you can use them as external systems. But sometimes, you may need to embed the algorithm into your own system instead of relying on a third-party one (it may be more common than you think—more on that in my next blog). Sometimes, because of the limitations of existing systems or other reasons, it may be hard to fully implement the algorithm, so people may tend to cut some corners and think it will be okay. While Raft and Paxos are not the only consensus algorithms, creating new ones is error-prone. This article explores how partial implementations fail, even when leveraging existing Raft systems incorrectly. We will use Raft as an example instead of other algorithms like Paxos, since it’s easier to understand and has better descriptions of real-world systems.</p>
 
-<div class="per_post">
-  <h2 class="title "><a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Available Cluster</a></h2>
-  <div class="description">Posted on 28 Nov 2023, tagged <code>Kubernetes</code><code>CephFS</code><code>MetalLB</code><code>k3s</code><code>Infrastructure</code><code>devops</code></div>
-</div>
+<h2 id="goal-of-the-system">Goal of the System</h2>
 
-<div class="per_post">
-  <h2 class="title "><a href="/2023-11-14-Update-On-RSS-Brain-to-Find-Related-Articles-with-Machine-Learning.html">Update on RSS Brain to Find Related Articles with Machine Learning</a></h2>
-  <div class="description">Posted on 14 Nov 2023, tagged <code>RSS Brain</code><code>Machine Learning</code><code>Neural Network</code><code>Embeddings</code><code>Python</code></div>
-</div>
+<p>Before going to the details, let’s define what the goal of the system or algorithm we are going to implement is, because a consensus system can mean many things.</p>
 
-<div class="per_post">
-  <h2 class="title "><a href="/2023-11-10-Index-Sidebar-on-My-Blog.html">Add Index Sidebar to My Blog</a></h2>
-  <div class="description">Posted on 10 Nov 2023, tagged <code>blog</code><code>Jekyll</code><code>Javascript</code><code>design</code></div>
-</div>
+<p>I’ll quote from Raft’s paper <a href="https://raft.github.io/raft.pdf">In Search of an Understandable Consensus Algorithm</a> for the properties of the system:</p>
 
-<div class="per_post">
-  <h2 class="title "><a href="/2023-11-04-How-to-Cleanup-Ceph-Filesystem-for-Deleted-Kubernetes-Persistent-Volume.html">How to Cleanup Ceph Filesystem for Deleted Kubernetes Persistent Volume</a></h2>
-  <div class="description">Posted on 04 Nov 2023, tagged <code>Kubernetes</code><code>Ceph</code><code>Distributed file system</code></div>
-</div>
+<blockquote>
+  <p>Consensus algorithms for practical systems typically have the following properties:</p>
 
-<div class="per_post">
-  <h2 class="title "><a href="/2023-10-22-Full-Disk-Encryption-with-Yubikey.html">Linux Full Disk Encryption with Yubikey</a></h2>
-  <div class="description">Posted on 22 Oct 2023, tagged <code>Yubikey</code><code>Linux</code><code>Encryption</code></div>
-</div>
-
-<div class="per_post">
-  <h2 class="title "><a href="/2023-09-30-A-Boring-JVM-Memory-Profiling-Story.html">A Boring JVM Memory Profiling Story</a></h2>
-  <div class="description">Posted on 30 Sep 2023, tagged <code>Java</code><code>JVM</code><code>Memory Leak</code><code>Scala</code><code>JProfiler</code><code>Profiling</code></div>
-</div>
-
-<div class="per_post">
-  <h2 class="title "><a href="/2023-09-24-Jekyll-Plugin-to-Load-Asciicast-Locally.html">Jekyll Plugin to Load Asciinema Recordings Locally</a></h2>
-  <div class="description">Posted on 24 Sep 2023, tagged <code>Jekyll</code><code>Blog</code><code>command line</code><code>Asciicast</code></div>
-</div>
-
-<div class="per_post">
-  <h2 class="title "><a href="/2023-09-23-Migrate-Scala2Grpc-to-Cats-Effect-3.html">Migrate Scala2grpc to Cats Effect 3</a></h2>
-  <div class="description">Posted on 23 Sep 2023, tagged <code>Programming</code><code>Scala</code><code>gRPC</code><code>Cats</code><code>Functional Programming</code></div>
-</div>
-
-<div class="per_post">
-  <h2 class="title "><a href="/2023-09-01-Build-a-Linux-Virtual-Machine-for-Windows-Apps.html">Build a Linux Virtual Machine for Windows Apps</a></h2>
-  <div class="description">Posted on 01 Sep 2023, tagged <code>Linux</code><code>Windows</code><code>Virtual Machine</code><code>Deepin</code><code>Wine</code></div>
-</div>
-
-<div class="per_post">
-  <h2 class="title "><a href="/2023-08-27-Compare-Task-Processing-Approaches-in-Scala.html">Compare Task Processing Approaches in Scala</a></h2>
-  <div class="description">Posted on 27 Aug 2023, tagged <code>Scala</code><code>concurrent</code><code>cats</code><code>cats-effect</code><code>fs2</code><code>queue</code><code>stream</code></div>
-</div>
-
-<div class="per_post">
-  <h2 class="title "><a href="/2023-05-22-Upgrade-Kubernetes-from-1.23-to-1.24.html">Upgrade Kubernetes from 1.23 to 1.24</a></h2>
-  <div class="description">Posted on 22 May 2023, tagged <code>Kubernetes</code><code>container</code><code>Docker</code><code>Linux</code></div>
-</div>
-
-<div class="per_post">
-  <h2 class="title "><a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability</a></h2>
-  <div class="description">Posted on 13 Mar 2023, tagged <code>Kubernetes</code><code>GlusterFS</code><code>CockroachDB</code><code>tech</code><code>high availability</code></div>
-</div>
-
-
-<!-- Pagination links -->
-<footer id="post-pagination">
   <ul>
-    <li>PAGES:</li>
-    <li>
-      
-       <a href="/">1</a>
-      
-    </li>
-    
-    <li>
-      
-        2
-      
-    </li>
-    
-    <li>
-      
-        <a href="/page3/index.html">3</a>
-      
-    </li>
-    
-    <li>
-      
-        <a href="/page4/index.html">4</a>
-      
-    </li>
-    
-    <li>
-      
-        <a href="/page5/index.html">5</a>
-      
-    </li>
-    
-    <li>
-      
-        <a href="/page6/index.html">6</a>
-      
-    </li>
-    
-    <li>
-      
-        <a href="/page7/index.html">7</a>
-      
-    </li>
-    
-    <li>
-      
-        <a href="/page8/index.html">8</a>
-      
-    </li>
-    
-    <li>
-      
-        <a href="/page9/index.html">9</a>
-      
-    </li>
-    
+    <li>They ensure safety (never returning an incorrect result) under all non-Byzantine conditions, including network delays, partitions, and packet loss, duplication, and reordering.</li>
+    <li>They are fully functional (available) as long as any majority of the servers are operational and can communicate with each other and with clients. Thus, a typical cluster of five servers can tolerate the failure of any two servers. Servers are assumed to fail by stopping; they may later recover from state on stable storage and rejoin the cluster.</li>
+    <li>They do not depend on timing to ensure the consistency of the logs: faulty clocks and extreme message delays can, at worst, cause availability problems.</li>
+    <li>In the common case, a command can complete as soon as a majority of the cluster has responded to a single round of remote procedure calls; a minority of slow servers need not impact overall system performance.</li>
   </ul>
+</blockquote>
+
+<p>To be clearer, by “ensure safety”, it means to guarantee <a href="https://jepsen.io/consistency/models/linearizable">linearizability</a>. And by non-Byzantine conditions, I’ll quote from the Paxos paper <em>Paxos Made Simple</em>:</p>
+
+<blockquote>
+  <p>We use the customary asynchronous, non-Byzantine model, in which:</p>
+
+  <ul>
+    <li>Agents operate at arbitrary speed, may fail by stopping, and may restart. Since all agents may fail after a value is chosen and then restart, a solution is impossible unless some information can be remembered by an agent that has failed and restarted.</li>
+    <li>Messages can take arbitrarily long to be delivered, can be duplicated, and can be lost, but they are not corrupted.</li>
+  </ul>
+</blockquote>
+
+<p>When we explore what happens if we don’t fully implement Raft, we will refer to these failure modes very often since that’s when interesting things happen.</p>
+
+<h2 id="what-does-the-system-do">What Does the System Do</h2>
+
+<p>Paxos only discusses the consensus of a single value in a distributed system. But as the Raft paper noted, it’s not very practical in real-world systems. There are algorithms that leverage Paxos, like Multi-Paxos, but they are hard to understand. So here we will follow Raft’s direction to describe a system that guarantees each node has a consistent view of logs. The logs are like write-ahead logs of databases like PostgreSQL and MySQL. Once each node has them and they are guaranteed to be consistent, they can just apply the logs to have a consistent state.</p>
+
+<p>Raft elects a leader to answer all client requests to simplify the algorithm. Log replication is from the leader to other nodes.</p>
+
+<p>So in the following section, we will discuss how it will affect the consistency of logs across different nodes if we miss some parts of the Raft algorithm. We will use PostgreSQL as an example when discussing it, since its write-ahead log (WAL) is like Raft logs but missing some information. We will see how this difference will make it hard to implement a linearizable, highly available PostgreSQL cluster.</p>
+
+<h2 id="no-guarantee-of-a-single-leader">No Guarantee of A Single Leader</h2>
+
+<p>An important thing to notice before we go further is that there is no guarantee that only a single node is the leader at any given time. More specifically, there is no guarantee some operations are only done by a single node at a given time. Let’s consider the following code for operations the leader does:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if (is_leader()) {
+  do_something()
+}
+</code></pre></div></div>
+
+<p>As described above for the non-Byzantine model, a process may pause for arbitrarily long. So if the process is paused after <code class="language-plaintext highlighter-rouge">is_leader()</code> returns true, in order for the system to still be available, another leader should be elected. But when the old leader resumes and comes back, it thinks it’s still the leader since from its perspective, it just checked that. You can add more checks before <code class="language-plaintext highlighter-rouge">do_something()</code>, like checking the time passed since <code class="language-plaintext highlighter-rouge">is_leader()</code> and so on, but the pause can always happen after all the checks and just before <code class="language-plaintext highlighter-rouge">do_something()</code>.</p>
+
+<p>Not only can process pauses cause issues. If you are doing any network requests in <code class="language-plaintext highlighter-rouge">do_something</code>, because of network latency, when the requests reach the other node, a new node may be elected as a leader by then.</p>
+
+<p>This is not only something that can happen in theory. Some languages have built-in GC that are known to have long GC pauses under some scenarios. And the operating system can also be too busy to schedule the process back to the CPU. If the process is running in a virtual machine, the host can also pause the virtual machine. To try to resolve it, some systems delay the new leader election when the old one loses contact, in the hope that the process pause or the network delay would be over by then. However, there is really no guarantee of the length of a process pause. So the delay of leader election only makes the possibility smaller, but not zero.</p>
+
+<h2 id="a-naive-implementation-with-existing-raft-system">A Naive Implementation with Existing Raft System</h2>
+
+<p>The most naive implementation may be just leveraging an existing consensus system like etcd, which implements the Raft algorithm. However, with this approach, we get the same problem as described in the last section. Let’s say you use etcd to do an <code class="language-plaintext highlighter-rouge">is_leader</code> check every time you want to do something that only the leader can do: the process can pause after the check, so there is really no guarantee of a single leader, even when leveraging an existing system that implemented the Raft algorithm.</p>
+
+<h2 id="leader-terms">Leader Terms</h2>
+
+<p>Raft and similar systems resolve the problem by having a leader term for each new election. The leader terms are consecutive integers. And when the leader sends a request to replicate logs, it sends its current term with the request. On the other node, it can compare the highest term it knows. If the term it knows is higher than the one in the request, it means the request is sent by an old leader, thus it will reject the request.</p>
+
+<p>In terms of using an external system like etcd as described in the last section, we can use the leader term to guard operations. In etcd, there are revisions for a key, which is basically the same as leader terms. For example, if <code class="language-plaintext highlighter-rouge">do_something()</code> above is updating some rows in a database, you can check if the current term is the same as the term in the database. Here is a code example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>key = get_etcd_leader_key()
+if (key != null) {
+  revision = key.revision
+  begin_db_transaction()
+  if (get_revision_in_db() &lt;= revision) {
+    do_something();
+    update_revision_in_db(revision);
+  }
+  end_db_transaction();
+}
+</code></pre></div></div>
+
+<p>Note how <code class="language-plaintext highlighter-rouge">get_revision_in_db</code>, <code class="language-plaintext highlighter-rouge">do_something</code> and <code class="language-plaintext highlighter-rouge">update_revision_in_db</code> happen in the same database transaction. Essentially, we are using another consistent system, the database, combined with the leader terms to make sure there is a single leader doing the operation.</p>
+
+<h2 id="highly-available-postgresql-cluster">Highly Available PostgreSQL Cluster</h2>
+
+<p>But what if we are implementing a distributed database system? There is no external database for us to depend on. For example, let’s say we are implementing a highly available cluster for PostgreSQL. Is there a way to use an external Raft system like etcd to implement a PostgreSQL cluster so that it meets the properties we discussed in the section “Goal of the System”?</p>
+
+<p>PostgreSQL has tools to create replication and guarantee the transaction is only considered committed when it already replicates to a specific number of replicas. (Even though the implementation also has problems, but we will ignore them for now. See the section “A Known Issue of PostgreSQL Replication” in <a href="/2024-12-02-PostgreSQL-High-Availability-Solutions-Part-1.html">my previous article</a> for details). But it doesn’t have an auto-failover mechanism. So one needs to implement that part, and it’s actually very tricky.</p>
+
+<p>One may think that with an existing Raft system like etcd, each node can have a process to monitor if it’s still the leader. And the nodes can reset the replication configuration based on who is the leader told by etcd.</p>
+
+<p>However, since we’ve already seen from the sections above, we cannot simply just check who is the current leader. Otherwise, two nodes may very well think they are both the leader at the same time. So how should we resolve the problem?</p>
+
+<h2 id="quorum">Quorum</h2>
+
+<p>A way to reach consensus is to write a log entry to a majority of the nodes. Let’s say the log has an index along with its content, where the index is the position of the log and they are consecutive integers (no holes in the log entries). When a primary wants to replicate a log entry at index N, the replicas only accept it if index N is their next local index entry. With this, no matter who is the primary, only one log entry will be persisted on a majority of nodes for the same index N. And when we read data, we can also read from a quorum to make sure the data is on a majority of nodes when we return it to the client.</p>
+
+<p>However, it has problems when we think about more than one log entry. Consider the following timeline of events:</p>
+
+<ol>
+  <li>We have 5 nodes A, B, C, D, E. Both A and C think they are the leader.</li>
+  <li>A tries to replicate (index=1, content=X). At the same time, C tries to replicate (index=1, content=Y).</li>
+  <li>A wins A, B while C wins C, D, E. So the current state is A, B has [X] while C, D, E has [Y]. But since the majority of nodes have [Y], we can ignore the version history of [X].</li>
+  <li>A then tries to replicate the next log entry (index=2, content=X) even though it doesn’t get a majority from the last replication (more on this later). C tries to replicate the next log entry too with (index=2, content=Y).</li>
+  <li>This time A wins a majority with A, B, D while C wins C, E. So the state becomes:
+    <ul>
+      <li>A: [X, X]</li>
+      <li>B: [X, X]</li>
+      <li>C: [Y, Y]</li>
+      <li>D: [Y, X]</li>
+      <li>E: [Y, Y]</li>
+    </ul>
+  </li>
+</ol>
+
+<p>We can see at step 5, there is no log history that has a majority.</p>
+
+<p>You may have some questions about step 2: why does A try to replicate the next log entry even though it doesn’t get acked by a majority for the previous one? This is a normal performance optimization. Otherwise, each transaction needs to wait for the previous one to finish, which is very slow.</p>
+
+<p>But let’s say for the sake of correctness, a node only replicates the next log entry when a majority acked its previous replications, problems can still happen:</p>
+
+<ol>
+  <li>We have 5 nodes A, B, C, D, E. Both A and C think they are the leader.</li>
+  <li>A tries to replicate (index=1, content=X). At the same time, C tries to replicate (index=1, content=Y).</li>
+  <li>A wins A, B while C wins C, D, E. So the current state is A, B has [X] while C, D, E has [Y]. But since the majority of nodes have [Y], we can ignore the version history of [X].</li>
+  <li>However, let’s say C then starts to replicate (index=2, content=Z). A, B have no reason to reject it since index 2 is after their latest index 1. So A, B has [X, Z] while C, D, E has [Y, Z].</li>
+</ol>
+
+<p>From a log entries point of view, we still maintain a log history within a majority of the nodes, which is [Y, Z]. But the problem is we need to apply the logs to state. When this happens, the internal state of A, B is different from the internal state of [Y, Z]. When we say check majority when reading data, we cannot check the whole log history of each node or the whole state of each node, otherwise the performance would be very bad.</p>
+
+<p>But let’s ignore the performance again and compare the whole log history or state when reading—problems can still happen during a failover:</p>
+
+<ol>
+  <li>We have 5 nodes A, B, C, D, E. Both A and C think they are the leader.</li>
+  <li>A tries to replicate (index=1, content=X). At the same time, C tries to replicate (index=1, content=Y).</li>
+  <li>A wins A, B while C wins C, D, E. So the current state is A, B has [X] while C, D, E has [Y]. But since the majority of nodes have [Y], we can ignore the version history of [X].</li>
+  <li>Node C failed and a new election needs to happen. The current state is:
+    <ul>
+      <li>A: [X]</li>
+      <li>B: [X]</li>
+      <li>C: failed so unknown.</li>
+      <li>D: [Y]</li>
+      <li>E: [Y]</li>
+    </ul>
+  </li>
+</ol>
+
+<p>So none of the log histories has a majority. It’s impossible to know which one to pick in this scenario.</p>
+
+<h2 id="save-the-last-log-entry-to-external-raft-system">Save the Last Log Entry to External Raft System</h2>
+
+<p>What if we save the last log entry, including the log index and (the hash of) its content, to an external Raft system like etcd, and only consider it to be committed if it can successfully do so? So that when a new leader needs to be elected, it checks its eligibility by checking whether it has the latest committed log entry saved in etcd. Here are some more details to guarantee the correctness:</p>
+
+<ul>
+  <li>Only the leader can accept queries. It replicates log entries to a majority of nodes, then saves it to etcd. The log entry is only considered committed if those two operations succeed.</li>
+  <li>When saving the latest log entry to etcd, it needs to check it’s still the leader in the same transaction, so that an older save request wouldn’t override a newer one.</li>
+  <li>The leader should also tell the replicas the log entry is committed, so that the replicas can check with etcd and also commit it locally. If the entry in etcd is already larger than the latest one locally, it should ask the leader to sync the log entries.</li>
+  <li>When a replica receives a replication request, it only appends it to its committed local entries. And the index of the new entry should be just behind its committed last entry. If the new index number is lower, it rejects it. If the new index number is higher than 1, it needs to ask the leader to sync its log entries.</li>
+  <li>When a node wants to become a leader, it needs to check it has the latest log entry in etcd and acquire the leader key in the same etcd transaction.</li>
+  <li>When reading data, it needs to confirm with etcd that the node has the latest log entry locally.</li>
+  <li>The new leader should try to force sync its logs to other replicas to resolve conflicts. The replica needs to guard the sync request with the leader term: only accept requests with leader terms larger than the one stored locally. Otherwise, an old sync request may override newer committed log entries, which makes the committed log entries not replicated to a majority of nodes.</li>
+</ul>
+
+<p>You can see the algorithm is already complex. The complexity is even comparable to Raft, if not more so. But even with this, I don’t have proof it is correct. But at least I cannot find any problem for now. However, this approach comes with a performance penalty: every log entry is essentially replicated to 2 systems: one for the system itself and one for the external Raft system. It will double the latency.</p>
+
+<p>For systems like PostgreSQL, you cannot force it to replicate the write-ahead logs one by one without modifying it. It’s also hard to guard the replication with a committed check with etcd. So it’s really hard to implement this for a highly available PostgreSQL cluster, even not considering the performance issues.</p>
+
+<h2 id="leader-terms-in-logs">Leader Terms in Logs</h2>
+
+<p>The Raft algorithm resolves the problems by also including leader terms in the log entry and having guards around that when replicating log entries and when failing over. The paper already talked about it in detail, so I’ll not repeat it again here. The point is, without the leader terms in the log structure, it’s really tricky to make such a consensus system. We’ll talk more about it in the last section.</p>
+
+<h2 id="linearizable-guarantee-for-reads">Linearizable Guarantee for Reads</h2>
+
+<p>One thing that can be overlooked is the leader’s behavior for guaranteeing linearizable reads. Maybe because it’s discussed in a later section (Client interaction) in the Raft paper. There are 2 problems about the leader having stale data:</p>
+
+<p>First, the Raft algorithm sends the last committed log ID after replicating the log entries in separate requests. So when a new leader is elected, it may have log entries that are already considered committed but are not known to the new leader yet. So the new leader needs to do a no-op log entry replication. During such replication, based on the Raft algorithm’s logic, the last committed log ID will be synced and caught up.</p>
+
+<p>Then, when reading data from a Raft system, a node may think it’s still the leader but in fact there is a newer leader already elected. So before processing the read request, it needs to confirm it’s still the leader. The Raft algorithm does this by checking heartbeats between the leader and replicas.</p>
+
+<p>Even etcd didn’t implement the linearizable reads at first. You can check more details from <a href="https://aphyr.com/posts/316-jepsen-etcd-and-consul">this Jepsen test</a>.</p>
+
+<p>Using PostgreSQL as an example again, let’s say we somehow make the log replications to be consistent across the nodes, but we still need to check the leader’s role on every read. This is not possible without having a layer before the actual PostgreSQL transaction, either through PostgreSQL extensions or through a proxy.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>We talked about some different implementations for a consensus system and how things can go wrong with those implementations. We can see without an overall consideration, how hard it can be to implement such a system. Using PostgreSQL as an example, even though it has a built-in replication mechanism, without an overall design considering distributed consistency and failover, it’s hard to implement a linearizable system without changes to its internals.</p>
+
+<p>But a linearizable system may not always be needed. Sometimes we may want a less strict model, like only guaranteeing read-your-own-writes. But even with this less strict requirement, it still needs significant considerations. Maybe that can be a topic for future discussion.</p>
+
+</article>
+
+<footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2025-07-02-Improve-Books-Section-of-My-Blog.html">Prev: Improve Books Section of My Blog</a></td>
+    
+    
+  </tr></table>
 </footer>
 
-</nav>
+<!--
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+-->
+
+
+
+<!-- MathJax -->
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+</div>
 
     </section>
 

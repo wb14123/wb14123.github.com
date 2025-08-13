@@ -300,7 +300,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong about Recommendation System <span class="publish-year">(2020)</span></a>
+        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong About Recommendation System <span class="publish-year">(2020)</span></a>
         
       
 
@@ -648,6 +648,30 @@
   
     <div class="index-intend">
   
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2025-08-13-Why-Consensus-Shortcuts-Fail.html">The Danger of Half-Implementing Raft: Why Consensus Shortcuts Fail <span class="publish-year">(2025)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
 
     <div class="index-entry index-index">
       
@@ -744,7 +768,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster <span class="publish-year">(2023)</span></a>
+        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Available Cluster <span class="publish-year">(2023)</span></a>
         
       
 
@@ -768,7 +792,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Available Cluster <span class="publish-year">(2025)</span></a>
+        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Availability Cluster <span class="publish-year">(2025)</span></a>
         
       
 
@@ -4032,34 +4056,34 @@
 
   <h2 id="background">Background</h2>
 
-<p>I’ve built the client app of <a href="https://rssbrain.com">RSS Brain</a> with Flutter so that I don’t need to write different code for different platforms. It’s a pleasant to write Flutter code. And the app works good enough for Android and iOS. However, Flutter web support is a different story. You can feel the app is just not a normal website. I’m not satisfy with that. After attempts to make it more like a native web page and failed, I’m rewriting it with web technology again. That’s why the <a href="/2024-03-26-Prevent-HTMX-Lazy-Loaded-Content-From-Reload.html">last blog post</a> is about htmx.</p>
+<p>I’ve built the client app of <a href="https://rssbrain.com">RSS Brain</a> with Flutter so that I don’t need to write different code for different platforms. It’s pleasant to write Flutter code. And the app works well enough for Android and iOS. However, Flutter web support is a different story. You can feel the app is just not a normal website. I’m not satisfied with that. After attempts to make it more like a native web page and failed, I’m rewriting it with web technology again. That’s why the <a href="/2024-03-26-Prevent-HTMX-Lazy-Loaded-Content-From-Reload.html">last blog post</a> is about htmx.</p>
 
-<p>Before I move on, I’d like to record what I have tried, as a note for myself and hopefully it can also help someone else. It’s really sad this article as my first blog about Flutter, maybe the only one for a long time.</p>
+<p>Before I move on, I’d like to record what I have tried, as a note for myself and hopefully it can also help someone else. It’s really sad that as my first blog about Flutter, it maybe the only one for a long time.</p>
 
 <h2 id="how-flutter-renders-a-web-page">How Flutter Renders a Web Page</h2>
 
-<p>In Flutter, you define the UI widgets in Dart. And Flutter the engine will parse the widgets and render it to different targets: iOS, Android, web and even Windows and Linux applications. In principle, I think that is a good idea and I really enjoy writing Flutter code compared to Javascript frameworks like AngularJS or ReactJS. It’s really unfortunate the web support is not good enough to me.</p>
+<p>In Flutter, you define the UI widgets in Dart. And the Flutter engine will parse the widgets and render them to different targets: iOS, Android, web and even Windows and Linux applications. In principle, I think that is a good idea and I really enjoy writing Flutter code compared to Javascript frameworks like AngularJS or ReactJS. It’s really unfortunate that the web support is not good enough for me.</p>
 
-<p>The core problem is how Flutter renders the web pages. We all know a web page is represented in HTML. Even if we don’t write HTML directly but use a Javascript framework, it is manipulating HTML tags at the end. Flutter renders widgets to different HTML elements like <code class="language-plaintext highlighter-rouge">div</code> at first. However, it was later changed to draw all the widgets in a canvas. (The old render method is still available through <code class="language-plaintext highlighter-rouge">--web-render html</code> but I encountered multiple bugs and seems it’s given less and less care). This makes Flutter web apps doesn’t really behave like a native app, because a normal web page doesn’t have everything in a canvas.</p>
+<p>The core problem is how Flutter renders the web pages. We all know a web page is represented in HTML. Even if we don’t write HTML directly but use a Javascript framework, it is manipulating HTML tags at the end. Flutter renders widgets to different HTML elements like <code class="language-plaintext highlighter-rouge">div</code> at first. However, it was later changed to draw all the widgets in a canvas. (The old render method is still available through <code class="language-plaintext highlighter-rouge">--web-render html</code> but I encountered multiple bugs and it seems it’s given less and less care). This makes Flutter web apps not really behave like native apps, because a normal web page doesn’t have everything in a canvas.</p>
 
 <p>For the problems it brings, I found solutions for some of them. For some others, I didn’t find one. The sections below are some of the problems and some of the solutions.</p>
 
 <h2 id="make-text-selectable">Make Text Selectable</h2>
 
-<p>By default, the text in Flutter app is not selectable. You can use the <a href="https://api.flutter.dev/flutter/material/SelectableText-class.html">SeletableText</a> widget to make text selectable.</p>
+<p>By default, the text in Flutter app is not selectable. You can use the <a href="https://api.flutter.dev/flutter/material/SelectableText-class.html">SelectableText</a> widget to make text selectable.</p>
 
 <h2 id="make-links-and-buttons-recognized-by-browser">Make Links And Buttons Recognized by Browser</h2>
 
-<p>I use <a href="https://vimium.github.io/">Vimium</a> heavily. But Flutter rendering all the content into a canvas makes the clickable links and buttons not recognized by the browser, thus makes Vimium not working. This is a deal breaker for me, especially it’s something I built that breaks my workflow.</p>
+<p>I use <a href="https://vimium.github.io/">Vimium</a> heavily. But Flutter rendering all the content into a canvas makes the clickable links and buttons not recognized by the browser, thus making Vimium not work. This is a deal breaker for me, especially it’s something I built that breaks my workflow.</p>
 
-<p>I found a solution at the end to make links and buttons recognizable. It can be done by enabling semantics support. Add this line in the main function after <code class="language-plaintext highlighter-rouge">runApp</code>:</p>
+<p>I found a solution in the end to make links and buttons recognizable. It can be done by enabling semantics support. Add this line in the main function after <code class="language-plaintext highlighter-rouge">runApp</code>:</p>
 
 <div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">SemanticsBinding</span><span class="o">.</span><span class="na">instance</span><span class="o">.</span><span class="na">ensureSemantics</span><span class="p">();</span>
 </code></pre></div></div>
 
 <p>This will render extra information in HTML instead of only drawing the canvas. It will make widgets like <code class="language-plaintext highlighter-rouge">Button</code> recognizable.</p>
 
-<p>However, if you are using something more lower level like <code class="language-plaintext highlighter-rouge">GestureDetector</code>, you need to wrap the widgets with <code class="language-plaintext highlighter-rouge">Semantics</code>. Here is an example:</p>
+<p>However, if you are using something more low-level like <code class="language-plaintext highlighter-rouge">GestureDetector</code>, you need to wrap the widgets with <code class="language-plaintext highlighter-rouge">Semantics</code>. Here is an example:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Semantics(button: true, enabled: true, child: myCustomClickable)
 </code></pre></div></div>
@@ -4068,7 +4092,7 @@
 
 <h2 id="scrolling-behaviour">Scrolling Behaviour</h2>
 
-<p>The scrolling feels choppy sometimes. And because the browser has no idea about the scroll position of the page, it just makes the scrolling behaviour feels different. For example, <a href="https://github.com/flutter/flutter/issues/69529">here</a> is a Github issue opened 4 years ago describing this kind of problem and is still not resolved. For me, this is the last straw to make me give up Flutter, since it breaks scrolling keyboard shortcuts of Vimium.</p>
+<p>The scrolling feels choppy sometimes. And because the browser has no idea about the scroll position of the page, it just makes the scrolling behavior feel different. For example, <a href="https://github.com/flutter/flutter/issues/69529">here</a> is a Github issue opened 4 years ago describing this kind of problem and is still not resolved. For me, this is the last straw to make me give up Flutter, since it breaks the scrolling keyboard shortcuts of Vimium.</p>
 
 <h2 id="conclusion">Conclusion</h2>
 

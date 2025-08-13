@@ -300,7 +300,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong about Recommendation System <span class="publish-year">(2020)</span></a>
+        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong About Recommendation System <span class="publish-year">(2020)</span></a>
         
       
 
@@ -648,6 +648,30 @@
   
     <div class="index-intend">
   
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2025-08-13-Why-Consensus-Shortcuts-Fail.html">The Danger of Half-Implementing Raft: Why Consensus Shortcuts Fail <span class="publish-year">(2025)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
 
     <div class="index-entry index-index">
       
@@ -744,7 +768,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster <span class="publish-year">(2023)</span></a>
+        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Available Cluster <span class="publish-year">(2023)</span></a>
         
       
 
@@ -768,7 +792,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Available Cluster <span class="publish-year">(2025)</span></a>
+        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Availability Cluster <span class="publish-year">(2025)</span></a>
         
       
 
@@ -4032,7 +4056,7 @@
 
   <p><em>Note: code used in this article can be found on the Github repo <a href="https://github.com/wb14123/jepsen-postgres-ha">jepsen-postgres-ha</a>.</em></p>
 
-<p>I’ve used Cockroach DB for a few of my side projects. I enjoyed it overall. But since it <a href="https://www.cockroachlabs.com/enterprise-license-update/">announced license change</a> and require mandatory telemetry collection for free version, I started to look for alternatives. The most nature choice is to just use the plain old PostgreSQL since my data size is not that big and even a less powerful machine can handle it without any problem. One of my important requirements for the database is to have good high availability setup so that I can just shutdown a machine for maintenance from time to time. This series of blog posts will focus on PostgreSQL’s HA solutions instead of why do we need that. Not saying why is not important enough but I’ll save that discussion for another blog post out of this series.</p>
+<p>I’ve used Cockroach DB for a few of my side projects. I enjoyed it overall. But since it <a href="https://www.cockroachlabs.com/enterprise-license-update/">announced license change</a> and require mandatory telemetry collection for free version, I started to look for alternatives. The most natural choice is to just use the plain old PostgreSQL since my data size is not that big and even a less powerful machine can handle it without any problem. One of my important requirements for the database is to have good high availability setup so that I can just shutdown a machine for maintenance from time to time. This series of blog posts will focus on PostgreSQL’s HA solutions instead of why do we need that. Not saying why is not important enough but I’ll save that discussion for another blog post out of this series.</p>
 
 <p>PostgreSQL doesn’t come with native high availability solution. Instead, it has features like replication to support you build your own HA solution. But we all know distributed system is hard to build and error-prone. So I’m planning to test different solutions before I trust my data with them: mainly using <a href="https://jepsen.io">Jepsen</a> to test the correctness at first and if it passes the test, benchmark it to make sure it’s usable in real world.</p>
 
@@ -4040,7 +4064,7 @@
 
 <ul>
   <li>Reproduce a known issue that causes violation of read committed isolation. This is related to a fundamental flaw in PostgreSQL’s replication implementation.</li>
-  <li>Observe the cluster failed to recover with 1 node lose out of 3 nodes in total.</li>
+  <li>Observe the cluster failed to recover with 1 node lost out of 3 nodes in total.</li>
 </ul>
 
 <p>Ideally I would like to do more tests and deeper digging into it, but I may not have enough free time in the coming 1 or 2 months so I’d like to record some result here and maybe have some updates later.</p>
@@ -4051,10 +4075,10 @@
 
 <ol>
   <li>The database is setup in a different way. In the original test, it only tests a single machine PostgreSQL but the bugs are already fixed. So we are going to test a HA setup.</li>
-  <li>In the original test, it was able to find bugs without import any failures. But since that bug has been fix, we are going to enable different built-in failures like node crash and network slowness to test if the PostgreSQL cluster can still behave correctly or not.</li>
+  <li>In the original test, it was able to find bugs without importing any failures. But since that bug has been fixed, we are going to enable different built-in failures like node crash and network slowness to test if the PostgreSQL cluster can still behave correctly or not.</li>
 </ol>
 
-<p>To be more specific, I use <a href="https://www.vagrantup.com/">Vagrant</a> to create a 3 nodes virtual machine cluster and install Kubernetes (with <a href="https://k3s.io/">k3s</a>)on it. The Vagrantfile is <a href="https://github.com/wb14123/jepsen-postgres-ha/blob/master/cluster/Vagrantfile">here</a>. It’s mostly from a previous project I created to test k3s, as described in the blog post <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster</a>. This setup makes future tests for different HA solutions convenient since most of them supports Kubernetes, so that I can just create yaml files for different systems, while only need to implement Jepsen’s interface once to define database setup, tear down, kill and recover:</p>
+<p>To be more specific, I use <a href="https://www.vagrantup.com/">Vagrant</a> to create a 3 nodes virtual machine cluster and install Kubernetes (with <a href="https://k3s.io/">k3s</a>)on it. The Vagrantfile is <a href="https://github.com/wb14123/jepsen-postgres-ha/blob/master/cluster/Vagrantfile">here</a>. It’s mostly from a previous project I created to test k3s, as described in the blog post <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Available Cluster</a>. This setup makes future tests for different HA solutions convenient since most of them supports Kubernetes, so that I can just create yaml files for different systems, while only need to implement Jepsen’s interface once to define database setup, tear down, kill and recover:</p>
 
 <ul>
   <li>For setup, just use <code class="language-plaintext highlighter-rouge">kubectl create -f &lt;manifest.yaml&gt;</code>.</li>
@@ -4071,9 +4095,9 @@
 
 <h2 id="a-known-issue-of-postgresql-replication">A Known Issue of PostgreSQL Replication</h2>
 
-<p>When I searched for PostgreSQL HA solutions and whether any of them is tested by Jepsen, I found some <a href="https://news.ycombinator.com/item?id=23499611">comments on Hackernews</a> that says Patroni doesn’t guarantee consistency under some scenarios, which lead me to <a href="https://twitter.com/cyberdemn/status/1265710557006630913">the Twitter discussion</a>, which stated there is a fundamental flaw in PostgreSQL’s replication that makes it really hard to implement HA without data lose.</p>
+<p>When I searched for PostgreSQL HA solutions and whether any of them is tested by Jepsen, I found some <a href="https://news.ycombinator.com/item?id=23499611">comments on Hackernews</a> that says Patroni doesn’t guarantee consistency under some scenarios, which lead me to <a href="https://twitter.com/cyberdemn/status/1265710557006630913">the Twitter discussion</a>, which states there is a fundamental flaw in PostgreSQL’s replication that makes it really hard to implement HA without data loss.</p>
 
-<p>Here is the problem: usually with synced replication, a transaction should only be committed and visible after the replica db has persisted the transaction. So that if the primary db failed over to replica, there will be no data lose. But in a special scenario, where the query is cancelled after client sent commit command, PostgreSQL will consider it as committed even the transaction is not replicated yet. So when a failover happens at this time, this “committed data” will be lost from clients’ point of view. Here is an example:</p>
+<p>Here is the problem: usually with synced replication, a transaction should only be committed and visible after the replica db has persisted the transaction. So that if the primary db failed over to replica, there will be no data loss. But in a special scenario, where the query is cancelled after the client sent the commit command, PostgreSQL will consider it as committed even the transaction is not replicated yet. So when a failover happens at this time, this “committed data” will be lost from clients’ point of view. Here is an example:</p>
 
 <table>
   <thead>
@@ -4173,18 +4197,18 @@
   </tbody>
 </table>
 
-<p>In the example above, the value of <code class="language-plaintext highlighter-rouge">k</code> is <code class="language-plaintext highlighter-rouge">[1]</code> at the beginning. C1 will append monotonically increasing values to <code class="language-plaintext highlighter-rouge">k</code>. (It tracks the value locally instead of query <code class="language-plaintext highlighter-rouge">k</code> every time). T1 is aborted before it’s replicated. But even so, the primary node still treat this transaction as committed. So when C2 queries with T2, it get results with <code class="language-plaintext highlighter-rouge">[1, 2]</code>. Then at time 8, the primary is failed over from node 1 to node 2, so when T3 queries <code class="language-plaintext highlighter-rouge">k</code>, it returns <code class="language-plaintext highlighter-rouge">[1]</code> instead of <code class="language-plaintext highlighter-rouge">[1,2]</code>. This is an obvious data lose in our point of view because we know exactly the order of events. But one can argue it miss linearizable guarantee since technically, T3 can be ordered before T2 or even T1, and it will produce a consistent history, thus violates linearizable but not serializable. However, with T5 that has the result of <code class="language-plaintext highlighter-rouge">[1,3]</code>, it creates a situation that conflict with T2:</p>
+<p>In the example above, the value of <code class="language-plaintext highlighter-rouge">k</code> is <code class="language-plaintext highlighter-rouge">[1]</code> at the beginning. C1 will append monotonically increasing values to <code class="language-plaintext highlighter-rouge">k</code>. (It tracks the value locally instead of query <code class="language-plaintext highlighter-rouge">k</code> every time). T1 is aborted before it’s replicated. But even so, the primary node still treat this transaction as committed. So when C2 queries with T2, it get results with <code class="language-plaintext highlighter-rouge">[1, 2]</code>. Then at time 8, the primary is failed over from node 1 to node 2, so when T3 queries <code class="language-plaintext highlighter-rouge">k</code>, it returns <code class="language-plaintext highlighter-rouge">[1]</code> instead of <code class="language-plaintext highlighter-rouge">[1,2]</code>. This is an obvious data loss in our point of view because we know exactly the order of events. But one can argue it misses linearizable guarantee since technically, T3 can be ordered before T2 or even T1, and it will produce a consistent history, thus violates linearizable but not serializable. However, with T5 that has the result of <code class="language-plaintext highlighter-rouge">[1,3]</code>, it creates a situation that conflict with T2:</p>
 
 <ul>
   <li>If T2 is before T5, T5 should has 2 in the result.</li>
   <li>If T5 is before T2, T2 should has 3 in the result.</li>
 </ul>
 
-<p>This is not only a violation of serializable, but also read committed because T2 has read the uncommitted data from the client’s point of view.</p>
+<p>This is not only a violation of serializability, but also read committed because T2 has read the uncommitted data from the client’s point of view.</p>
 
 <h2 id="patroni-setup-for-testing">Patroni Setup for Testing</h2>
 
-<p>Even this is a known issue and is documented, I still try to reproduce it in my test for a few reason: first I want to make sure my test is good enough to actually be able to reproduce it. Second, I want to see it happens in real world: the Patroni auto failover makes manually triggering this problem hard because there is only a short time for the commit to be replicated.</p>
+<p>Even this is a known issue and is documented, I still try to reproduce it in my test for a few reasons: first, I want to make sure my test is good enough to actually be able to reproduce it. Second, I want to see it happens in real world: the Patroni auto failover makes manually triggering this problem hard because there is only a short time for the commit to be replicated.</p>
 
 <p>In my test, I try to setup Patroni to make it prioritize consistency the most. The config is at <a href="https://github.com/wb14123/patroni/blob/9ecfbe6209af3b3fd686d77bb9beb04deabaf5a9/kubernetes/entrypoint.sh#L14">here</a> for the Docker’s entrypoint script and <a href="https://github.com/wb14123/jepsen-postgres-ha/blob/04ddd2bcc107f81eb8abdbcf14f0ad5e396dc6d0/cluster/patroni/k8s.yaml#L113">here</a> for the config in Kubernetes. The PostgreSQL version is 16 and Patroni version is v4.0.3.</p>
 
@@ -4213,9 +4237,9 @@ max_connections: 500
 
 <h2 id="reproduce-read-committed-violation">Reproduce Read Committed Violation</h2>
 
-<p>The reproduce of this failure is harder than I thought, even I knew exactly the requirement to trigger it at the beginning. There are a few factors contributed to this:</p>
+<p>The reproduction of this failure is harder than I thought, even I knew exactly the requirement to trigger it at the beginning. There are a few factors contributed to this:</p>
 
-<p>First, if client doesn’t abort the connection itself, it’s hard to reproduce this scenario: Client not aborting the connection means it’s aborted by the primary node, which need to introduce some failures to primary node and that most likely makes it to failover immediately before the failure scenario is triggered. Jepsen’s built-in failures/nemesis are mostly on the server side. While not familiar with Clojure, it took me some time to figure out how to abort the connection just after sending the commit command. The code is at <a href="https://github.com/wb14123/jepsen-postgres-ha/blob/04ddd2bcc107f81eb8abdbcf14f0ad5e396dc6d0/src/jepsen/postgres/append.clj#L185">here</a>:</p>
+<p>First, if the client doesn’t abort the connection itself, it’s hard to reproduce this scenario: The client not aborting the connection means it’s aborted by the primary node, which needs to introduce some failures to the primary node and that most likely makes it to failover immediately before the failure scenario is triggered. Jepsen’s built-in failures/nemesis are mostly on the server side. While not familiar with Clojure, it took me some time to figure out how to abort the connection just after sending the commit command. The code is at <a href="https://github.com/wb14123/jepsen-postgres-ha/blob/04ddd2bcc107f81eb8abdbcf14f0ad5e396dc6d0/src/jepsen/postgres/append.clj#L185">here</a>:</p>
 
 <div class="language-clojure highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">and</span><span class="w"> </span><span class="n">break-conn</span><span class="w"> </span><span class="p">(</span><span class="nb">not</span><span class="w"> </span><span class="n">read-only?</span><span class="p">))</span><span class="w">
   </span><span class="p">(</span><span class="k">let</span><span class="w"> </span><span class="p">[</span><span class="n">result-chan</span><span class="w"> </span><span class="p">(</span><span class="nf">chan</span><span class="p">)</span><span class="w">
@@ -4234,11 +4258,11 @@ max_connections: 500
   </span><span class="p">(</span><span class="nf">run</span><span class="p">))))</span><span class="w">
 </span></code></pre></div></div>
 
-<p><code class="language-plaintext highlighter-rouge">break-conn</code> is a boolean that produced from a random number. If it’s not a read only transaction, the client will close the connection after a timeout of 120ms. As I will talk about later, I introduced the network slowdown to make the round trip about 100ms in average, so a complete replicated transaction should take 100ms (client to primary) + 100ms (primary to replica) = 200ms. So 120ms will hopefully makes the connection abort after the commit command is sent to the primary but before the transaction is replicated. This is definitely not the perfect way but it’s the best I can do for now.</p>
+<p><code class="language-plaintext highlighter-rouge">break-conn</code> is a boolean that produced from a random number. If it’s not a read only transaction, the client will close the connection after a timeout of 120ms. As I will talk about later, I introduced the network slowdown to make the round trip about 100ms in average, so a complete replicated transaction should take 100ms (client to primary) + 100ms (primary to replica) = 200ms. So 120ms will hopefully makes the connection abort after the commit command is sent to the primary but before the transaction is replicated. This is definitely not perfect, but it’s the best I can do for now.</p>
 
 <p>Second, the nemesis package I copied from the original test is not very suitable to reproduce this issue: it randomly introduce different failures (passed in by cli flags) by a predefined average interval. So it needs some luck to get the scenario that triggers this failure: a combination of slow network + primary failure. So after I studied the failure scenario again, I changed the nemesis suite to create slow network all the time, and create a 90 seconds cycle for primary failure (30 seconds healthy state + 60 seconds node killed).</p>
 
-<p>Third, the default work load will create multiple keys and run multiple ops in a single transaction. Which makes it harder to trigger the exact scenario (the transaction network round trip time will be different depends on the number of ops so 120ms is less likely to close connection after commit). After think more about the requirement to trigger the failure, I tuned the parameters to operate on a single key most of the time and only have a single operation per transaction.</p>
+<p>Third, the default work load will create multiple keys and run multiple ops in a single transaction. Which makes it harder to trigger the exact scenario (the transaction network round trip time will be different depends on the number of ops so 120ms is less likely to close connection after commit). After thinking more about the requirement to trigger the failure, I tuned the parameters to operate on a single key most of the time and only have a single operation per transaction.</p>
 
 <p>The other factors are mostly about my setup with VM + Kubernetes. For example, I need to figure out ways to do things like crash the node (k3s root process + children process). I also need to adjust the network interface name in network related failures since the VM created <code class="language-plaintext highlighter-rouge">eth1</code> instead of <code class="language-plaintext highlighter-rouge">eth0</code> hard coded in Jepsen.</p>
 
@@ -4263,7 +4287,7 @@ max_connections: 500
 
 <p>At last, the outer for loop runs the command 10 times so it has a higher possibility to trigger the failure.</p>
 
-<p>About why run the test 10 times instead of a single round of 300 mins, it’s related to another problem I found during the test which will be discussed in the later sections.</p>
+<p>As for why to run the test 10 times instead of a single round of 300 minutes, it’s related to another problem I found during the test which will be discussed in the later sections.</p>
 
 <p>An example of the failure from a recent run:</p>
 
@@ -4283,7 +4307,7 @@ max_connections: 500
                                                         6
                                                         8
                                                         9
-// ... committed lines of numbers, the same as before
+// ... omitted lines of numbers, the same as before
                                                         7164
                                                         7171
                                                         7176
@@ -4315,7 +4339,7 @@ max_connections: 500
 
 <p>If you check the last 2 numbers for the 2 transactions listed above: one transaction reads <code class="language-plaintext highlighter-rouge">[..., 7176, 7181]</code> and another one reads <code class="language-plaintext highlighter-rouge">[...., 7176, 8433]</code>. It reproduced the exact problem we discussed in the last section.</p>
 
-<p>One thing to notice is, even though the behaviour of this failure is the same as we discussed in the last section, it doesn’t necessarily mean it’s the same root cause. I say that because this failure is so hard to trigger and I’m not sure yet what exactly triggered it. This is another thing I want to digger deeper into but may not have the time in the near future.</p>
+<p>One thing to notice is that even though the behavior of this failure is the same as we discussed in the last section, it doesn’t necessarily mean it’s the same root cause. I say that because this failure is so hard to trigger and I’m not sure yet what exactly triggered it. This is another thing I want to dig deeper into but may not have the time in the near future.</p>
 
 <h2 id="failed-to-recover-the-cluster-when-only-1-out-of-3-nodes-is-lost">Failed to Recover the Cluster When Only 1 Out of 3 Nodes is Lost</h2>
 
@@ -4325,17 +4349,17 @@ max_connections: 500
 
 <p>The green area at the top means the time that network is slowed down, which is basically during the whole test time in our case. The red part is when the primary node is killed by our test: the lighter red part means the killed node starts to recover by the test until it reaches the white part which means it has been recovered (we mark it as recovered as soon as k3s server is recovered, so it’s not that accurate).</p>
 
-<p>Each square/point represents a transaction. You can see even without primary node being killed, there are still some failed transactions and that’s totally normal in our test: it has errors like conflicted transactions and max connections reached etc. The thing more related is whether there are successful transactions, which is the blue square/point means.</p>
+<p>Each square/point represents a transaction. You can see even without primary node being killed, there are still some failed transactions and that’s totally normal in our test: it has errors like conflicted transactions and max connections reached etc. The thing more relevant is whether there are successful transactions, which the blue square/point represents.</p>
 
-<p>We can see during the first few rounds when the primary get killed, the cluster can recover with 2 of 3 nodes available (the red range). However, when the time passed by, it can only recover when all the nodes are available (the white range). At the end of the test, there are 2 of 3 nodes available (sometimes there are all 3 nodes available because the recovery time are not always the same so the end state of the test can also be different). Just out of curious, I wanted to see how much time Patroni needs to recover in such state, so I left it without make the failed node available and waited. However, after 20 minutes, the cluster is still not recovered.</p>
+<p>We can see during the first few rounds when the primary get killed, the cluster can recover with 2 of 3 nodes available (the red range). However, as time passed, it can only recover when all the nodes are available (the white range). At the end of the test, there are 2 of 3 nodes available (sometimes there are all 3 nodes available because the recovery time are not always the same so the end state of the test can also be different). Just out of curiosity, I wanted to see how much time Patroni needs to recover in such state, so I left it without making the failed node available and waited. However, after 20 minutes, the cluster is still not recovered.</p>
 
-<p>This means the cluster is failed to recover even if you only lose a minor number of the nodes. After I <a href="https://github.com/patroni/patroni/issues/3194#issuecomment-2496586804">asked in the Github issue</a>, I got <a href="https://github.com/patroni/patroni/issues/3194#issuecomment-2497196127">confirmed</a> that Patroni cannot be auto healed from such state. Apparently this is kind of a known behaviour but came as a surprise to me. To be fair, the behaviour of the parameters are documented but it’s hard to realize the implication. Again quoted from the description before:</p>
+<p>This means the cluster failed to recover even if you only lose a minority of the nodes. After I <a href="https://github.com/patroni/patroni/issues/3194#issuecomment-2496586804">asked in the Github issue</a>, I got <a href="https://github.com/patroni/patroni/issues/3194#issuecomment-2497196127">confirmed</a> that Patroni cannot be auto healed from such state. Apparently this is kind of a known behaviour but came as a surprise to me. To be fair, the behaviour of the parameters are documented but it’s hard to realize the implication. Again quoted from the description before:</p>
 
 <blockquote>
   <p><code class="language-plaintext highlighter-rouge">synchronous_node_count</code>: If the parameter is set to a value higher than the number of eligible nodes it will be automatically reduced by Patroni.</p>
 </blockquote>
 
-<p>It’s not clear what “eligible nodes” means but seems it means available nodes instead of all nodes in the cluster.</p>
+<p>It’s not clear what “eligible nodes” means but it seems it means available nodes instead of all nodes in the cluster.</p>
 
 <blockquote>
   <p><code class="language-plaintext highlighter-rouge">synchronous_mode_strict</code>: When it is absolutely necessary to guarantee that each write is stored durably on at least <strong>two nodes</strong> …</p>
@@ -4343,33 +4367,33 @@ max_connections: 500
 
 <p>So it’s two nodes instead of a majority of the nodes: if you have a 5 nodes cluster and you happen to lose the 2 nodes with the most up to date data, it’s not possible to recover the data anymore.</p>
 
-<p>Checking the doc again, seems <a href="https://patroni.readthedocs.io/en/latest/replication_modes.html#quorum-commit-mode">quorum commit mode</a> is something can help here. But test with <code class="language-plaintext highlighter-rouge">synchronous_mode=quorum</code> still got the same result. And from the doc:</p>
+<p>Checking the doc again, it seems <a href="https://patroni.readthedocs.io/en/latest/replication_modes.html#quorum-commit-mode">quorum commit mode</a> is something can help here. But test with <code class="language-plaintext highlighter-rouge">synchronous_mode=quorum</code> still got the same result. And from the doc:</p>
 
 <blockquote>
   <p>On each iteration of HA loop, Patroni re-evaluates synchronous standby choices and quorum, based on node availability and requested cluster configuration. In PostgreSQL versions above 9.6 all eligible nodes are added as synchronous standbys as soon as their replication catches up to leader.</p>
 </blockquote>
 
-<p>From the test, seems the availability of nodes also affect the quorum.</p>
+<p>From the test, it seems the availability of nodes also affects the quorum.</p>
 
-<p>Back to the question about why need to run the tests multiple times instead of running a single longer test: because the cluster doesn’t recovery by itself during a node lost after a few kill loop, which means more time is needed for the healing between node kills and makes the test less efficient. Also, when wait enough time between node kills, I was not able to reproduce the read committed violation anymore. That’s another reason that I’m suspicious if it is really caused by early connection close or not.</p>
+<p>Back to the question about why need to run the tests multiple times instead of running a single longer test: because the cluster doesn’t recover by itself during a node loss after a few kill loop, which means more time is needed for the healing between node kills and makes the test less efficient. Also, when wait enough time between node kills, I was not able to reproduce the read committed violation anymore. That’s another reason that I’m suspicious if it is really caused by early connection close or not.</p>
 
 <h2 id="ways-to-improve">Ways to Improve?</h2>
 
-<p>With a quorum based system, there is \(V_w\) means the min nodes to write for a write transaction. There is \(V_r\) means the min nodes to read for a read transaction. In order to maintain searilizable, \(V_w + V_r &gt; V\) needs to be true where \(V\) is the number of <strong>all nodes</strong>, so that \(V_w\) and \(V_r\) has at least 1 node overlapped. That means when a client reads data from \(V_r\) nodes, at least 1 node has the latest data. In our case, for the normal read transactions, \(V_r\) doesn’t matter since it only reads from the primary so it’s guaranteed to have the latest data. But when doing a failover, we need to make sure having \(V_r\) nodes available because primary is lost and we need to determine which node has the latest data.</p>
+<p>With a quorum based system, there is \(V_w\) means the min nodes to write for a write transaction. There is \(V_r\) means the min nodes to read for a read transaction. In order to maintain serializability, \(V_w + V_r &gt; V\) needs to be true where \(V\) is the number of <strong>all nodes</strong>, so that \(V_w\) and \(V_r\) has at least 1 node overlapped. That means when a client reads data from \(V_r\) nodes, at least 1 node has the latest data. In our case, for the normal read transactions, \(V_r\) doesn’t matter since it only reads from the primary so it’s guaranteed to have the latest data. But when doing a failover, we need to make sure having \(V_r\) nodes available because primary is lost and we need to determine which node has the latest data.</p>
 
-<p>In the case of Patroni, with <code class="language-plaintext highlighter-rouge">synchronous_node_count</code> can be auto reduced and <code class="language-plaintext highlighter-rouge">synchronous_mode_strict</code> only guarantees data writes to at least 2 nodes, \(V_w\) is essentially set to 2 which means in order to maintain consistency, \(V_r &gt; V - V_w = V - 2\) needs to be true, which means it only tolerates 1 node lose no matter the cluster size. But even with only 1 node lose in our test above, Patroni didn’t implemented auto failover.</p>
+<p>In the case of Patroni, with <code class="language-plaintext highlighter-rouge">synchronous_node_count</code> can be auto reduced and <code class="language-plaintext highlighter-rouge">synchronous_mode_strict</code> only guarantees data writes to at least 2 nodes, \(V_w\) is essentially set to 2 which means in order to maintain consistency, \(V_r &gt; V - V_w = V - 2\) needs to be true, which means it only tolerates 1 node lost no matter the cluster size. But even with only 1 node lost in our test above, Patroni didn’t implemented auto failover.</p>
 
-<p>So to make it better tolerate node lose, there should be an option similar to <code class="language-plaintext highlighter-rouge">synchronous_node_count</code> but actually enforce the minimal synced replication count instead of reduce it based on node availability. And if the available nodes meets the requirement of \(V_r\), do the auto failover by comparing the largest LSN on each node.</p>
+<p>So to make it better tolerate node loss, there should be an option similar to <code class="language-plaintext highlighter-rouge">synchronous_node_count</code> but actually enforce the minimal synced replication count instead of reduce it based on node availability. And if the available nodes meets the requirement of \(V_r\), do the auto failover by comparing the largest LSN on each node.</p>
 
 <h2 id="minor-issue-wrong-role-label-for-kubernetes-pod">Minor Issue: Wrong Role Label for Kubernetes Pod</h2>
 
-<p>At last there is a minor issue but also the first issue I found during the test: in the Patroni doc, it uses the command <code class="language-plaintext highlighter-rouge">kubectl get pods -L role -o wide</code> to show the role of each Patroni pod. However, it is inaccurate as <a href="https://github.com/patroni/patroni/issues/3194#issuecomment-2439591095">confirmed in the Github issue</a>. It’s not a big deal but something need to be aware when operate Patroni. I think theoretically it may be able to be fixed by let the primary pod set the k8s labels for all the other pods.</p>
+<p>At last there is a minor issue but also the first issue I found during the test: in the Patroni doc, it uses the command <code class="language-plaintext highlighter-rouge">kubectl get pods -L role -o wide</code> to show the role of each Patroni pod. However, it is inaccurate as <a href="https://github.com/patroni/patroni/issues/3194#issuecomment-2439591095">confirmed in the Github issue</a>. It’s not a big deal but something to be aware of when operating Patroni. I think theoretically it may be able to be fixed by letting the primary pod set the k8s labels for all the other pods.</p>
 
 <h2 id="whats-next">What’s Next?</h2>
 
-<p>Ideally, I still want to dig deeper into Patroni’s test since it’s a very popular PostgreSQL HA solution. The test above is only a carefully create scenario based on a known issue. Running larger scale tests with more combined failure scenarios may be able to find more failure modes. However, because the fundamental PostgreSQL replicat flaw described above and the effort needed to run the large scale tests, I may want to setup and test another solution first.</p>
+<p>Ideally, I still want to dig deeper into Patroni’s test since it’s a very popular PostgreSQL HA solution. The test above is only a carefully create scenario based on a known issue. Running larger scale tests with more combined failure scenarios may be able to find more failure modes. However, because of the fundamental PostgreSQL replication flaw described above and the effort needed to run the large scale tests, I may want to setup and test another solution first.</p>
 
-<p>The solution is what I had in mind even before I started Patroni’s Jepsen test, which is setup replication with <a href="https://linbit.com/drbd/">DRBD</a>: instead of using PostgreSQL’s replication, DRBD replicas the whole disk instead. With modern hardware, the performance with replication overhead should be acceptable but it remains to be tested, along with the correctness of it.</p>
+<p>The solution is what I had in mind even before I started Patroni’s Jepsen test, which is to set up replication with <a href="https://linbit.com/drbd/">DRBD</a>: instead of using PostgreSQL’s replication, DRBD replicates the whole disk instead. With modern hardware, the performance with replication overhead should be acceptable but it remains to be tested, along with the correctness of it.</p>
 
 </article>
 

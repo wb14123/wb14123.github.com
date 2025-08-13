@@ -300,7 +300,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong about Recommendation System <span class="publish-year">(2020)</span></a>
+        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong About Recommendation System <span class="publish-year">(2020)</span></a>
         
       
 
@@ -648,6 +648,30 @@
   
     <div class="index-intend">
   
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2025-08-13-Why-Consensus-Shortcuts-Fail.html">The Danger of Half-Implementing Raft: Why Consensus Shortcuts Fail <span class="publish-year">(2025)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
 
     <div class="index-entry index-index">
       
@@ -744,7 +768,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Avaliable Cluster <span class="publish-year">(2023)</span></a>
+        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Available Cluster <span class="publish-year">(2023)</span></a>
         
       
 
@@ -768,7 +792,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Available Cluster <span class="publish-year">(2025)</span></a>
+        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Availability Cluster <span class="publish-year">(2025)</span></a>
         
       
 
@@ -4043,14 +4067,14 @@
 
 <p>This will be compiled to <code class="language-plaintext highlighter-rouge">1 - 1</code> and ends up as <code class="language-plaintext highlighter-rouge">0</code>.</p>
 
-<p>Of cause this is not a practical example and not all the languages’ macro system can do it. But this demonstrate what macros can do where normal code cannot. Here is a more practical example: when we log something in different log levels, the API usually looks like this:</p>
+<p>Of course this is not a practical example and not all the languages’ macro system can do it. But this demonstrates what macros can do where normal code cannot. Here is a more practical example: when we log something in different log levels, the API usually looks like this:</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">val</span> <span class="nv">v</span> <span class="k">=</span> <span class="o">...</span>
 <span class="nv">logger</span><span class="o">.</span><span class="py">info</span><span class="o">(</span><span class="n">s</span><span class="s">"This is a info log. Value: $v"</span><span class="o">)</span>
 <span class="nv">logger</span><span class="o">.</span><span class="py">warn</span><span class="o">(</span><span class="n">s</span><span class="s">"This is a warning. Value: $v"</span><span class="o">)</span>
 </code></pre></div></div>
 
-<p>However, with this kind of interface, the string <code class="language-plaintext highlighter-rouge">s"..."</code> need to be computed before passed in to the method, which is a waste since not all the strings need to be logged based on the log level configuration. Especially when <code class="language-plaintext highlighter-rouge">v.toString</code> needs a lot of resource to compute. So in language like Java, the values are usually passed in as separate parameters:</p>
+<p>However, with this kind of interface, the string <code class="language-plaintext highlighter-rouge">s"..."</code> needs to be computed before passed in to the method, which is a waste since not all the strings need to be logged based on the log level configuration. Especially when <code class="language-plaintext highlighter-rouge">v.toString</code> needs a lot of resource to compute. So in languages like Java, the values are usually passed in as separate parameters:</p>
 
 <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">v</span> <span class="o">=</span> <span class="o">...</span>
 <span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"This is a info log. Value: {}"</span><span class="o">,</span> <span class="n">v</span><span class="o">);</span>
@@ -4071,18 +4095,18 @@
 <span class="o">}</span>
 </code></pre></div></div>
 
-<p>So that the actually string computation is not done unless log level is configured to print it.</p>
+<p>So that the actual string computation is not done unless log level is configured to print it.</p>
 
 <h2 id="2-how-to-write-a-macro">2. How to Write a Macro</h2>
 
-<p>Different languages have different syntaxes to write a macro. On the simpler side, macros in C can only do text substitution. On the powerful side, Lisp languages can modify the AST (abstract syntax tree) very easily because the code itself is written as a tree structure. The macro in Scala is on the powerful side since it is able to modify the AST even though it may not be as intuitive as Lisp. There are multiple ways to do it. But essentially, the process it to take the current AST as input and output a new AST. The APIs of reading AST input is very similar to reflection APIs (and in fact, sometimes they share some APIs). Generating a new AST part is more complex. In the following sections, we will walk through how to setup a SBT project to write macros, how to read an AST and how to generate a new AST.</p>
+<p>Different languages have different syntaxes to write a macro. On the simpler side, macros in C can only do text substitution. On the powerful side, Lisp languages can modify the AST (abstract syntax tree) very easily because the code itself is written as a tree structure. The macro in Scala is on the powerful side since it is able to modify the AST even though it may not be as intuitive as Lisp. There are multiple ways to do it. But essentially, the process is to take the current AST as input and output a new AST. The APIs of reading AST input are very similar to reflection APIs (and in fact, sometimes they share some APIs). Generating a new AST part is more complex. In the following sections, we will walk through how to setup a SBT project to write macros, how to read an AST and how to generate a new AST.</p>
 
 <h2 id="3-project-setup-with-sbt">3. Project Setup with SBT</h2>
 
 <p>In Scala, the implementation of macros and the use of macros need to be compiled separately. So if you are using SBT, they need to be in different sub projects. Here is an example of <code class="language-plaintext highlighter-rouge">build.sbt</code>:</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">lazy</span> <span class="k">val</span> <span class="nv">root</span> <span class="k">=</span> <span class="o">(</span><span class="n">project</span> <span class="n">in</span> <span class="nf">file</span><span class="o">(</span><span class="s">"."</span><span class="o">))</span>
-  <span class="o">.</span><span class="py">aggregate</span><span class="o">(</span><span class="n">core</span><span class="o">,</span> <span class="n">coretest</span>
+  <span class="o">.</span><span class="py">aggregate</span><span class="o">(</span><span class="n">core</span><span class="o">,</span> <span class="n">coretest</span><span class="o">)</span>
   <span class="o">.</span><span class="py">settings</span><span class="o">(</span>
     <span class="n">name</span> <span class="o">:=</span> <span class="s">"archmage"</span>
   <span class="o">)</span>
@@ -4125,7 +4149,7 @@
 
 <p>The remaining parameters of the implementation method are parameters for the macro. For example, if you want to take a parameter of type <code class="language-plaintext highlighter-rouge">String</code> for the macro, then the implementation of macro will take <code class="language-plaintext highlighter-rouge">c.Expr[String]</code> as a parameter, which <code class="language-plaintext highlighter-rouge">c.Expr[String]</code> is the tree representation of the macro’s <code class="language-plaintext highlighter-rouge">String</code> parameter. The same applies to the return type of the macro. You can also  use <code class="language-plaintext highlighter-rouge">c.Tree</code> instead of <code class="language-plaintext highlighter-rouge">c.Expr[T]</code>. They can be converted between each other, which we will see in section 4.4.</p>
 
-<p>This example prints out the variable name of the passed in parameter and return the parameter without modification. Note that the printing happens at compile time since that’s when the implementation of the macro is ran. Only the returned tree or <code class="language-plaintext highlighter-rouge">c.Expr</code> is used at run time. So this macro is not doing anything useful, it’s just a demo of how to read the input tree.</p>
+<p>This example prints out the variable name of the passed in parameter and return the parameter without modification. Note that the printing happens at compile time since that’s when the implementation of the macro is run. Only the returned tree or <code class="language-plaintext highlighter-rouge">c.Expr</code> is used at run time. So this macro is not doing anything useful, it’s just a demo of how to read the input tree.</p>
 
 <p>Once we have the macro implementation, we can define the macro like this:</p>
 
@@ -4143,11 +4167,11 @@
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>me.binwang.archmage.coretest.MethodMetaTest.a
 </code></pre></div></div>
 
-<p>The API of <code class="language-plaintext highlighter-rouge">c.Expr</code> is very similar as reflection API. You can experiment with it by print out different things from it and see what you can get.</p>
+<p>The API of <code class="language-plaintext highlighter-rouge">c.Expr</code> is very similar as reflection API. You can experiment with it by printing out different things from it and see what you can get.</p>
 
 <h3 id="42-read-type-parameters">4.2 Read type parameters:</h3>
 
-<p>Macro can also take generic type as parameters. The example below takes a parameter of any type and print out its type at compile time.</p>
+<p>Macros can also take generic type as parameters. The example below takes a parameter of any type and prints out its type at compile time.</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">macroImpl</span><span class="o">[</span><span class="kt">T:</span> <span class="kt">c.WeakTypeTag</span><span class="o">](</span><span class="n">c</span><span class="k">:</span> <span class="kt">blackbox.Context</span><span class="o">)(</span><span class="n">s</span><span class="k">:</span> <span class="kt">c.Expr</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span> <span class="k">:</span> <span class="kt">c.Expr</span><span class="o">[</span><span class="kt">T</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
   <span class="nf">println</span><span class="o">(</span><span class="nv">c</span><span class="o">.</span><span class="py">weakTypeOf</span><span class="o">[</span><span class="kt">T</span><span class="o">])</span>
@@ -4171,9 +4195,9 @@ Int
 
 <h3 id="43-read-implicit-parameters">4.3 Read implicit parameters:</h3>
 
-<p>Macro can have implicit parameters, but the macro implementation shouldn’t define them as implicit. Otherwise Scala compiler will give confusing errors. See <a href="https://github.com/scala/bug/issues/6494">this issue</a> for more details.</p>
+<p>Macros can have implicit parameters, but the macro implementation shouldn’t define them as implicit. Otherwise Scala compiler will give confusing errors. See <a href="https://github.com/scala/bug/issues/6494">this issue</a> for more details.</p>
 
-<p>In the following example, <code class="language-plaintext highlighter-rouge">macroTest</code> takes an implicit double variable and return it as the new generated tree:</p>
+<p>In the following example, <code class="language-plaintext highlighter-rouge">macroTest</code> takes an implicit double variable and returns it as the new generated tree:</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">macroImpl</span><span class="o">(</span><span class="n">c</span><span class="k">:</span> <span class="kt">blackbox.Context</span><span class="o">)(</span><span class="n">s</span><span class="k">:</span> <span class="kt">c.Expr</span><span class="o">[</span><span class="kt">String</span><span class="o">])(</span><span class="n">num</span><span class="k">:</span> <span class="kt">c.Expr</span><span class="o">[</span><span class="kt">Double</span><span class="o">])</span> <span class="k">:</span> <span class="kt">c.Expr</span><span class="o">[</span><span class="kt">Double</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
   <span class="nf">println</span><span class="o">(</span><span class="n">s</span><span class="s">"Name of implicit num: ${num.tree.symbol.fullName}"</span><span class="o">)</span>
@@ -4287,7 +4311,7 @@ Int
 
 <h3 id="51-construct-tree-directly-with-api">5.1 Construct Tree Directly with API</h3>
 
-<p>An AST can be constructed from the classes that represent the tree. For example, a constant of string can be created by <code class="language-plaintext highlighter-rouge">Literal(Constant("I replaced you!"))</code>. The following example replace any string to <code class="language-plaintext highlighter-rouge">I replaced you</code>:</p>
+<p>An AST can be constructed from the classes that represent the tree. For example, a constant of string can be created by <code class="language-plaintext highlighter-rouge">Literal(Constant("I replaced you!"))</code>. The following example replaces any string to <code class="language-plaintext highlighter-rouge">I replaced you</code>:</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">macroImpl</span><span class="o">(</span><span class="n">c</span><span class="k">:</span> <span class="kt">blackbox.Context</span><span class="o">)(</span><span class="n">s</span><span class="k">:</span> <span class="kt">c.Expr</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span> <span class="k">:</span> <span class="kt">c.Expr</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
   <span class="k">import</span> <span class="nn">c.universe._</span>
@@ -4302,7 +4326,7 @@ Int
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">println</span><span class="o">(</span><span class="nf">macroTest</span><span class="o">(</span><span class="s">"abc"</span><span class="o">))</span>
 </code></pre></div></div>
 
-<p>This is a very simple example. When the tree becomes larger and larger , it’s more and more difficult to construct a tree with this approach. It’s like a much worse version of lisp. So in the following sections, we will see some easier ways to construct a tree.</p>
+<p>This is a very simple example. When the tree becomes larger and larger, it’s more and more difficult to construct a tree with this approach. It’s like a much worse version of lisp. So in the following sections, we will see some easier ways to construct a tree.</p>
 
 <h3 id="52-use-cparse">5.2 Use <code class="language-plaintext highlighter-rouge">c.parse</code>:</h3>
 
@@ -4333,7 +4357,7 @@ Int
 
 <p><code class="language-plaintext highlighter-rouge">c.parse</code> is easy to use and understand. But when generating more and more code with it, it can be pretty messy since it is just a string. There is no syntax checks in IDE. Even worse, you cannot get any run time information to use in the generated tree.</p>
 
-<p><code class="language-plaintext highlighter-rouge">reify</code> is a much better option. You can write code as usual. The code in <code class="language-plaintext highlighter-rouge">reify</code> block is the code that will be generated. You can refer to another <code class="language-plaintext highlighter-rouge">Expr</code> (in the old tree) by using its <code class="language-plaintext highlighter-rouge">.splice</code> method. Here is an example to print out both the variable name and it’s value:</p>
+<p><code class="language-plaintext highlighter-rouge">reify</code> is a much better option. You can write code as usual. The code in <code class="language-plaintext highlighter-rouge">reify</code> block is the code that will be generated. You can refer to another <code class="language-plaintext highlighter-rouge">Expr</code> (in the old tree) by using its <code class="language-plaintext highlighter-rouge">.splice</code> method. Here is an example to print out both the variable name and its value:</p>
 
 <div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">macroImpl</span><span class="o">(</span><span class="n">c</span><span class="k">:</span> <span class="kt">blackbox.Context</span><span class="o">)(</span><span class="n">s</span><span class="k">:</span> <span class="kt">c.Expr</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span><span class="k">:</span> <span class="kt">c.Expr</span><span class="o">[</span><span class="kt">String</span><span class="o">]</span> <span class="k">=</span> <span class="o">{</span>
   <span class="k">import</span> <span class="nn">c.universe._</span>
@@ -4371,11 +4395,11 @@ Int
 
 <h3 id="55-avoid-name-conflict">5.5 Avoid Name Conflict</h3>
 
-<p>When generating a new tree, we may generate some variables that have conflict names with the existing ones. Use <code class="language-plaintext highlighter-rouge">c.freshName</code> to get a unique name to avoid the conflict.</p>
+<p>When generating a new tree, we may generate some variables that have conflicting names with the existing ones. Use <code class="language-plaintext highlighter-rouge">c.freshName</code> to get a unique name to avoid the conflict.</p>
 
 <h3 id="56-type-checked-and-unchecked-tree">5.6 Type Checked and Unchecked Tree</h3>
 
-<p>There are two kinds of AST in Scala’s internal compiler: type checked and unchecked. See more details in <a href="https://stackoverflow.com/questions/20936509/scala-macros-what-is-the-difference-between-typed-aka-typechecked-and-untyped">this Stack Overflow answer</a>. Some APIs can only accept either type checked or unchecked tree. And sometimes the compiler throws out weird errors if using the wrong type of tree. If that’s the case, try to use <code class="language-plaintext highlighter-rouge">c.untypecheck</code> and <code class="language-plaintext highlighter-rouge">c.typecheck</code> to covert trees.</p>
+<p>There are two kinds of AST in Scala’s internal compiler: type checked and unchecked. See more details in <a href="https://stackoverflow.com/questions/20936509/scala-macros-what-is-the-difference-between-typed-aka-typechecked-and-untyped">this Stack Overflow answer</a>. Some APIs can only accept either type checked or unchecked tree. And sometimes the compiler throws out weird errors if using the wrong type of tree. If that’s the case, try to use <code class="language-plaintext highlighter-rouge">c.untypecheck</code> and <code class="language-plaintext highlighter-rouge">c.typecheck</code> to convert trees.</p>
 
 <p>For example, here is some code that cannot be compiled:</p>
 
