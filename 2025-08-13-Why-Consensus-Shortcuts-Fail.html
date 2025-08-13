@@ -4213,9 +4213,9 @@ if (key != null) {
   <li>The new leader should try to force sync its logs to other replicas to resolve conflicts. The replica needs to guard the sync request with the leader term: only accept requests with leader terms larger than the one stored locally. Otherwise, an old sync request may override newer committed log entries, which makes the committed log entries not replicated to a majority of nodes.</li>
 </ul>
 
-<p>You can see the algorithm is already complex. The complexity is even comparable to Raft, if not more so. But even with this, I don’t have proof it is correct. But at least I cannot find any problem for now. However, this approach comes with a performance penalty: every log entry is essentially replicated to 2 systems: one for the system itself and one for the external Raft system. It will double the latency.</p>
+<p>You can see the algorithm is already complex. The complexity is even comparable to Raft, if not more so. Even with this complexity, I don’t have proof it is correct. At least I cannot find any problem for now. However, this approach comes with a performance penalty. Every log entry is essentially replicated to 2 systems: one for the system itself and one for the external Raft system. It will double the latency.</p>
 
-<p>For systems like PostgreSQL, you cannot force it to replicate the write-ahead logs one by one without modifying it. It’s also hard to guard the replication with a committed check with etcd. So it’s really hard to implement this for a highly available PostgreSQL cluster, even not considering the performance issues.</p>
+<p>For systems like PostgreSQL, you cannot force it to replicate the write-ahead logs one by one without modifying its internals. The same applies for guarding the replication with an etcd check. So it’s really hard to implement this for a highly available PostgreSQL cluster, even not considering the performance issues.</p>
 
 <h2 id="leader-terms-in-logs">Leader Terms in Logs</h2>
 
@@ -4237,7 +4237,7 @@ if (key != null) {
 
 <p>We talked about some different implementations for a consensus system and how things can go wrong with those implementations. We can see without an overall consideration, how hard it can be to implement such a system. Using PostgreSQL as an example, even though it has a built-in replication mechanism, without an overall design considering distributed consistency and failover, it’s hard to implement a linearizable system without changes to its internals.</p>
 
-<p>But a linearizable system may not always be needed. Sometimes we may want a less strict model, like only guaranteeing read-your-own-writes. But even with this less strict requirement, it still needs significant considerations. Maybe that can be a topic for future discussion.</p>
+<p>But a linearizable system may not always be needed. Sometimes we may want a less strict model, like only guaranteeing read-your-own-writes. It still needs significant considerations tho. Maybe that can be a topic for future discussion.</p>
 
 </article>
 
