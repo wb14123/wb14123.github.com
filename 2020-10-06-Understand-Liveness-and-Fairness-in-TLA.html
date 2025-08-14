@@ -4054,11 +4054,11 @@
     
   </header>
 
-  <p>Recently I’m learning <a href="https://lamport.azurewebsites.net/tla/tla.html">TLA+</a>: A language that can specify distributed and concurrent systems. Though it’s very different from most programming languages, the idea behind it is very simple: basically what it does is specifying a state machine. The <a href="https://lamport.azurewebsites.net/tla/toolbox.html">TLA+ tool box</a> has a model checker called TLC that can explore all the states of the state machine and check properties of the system. If the state space is too big or infinite, we can define a reasonable subset of it to check. So it will not always guarantee the correctness. However, the tool box also has a more advanced tool called TLA+ Proof System (TLAPS) to write formal proof like Coq. I highly recommend the <a href="http://lamport.azurewebsites.net/video/videos.html">video course</a> to learn TLA+. It’s short and includes TLC. I first started with The TLA+ Book <em>Specifying Systems</em> which doesn’t include TLC, and I was wondering how specify a system can check properties of it.</p>
+  <p>Recently I’m learning <a href="https://lamport.azurewebsites.net/tla/tla.html">TLA+</a>: A language that can specify distributed and concurrent systems. Though it’s very different from most programming languages, the idea behind it is very simple: basically what it does is specifying a state machine. The <a href="https://lamport.azurewebsites.net/tla/toolbox.html">TLA+ tool box</a> has a model checker called TLC that can explore all the states of the state machine and check properties of the system. If the state space is too big or infinite, we can define a reasonable subset of it to check. So it will not always guarantee the correctness. However, the tool box also has a more advanced tool called TLA+ Proof System (TLAPS) to write formal proofs like Coq. I highly recommend the <a href="http://lamport.azurewebsites.net/video/videos.html">video course</a> to learn TLA+. It’s short and includes TLC. I first started with The TLA+ Book <em>Specifying Systems</em> which doesn’t include TLC, and I was wondering how specifying a system can check properties of it.</p>
 
-<p>Even though many programmers may not be very comfortable with the concept of TLA+ at first, it shouldn’t take a lot effort to write a specification. However, I did have some hard time to understand liveness and fairness in the last two videos. The video does a great job to define and explain it. But the example it uses is not very simple which adds a barrier to understand the concepts. In this article, I want to introduce a much simpler example, which makes it much easier to do experiment with it and see if your understanding is right.</p>
+<p>Even though many programmers may not be very comfortable with the concept of TLA+ at first, it shouldn’t take a lot of effort to write a specification. However, I did have a hard time understanding liveness and fairness in the last two videos. The video does a great job defining and explaining it. But the example it uses is not very simple which adds a barrier to understanding the concepts. In this article, I want to introduce a much simpler example, which makes it much easier to experiment with it and see if your understanding is right.</p>
 
-<p>This example is a very simple state machine, which state can go from <code class="language-plaintext highlighter-rouge">a</code> to <code class="language-plaintext highlighter-rouge">b</code> to <code class="language-plaintext highlighter-rouge">c</code>:</p>
+<p>This example is a very simple state machine, whose state can go from <code class="language-plaintext highlighter-rouge">a</code> to <code class="language-plaintext highlighter-rouge">b</code> to <code class="language-plaintext highlighter-rouge">c</code>:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a -&gt; b -&gt; c
 </code></pre></div></div>
@@ -4077,7 +4077,7 @@ Next == AToB \/ BToC
 Spec == Init /\ [][Next]_state
 </code></pre></div></div>
 
-<p>The specification defines what’s the possible states and steps of the system. This is <strong>safety property</strong> which defines what a system can do. If we want to use TLC to check anything about this system, we need to select “Temporal formula” under “What is the behavior spec” and put “Spec” in it. For example, if we want to check <code class="language-plaintext highlighter-rouge">state</code> is always be one of <code class="language-plaintext highlighter-rouge">a</code>, <code class="language-plaintext highlighter-rouge">b</code> or <code class="language-plaintext highlighter-rouge">c</code>. We can check this formula in TLC as an invariance:</p>
+<p>The specification defines what’s the possible states and steps of the system. This is <strong>safety property</strong> which defines what a system can do. If we want to use TLC to check anything about this system, we need to select “Temporal formula” under “What is the behavior spec” and put “Spec” in it. For example, if we want to check that <code class="language-plaintext highlighter-rouge">state</code> is always one of <code class="language-plaintext highlighter-rouge">a</code>, <code class="language-plaintext highlighter-rouge">b</code> or <code class="language-plaintext highlighter-rouge">c</code>. We can check this formula in TLC as an invariant:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>state \in {"a", "b", "c"}
 </code></pre></div></div>
@@ -4091,19 +4091,19 @@ Spec == Init /\ [][Next]_state
 
 <p>We can add this to TLC model’s properties field and run it to check if the system satisfies the property.</p>
 
-<p>So far, if we run this against <code class="language-plaintext highlighter-rouge">Spec</code>, TLC will report error. What happened? It turns out the specification not only specifies how the state can be changed in next state, but also specifies the state can be unchanged during steps. This makes it possible to interact with other systems. So the states of the system can stuck in one state forever and may never reaches <code class="language-plaintext highlighter-rouge">c</code>:</p>
+<p>So far, if we run this against <code class="language-plaintext highlighter-rouge">Spec</code>, TLC will report an error. What happened? It turns out the specification not only specifies how the state can be changed in the next state, but also specifies the state can be unchanged during steps. This makes it possible to interact with other systems. So the states of the system can get stuck in one state forever and may never reach <code class="language-plaintext highlighter-rouge">c</code>:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a -&gt; b -&gt; b -&gt; b -&gt; ....
 </code></pre></div></div>
 
-<p>This doesn’t seem right. We don’t want the system stuck in one state forever. This is where fairness comes in. We can see in the situation above, the state is always in <code class="language-plaintext highlighter-rouge">b</code>, which <code class="language-plaintext highlighter-rouge">BToC</code> is enabled and we want it to be executed at some point:</p>
+<p>This doesn’t seem right. We don’t want the system stuck in one state forever. This is where fairness comes in. We can see in the situation above, the state is always in <code class="language-plaintext highlighter-rouge">b</code>, where <code class="language-plaintext highlighter-rouge">BToC</code> is enabled and we want it to be executed at some point:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a -&gt; b -&gt; b -&gt; b -&gt; ... -&gt; c
 </code></pre></div></div>
 
 <p>More specifically, we want the behavior to be executed at some point if it’s enabled continuously. This is called <strong>weak fairness</strong>.</p>
 
-<p>So let’s add weak fairness to all the next steps of our specification. Then <code class="language-plaintext highlighter-rouge">Spec</code> changed in to this:</p>
+<p>So let’s add weak fairness to all the next steps of our specification. Then <code class="language-plaintext highlighter-rouge">Spec</code> changes into this:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Spec == Init /\ [][Next]_state /\ WF_state(Next)
 </code></pre></div></div>
@@ -4129,12 +4129,12 @@ Next == AToB \/ BToA \/ BToC
 Spec == Init /\ [][Next]_state /\ WF_state(Next)
 </code></pre></div></div>
 
-<p>Let’s check <code class="language-plaintext highlighter-rouge">&lt;&gt;(state = "c")</code> in TLC again, and we can find it failed. What’s happening now? It turns out even though the system will not stuck in one state forever, it can stuck in some of the states, in this case, <code class="language-plaintext highlighter-rouge">a</code> and <code class="language-plaintext highlighter-rouge">b</code>:</p>
+<p>Let’s check <code class="language-plaintext highlighter-rouge">&lt;&gt;(state = "c")</code> in TLC again, and we can find it failed. What’s happening now? It turns out even though the system will not get stuck in one state forever, it can get stuck in some of the states, in this case, <code class="language-plaintext highlighter-rouge">a</code> and <code class="language-plaintext highlighter-rouge">b</code>:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a -&gt; b -&gt; a -&gt; b -&gt; a -&gt; b -&gt; ....
 </code></pre></div></div>
 
-<p>Sometimes this is the expected behaviour, but sometimes we want other steps have a chance to happen. In this case, we want to <code class="language-plaintext highlighter-rouge">BToC</code> have a chance to happen if <code class="language-plaintext highlighter-rouge">state</code> reached <code class="language-plaintext highlighter-rouge">b</code> repeatedly:</p>
+<p>Sometimes this is the expected behavior, but sometimes we want other steps to have a chance to happen. In this case, we want <code class="language-plaintext highlighter-rouge">BToC</code> to have a chance to happen if <code class="language-plaintext highlighter-rouge">state</code> reaches <code class="language-plaintext highlighter-rouge">b</code> repeatedly:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>a -&gt; b -&gt; a -&gt; b -&gt; a -&gt; b -&gt; .... -&gt; c
 </code></pre></div></div>
@@ -4146,7 +4146,7 @@ Spec == Init /\ [][Next]_state /\ WF_state(Next)
 
 <p>After this, the check of <code class="language-plaintext highlighter-rouge">&lt;&gt;(state = "c")</code> can pass again.</p>
 
-<p>Let’s sum it up. Liveness is a property that the system must satisfies and can be checked with TLC. It usually defines that the system can eventually reach a state. In this case, it’s <code class="language-plaintext highlighter-rouge">&lt;&gt;(state = "c")</code>. Weak fairness is a part of the specification that says a behavior will eventually happen if it’s enabled continuously, which means <code class="language-plaintext highlighter-rouge">a -&gt; b -&gt; b -&gt; b -&gt; ... -&gt; c</code> in this example. Strong fairness is also a part of the specification, which says a behavior will eventually happen if it’s enabled repeatedly, which means <code class="language-plaintext highlighter-rouge">a -&gt; b -&gt; a -&gt; b -&gt; ... -&gt; c</code> in this case.</p>
+<p>Let’s sum it up. Liveness is a property that the system must satisfy and can be checked with TLC. It usually defines that the system can eventually reach a state. In this case, it’s <code class="language-plaintext highlighter-rouge">&lt;&gt;(state = "c")</code>. Weak fairness is a part of the specification that says a behavior will eventually happen if it’s enabled continuously, which means <code class="language-plaintext highlighter-rouge">a -&gt; b -&gt; b -&gt; b -&gt; ... -&gt; c</code> in this example. Strong fairness is also a part of the specification, which says a behavior will eventually happen if it’s enabled repeatedly, which means <code class="language-plaintext highlighter-rouge">a -&gt; b -&gt; a -&gt; b -&gt; ... -&gt; c</code> in this case.</p>
 
 </article>
 

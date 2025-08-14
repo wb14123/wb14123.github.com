@@ -4054,9 +4054,9 @@
     
   </header>
 
-  <p>These days I’m working on analyze data with Spark. Since our Spark cluster is offline in the office for now, so it needs to download data from log server every hour, analyze them with Spark and then upload to the server. The work flow is a little complex so I write some scripts to do it. In addition, I also write a whole automated end to end test for it.</p>
+  <p>These days I’m working on analyzing data with Spark. Since our Spark cluster is offline in the office for now, it needs to download data from log server every hour, analyze them with Spark and then upload to the server. The workflow is a little complex so I write some scripts to do it. In addition, I also write a whole automated end to end test for it.</p>
 
-<p>The whole thing is messed up with cron job configurations, shell scripts, MongoDB scripts and Spark jobs. Then I realize, I can pack them into a container, which do all the dirty things while not mess up the outside world. The better thing is, since I am using the CDH cluster, I can download the YARN configuration while build the container.</p>
+<p>The whole thing is messed up with cron job configurations, shell scripts, MongoDB scripts and Spark jobs. Then I realize, I can pack them into a container, which does all the dirty things while not messing up the outside world. The better thing is, since I am using the CDH cluster, I can download the YARN configuration while building the container.</p>
 
 <p>Here is how the container is built up:</p>
 
@@ -4064,18 +4064,18 @@
   <li>Compile the spark jobs and run unit tests.</li>
   <li>Install Hadoop client, Spark and Hive client, and download configuration files from CDH cluster.</li>
   <li>Install cron jobs to the system.</li>
-  <li>Generate data and test if the whole work flow works.</li>
+  <li>Generate data and test if the whole workflow works.</li>
 </ul>
 
-<p>The container will do these things every hour through cron job:</p>
+<p>The container will do these things every hour through a cron job:</p>
 
 <ul>
   <li>Download data from log server.</li>
-  <li>Sends the data to the CDH cluster and submit the spark job to it.</li>
+  <li>Send the data to the CDH cluster and submit the spark job to it.</li>
   <li>Fetch result data from CDH cluster and upload them to the online server.</li>
 </ul>
 
-<p>You may wonder why not just use some work flow tools in Hadoop ecosystem like Oozie? First of all, Oozie uses XML as its config file which I think is very complex. And it is also less flexible. With Docker container, I can build it and test it without touch the outside world. And it is just a very flex component that can be attached to the Spark cluster easily with a single command. Or think the Spark cluster as a low level service, which just provides computing resource and should not care about other things.</p>
+<p>You may wonder why not just use some workflow tools in Hadoop ecosystem like Oozie? First of all, Oozie uses XML as its config file which I think is very complex. And it is also less flexible. With Docker container, I can build it and test it without touching the outside world. And it is just a very flexible component that can be attached to the Spark cluster easily with a single command. Or think of the Spark cluster as a low level service, which just provides computing resources and should not care about other things.</p>
 
 </article>
 

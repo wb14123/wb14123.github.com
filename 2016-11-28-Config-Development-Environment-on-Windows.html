@@ -4062,13 +4062,13 @@
 
 <p>While installing it, it will ask you which tools you’d like to install. Just install the default ones and Lynx is enough, since we will install a package manager and it will be easier to install other tools then.</p>
 
-<p>You can use Xterm with Cygwin terminal, so you can config it as you are in Linux.</p>
+<p>You can use Xterm with Cygwin terminal, so you can configure it as you are in Linux.</p>
 
 <h2 id="package-manager">Package Manager</h2>
 
-<p>The most missed thing while I’m using Windows is Linux’s package manager. You can search, install, update and manage software very easily with it. There is also HomeBrew under Mac OS X so I’d like something like that under Windows. I searched on Google and found <a href="https://github.com/transcode-open/apt-cyg">apt-cyg</a> which can manage packages in Cygwin. You can follow the steps on its homepage to install it. After install it, you can install wget with it so that it will stop print warning messages.</p>
+<p>The most missed thing while I’m using Windows is Linux’s package manager. You can search, install, update and manage software very easily with it. There is also HomeBrew under Mac OS X so I’d like something like that under Windows. I searched on Google and found <a href="https://github.com/transcode-open/apt-cyg">apt-cyg</a> which can manage packages in Cygwin. You can follow the steps on its homepage to install it. After installing it, you can install wget with it so that it will stop printing warning messages.</p>
 
-<p>I’ve installed tmux, zsh, Git and vim with it. And config them with my <a href="https://github.com/wb14123/dotfiles">config files</a>. I only need to change the tmux start up config:</p>
+<p>I’ve installed tmux, zsh, Git and vim with it. And configure them with my <a href="https://github.com/wb14123/dotfiles">config files</a>. I only need to change the tmux start up config:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- set -g default-command "reattach-to-user-namespace -l /bin/zsh"
 + set -g default-command "/usr/bin/zsh"
@@ -4078,7 +4078,7 @@
 
 <h2 id="python">Python</h2>
 
-<p>There are many tools are written in Python. And my work also uses Python a lot. You can install Python with apt-cyg. But there will be some tricky things if you need to install some Python packages with pip.</p>
+<p>There are many tools that are written in Python. And my work also uses Python a lot. You can install Python with apt-cyg. But there will be some tricky things if you need to install some Python packages with pip.</p>
 
 <p>First we will install pip:</p>
 

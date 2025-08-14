@@ -4054,7 +4054,7 @@
     
   </header>
 
-  <p>Lots of people don’t like reflections. And I said if I could see the whole things I might not use reflections (with Annotation) to write the web framework <a href="https://github.com/wb14123/bard">Bard</a>. But I think it is not true, I really need reflections to do the things.</p>
+  <p>Lots of people don’t like reflections. And I said if I could see the whole thing I might not use reflections (with Annotation) to write the web framework <a href="https://github.com/wb14123/bard">Bard</a>. But I think it is not true, I really need reflections to do these things.</p>
 
 <h2 id="what-to-do">What to Do?</h2>
 
@@ -4065,37 +4065,37 @@
   <li>Easy to use.</li>
 </ol>
 
-<p>Let me explain: Once the web service is written, the framework should be able to auto generate the API documents for you. Because there is the code, which means there are all the necessary informations.</p>
+<p>Let me explain: Once the web service is written, the framework should be able to auto generate the API documents for you. Because there is the code, which means there is all the necessary information.</p>
 
 <p>The second one is a little more complex. We will see the details later.</p>
 
 <h2 id="things-are-about-injectors">Things Are About Injectors</h2>
 
-<p>The thing that cannot do without reflections is injectors. (Which should satisfied the two goals above).</p>
+<p>The thing that cannot be done without reflections is injectors. (Which should satisfy the two goals above).</p>
 
 <p>Let’s see a common usage of injectors. I’d like to get a URL’s query string as integer in a handler. The framework should know this in order to generate documents.</p>
 
 <h3 id="the-first-way">The First Way</h3>
 
-<p>The first way to this is write the injectors in the framework information. For example:</p>
+<p>The first way to do this is write the injectors in the framework information. For example:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>framework.addInjector(handler, getQueryString("a", Integer.class))
 </code></pre></div></div>
 
-<p>In this way, the framework knows the information. But it is not easy to use this framework. The problem is how to write the handler? How do we store the integer we’ve just get? The general way is store it into the context and takes it from context in the handler. It comes with two problems:</p>
+<p>In this way, the framework knows the information. But it is not easy to use this framework. The problem is how to write the handler? How do we store the integer we’ve just got? The general way is store it into the context and take it from context in the handler. It comes with two problems:</p>
 
 <ol>
   <li>
-    <p>We need a key to identify the value in the context. We need remember this key in order to use it and not duplicate with other values’ key.</p>
+    <p>We need a key to identify the value in the context. We need to remember this key in order to use it and not duplicate with other values’ key.</p>
   </li>
   <li>
-    <p>We need write at least one line of code in the handler, too.</p>
+    <p>We need to write at least one line of code in the handler, too.</p>
   </li>
 </ol>
 
 <h3 id="the-second-way">The Second Way</h3>
 
-<p>The second way is just get the query string in to handler’s code. For example:</p>
+<p>The second way is just get the query string into handler’s code. For example:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>void handler(context) {
 	Integer a = getQueryString(context, "a", Integer.class)
@@ -4107,7 +4107,7 @@
 }
 </code></pre></div></div>
 
-<p>This is very straightfoward. But in this way, we cannot get the information from the framework: the framework has no way to know this API needs a parameter “a” typed int in URL query string.</p>
+<p>This is very straightforward. But in this way, we cannot get the information from the framework: the framework has no way to know this API needs a parameter “a” typed int in URL query string.</p>
 
 <h3 id="the-reflections">The Reflections</h3>
 
@@ -4122,9 +4122,9 @@
 }
 </code></pre></div></div>
 
-<p>The framework knows what parameter this API needs. And the user know how to use the injected value. We are all happy now.</p>
+<p>The framework knows what parameter this API needs. And the user knows how to use the injected value. We are all happy now.</p>
 
-<p>So stop hate reflections, they are working sometimes.</p>
+<p>So stop hating reflections, they are working sometimes.</p>
 
 
 </article>

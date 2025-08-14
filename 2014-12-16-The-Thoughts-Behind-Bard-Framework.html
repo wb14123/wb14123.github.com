@@ -4042,7 +4042,7 @@
 
     <section id="page_content">
         <div id="content_table">
-  <h3>Table of Contents</h3><ol class="toc"><li><a href="#what-do-we-need">What Do We Need</a></li><li><a href="#thoughts-about-injectors">Thoughts About Injectors</a></li><li><a href="#annoying-while-always-write-some-functions-in-many-handlers">Annoying While Always Write Some Functions In Many Handlers?</a></li><li><a href="#we-need-injectors-while-performance-matters">We Need Injectors While Performance Matters</a></li><li><a href="#how-to-define-the-route">How to Define The Route</a></li><li><a href="#all-the-components-should-be-equal">All the Components Should Be Equal</a></li><li><a href="#get-the-meta-information">Get the Meta Information</a></li><li><a href="#use-annotations-instead-of-plain-code">Use Annotations Instead of Plain Code</a></li></ol>
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#what-do-we-need">What Do We Need</a></li><li><a href="#thoughts-about-injectors">Thoughts About Injectors</a></li><li><a href="#annoying-to-always-write-some-functions-in-many-handlers">Annoying to Always Write Some Functions In Many Handlers?</a></li><li><a href="#we-need-injectors-while-performance-matters">We Need Injectors While Performance Matters</a></li><li><a href="#how-to-define-the-route">How to Define The Route</a></li><li><a href="#all-the-components-should-be-equal">All the Components Should Be Equal</a></li><li><a href="#get-the-meta-information">Get the Meta Information</a></li><li><a href="#use-annotations-instead-of-plain-code">Use Annotations Instead of Plain Code</a></li></ol>
 </div>
 
 <div id="article_content" class="">
@@ -4074,13 +4074,13 @@
 
 <p>For example, let’s review two normal usages of injections.</p>
 
-<p>The first one is inject the login user. But you can just write a function that get token or session from HTTP request, and query your storage whether this token/session belongs to any user. No need with injections.</p>
+<p>The first one is to inject the login user. But you can just write a function that get token or session from HTTP request, and query your storage whether this token/session belongs to any user. No need with injections.</p>
 
-<p>The second one is inject database connection. But you can write a function to get your global database pool and get a connection from it. No need with injections, either.</p>
+<p>The second one is to inject database connection. But you can write a function to get your global database pool and get a connection from it. No need with injections, either.</p>
 
-<h2 id="annoying-while-always-write-some-functions-in-many-handlers">Annoying While Always Write Some Functions In Many Handlers?</h2>
+<h2 id="annoying-to-always-write-some-functions-in-many-handlers">Annoying to Always Write Some Functions In Many Handlers?</h2>
 
-<p>Sometimes we find, some functions in the library is so common that we almost use them in every handler. For example, if all the handlers need the user to login, we will write a function like <code class="language-plaintext highlighter-rouge">validateLogin(request)</code> in every handler. In order to resolve this problem, we could pass the function <code class="language-plaintext highlighter-rouge">valudateLogin</code> to the framework, tell it to run it on every request. This is the design of filter: filters are functions that read request, then write some response for you.</p>
+<p>Sometimes we find, some functions in the library is so common that we almost use them in every handler. For example, if all the handlers need the user to login, we will write a function like <code class="language-plaintext highlighter-rouge">validateLogin(request)</code> in every handler. In order to resolve this problem, we could pass the function <code class="language-plaintext highlighter-rouge">validateLogin</code> to the framework, tell it to run it on every request. This is the design of filter: filters are functions that read request, then write some response for you.</p>
 
 <p>The API to define filters may like this:</p>
 
@@ -4091,7 +4091,7 @@
 
 <p>When there comes filters, we should use injectors in order to improve performance. For example, in one filter, you query the login user, and in your handler, you query the login user, too. If you store the login user while you first query it, you can query it just one time.</p>
 
-<p>Injectors could be designed to use like filters. But it write things into the context instead of response.</p>
+<p>Injectors could be designed to use like filters. But it writes things into the context instead of response.</p>
 
 <p>Even at this time, some of the injectors like parse HTTP query string as number or something like that is not necessary.</p>
 
@@ -4107,7 +4107,7 @@
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>framework.get('/abc', handlerA)
 </code></pre></div></div>
 
-<p>But what if we what some more control over the request? We should be able to custom and extend it. My design is a function called adapter. It is a function that returns a function, which takes HTTP request as parameter and  return a result that tell the framework whether this request suits this adapter. For example, <code class="language-plaintext highlighter-rouge">pathAdapter("/abc")</code> could return a function, that return true if the HTTP URL is “/abc” otherwise return false.</p>
+<p>But what if we want some more control over the request? We should be able to custom and extend it. My design is a function called adapter. It is a function that returns a function, which takes HTTP request as parameter and returns a result that tells the framework whether this request suits this adapter. For example, <code class="language-plaintext highlighter-rouge">pathAdapter("/abc")</code> could return a function, that returns true if the HTTP URL is “/abc” otherwise returns false.</p>
 
 <p>So the API may looks like this:</p>
 

@@ -4054,57 +4054,57 @@
     
   </header>
 
-  <p>These days I’ve written some code about neural networks. There is nothing important, but worth to be recorded.</p>
+  <p>These days I’ve written some code about neural networks. There is nothing important, but it’s worth recording.</p>
 
 <h2 id="choose-deep-learning-frameworks">Choose Deep Learning Frameworks</h2>
 
-<p>The first thing is to decide which framework I should use. There are many frameworks about neural networks, I tried some famous ones. Here is the details:</p>
+<p>The first thing is to decide which framework I should use. There are many frameworks about neural networks, I tried some famous ones. Here are the details:</p>
 
 <h3 id="caffe"><a href="https://github.com/BVLC/caffe">Caffe</a></h3>
 
-<p>Caffe is a famous framework, mainly used with convolution neural networks. It is written with C++ but uses protocol buffer to describe the network. It is known as its well structured code, high performance. But the use of protocol buffer doesn’t make me comfortable because I’m not afraid of write some code and the file is less flexible.</p>
+<p>Caffe is a famous framework, mainly used with convolution neural networks. It is written with C++ but uses protocol buffer to describe the network. It is known for its well-structured code and high performance. But the use of protocol buffer doesn’t make me comfortable because I’m not afraid of writing some code and the file is less flexible.</p>
 
 <h3 id="theano"><a href="http://deeplearning.net/software/theano/">Theano</a></h3>
 
-<p>Theano is a framework written in Python. You can define an expression and Theano can find the gradient for you. The training process of deep learning is mainly find the gradients for each layer, so it simplified the work a lot. It’s performance is good, too.</p>
+<p>Theano is a framework written in Python. You can define an expression and Theano can find the gradient for you. The training process of deep learning mainly involves finding the gradients for each layer, so it simplified the work a lot. Its performance is good, too.</p>
 
-<p>But it is more like a compiler for me. I cannot see the low level things and the code is not just normal python code, it has too much hacking.</p>
+<p>But it is more like a compiler for me. I cannot see the low level things and the code is not just normal python code, it has too many hacks.</p>
 
-<p>Theano is more like a optimize library than a neural network framework. <a href="https://github.com/lisa-lab/pylearn2">PyLearn2</a> is a framework based on it, which provides many network structures and tools. But like Caffe, it uses a YAML config file to describe the structure of the network, which makes me uncomfortable.</p>
+<p>Theano is more like an optimization library than a neural network framework. <a href="https://github.com/lisa-lab/pylearn2">PyLearn2</a> is a framework based on it, which provides many network structures and tools. But like Caffe, it uses a YAML config file to describe the structure of the network, which makes me uncomfortable.</p>
 
 <h3 id="deeplearning4j"><a href="http://deeplearning4j.org">Deeplearning4j</a></h3>
 
-<p>This is a framework written in Java. It is not so famous, but interesting to me. I’m more familiar with Java than C++. A Java framework means a better IDE, more libraries to use. And it may supports Scala, which I use a lot in these days. So I tried it a little, but it is not as good as I thought.</p>
+<p>This is a framework written in Java. It is not so famous, but interesting to me. I’m more familiar with Java than C++. A Java framework means a better IDE, more libraries to use. And it may support Scala, which I use a lot these days. So I tried it a little, but it is not as good as I thought.</p>
 
-<p>First of all, it is in heavily developing. And the name of methods and variables is too long and the API is not so great to use. The most important is, the performance seems not so good and the integration with the GPU is not very easy. And it is not popular in research field so the communication with others may becomes a problem.</p>
+<p>First of all, it is under heavy development. And the names of methods and variables are too long and the API is not so great to use. Most importantly, the performance doesn’t seem very good and the integration with the GPU is not very easy. And it is not popular in the research field, so communication with others may become a problem.</p>
 
 <h3 id="torch7"><a href="http://torch.ch/">Torch7</a></h3>
 
-<p>This is the framework I finally use. Actually, it is the first framework I’ve used.</p>
+<p>This is the framework I finally used. Actually, it is the first framework I’ve used.</p>
 
-<p>Some big companies use it, including Deep Mind (Google), Facebook and so on. It is written in Lua, which is a language I’ve always want to learn. It is easy to understand. When there comes to the low level, you just need to read the C code, which is more easy to read than the C++ code. There is no magic between the high level and the low level, I can just dig it. It’s performance is great, and the ecosystem is big and healthy.</p>
+<p>Some big companies use it, including Deep Mind (Google), Facebook and so on. It is written in Lua, which is a language I’ve always wanted to learn. It is easy to understand. When it comes to the low level, you just need to read the C code, which is easier to read than the C++ code. There is no magic between the high level and the low level, I can just dig it. Its performance is great, and the ecosystem is big and healthy.</p>
 
 <p>But it also has some cons. For example, the error hint is not so great, and the code is too flexible so that you must read the document to know how to use some modules. But I can deal with it.</p>
 
 <h2 id="write-my-own-library">Write My Own Library</h2>
 
-<p>I write my own library with Scala and <a href="https://github.com/scalanlp/breeze">Breeze</a>, in order to understand neural networks better.</p>
+<p>I wrote my own library with Scala and <a href="https://github.com/scalanlp/breeze">Breeze</a>, in order to understand neural networks better.</p>
 
-<p>It is very easy to write a neural network library (which is not distributed), as long as you understand it. While I wrote it, I realize that the core of neural networks is just gradient optimize (with many tricks). One layer of a network is just a function, layers are just function after function. So the gradient of each layer is computed by chain rule. When you need a new layer, just write how to compute the output and the gradient, then you can push it into the network structure.</p>
+<p>It is very easy to write a neural network library (which is not distributed), as long as you understand it. While I wrote it, I realized that the core of neural networks is just gradient optimization (with many tricks). One layer of a network is just a function, layers are just functions after functions. So the gradient of each layer is computed by the chain rule. When you need a new layer, just write how to compute the output and the gradient, then you can push it into the network structure.</p>
 
-<p>Use Scala to write it feels good, because OOP makes it feel nature to write layers. And the trait system makes it more pleasure. But the performance is not as good as the libraries above. Make it to support GPU is hard, too. Running a large size network makes it running like forever. So I gave up after wrote the convolution network and use Torch7 instead.</p>
+<p>Using Scala to write it feels good, because OOP makes it feel natural to write layers. And the trait system makes it more pleasurable. But the performance is not as good as the libraries above. Making it support GPU is hard, too. Running a large-size network makes it run forever. So I gave up after writing the convolution network and used Torch7 instead.</p>
 
 <h2 id="run-some-examples">Run Some Examples</h2>
 
-<p><a href="https://timdettmers.wordpress.com/2014/08/14/which-gpu-for-deep-learning/">This article</a> gives some great advices to choose a GPU for deep learning. Titan X is great but is too expensive. So I decide to wait until next year while NVIDIA will release their new GPU with 10X power. At the same time, I have a GPU with 1G RAM in my office.</p>
+<p><a href="https://timdettmers.wordpress.com/2014/08/14/which-gpu-for-deep-learning/">This article</a> gives some great advice on choosing a GPU for deep learning. Titan X is great but is too expensive. So I decided to wait until next year when NVIDIA will release their new GPU with 10X power. At the same time, I have a GPU with 1G RAM in my office.</p>
 
 <p>I wrote some simple code like MLP and simple convolution networks to train with MNIST data. Then I decided to run some large examples.</p>
 
-<p>First, I run the example from <a href="https://github.com/facebook/fbcunn/tree/master/examples/imagenet">fbcunn</a>, which is a AlexNet training on ImageNet. The ImageNet data is too big and the bandwidth of my office is too small. So I run the example with an <code class="language-plaintext highlighter-rouge">g2.2xlarge</code> instance on AWS. It still took lots of time, which trained 2 days to archive a precision of about 30% (not ended yet). Then I realized it is too expensive to run it on AWS and stop it.</p>
+<p>First, I run the example from <a href="https://github.com/facebook/fbcunn/tree/master/examples/imagenet">fbcunn</a>, which is a AlexNet training on ImageNet. The ImageNet data is too big and the bandwidth of my office is too small. So I run the example with an <code class="language-plaintext highlighter-rouge">g2.2xlarge</code> instance on AWS. It still took lots of time, which trained for 2 days to achieve a precision of about 30% (not ended yet). Then I realized it is too expensive to run it on AWS and stopped it.</p>
 
-<p>The Second example I run is an RNN example. The code is from <a href="https://github.com/karpathy/char-rnn">here</a>. I run it on the machine with 1G RAM GPU. It looks good on small networks. But when I use the data from Chinese Wikipedia (with 1G plain text), the memory of GPU could only train a network of 512 parameters, which is too small to get good result.</p>
+<p>The second example I ran was an RNN example. The code is from <a href="https://github.com/karpathy/char-rnn">here</a>. I ran it on the machine with 1GB RAM GPU. It looks good on small networks. But when I use the data from Chinese Wikipedia (with 1G plain text), the memory of GPU could only train a network of 512 parameters, which is too small to get good results.</p>
 
-<p>The time of training large neural networks is really long. So I will wait for the new hardware to continue my research. At the mean time, I will review the knowledge about linear algebra and probability theory.</p>
+<p>The time of training large neural networks is really long. So I will wait for the new hardware to continue my research. In the meantime, I will review the knowledge about linear algebra and probability theory.</p>
 
 </article>
 

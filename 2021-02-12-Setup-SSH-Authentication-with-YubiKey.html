@@ -4058,14 +4058,14 @@
 
 <h2 id="generate-openssh-hardware-token">Generate OpenSSH Hardware Token</h2>
 
-<p>The most easy way is to generate a ssh key file based on Yubikey. OpenSSH supports this since 8.2.</p>
+<p>The easiest way is to generate a ssh key file based on Yubikey. OpenSSH supports this since 8.2.</p>
 
 <ol>
   <li>Run <code class="language-plaintext highlighter-rouge">ssh-keygen -t ecdsa-sk</code></li>
   <li>Touch the Yubikey for a few seconds.</li>
 </ol>
 
-<p>Then you can use the generated ssh key like other key files with <code class="language-plaintext highlighter-rouge">-i</code> option. After type in the login command, you need to touch Yubikey for a few seconds, then you should be able to login.</p>
+<p>Then you can use the generated ssh key like other key files with <code class="language-plaintext highlighter-rouge">-i</code> option. After typing in the login command, you need to touch Yubikey for a few seconds, then you should be able to login.</p>
 
 <h2 id="use-pam"><del>Use PAM</del></h2>
 
@@ -4075,7 +4075,7 @@
 
 <h3 id="1-install-packages">1. Install packages</h3>
 
-<p>PAM should be installed by default for Archlinux. So the only package we need to install is the PAM module for Yubikey <code class="language-plaintext highlighter-rouge">pam-u2f</code>:</p>
+<p>PAM should be installed by default for Arch Linux. So the only package we need to install is the PAM module for Yubikey <code class="language-plaintext highlighter-rouge">pam-u2f</code>:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sudo pacman -S pam-u2f
 </code></pre></div></div>
@@ -4102,7 +4102,7 @@
 
 <h3 id="4-config-ssh-to-include-password-authentication">4. Config SSH to include password authentication</h3>
 
-<p>In order to actually use PAM in ssh, ssh server needs to include password as part of authorization methods. The configuration is <code class="language-plaintext highlighter-rouge">AuthenticationMethods</code> in <code class="language-plaintext highlighter-rouge">sshd_config</code>. For example, if you want to use password + Yubikey + ssh key file, you can config it like this:</p>
+<p>In order to actually use PAM in ssh, the ssh server needs to include password as part of authorization methods. The configuration is <code class="language-plaintext highlighter-rouge">AuthenticationMethods</code> in <code class="language-plaintext highlighter-rouge">sshd_config</code>. For example, if you want to use password + Yubikey + ssh key file, you can configure it like this:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>AuthenticationMethods "publickey,password"
 </code></pre></div></div>
@@ -4113,7 +4113,7 @@
 ChallengeResponseAuthentication Yes
 </code></pre></div></div>
 
-<p>After this, restart sshd then you can login with Yubikey authentication: type in ssh login command, input user password and press enter, touch the Yubikey for a few seconds, then you should be able to login!</p>
+<p>After this, restart sshd then you can login with Yubikey authentication: type in the ssh login command, input user password and press enter, touch the Yubikey for a few seconds, then you should be able to login!</p>
 
 </article>
 

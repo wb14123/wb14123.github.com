@@ -4062,7 +4062,7 @@
 
 <h2 id="how-to-configure-sentry-policy">How to Configure Sentry Policy</h2>
 
-<p>When I start learning to use Sentry, the configuration of authorization policy confused me a log. I thought it would be like <a href="https://ranger.apache.org/">Apache Ranger</a> to have a centralized web UI or at least provide some CLI tool. But it turns out that’s not the case. And more confusing, there are two ways to configure Sentry polices: one is file based, which is like a centralized way to configure Sentry policy but is deprecated. Another way is to configure polices from other service, which you will not even notice the exist of Sentry.</p>
+<p>When I start learning to use Sentry, the configuration of authorization policy confused me a lot. I thought it would be like <a href="https://ranger.apache.org/">Apache Ranger</a> to have a centralized web UI or at least provide some CLI tool. But it turns out that’s not the case. And more confusing, there are two ways to configure Sentry polices: one is file based, which is like a centralized way to configure Sentry policy but is deprecated. Another way is to configure polices from other service, which you will not even notice the exist of Sentry.</p>
 
 <h3 id="use-policy-file">Use Policy File</h3>
 
@@ -4117,13 +4117,13 @@
 <p>So there are two things that confused me a lot and I’d like to highlight here:</p>
 
 <ol>
-  <li>There are two ways to configure Sentry policies. The are not related and a little like different systems.</li>
+  <li>There are two ways to configure Sentry policies. They are not related and a little like different systems.</li>
   <li>For the Sentry service, there is no way to configure policies through Sentry service directly.</li>
 </ol>
 
 <p>I think these are both design failures of Sentry. For the first one, if a system changed so much, at least you need to change a big version and highlight it in document. Like Python 2 and Python 3.</p>
 
-<p>For the second one, it is really strange to doesn’t have a way to configure and view the policies through Sentry service. If user still need to configure the permissions separately for each system, it is a little point-less to use a centralized authorization service. Unless the permission model is the same or similar, like Hive and Impala basicly use the same permission model, so if you configure the permissions in Hive, Impala can use it. But the situation like that is rare. And I don’t think it would be difficult to provide a CLI tool to configure and view Sentry policy.</p>
+<p>For the second one, it is really strange to not have a way to configure and view the policies through Sentry service. If users still need to configure the permissions separately for each system, it is a little pointless to use a centralized authorization service. Unless the permission model is the same or similar, like Hive and Impala basically use the same permission model, so if you configure the permissions in Hive, Impala can use it. But the situation like that is rare. And I don’t think it would be difficult to provide a CLI tool to configure and view Sentry policy.</p>
 
 </article>
 

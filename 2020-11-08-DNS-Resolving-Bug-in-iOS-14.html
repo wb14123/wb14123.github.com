@@ -4042,7 +4042,7 @@
 
     <section id="page_content">
         <div id="content_table">
-  <h3>Table of Contents</h3><ol class="toc"><li><a href="#the-bug-description">The Bug Description</a></li><li><a href="#how-do-i-know-its-not-the-problem-of-my-dns-setup">How Do I know It’s not the Problem of My DNS Setup</a></li><li><a href="#workaround">Workaround</a></li><li><a href="#a-little-more-story">A Little More Story</a></li></ol>
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#the-bug-description">The Bug Description</a></li><li><a href="#how-do-i-know-its-not-the-problem-of-my-dns-setup">How Do I Know It’s Not the Problem of My DNS Setup</a></li><li><a href="#workaround">Workaround</a></li><li><a href="#a-little-more-story">A Little More Story</a></li></ol>
 </div>
 
 <div id="article_content" class="">
@@ -4056,7 +4056,7 @@
 
   <h2 id="the-bug-description">The Bug Description</h2>
 
-<p>iOS 14 has a bug for DNS resolving under this circumstances:</p>
+<p>iOS 14 has a bug for DNS resolving under these circumstances:</p>
 
 <ul>
   <li>Manually specify a custom DNS server for a WiFi network.</li>
@@ -4064,7 +4064,7 @@
   <li>The DNS record type of this domain is CNAME on public DNS server.</li>
 </ul>
 
-<p>Under this setup, after connecting to WiFi with custom DNS, iOS 14 should get the IP for this domain according the record on custom DNS server. However, it still gets the IP that’s on public DNS server.</p>
+<p>Under this setup, after connecting to WiFi with custom DNS, iOS 14 should get the IP for this domain according to the record on custom DNS server. However, it still gets the IP that’s on public DNS server.</p>
 
 <p>Here is an example. The table below shows the DNS records on public DNS servers:</p>
 
@@ -4118,19 +4118,19 @@
 
 <p>So if you use the custom DNS server, <code class="language-plaintext highlighter-rouge">domain-1</code> should be resolved to <code class="language-plaintext highlighter-rouge">2.2.2.2</code>.</p>
 
-<p>However in iOS 14, even if you manually specify the custom DNS server for the WiFi network, <code class="language-plaintext highlighter-rouge">domain-1</code> is still resolved to <code class="language-plaintext highlighter-rouge">1.1.1.1</code>.</p>
+<p>However, in iOS 14, even if you manually specify the custom DNS server for the WiFi network, <code class="language-plaintext highlighter-rouge">domain-1</code> is still resolved to <code class="language-plaintext highlighter-rouge">1.1.1.1</code>.</p>
 
-<p>I guess this is because of DNS cache problem. I tried to clean up the DNS cache by changing my device to airplane mode, reboot the device, or stay in the WiFi with custom DNS for days. Despite all the attempts, the problem still exists.</p>
+<p>I guess this is because of a DNS cache problem. I tried to clean up the DNS cache by changing my device to airplane mode, rebooting the device, or staying in the WiFi with custom DNS for days. Despite all the attempts, the problem still exists.</p>
 
-<p>I filled a bug report to Apple but didn’t get any response after almost one month. So I think I can share it here so it may help someone else with the same problem.</p>
+<p>I filed a bug report to Apple but didn’t get any response after almost one month. So I think I can share it here so it may help someone else with the same problem.</p>
 
-<h2 id="how-do-i-know-its-not-the-problem-of-my-dns-setup">How Do I know It’s not the Problem of My DNS Setup</h2>
+<h2 id="how-do-i-know-its-not-the-problem-of-my-dns-setup">How Do I Know It’s Not the Problem of My DNS Setup</h2>
 
-<p>The setup above works on every other devices I have (Linux devices, MacOS devices). It also works on the same iOS device before I upgraded it to iOS 14. I also installed the app <a href="https://apps.apple.com/us/app/network-analyzer-pro/id557405467">Network Analyzer Pro</a> to debug the setup. In Network Analyzer Pro, if I use the DNS resolving tool with the custom DNS server, it can resolve the right IP address. But if I ping the domain directly, it resolved to the wrong IP. So there is something wrong at the system level of iOS 14.</p>
+<p>The setup above works on every other device I have (Linux devices, MacOS devices). It also works on the same iOS device before I upgraded it to iOS 14. I also installed the app <a href="https://apps.apple.com/us/app/network-analyzer-pro/id557405467">Network Analyzer Pro</a> to debug the setup. In Network Analyzer Pro, if I use the DNS resolving tool with the custom DNS server, it can resolve the right IP address. But if I ping the domain directly, it resolves to the wrong IP. So there is something wrong at the system level of iOS 14.</p>
 
 <h2 id="workaround">Workaround</h2>
 
-<p>This bug is very frustrating. I spent lots of time to identify what’s the issue: for the application, to the permission setup (iOS 14 has a new local network permission), to the system. And finally found it’s iOS system DNS resolving problem and found a workaround.</p>
+<p>This bug is very frustrating. I spent lots of time to identify what the issue was: from the application, to the permission setup (iOS 14 has a new local network permission), to the system. And finally found it’s an iOS system DNS resolving problem and found a workaround.</p>
 
 <p>The workaround is to add a DNS record for the domain behind CNAME (in this case <code class="language-plaintext highlighter-rouge">domain-2</code>) into the custom DNS server:</p>
 
@@ -4156,15 +4156,15 @@
   </tbody>
 </table>
 
-<p>However, if you have multiple domains point to <code class="language-plaintext highlighter-rouge">domain-2</code> and don’t want to change IP addresses for those domains, this workaround may not be able to support that use case.</p>
+<p>However, if you have multiple domains pointing to <code class="language-plaintext highlighter-rouge">domain-2</code> and don’t want to change IP addresses for those domains, this workaround may not be able to support that use case.</p>
 
 <h2 id="a-little-more-story">A Little More Story</h2>
 
-<p>It may looks weird that I have a DNS setup like this. I host some services on my desktop machine. Because of my home router provided by ISP disabled NAT loopback (which means the router denies all the traffic that comes from itself), I must use the IP address in local network to access the services if my devices are in the same network. So I setup a custom DNS server that resolves the service domains to my desktop’s internal IP address, and use this DNS server when I’m using home WiFi.</p>
+<p>It may look weird that I have a DNS setup like this. I host some services on my desktop machine. Because my home router provided by the ISP has NAT loopback disabled (which means the router denies all the traffic that comes from itself), I must use the IP address in the local network to access the services if my devices are in the same network. So I set up a custom DNS server that resolves the service domains to my desktop’s internal IP address, and use this DNS server when I’m using home WiFi.</p>
 
-<p>I depend on this workflow heavily. Everything worked smoothly until I upgraded to iOS 14. For more than 1 month, under the home WiFi connection (which is most of the time because of CoVID-19), I cannot sync my calendar or notes, or fetch an E-Book from my collections to iPad, or upload my photos automatically, or chat with my friends on phone, and so on. It’s very frustrating and is still not fixed after two version upgrades of iOS 14.</p>
+<p>I depend on this workflow heavily. Everything worked smoothly until I upgraded to iOS 14. For more than 1 month, under the home WiFi connection (which is most of the time because of COVID-19), I cannot sync my calendar or notes, or fetch an E-Book from my collections to iPad, or upload my photos automatically, or chat with my friends on phone, and so on. It’s very frustrating and is still not fixed after two version upgrades of iOS 14.</p>
 
-<p>After my previous Android phone broken, I decided to buy an old generation iPhone. One big reason is it’s really cheap with the carrier contract. I’m trying to reduce my time on phones so an old generate is more than enough. In many ways it’s much better than an Android phone: for an Android phone, I need so many tweaks to make sure it respects my privacy and apps not running at background all the time. And after that, many apps are not usable or don’t have proper notifications. On contrast, Apple controls the ecosystem strongly to make sure the developers don’t abuse the system. But on the other hand, Apple also controls the users strongly. It’s hard to downgrade the system. It’s hard to debug the system. It’s even hard to submit a bug report: you need to enroll Beta profile and use an app to submit it. (I’m not sure if there are other ways but it’s the suggested way on Apple’s website). With an Apple mobile device, I feel more like renting it instead of owning it. I really hope one day there is a device that’s both open to users and have a strong permission management to limit the app behaviors (including the apps owned by device provider). It must be hard based on the user base, but doesn’t hurt to have some hopes.</p>
+<p>After my previous Android phone broke, I decided to buy an old generation iPhone. One big reason is it’s really cheap with the carrier contract. I’m trying to reduce my time on phones so an old generation is more than enough. In many ways it’s much better than an Android phone: for an Android phone, I need so many tweaks to make sure it respects my privacy and apps are not running in the background all the time. And after that, many apps are not usable or don’t have proper notifications. In contrast, Apple controls the ecosystem strongly to make sure the developers don’t abuse the system. But on the other hand, Apple also controls the users strongly. It’s hard to downgrade the system. It’s hard to debug the system. It’s even hard to submit a bug report: you need to enroll Beta profile and use an app to submit it. (I’m not sure if there are other ways but it’s the suggested way on Apple’s website). With an Apple mobile device, I feel more like renting it instead of owning it. I really hope one day there is a device that’s both open to users and have a strong permission management to limit the app behaviors (including the apps owned by device provider). It must be hard based on the user base, but doesn’t hurt to have some hopes.</p>
 
 </article>
 

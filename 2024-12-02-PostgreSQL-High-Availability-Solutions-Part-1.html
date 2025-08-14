@@ -4385,6 +4385,8 @@ max_connections: 500
 
 <p>So to make it better tolerate node loss, there should be an option similar to <code class="language-plaintext highlighter-rouge">synchronous_node_count</code> but actually enforce the minimal synced replication count instead of reduce it based on node availability. And if the available nodes meets the requirement of \(V_r\), do the auto failover by comparing the largest LSN on each node.</p>
 
+<p><em>Update: it’s actually a tricker problem to resolve if not changing PostgreSQL internals. See the section “Quorum” in my newer article <a href="/2025-08-13-Why-Consensus-Shortcuts-Fail.html">What Happens If Raft Algorithm Is Not Fully Implemented</a>.</em></p>
+
 <h2 id="minor-issue-wrong-role-label-for-kubernetes-pod">Minor Issue: Wrong Role Label for Kubernetes Pod</h2>
 
 <p>At last there is a minor issue but also the first issue I found during the test: in the Patroni doc, it uses the command <code class="language-plaintext highlighter-rouge">kubectl get pods -L role -o wide</code> to show the role of each Patroni pod. However, it is inaccurate as <a href="https://github.com/patroni/patroni/issues/3194#issuecomment-2439591095">confirmed in the Github issue</a>. It’s not a big deal but something to be aware of when operating Patroni. I think theoretically it may be able to be fixed by letting the primary pod set the k8s labels for all the other pods.</p>

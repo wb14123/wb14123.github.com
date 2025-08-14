@@ -4058,14 +4058,14 @@
 
 <p>But there is a problem with checkpointing: you cannot load the checkpointed data once you change the class structure of your code, so the state in <code class="language-plaintext highlighter-rouge">updateStateByKey</code> is lost. This is a pretty big limit. Another solution is to save and load data by ourself, but in this way checkpointing is totally useless and will also break the fault tolerance. What about to use both ways? Then the data may load twice while the application is auto restarted by the Spark cluster, in the case of failure. So I asked this question in the Spark user list and somebody kindly give me <a href="https://mail-archives.apache.org/mod_mbox/incubator-spark-user/201509.mbox/%3CCAD_32VVBit6eqNhRb5axf4Quxk86v_ZkjFL4ZdziNZrCyT2qEA@mail.gmail.com%3E">a solution</a>: use <code class="language-plaintext highlighter-rouge">updateStateByKey</code> with the parameter <code class="language-plaintext highlighter-rouge">initialRDD</code>.</p>
 
-<p>The answer is a little simple, so I will explain it here. This way is to use both checkpointing and our own data storage mechanism. But we load our data as the <code class="language-plaintext highlighter-rouge">initalRDD</code> of <code class="language-plaintext highlighter-rouge">updateStateByKey</code>. So in both situations, the data will neither lost nor duplicate:</p>
+<p>The answer is a little simple, so I will explain it here. This way is to use both checkpointing and our own data storage mechanism. But we load our data as the <code class="language-plaintext highlighter-rouge">initialRDD</code> of <code class="language-plaintext highlighter-rouge">updateStateByKey</code>. So in both situations, the data will neither be lost nor duplicated:</p>
 
 <ol>
   <li>
     <p>When we change the code and redeploy the Spark application, we shutdown the old Spark application gracefully and cleanup the checkpoint data, so the only loaded data is the data we saved.</p>
   </li>
   <li>
-    <p>When the Spark application is failure and restart, it will load the data from checkpoint. But the step of DAG is saved so it will not load our own data as <code class="language-plaintext highlighter-rouge">initalRDD</code> again. So the only loaded data is the checkpointed data.</p>
+    <p>When the Spark application fails and restarts, it will load the data from checkpoint. But the step of DAG is saved so it will not load our own data as <code class="language-plaintext highlighter-rouge">initialRDD</code> again. So the only loaded data is the checkpointed data.</p>
   </li>
 </ol>
 

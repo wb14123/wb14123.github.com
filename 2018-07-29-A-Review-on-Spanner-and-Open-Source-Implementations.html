@@ -4062,7 +4062,7 @@
 
 <ol>
   <li>Normally the clock is synced with a remote server using NTP. But the network latency upper bound is unknown.</li>
-  <li>Even if the local clock is synced accurately once, the hardware in a normal computer makes it inaccuracy when time passes. The error depends on the temperature and so on.</li>
+  <li>Even if the local clock is synced accurately once, the hardware in a normal computer makes it inaccurate when time passes. The error depends on the temperature and so on.</li>
 </ol>
 
 <p>For more details, you can read the section “Unreliable Clocks” in Chapter 8 of the book <a href="http://shop.oreilly.com/product/0636920032175.do">
@@ -4125,7 +4125,7 @@ Designing Data-Intensive Applications</a>.</p>
 
 <h2 id="4-the-myths-of-spanner">4. The Myths of Spanner</h2>
 
-<p>There are some myths and hyper for Spanner. In this section, I will highlight the weakness of Spanner. I call it “weakness” not because other databases are doing better, but because they are not as good as people may think. And they are not necessarily bad things. It depends on how you understand and use it. If you don’t understand it correctly and think all the things are done perfectly and magically, you may run into some problems.</p>
+<p>There are some myths and hype for Spanner. In this section, I will highlight the weakness of Spanner. I call it “weakness” not because other databases are doing better, but because they are not as good as people may think. And they are not necessarily bad things. It depends on how you understand and use it. If you don’t understand it correctly and think all the things are done perfectly and magically, you may run into some problems.</p>
 
 <p>Many people think when using Spanner, reads can go to a replica closest to the client most of the time, so communication between data centers is avoided. But this is not true. In fact, <strong>all the serializable transactions, which include read-write transactions and read only transactions that want to read the most recent data, must communicate with the partition leader.</strong> The theory is in the Spanner paper and there is also an explicit description in <a href="https://cloud.google.com/spanner/docs/replication">Spanner Cloud’s document</a>.</p>
 
@@ -4135,7 +4135,7 @@ Designing Data-Intensive Applications</a>.</p>
 
 <ol>
   <li>
-    <p>If the transaction only involves one partition, it is chosen to be the last commit time of the partition. And in order tot get the last commit time, it needs to ask the leader of this partition.</p>
+    <p>If the transaction only involves one partition, it is chosen to be the last commit time of the partition. And in order to get the last commit time, it needs to ask the leader of this partition.</p>
   </li>
   <li>
     <p>If the transaction involves multiple partitions, it would be expensive and complex to get a last commit time. So using <code class="language-plaintext highlighter-rouge">TT.now().latest</code> as \(t\) can guarantee it will read a version more recently than the current time. And replica will not store \(t_{safe} \geq TT.now().latest\) since the latest commit timestamp must be earlier than the current one, it needs to ask the leader to confirm whether there are new writes.</p>
@@ -4174,9 +4174,9 @@ Designing Data-Intensive Applications</a>.</p>
 
 <h3 id="61-tidb">6.1 TiDB</h3>
 
-<p>TiDB uses a single time server to generate the transaction ID in order to make it monotone increasing. This is simple and they claim the throughput of the time server is very high and can be deployed in an HA way. But the downside is also very obvious: the latency would be high if you have data centers around the world. This doesn’t only affect the read-write transactions but will also affect all the requests: including the read-only ones with snapshot isolation: since when doing readonly transactions, the client’s timestamp is not trustable, it can only get a trustable timestamp from the time server. Of course, the client can cache some timestamps returned from the server and maintain them to use in future requests, but it would be complex and error-prone. In fact, TiDB’s developer recommends the network latency between the servers under 5ms in the section “What’s the recommended solution for the deployment of three geo-distributed data centers?” of <a href="https://github.com/pingcap/docs/blob/master/FAQ.md">their FAQ</a>. Considering light still needs about 6ms to travel from Beijing to Guangzhou and needs about 12ms from New York to San Francisco, the requirements are not possible to reach in a real globally distributed cluster. And maintain a stable latency on a global scale is hard and expensive, too.</p>
+<p>TiDB uses a single time server to generate the transaction ID in order to make it monotone increasing. This is simple and they claim the throughput of the time server is very high and can be deployed in an HA way. But the downside is also very obvious: the latency would be high if you have data centers around the world. This doesn’t only affect the read-write transactions but will also affect all the requests: including the read-only ones with snapshot isolation: since when doing readonly transactions, the client’s timestamp is not trustable, it can only get a trustworthy timestamp from the time server. Of course, the client can cache some timestamps returned from the server and maintain them to use in future requests, but it would be complex and error-prone. In fact, TiDB’s developers recommend the network latency between the servers under 5ms in the section “What’s the recommended solution for the deployment of three geo-distributed data centers?” of <a href="https://github.com/pingcap/docs/blob/master/FAQ.md">their FAQ</a>. Considering light still needs about 6ms to travel from Beijing to Guangzhou and needs about 12ms from New York to San Francisco, the requirements are not possible to reach in a real globally distributed cluster. And maintain a stable latency on a global scale is hard and expensive, too.</p>
 
-<p>Since the highlighted part of Spanner is globally distributed, the downside of TiDB is really a big deal. But the good part of TiDB is it compatible with MySQL protocol, which makes it to be a very easy solution if you want to scale out your old MySQL database.</p>
+<p>Since the highlighted part of Spanner is globally distributed, the downside of TiDB is really a big deal. But the good part of TiDB is it compatible with MySQL protocol, which makes it a very easy solution if you want to scale out your old MySQL database.</p>
 
 <p>And another difference between TiDB and Spanner is TiDB only supports isolation levels up to repeatable reads (or snapshot isolation), which is a weaker level than Spanner’s serializable isolation.</p>
 

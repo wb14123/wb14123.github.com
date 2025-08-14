@@ -4058,7 +4058,7 @@
 
 <h2 id="use-proxy-repositories">Use Proxy Repositories</h2>
 
-<p>sbt has a <a href="http://www.scala-sbt.org/0.13/docs/Proxy-Repositories.html">document</a> that described how to set proxy repositories:</p>
+<p>sbt has a <a href="http://www.scala-sbt.org/0.13/docs/Proxy-Repositories.html">document</a> that describes how to set proxy repositories:</p>
 
 <h3 id="config-repositories-in-sbtrepositories-like-this">Config repositories in <code class="language-plaintext highlighter-rouge">~/.sbt/repositories</code> like this:</h3>
 
@@ -4068,7 +4068,7 @@
     my-maven-proxy-releases: http://repo.company.com/maven-releases/
 </code></pre></div></div>
 
-<h3 id="add--dsbtoverridebuildrepostrue-while-use-sbt-command">Add <code class="language-plaintext highlighter-rouge">-Dsbt.override.build.repos=true</code> while use sbt command.</h3>
+<h3 id="add--dsbtoverridebuildrepostrue-while-using-sbt-command">Add <code class="language-plaintext highlighter-rouge">-Dsbt.override.build.repos=true</code> while using sbt command.</h3>
 
 <p>The second step will override all the resolvers defined in your project, like in the file <code class="language-plaintext highlighter-rouge">build.sbt</code>. It is necessary because if you don’t do this, sbt will still send requests to default repos like typesafe and scala-sbt.</p>
 
@@ -4090,7 +4090,7 @@
 
 <p>You may see the problem to use both of them. In order to force sbt to use proxy repos, you should use the option <code class="language-plaintext highlighter-rouge">-Dsbt.override.build.repos=true</code>, which will override your self hosted repo written in <code class="language-plaintext highlighter-rouge">build.sbt</code>.</p>
 
-<p>After tried some methods, I find I can just write the repos defined in <code class="language-plaintext highlighter-rouge">build.sbt</code> into <code class="language-plaintext highlighter-rouge">~/.sbt/repositories</code>, and sbt will still be able to find the credentials for it while building the project.</p>
+<p>After trying some methods, I found I can just write the repos defined in <code class="language-plaintext highlighter-rouge">build.sbt</code> into <code class="language-plaintext highlighter-rouge">~/.sbt/repositories</code>, and sbt will still be able to find the credentials for it while building the project.</p>
 
 <p>This method will make sbt print some error logs while loading the project: sbt will attempt to download some dependencies from this repo but cannot find the credential since it hasn’t loaded the project yet. If you are comfortable to ignore the error log, this method would be fine.</p>
 

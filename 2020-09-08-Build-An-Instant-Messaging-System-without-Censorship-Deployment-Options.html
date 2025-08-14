@@ -4054,7 +4054,7 @@
     
   </header>
 
-  <p><em>This article belongs of a series of articles that talk about how to build an instant messaging system without censorship:</em></p>
+  <p><em>This article belongs to a series of articles that talk about how to build an instant messaging system without censorship:</em></p>
 
 <ol>
   <li><em><a href="/2020-08-23-Build-An-Instant_Messaging-System-without-Censorship-Choose-the-right-technology.html">Matrix: A Self Hosted Instant Messaging Solution with End to End Encryption</a></em></li>
@@ -4062,19 +4062,19 @@
   <li><em><a href="/2020-09-08-Build-An-Instant-Messaging-System-without-Censorship-Deployment-Options.html">Deploy Matrix for Users in China</a></em></li>
 </ol>
 
-<p>In the previous articles, we chose Matrix as our IM service solution. We also discussed how the Internet is censored in China. In this article, we will discuss multiple ways to deploy Matrix service. The goals are providing the best user experience while avoiding the censorship. Specifically, we want to meet these requirements:</p>
+<p>In the previous articles, we chose Matrix as our IM service solution. We also discussed how the Internet is censored in China. In this article, we will discuss multiple ways to deploy Matrix service. The goal is to provide the best user experience while avoiding censorship. Specifically, we want to meet these requirements:</p>
 
 <ol>
-  <li>Avoid the government censorship.</li>
+  <li>Avoid government censorship.</li>
   <li>Make the latency between users and server as low as possible.</li>
   <li>Make it easy for end users to setup.</li>
 </ol>
 
-<p>We will explore the deployment options. And compare them at the end.</p>
+<p>We will explore the deployment options and compare them at the end.</p>
 
 <h2 id="1-deploy-a-single-im-server-outside-china">1. Deploy A Single IM Server Outside China</h2>
 
-<p>The easiest solution would be deploying a single Matrix server. There are a lot of requirements to deploy a server in China, so it would be better to deploy a server outside China:</p>
+<p>The easiest solution would be to deploy a single Matrix server. There are a lot of requirements to deploy a server in China, so it would be better to deploy a server outside China:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   Users in China
            ^
@@ -4120,11 +4120,11 @@
 
 <h2 id="3-deploy-a-server-in-china-without-dns-resolving">3. Deploy A Server in China without DNS Resolving</h2>
 
-<p>The main reason we need a license to deploy a server in China is because the IDC and cloud providers may block the server if a domain without license is resolving to it. So one way to avoid the blocking is, don’t bind a domain name to the server. But we cannot use IP address directly either: we need HTTPS to encrypt the traffic. And the communications between servers also depends on domain names.</p>
+<p>The main reason we need a license to deploy a server in China is because the IDC and cloud providers may block the server if a domain without license is resolving to it. So one way to avoid the blocking is to not bind a domain name to the server. But we cannot use an IP address directly either: we need HTTPS to encrypt the traffic. And the communications between servers also depend on domain names.</p>
 
-<p>So we need to find a way to resolve domain name without public DNS server. Though it’s hard, it’s not impossible. For example, you can change the DNS record on the computer by modifying the hosts file. Or you can create a DNS server on the home router. For the mobile phones, it’s much harder. But I believe there are apps can do that.</p>
+<p>So we need to find a way to resolve the domain name without using a public DNS server. Though it’s hard, it’s not impossible. For example, you can change the DNS record on the computer by modifying the hosts file. Or you can create a DNS server on the home router. For mobile phones, it’s much harder, but I believe there are apps that can do that.</p>
 
-<p>So this solution is don’t register the domain name in public DNS servers. Instead, add the records on end user devices:</p>
+<p>So this solution is to not register the domain name in public DNS servers. Instead, add the records on end user devices:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   Users in China
    (Add DNS record)
@@ -4146,7 +4146,7 @@
 
 <h2 id="4-deploy-another-server-in-china-with-personal-internet">4. Deploy Another Server in China with Personal Internet</h2>
 
-<p>As we mentioned in the last article, while cloud providers and IDC block servers, ISP doesn’t block high number ports. So if we can deploy another server at home and point the domain name to this server, the end user doesn’t need to setup custom DNS records. We will still keep the other server in cloud/IDC for the stable connection between servers.</p>
+<p>As we mentioned in the last article, while cloud providers and IDCs block servers, ISPs don’t block high-numbered ports. So if we can deploy another server at home and point the domain name to this server, the end user doesn’t need to set up custom DNS records. We will still keep the other server in the cloud/IDC for the stable connection between servers.</p>
 
 <p>For the two servers in China, only one of them needs to host the IM service. The other one can just be a proxy.</p>
 
@@ -4174,11 +4174,11 @@
 
 </code></pre></div></div>
 
-<p>There are also disadvantages for this solution: other than we need another server, the home Internet may not be able to provide the best speed for users in China.</p>
+<p>There are also disadvantages to this solution: other than needing another server, the home Internet may not be able to provide the best speed for users in China.</p>
 
 <h2 id="conclusion">Conclusion</h2>
 
-<p>In the table below, we can compare them by the censorship circumvention, service speed and end user setup easiness:</p>
+<p>In the table below, we can compare them by censorship circumvention, service speed, and end user setup easiness:</p>
 
 <table>
   <thead>
