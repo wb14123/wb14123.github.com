@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> 哈利·波特与混血王子 |  Bin Wang - My Personal Blog</title>
+    <title> My Workflow to Review Articles with LLMs |  Bin Wang - My Personal Blog</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
     <link rel="stylesheet" href="/static/css/asciinema-player.css" type="text/css" />
 
@@ -996,7 +996,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2025-08-15-My-Workflow-to-Review-Articles-with-LLMs.html">My Workflow to Review Articles with LLMs <span class="publish-year">(2025)</span></a>
+        <div class="index-selected">My Workflow to Review Articles with LLMs <span class="publish-year">(2025)</span></div>
         
       
 
@@ -4083,30 +4083,193 @@
 
 
     <section id="page_content">
-        <div class="book_card">
-  <img class="book_cover" src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1387747745i/70373.jpg"/>
-  <div class="book_info">
-    <a class="book_title" href="https://www.goodreads.com/book/show/70373._" target="_blank">哈利·波特与混血王子</a>
-    <div class="book_desc">
-        By
-        
-        J.K. Rowling,&nbsp;
-        
-        J.K. 罗琳,&nbsp;
-        
-        马爱农,&nbsp;
-        
-      published in 2005
-    </div>
-    <div class="book_date">Finished reading on 01 Jan 2006</div>
-  </div>
+        <div id="content_table">
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#correctness-review">Correctness Review</a></li><li><a href="#phrasing-review">Phrasing Review</a></li><li><a href="#grammar-review">Grammar Review</a></li><li><a href="#diff-tool">Diff Tool</a></li><li><a href="#fix-all-the-typos-in-the-past">Fix All the Typos in the Past</a></li><li><a href="#mental-model">Mental Model</a></li></ol>
 </div>
 
-<div id="article_content">
-  <article id="post">
+<div id="article_content" class="">
+<article id="post">
+  <header>
+    <h1>My Workflow to Review Articles with LLMs</h1>
     
+      <p class="description">Posted on 15 Aug 2025, tagged <code>AI</code><code>Machine Learning</code><code>LLM</code><code>blog</code></p>
+    
+  </header>
 
-  </article>
+  <p>Since LLMs started to get popular, I find one of their strengths is to review things like code and writings. The strength is related to its weakness: it can hallucinate and just make up things but sound confident. However, when it reviews your own writings, you know the subject best, so if the LLMs are making up things, you’ll catch that. After trying Claude Code at work, I found it useful and subscribed to the Pro version for personal use. With its CLI interface, it’s really easy to write scripts to incorporate it into my workflow. In this article, I’ll talk about how I use it to review my blog posts. It’s very straightforward to use LLMs since you just interact with them using natural language, but I think there are some details worth sharing.</p>
+
+<p><em>As a side note, I created a new category “Machine Learning Application” and moved some of my old posts into this category, since I think just using LLMs with prompts wouldn’t count as “Machine Learning.”</em></p>
+
+<h2 id="correctness-review">Correctness Review</h2>
+
+<p>I uses a multi-round review process.</p>
+
+<p>First, check correctness. If there is something technically wrong, a large part of the article will likely need to be reworked. Therefore, it’s a waste of work to focus on minor details before addressing the fundamental issues.</p>
+
+<p>The correctness check covers areas such as mathematics, algorithms, system designs and fact checks. I only want the LLM to tell me what is wrong so I can fix it myself instead of letting it do the fix for me. The prompt I use is on <a href="https://github.com/wb14123/blog/blob/master/review/correctness-review.md">my Github</a>. It may continue to evolve, but I’ll copy what I have for now:</p>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gh"># Guide for Correctness Check</span>
+<span class="p">
+*</span> Check the technical correctness thoroughly. Think about all the scenarios.
+<span class="p">*</span> The technical correctness includes but not limited to these things:
+<span class="p">  *</span> Code example and syntax.
+<span class="p">  *</span> Algorithm descriptions.
+<span class="p">  *</span> Technical concepts and definitions.
+<span class="p">  *</span> System architecture designs and claims.
+<span class="p">  *</span> Mathematical formulas.
+<span class="p">*</span> Check facts in the articles. Search the internet if possible. Use reliable sources like reputable news organizations, official websites of the software mentioned and so on.
+<span class="p">*</span> Check the terminologies used in the articles are correct and used in a correct way.
+<span class="p">*</span> Check if there is confusing, not so clear description in the article.
+<span class="p">*</span> Break down into multiple sections if needed, and discuss them one by one with the user.
+<span class="p">*</span> All the links in the article without host name are paths under the domain <span class="sb">`https://binwang.me`</span>. You can fetch remote web pages if needed.
+<span class="p">*</span> Ignore grammar errors and the checks mentioned in @grammar-review.md.
+<span class="p">*</span> If there are correctness problems, respond with the problems in the chat instead of modifying the article files themselves.
+</code></pre></div></div>
+
+<p>I save the prompt into a file. One nice thing about Claude Code CLI is that you can use <code class="language-plaintext highlighter-rouge">@</code> to refer to local files. So I write a script to invoke it:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+<span class="nb">set</span> <span class="nt">-e</span>
+<span class="nb">set</span> <span class="nt">-x</span>
+
+<span class="nv">file</span><span class="o">=</span><span class="nv">$1</span>
+
+claude <span class="s2">"Review @</span><span class="nv">$file</span><span class="s2"> based on the review guide @correctness-review.md"</span><span class="nb">.</span>
+</code></pre></div></div>
+
+<p>It may seem excessive to create a script for just one line of code. But it saves my time to write the same prompt repeatedly. It’s also easier to swap <code class="language-plaintext highlighter-rouge">claude</code> to some other tool in the future if needed.</p>
+
+<h2 id="phrasing-review">Phrasing Review</h2>
+
+<p>The next stage is for phrasing and sentence flow review. It reviews issues such as awkward phrasing, unnatural sentences. This stage focuses on the text and wording itself instead of the logic or idea. I tried to let it review the structure as well, but its suggestions were so extensive that accepting them would make the article feel like it was written by someone else. I find reviewing the text itself strikes a good balance. Again, in this stage, I only let LLMs give me suggestions instead of editing the article by themselves. The prompt is on <a href="https://github.com/wb14123/blog/blob/master/review/phrasing-review.md">my Github</a> too:</p>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gh"># Guide for Phrasing and Sentence Structure Review</span>
+<span class="p">
+*</span> Review the article for awkward phrasing, unnatural sentence flow, and syntax that sounds weird or unsmooth to native speakers.
+<span class="p">*</span> Focus on sentence structure, word choice, and natural language flow rather than grammar rules (checked in @grammar-review.md) or technical correctness (checked in @correctness-review.md).
+<span class="p">*</span> Make sure phrases and expressions sound natural and idiomatic in English.
+<span class="p">*</span> DO NOT change the file.
+<span class="p">*</span> Discuss every found issue with the user:
+<span class="p">  *</span> Describe the issue with reference to the text.
+<span class="p">  *</span> Give suggestions for the fix.
+<span class="p">  *</span> Discuss 3-5 issues at a time if there are too many issues.
+</code></pre></div></div>
+
+<p>And the prompt is wrapped in a similar script as before.</p>
+
+<p>Sometimes I find it still tries to find lots of grammar errors even when I tell it not to do so. If that happens, maybe try to do the next stage of grammar review and then come back.</p>
+
+<h2 id="grammar-review">Grammar Review</h2>
+
+<p>Finally, I let LLMs review the grammar, spelling and other typos. In this stage, I trust the LLM enough to make it actually fix the issues. But instead of editing it in place, I let it create a new file. In theory, I could <code class="language-plaintext highlighter-rouge">git add</code> or <code class="language-plaintext highlighter-rouge">git commit</code> the files so that I can review the diff but sometimes it can be forgotten, so creating a new file is the safest way.</p>
+
+<p>The prompt is also on <a href="https://github.com/wb14123/blog/blob/master/review/grammar-review.md">my Github</a> but I find something like “Fix the typos in [article]” is good enough most of the time.</p>
+
+<p>Again, a similar script is created to wrap the prompt. The difference is I use vimdiff to open the diff at the end of the script.</p>
+
+<h2 id="diff-tool">Diff Tool</h2>
+
+<p>I use diff to review the changes LLM made for the grammar review. But there are some changes needed to make life easier.</p>
+
+<p>The first thing is to make it highlight the diff at word level. There is a plugin <a href="https://github.com/rickhowe/diffchar.vim">diffchar</a> to do that.</p>
+
+<p>Then I changed some default colors for vim highlight:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>highlight DiffAdd    ctermbg=22  ctermfg=white guibg=#003300 guifg=white
+highlight DiffChange ctermbg=16 ctermfg=white guibg=#001c65 guifg=white
+highlight DiffDelete ctermbg=52  ctermfg=red   guibg=#330000 guifg=#ff6666
+highlight DiffText   ctermbg=53  ctermfg=white guibg=#330033 guifg=white
+</code></pre></div></div>
+
+<p>Also set up the line wrap and read only mode (for <code class="language-plaintext highlighter-rouge">git difftool</code>):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>autocmd VimEnter * if &amp;diff
+autocmd VimEnter *   windo set wrap
+autocmd VimEnter *   windo set noreadonly
+autocmd VimEnter * endif
+</code></pre></div></div>
+
+<h2 id="fix-all-the-typos-in-the-past">Fix All the Typos in the Past</h2>
+
+<p>Since I find Claude does a good job fixing the grammars in the articles, I wrote a script to fix all the issues in my past blogs:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+<span class="nb">set</span> <span class="nt">-e</span>
+
+<span class="nv">START_FILE</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
+
+<span class="k">for </span>f <span class="k">in</span> <span class="sb">`</span><span class="nb">ls</span> <span class="nt">-r</span> jekyll/_posts<span class="sb">`</span> <span class="p">;</span> <span class="k">do
+	if</span> <span class="o">[</span> <span class="nt">-n</span> <span class="s2">"</span><span class="nv">$START_FILE</span><span class="s2">"</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="o">[[</span> <span class="s2">"</span><span class="nv">$f</span><span class="s2">"</span> <span class="o">&gt;</span> <span class="s2">"</span><span class="nv">$START_FILE</span><span class="s2">"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+		</span><span class="nb">echo</span> <span class="s2">"Skip </span><span class="nv">$f</span><span class="s2"> since it's not after </span><span class="nv">$START_FILE</span><span class="s2">"</span>
+		<span class="k">continue
+	fi
+
+	</span><span class="nv">p</span><span class="o">=</span><span class="s2">"jekyll/_posts/</span><span class="nv">$f</span><span class="s2">"</span>
+	<span class="nb">echo</span> <span class="s2">"Fixing </span><span class="nv">$f</span><span class="s2"> ..."</span>
+	claude <span class="nt">-p</span> <span class="s2">"Fix typos in @</span><span class="nv">$p</span><span class="s2"> . Never change the file name, links in the article. Skip and exit if it's not an English article."</span>
+<span class="k">done</span>
+</code></pre></div></div>
+
+<p>You may notice that I don’t like Claude Code to figure out all the typos in one session, but create separate sessions for each article. Since Claude will take the shortcut and not actually do a good job if I ask it to fix all at once. Be aware fixing them one by one will use lots of tokens. But I just leave it running overnight for a few days so the quota will be recovered during the day time.</p>
+
+<p>If there are many articles, the quota will be all consumed without fixing all of them yet. So I take a parameter for the script to let it know the current progress.</p>
+
+<p>This is a one-liner to review the changed files with <code class="language-plaintext highlighter-rouge">git difftool</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">f</span><span class="o">=</span><span class="sb">`</span>git diff <span class="nt">--name-only</span> | <span class="nb">tail</span> <span class="nt">-1</span><span class="sb">`</span> <span class="p">;</span> git difftool <span class="nv">$f</span> <span class="o">&amp;&amp;</span> git add <span class="nv">$f</span>
+</code></pre></div></div>
+
+<p>It will open a file that’s not staged yet with the configured git difftool (vimdiff in my case). Once you review it and close the difftool, it will use <code class="language-plaintext highlighter-rouge">git add</code> to stage it so the next file opened will be a different one.</p>
+
+<p>I think it really did a good job fixing my articles. <a href="https://github.com/wb14123/blog/commit/05af92e6efb310f5600d6704bb8be87ea9d0d893">Here</a> is one example of the running batch.</p>
+
+<h2 id="mental-model">Mental Model</h2>
+
+<p>I want to emphasize the mental model I use when having LLMs review my articles: I treat it as the last line of defense. I only make the LLM review the article once I think it’s good myself and want an additional eye on it. And only make it fix grammars by itself. And even for the grammars, I’ll review the result so that I can learn from the errors.</p>
+
+</article>
+
+<footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2025-08-13-Why-Consensus-Shortcuts-Fail.html">Prev: Why Consensus Shortcuts Fail in Distributed Systems</a></td>
+    
+    
+  </tr></table>
+</footer>
+
+<!--
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+-->
+
+
+
+<!-- MathJax -->
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
 </div>
 
     </section>

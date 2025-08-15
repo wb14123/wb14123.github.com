@@ -1,4 +1,135 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2025-08-15T09:59:47-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">What Happens If Raft Algorithm Is Not Fully Implemented</title><link href="https://www.binwang.me/2025-08-13-Why-Consensus-Shortcuts-Fail.html" rel="alternate" type="text/html" title="What Happens If Raft Algorithm Is Not Fully Implemented" /><published>2025-08-13T00:00:00-04:00</published><updated>2025-08-13T00:00:00-04:00</updated><id>https://www.binwang.me/Why-Consensus-Shortcuts-Fail</id><content type="html" xml:base="https://www.binwang.me/2025-08-13-Why-Consensus-Shortcuts-Fail.html"><![CDATA[<p>There are some battle-tested consensus algorithms like Paxos and Raft to ensure a consistent view will be reached in a distributed system, even with scenarios like node failure, network partition, clock skew, and so on. There are existing systems like etcd and Zookeeper that implement these algorithms so you can use them as external systems. But sometimes, you may need to embed the algorithm into your own system instead of relying on a third-party one (it may be more common than you think—more on that in my next blog). Sometimes, because of the limitations of existing systems or other reasons, it may be hard to fully implement the algorithm, so people may tend to cut some corners and think it will be okay. While Raft and Paxos are not the only consensus algorithms, creating new ones is error-prone. This article explores how partial implementations fail, even when leveraging existing Raft systems incorrectly. We will use Raft as an example instead of other algorithms like Paxos, since it’s easier to understand and has better descriptions of real-world systems.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2025-08-15T12:56:56-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">My Workflow to Review Articles with LLMs</title><link href="https://www.binwang.me/2025-08-15-My-Workflow-to-Review-Articles-with-LLMs.html" rel="alternate" type="text/html" title="My Workflow to Review Articles with LLMs" /><published>2025-08-15T00:00:00-04:00</published><updated>2025-08-15T00:00:00-04:00</updated><id>https://www.binwang.me/My-Workflow-to-Review-Articles-with-LLMs</id><content type="html" xml:base="https://www.binwang.me/2025-08-15-My-Workflow-to-Review-Articles-with-LLMs.html"><![CDATA[<p>Since LLMs started to get popular, I find one of their strengths is to review things like code and writings. The strength is related to its weakness: it can hallucinate and just make up things but sound confident. However, when it reviews your own writings, you know the subject best, so if the LLMs are making up things, you’ll catch that. After trying Claude Code at work, I found it useful and subscribed to the Pro version for personal use. With its CLI interface, it’s really easy to write scripts to incorporate it into my workflow. In this article, I’ll talk about how I use it to review my blog posts. It’s very straightforward to use LLMs since you just interact with them using natural language, but I think there are some details worth sharing.</p>
+
+<p><em>As a side note, I created a new category “Machine Learning Application” and moved some of my old posts into this category, since I think just using LLMs with prompts wouldn’t count as “Machine Learning.”</em></p>
+
+<h2 id="correctness-review">Correctness Review</h2>
+
+<p>I uses a multi-round review process.</p>
+
+<p>First, check correctness. If there is something technically wrong, a large part of the article will likely need to be reworked. Therefore, it’s a waste of work to focus on minor details before addressing the fundamental issues.</p>
+
+<p>The correctness check covers areas such as mathematics, algorithms, system designs and fact checks. I only want the LLM to tell me what is wrong so I can fix it myself instead of letting it do the fix for me. The prompt I use is on <a href="https://github.com/wb14123/blog/blob/master/review/correctness-review.md">my Github</a>. It may continue to evolve, but I’ll copy what I have for now:</p>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gh"># Guide for Correctness Check</span>
+<span class="p">
+*</span> Check the technical correctness thoroughly. Think about all the scenarios.
+<span class="p">*</span> The technical correctness includes but not limited to these things:
+<span class="p">  *</span> Code example and syntax.
+<span class="p">  *</span> Algorithm descriptions.
+<span class="p">  *</span> Technical concepts and definitions.
+<span class="p">  *</span> System architecture designs and claims.
+<span class="p">  *</span> Mathematical formulas.
+<span class="p">*</span> Check facts in the articles. Search the internet if possible. Use reliable sources like reputable news organizations, official websites of the software mentioned and so on.
+<span class="p">*</span> Check the terminologies used in the articles are correct and used in a correct way.
+<span class="p">*</span> Check if there is confusing, not so clear description in the article.
+<span class="p">*</span> Break down into multiple sections if needed, and discuss them one by one with the user.
+<span class="p">*</span> All the links in the article without host name are paths under the domain <span class="sb">`https://binwang.me`</span>. You can fetch remote web pages if needed.
+<span class="p">*</span> Ignore grammar errors and the checks mentioned in @grammar-review.md.
+<span class="p">*</span> If there are correctness problems, respond with the problems in the chat instead of modifying the article files themselves.
+</code></pre></div></div>
+
+<p>I save the prompt into a file. One nice thing about Claude Code CLI is that you can use <code class="language-plaintext highlighter-rouge">@</code> to refer to local files. So I write a script to invoke it:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+<span class="nb">set</span> <span class="nt">-e</span>
+<span class="nb">set</span> <span class="nt">-x</span>
+
+<span class="nv">file</span><span class="o">=</span><span class="nv">$1</span>
+
+claude <span class="s2">"Review @</span><span class="nv">$file</span><span class="s2"> based on the review guide @correctness-review.md"</span><span class="nb">.</span>
+</code></pre></div></div>
+
+<p>It may seem excessive to create a script for just one line of code. But it saves my time to write the same prompt repeatedly. It’s also easier to swap <code class="language-plaintext highlighter-rouge">claude</code> to some other tool in the future if needed.</p>
+
+<h2 id="phrasing-review">Phrasing Review</h2>
+
+<p>The next stage is for phrasing and sentence flow review. It reviews issues such as awkward phrasing, unnatural sentences. This stage focuses on the text and wording itself instead of the logic or idea. I tried to let it review the structure as well, but its suggestions were so extensive that accepting them would make the article feel like it was written by someone else. I find reviewing the text itself strikes a good balance. Again, in this stage, I only let LLMs give me suggestions instead of editing the article by themselves. The prompt is on <a href="https://github.com/wb14123/blog/blob/master/review/phrasing-review.md">my Github</a> too:</p>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gh"># Guide for Phrasing and Sentence Structure Review</span>
+<span class="p">
+*</span> Review the article for awkward phrasing, unnatural sentence flow, and syntax that sounds weird or unsmooth to native speakers.
+<span class="p">*</span> Focus on sentence structure, word choice, and natural language flow rather than grammar rules (checked in @grammar-review.md) or technical correctness (checked in @correctness-review.md).
+<span class="p">*</span> Make sure phrases and expressions sound natural and idiomatic in English.
+<span class="p">*</span> DO NOT change the file.
+<span class="p">*</span> Discuss every found issue with the user:
+<span class="p">  *</span> Describe the issue with reference to the text.
+<span class="p">  *</span> Give suggestions for the fix.
+<span class="p">  *</span> Discuss 3-5 issues at a time if there are too many issues.
+</code></pre></div></div>
+
+<p>And the prompt is wrapped in a similar script as before.</p>
+
+<p>Sometimes I find it still tries to find lots of grammar errors even when I tell it not to do so. If that happens, maybe try to do the next stage of grammar review and then come back.</p>
+
+<h2 id="grammar-review">Grammar Review</h2>
+
+<p>Finally, I let LLMs review the grammar, spelling and other typos. In this stage, I trust the LLM enough to make it actually fix the issues. But instead of editing it in place, I let it create a new file. In theory, I could <code class="language-plaintext highlighter-rouge">git add</code> or <code class="language-plaintext highlighter-rouge">git commit</code> the files so that I can review the diff but sometimes it can be forgotten, so creating a new file is the safest way.</p>
+
+<p>The prompt is also on <a href="https://github.com/wb14123/blog/blob/master/review/grammar-review.md">my Github</a> but I find something like “Fix the typos in [article]” is good enough most of the time.</p>
+
+<p>Again, a similar script is created to wrap the prompt. The difference is I use vimdiff to open the diff at the end of the script.</p>
+
+<h2 id="diff-tool">Diff Tool</h2>
+
+<p>I use diff to review the changes LLM made for the grammar review. But there are some changes needed to make life easier.</p>
+
+<p>The first thing is to make it highlight the diff at word level. There is a plugin <a href="https://github.com/rickhowe/diffchar.vim">diffchar</a> to do that.</p>
+
+<p>Then I changed some default colors for vim highlight:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>highlight DiffAdd    ctermbg=22  ctermfg=white guibg=#003300 guifg=white
+highlight DiffChange ctermbg=16 ctermfg=white guibg=#001c65 guifg=white
+highlight DiffDelete ctermbg=52  ctermfg=red   guibg=#330000 guifg=#ff6666
+highlight DiffText   ctermbg=53  ctermfg=white guibg=#330033 guifg=white
+</code></pre></div></div>
+
+<p>Also set up the line wrap and read only mode (for <code class="language-plaintext highlighter-rouge">git difftool</code>):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>autocmd VimEnter * if &amp;diff
+autocmd VimEnter *   windo set wrap
+autocmd VimEnter *   windo set noreadonly
+autocmd VimEnter * endif
+</code></pre></div></div>
+
+<h2 id="fix-all-the-typos-in-the-past">Fix All the Typos in the Past</h2>
+
+<p>Since I find Claude does a good job fixing the grammars in the articles, I wrote a script to fix all the issues in my past blogs:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+<span class="nb">set</span> <span class="nt">-e</span>
+
+<span class="nv">START_FILE</span><span class="o">=</span><span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
+
+<span class="k">for </span>f <span class="k">in</span> <span class="sb">`</span><span class="nb">ls</span> <span class="nt">-r</span> jekyll/_posts<span class="sb">`</span> <span class="p">;</span> <span class="k">do
+	if</span> <span class="o">[</span> <span class="nt">-n</span> <span class="s2">"</span><span class="nv">$START_FILE</span><span class="s2">"</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="o">[[</span> <span class="s2">"</span><span class="nv">$f</span><span class="s2">"</span> <span class="o">&gt;</span> <span class="s2">"</span><span class="nv">$START_FILE</span><span class="s2">"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+		</span><span class="nb">echo</span> <span class="s2">"Skip </span><span class="nv">$f</span><span class="s2"> since it's not after </span><span class="nv">$START_FILE</span><span class="s2">"</span>
+		<span class="k">continue
+	fi
+
+	</span><span class="nv">p</span><span class="o">=</span><span class="s2">"jekyll/_posts/</span><span class="nv">$f</span><span class="s2">"</span>
+	<span class="nb">echo</span> <span class="s2">"Fixing </span><span class="nv">$f</span><span class="s2"> ..."</span>
+	claude <span class="nt">-p</span> <span class="s2">"Fix typos in @</span><span class="nv">$p</span><span class="s2"> . Never change the file name, links in the article. Skip and exit if it's not an English article."</span>
+<span class="k">done</span>
+</code></pre></div></div>
+
+<p>You may notice that I don’t like Claude Code to figure out all the typos in one session, but create separate sessions for each article. Since Claude will take the shortcut and not actually do a good job if I ask it to fix all at once. Be aware fixing them one by one will use lots of tokens. But I just leave it running overnight for a few days so the quota will be recovered during the day time.</p>
+
+<p>If there are many articles, the quota will be all consumed without fixing all of them yet. So I take a parameter for the script to let it know the current progress.</p>
+
+<p>This is a one-liner to review the changed files with <code class="language-plaintext highlighter-rouge">git difftool</code>:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">f</span><span class="o">=</span><span class="sb">`</span>git diff <span class="nt">--name-only</span> | <span class="nb">tail</span> <span class="nt">-1</span><span class="sb">`</span> <span class="p">;</span> git difftool <span class="nv">$f</span> <span class="o">&amp;&amp;</span> git add <span class="nv">$f</span>
+</code></pre></div></div>
+
+<p>It will open a file that’s not staged yet with the configured git difftool (vimdiff in my case). Once you review it and close the difftool, it will use <code class="language-plaintext highlighter-rouge">git add</code> to stage it so the next file opened will be a different one.</p>
+
+<p>I think it really did a good job fixing my articles. <a href="https://github.com/wb14123/blog/commit/05af92e6efb310f5600d6704bb8be87ea9d0d893">Here</a> is one example of the running batch.</p>
+
+<h2 id="mental-model">Mental Model</h2>
+
+<p>I want to emphasize the mental model I use when having LLMs review my articles: I treat it as the last line of defense. I only make the LLM review the article once I think it’s good myself and want an additional eye on it. And only make it fix grammars by itself. And even for the grammars, I’ll review the result so that I can learn from the errors.</p>]]></content><author><name></name></author><category term="AI" /><category term="Machine Learning" /><category term="LLM" /><category term="blog" /><summary type="html"><![CDATA[Since LLMs started to get popular, I find one of their strengths is to review things like code and writings. The strength is related to its weakness: it can hallucinate and just make up things but sound confident. However, when it reviews your own writings, you know the subject best, so if the LLMs are making up things, you’ll catch that. After trying Claude Code at work, I found it useful and subscribed to the Pro version for personal use. With its CLI interface, it’s really easy to write scripts to incorporate it into my workflow. In this article, I’ll talk about how I use it to review my blog posts. It’s very straightforward to use LLMs since you just interact with them using natural language, but I think there are some details worth sharing.]]></summary></entry><entry><title type="html">Why Consensus Shortcuts Fail in Distributed Systems</title><link href="https://www.binwang.me/2025-08-13-Why-Consensus-Shortcuts-Fail.html" rel="alternate" type="text/html" title="Why Consensus Shortcuts Fail in Distributed Systems" /><published>2025-08-13T00:00:00-04:00</published><updated>2025-08-13T00:00:00-04:00</updated><id>https://www.binwang.me/Why-Consensus-Shortcuts-Fail</id><content type="html" xml:base="https://www.binwang.me/2025-08-13-Why-Consensus-Shortcuts-Fail.html"><![CDATA[<p>There are some battle-tested consensus algorithms like Paxos and Raft to ensure a consistent view will be reached in a distributed system, even with scenarios like node failure, network partition, clock skew, and so on. There are existing systems like etcd and Zookeeper that implement these algorithms so you can use them as external systems. But sometimes, you may need to embed the algorithm into your own system instead of relying on a third-party one (it may be more common than you think—more on that in my next blog). Sometimes, because of the limitations of existing systems or other reasons, it may be hard to fully implement the algorithm, so people may tend to cut some corners and think it will be okay. While Raft and Paxos are not the only consensus algorithms, creating new ones is error-prone. This article explores how partial implementations fail, even when leveraging existing Raft systems incorrectly. We will use Raft as an example instead of other algorithms like Paxos, since it’s easier to understand and has better descriptions of real-world systems.</p>
 
 <h2 id="goal-of-the-system">Goal of the System</h2>
 
@@ -2858,62 +2989,4 @@ sys	0m8.207s
 
 <p>This approach works so well especially during this migration. For example, I abstracted all the storage layer for my services, so that when I migrated from GlusterFS to CephFS, I just need to change the storage class to define the CephFS volume, and the code for services don’t need to change much.</p>
 
-<p>Hope you enjoy my experience of setting up a HA cluster. Happy hacking and have fun with your own cluster!</p>]]></content><author><name></name></author><category term="Kubernetes" /><category term="CephFS" /><category term="MetalLB" /><category term="k3s" /><category term="Infrastructure" /><category term="devops" /><summary type="html"><![CDATA[In a previous blog Infrastructure Setup for High Availability, I talked about how I set up a cluster infrastructure for high availability applications. I have made a few changes since then. This blog is to talk about them in detail.]]></summary></entry><entry><title type="html">Update on RSS Brain to Find Related Articles with Machine Learning</title><link href="https://www.binwang.me/2023-11-14-Update-On-RSS-Brain-to-Find-Related-Articles-with-Machine-Learning.html" rel="alternate" type="text/html" title="Update on RSS Brain to Find Related Articles with Machine Learning" /><published>2023-11-14T00:00:00-05:00</published><updated>2023-11-14T00:00:00-05:00</updated><id>https://www.binwang.me/Update-On-RSS-Brain-to-Find-Related-Articles-with-Machine-Learning</id><content type="html" xml:base="https://www.binwang.me/2023-11-14-Update-On-RSS-Brain-to-Find-Related-Articles-with-Machine-Learning.html"><![CDATA[<p>In the previous blog about RSS, <a href="/2022-12-03-How-RSS-Brain-Shows-Related-Articles.html">How RSS Brain Shows Related Articles</a>, I talked about how RSS Brain finds the related articles. I’ve updated the algorithm recently. This blog is about the details about the update. The basic idea is to replace tf-idf algorithm with text embeddings to represent the articles as vectors, and use ElasticSearch to store and query those vectors.</p>
-
-<h2 id="the-disadvantages-of-previous-algorithm">The Disadvantages of Previous Algorithm</h2>
-
-<p>First let’s do a quick revisit on the algorithm before the update: it’s using tf-idf algorithm. Which is basically an algorithm to represent each document as a vector by using the words’ frequency in it. It’s an algorithm that is easy to understand, and works well enough in practice to power lots of searching engines for a long time. However, it has a few shortcomings:</p>
-
-<p>First, it doesn’t understand the meaning of the word. A word can mean different things based on context, order, combinations and so on. Different words can also have the same meaning. Word frequency alone doesn’t catch that.</p>
-
-<p>Second, “word” needs to be defined. Which is a relatively easy task for languages like English, since it has a built-in word separator character (space). However, for languages like Chinese, there is no obvious way to separate the words. The performance of tf-idf algorithm largely depends on the performance of word separating algorithm, which itself is much more complex than tf-idf and often involves machine learning as well. Even for languages like English, in order to minimize the first disadvantage above, the words are usually broken down so that some similar words can be matched.</p>
-
-<p>Last, which is an extension of the first disadvantage: it’s hard to do multi language matches. Word frequency alone doesn’t know that different words in different languages can mean the same thing. Of course you can translate the document to other languages and index the translated documents, but it doesn’t scale well when you need to support more and more languages. And translation algorithms are usually much more complex than tf-idf, and mostly use machine learning too.</p>
-
-<h2 id="word-and-document-embeddings">Word and Document Embeddings</h2>
-
-<p>With the advancement of machine learning, a new method to represent words as vectors has been developed in the paper <a href="https://arxiv.org/abs/1301.3781">Efficient Estimation of Word Representations in Vector Space</a>. The vector is called word embedding. Then based on the idea, <a href="https://arxiv.org/abs/1405.4053">Distributed Representations of Sentences and Documents</a> explores representing paragraphs as vectors. Without going into the details, the basic idea is to get a layer from a neural network for an NLP task.</p>
-
-<p>For example, if we have a neural network to predict the nth word given previous words, then we may have a neural network like this:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>word[1]   --&gt; vector[1]
-word[2]   --&gt; vector[2]    --&gt; layer2 --&gt; ... -&gt; classifier -&gt; output
-...
-word[n-1] --&gt; vector[n-1]
-</code></pre></div></div>
-
-<p>Words are mapped to vectors at the first layer, with something like</p>
-
-\[v = w * W + b\]
-
-<p>Where \(v\) is the vector, \(w\) is the one-hot encoded word. And matrix \(W\) and \(b\) are the trained parameters. There are many other parameters in the later layers of the neural network but we don’t care. We only take \(W\) and \(b\) so that we can compute the vector for any word. With this method, the represented vectors can measure similarities between words by computing similarity of the vectors. Also surprisingly, quoted from the paper <a href="https://arxiv.org/abs/1301.3781">Efficient Estimation of Word Representations in Vector Space</a>: “To find a word that is similar to small in the same sense as biggest is similar to big, we can simply compute vector \(X = vector(biggest) − vector(big) + vector(small)\).” What a beautiful result!</p>
-
-<p>I was aware of this research not long after it came out. I believe some commercial search engines started to use it since then. But the ecosystem like models, tools, databases really picked up since GPT3 came out. So recently, I decided to use it in RSS Brain because how easy to do it nowadays.</p>
-
-<h2 id="select-a-model-to-use">Select a Model to Use</h2>
-
-<p>The first step is to select a model to use. I think OpenAI may have the best model that is available to public. You cannot access the real model but there are APIs you can call to use the model. But I don’t like it for 2 reasons: First, I don’t like OpenAI as a company: it presents itself as a non-profit organization first with the goal to make AI accessible to everyone, then stopped publishing models or even the algorithm details. Second, I don’t want vendor lock-in.</p>
-
-<p>There is also Llama. But it’s not really a multilingual model. I see some attempts to train it on some other languages, but the results are not that good in my experience. The license of the model is not commercial friendly as well. And there is no easy to use API to get the embeddings.</p>
-
-<p>At the end I found <a href="https://www.sbert.net/index.html">SentenceTransformers</a>. There are lots of <a href="https://www.sbert.net/docs/pretrained_models.html">pretrained models</a> in the project. In the end I selected the model <code class="language-plaintext highlighter-rouge">paraphrase-multilingual-mpnet-base-v2</code> since it’s a multilingual model. But it’s called “sentence” transformers for a reason: there is a size limit on the length of document that you can feed in to the models. I ended up to just get the embeddings for the article title. I think it’s good enough for my use case.</p>
-
-<h2 id="implementation-details-for-model-server">Implementation Details for Model Server</h2>
-
-<p>The library SentenceTransformer is very easy to use. However it’s implemented in Python so it needs a way to communicate with RSS Brain server, which is written in Scala. Since this is a computation heavy task, the first thought is to have a buffer queue in between so that the Python program can process the articles in a speed it can handle. Kafka is a good choice for external task queue but I don’t think it’s worth the complexity to import another component into the system. So I created buffer queues at both ends to avoid creating too many requests while maintaining some parallelism. Here is what the whole architecture looks like:</p>
-
-<p><img src="/static/images/2023-11-14-Update-On-RSS-Brain-to-Find-Related-Articles-with-Machine-Learning/article-embedding-arch.png" alt="embedding-arch" /></p>
-
-<p>The green parts in the diagram mean the workers in them can work concurrently. On the Scala side, it follows the pattern I experimented in <a href="/2023-08-27-Compare-Task-Processing-Approaches-in-Scala.html">Compare Task Processing Approaches in Scala</a>. On the Python side, it’s more tricky since Python’s async handling is far worse than Scala’s plain old Future, not to mention effect systems like Cats Effect. I may write another blog in the future about it.</p>
-
-<p>The reason I go into great detail about this relatively simple problem is that it represents a category of problems: problems that need Python to do some async work because of the library supports. For example, in the future, Python server may have more features like fetching Youtube transcriptions. The architecture to integrate it into RSS Brain would be the same.</p>
-
-<h2 id="database-to-store-and-query-embeddings">Database to Store and Query Embeddings</h2>
-
-<p>There are a few vector databases that can store vectors and query nearest vectors if given one. ElasticSearch added vector fields support at 7.0 and approximate nearest neighbor search (ANN) at 8.0. Since RSS Brain is already using ElasticSearch heavily for searching, I can just use it without adding another database to the dependencies. It also supports machine learning models so that you don’t need to insert the embedding vectors from the outside world, but I find it’s not as flexible.</p>
-
-<p>Once the vectors are inserted into ElasticSearch, it’s just an API call to get the most similar documents. The details of vector insert and query are in the <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/knn-search.html">ElasticSearch KNN search document</a>. One tricky part is that even though ElasticSearch supports <a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/knn-search.html#_combine_approximate_knn_with_other_features">combining ANN search with other features like term searches (tf-idf algorithm)</a> by using a boost factor, it doesn’t work well unless you are willing to tune it. That’s because the embedding vector and term vector mean different things, and the similarity score is not really comparable. So I ended up enabling vector search only for finding related articles, instead of combining with term searches.</p>
-
-<h2 id="result">Result</h2>
-
-<p>It’s actually hard to have some metrics for the performance of finding related articles. I don’t believe metrics like click rate, since it doesn’t necessarily show the articles are related. I think the only way for me is to review the results manually and compute the score based on it. But I don’t think it has much value since supporting multiple languages alone would make it much better than the previous algorithm. But if you are using RSS Brain, you can see the results yourself and let me know what you think about the new algorithm!</p>]]></content><author><name></name></author><category term="RSS Brain" /><category term="Machine Learning" /><category term="Neural Network" /><category term="Embeddings" /><category term="Python" /><summary type="html"><![CDATA[In the previous blog about RSS, How RSS Brain Shows Related Articles, I talked about how RSS Brain finds the related articles. I’ve updated the algorithm recently. This blog is about the details about the update. The basic idea is to replace tf-idf algorithm with text embeddings to represent the articles as vectors, and use ElasticSearch to store and query those vectors.]]></summary></entry></feed>
+<p>Hope you enjoy my experience of setting up a HA cluster. Happy hacking and have fun with your own cluster!</p>]]></content><author><name></name></author><category term="Kubernetes" /><category term="CephFS" /><category term="MetalLB" /><category term="k3s" /><category term="Infrastructure" /><category term="devops" /><summary type="html"><![CDATA[In a previous blog Infrastructure Setup for High Availability, I talked about how I set up a cluster infrastructure for high availability applications. I have made a few changes since then. This blog is to talk about them in detail.]]></summary></entry></feed>
