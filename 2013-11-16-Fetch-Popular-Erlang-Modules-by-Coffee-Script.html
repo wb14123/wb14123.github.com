@@ -2646,7 +2646,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2012-12-17-Beautiful-Math-with-MathJex.html">Beautiful Math with MathJex <span class="publish-year">(2012)</span></a>
+        <a href="/2012-12-17-Beautiful-Math-with-MathJex.html">Beautiful Math with MathJax <span class="publish-year">(2012)</span></a>
         
       
 
@@ -4059,10 +4059,10 @@
 <h2 id="how-it-works">How It Works?</h2>
 
 <ol>
-  <li>Fetch top 1000 stared Erlang repos form Github’s search API.</li>
+  <li>Fetch top 1000 starred Erlang repos from Github’s search API.</li>
   <li>Fetch <code class="language-plaintext highlighter-rouge">rebar.config</code> of the repo from <code class="language-plaintext highlighter-rouge">https://raw.github.com/&lt;repo's full name&gt;</code>.</li>
   <li>Use regex to get the repo’s dependencies.</li>
-  <li>Sort the repos by how many repos are depend on it.</li>
+  <li>Sort the repos by how many repos depend on it.</li>
 </ol>
 
 <h2 id="keep-it-simple-and-stupid">Keep It Simple and Stupid</h2>
@@ -4071,7 +4071,7 @@
 
 <ul>
   <li>The app is written by coffeescript, which is perfect to parse Github’s restful API and JSON.</li>
-  <li>No database is required. Just use some arrays and objects to store informations.</li>
+  <li>No database is required. Just use some arrays and objects to store information.</li>
   <li>It generates static html files with Jade. So it is faster to visit and easier to deploy.</li>
 </ul>
 
@@ -4095,7 +4095,7 @@
 <p>There are some tricks:</p>
 
 <ul>
-  <li>Use environment variables to config secret things such as database password, OAuth client secret and so on.</li>
+  <li>Use environment variables to configure secret things such as database password, OAuth client secret and so on.</li>
   <li>Use Express as the static file server.</li>
   <li>Set timeout to update every day.</li>
   <li>Use redirect to force the user to visit through my custom domain name.</li>

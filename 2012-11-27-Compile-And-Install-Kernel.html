@@ -2646,7 +2646,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2012-12-17-Beautiful-Math-with-MathJex.html">Beautiful Math with MathJex <span class="publish-year">(2012)</span></a>
+        <a href="/2012-12-17-Beautiful-Math-with-MathJex.html">Beautiful Math with MathJax <span class="publish-year">(2012)</span></a>
         
       
 
@@ -4054,34 +4054,34 @@
     
   </header>
 
-  <p>There are already many documents to teach one how to compile and install kernel. Here are just some key notes. Use <code class="language-plaintext highlighter-rouge">make help</code> under source directory for details.</p>
+  <p>There are already many documents to teach one how to compile and install the kernel. Here are just some key notes. Use <code class="language-plaintext highlighter-rouge">make help</code> under the source directory for details.</p>
 
 <h2 id="0-kernel-configure">0. Kernel configure</h2>
 
-<p>It is happy to have a kernel git repo. Using <code class="language-plaintext highlighter-rouge">git tag</code> to see the kernel versions and use <code class="language-plaintext highlighter-rouge">git checkout &lt;tag&gt;</code> to checkout the specified version, such as:</p>
+<p>It is helpful to have a kernel git repo. Use <code class="language-plaintext highlighter-rouge">git tag</code> to see the kernel versions and use <code class="language-plaintext highlighter-rouge">git checkout &lt;tag&gt;</code> to checkout the specified version, such as:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git checkout v3.7-rc6
 </code></pre></div></div>
 
-<p>It is recommended to use the distribution’s kernel configure file as a basic configure when you compile the kernel for the first time. Copy it from <code class="language-plaintext highlighter-rouge">/boot</code> to <code class="language-plaintext highlighter-rouge">&lt;build_dir&gt;/.config</code>. Use this command to modify it:</p>
+<p>It is recommended to use the distribution’s kernel configuration file as a basic configuration when you compile the kernel for the first time. Copy it from <code class="language-plaintext highlighter-rouge">/boot</code> to <code class="language-plaintext highlighter-rouge">&lt;build_dir&gt;/.config</code>. Use this command to modify it:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make O=&lt;build_dir&gt; menuconfig
 </code></pre></div></div>
 
-<p>It will save the new configure and rename the old configure with <code class="language-plaintext highlighter-rouge">.config.old</code>.</p>
+<p>It will save the new configuration and rename the old configuration with <code class="language-plaintext highlighter-rouge">.config.old</code>.</p>
 
 <h2 id="1-kernel-image">1. Kernel image</h2>
 
-<p>Kernel image is the most important part. Use this command to compile kernel in <code class="language-plaintext highlighter-rouge">&lt;build_dir&gt;</code>:</p>
+<p>Kernel image is the most important part. Use this command to compile the kernel in <code class="language-plaintext highlighter-rouge">&lt;build_dir&gt;</code>:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make O=&lt;build_dir&gt; -j4
 </code></pre></div></div>
 
-<p>After that, Copy <code class="language-plaintext highlighter-rouge">vmlinux</code> and <code class="language-plaintext highlighter-rouge">System.map</code> to <code class="language-plaintext highlighter-rouge">/boot</code>. And then configure the boot loader. Or use the command <code class="language-plaintext highlighter-rouge">installkernel</code> if you have it.</p>
+<p>After that, copy <code class="language-plaintext highlighter-rouge">vmlinux</code> and <code class="language-plaintext highlighter-rouge">System.map</code> to <code class="language-plaintext highlighter-rouge">/boot</code>. Then configure the boot loader. Or use the command <code class="language-plaintext highlighter-rouge">installkernel</code> if you have it.</p>
 
 <h2 id="2-kernel-modules">2. Kernel modules</h2>
 
-<p>Some code are compiled to kernel modules. It need to be installed to the system. Use this command to install kernel modules and firmwares:</p>
+<p>Some code is compiled to kernel modules. It needs to be installed to the system. Use this command to install kernel modules and firmwares:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make O=&lt;build_dir&gt; modules_install
 </code></pre></div></div>
@@ -4095,7 +4095,7 @@
 
 <h2 id="3-linux-headers">3. Linux headers</h2>
 
-<p>Linux headers are some header files to invoked by user space programs. Using this command to output it:</p>
+<p>Linux headers are header files invoked by user space programs. Use this command to output them:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make O=&lt;build_dir&gt; INSTALL_HDR_PATH=&lt;headers_dir&gt; headers_install
 </code></pre></div></div>

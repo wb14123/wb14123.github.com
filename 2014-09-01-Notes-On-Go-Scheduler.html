@@ -2646,7 +2646,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2012-12-17-Beautiful-Math-with-MathJex.html">Beautiful Math with MathJex <span class="publish-year">(2012)</span></a>
+        <a href="/2012-12-17-Beautiful-Math-with-MathJex.html">Beautiful Math with MathJax <span class="publish-year">(2012)</span></a>
         
       
 
@@ -4054,7 +4054,7 @@
     
   </header>
 
-  <p>I read the Go source code about scheduler these days. They are under <code class="language-plaintext highlighter-rouge">src/pkg/runtime</code>, mainly in <code class="language-plaintext highlighter-rouge">runtime.h</code>, <code class="language-plaintext highlighter-rouge">proc.c</code> and some Assembly files. The scheduler’s policy is easy to understand, because there are already many articles on this. I’m more interesting in the details. I learned how to switch the current running goroutine, which is a little mystery for me before.</p>
+  <p>I read the Go source code about scheduler these days. They are under <code class="language-plaintext highlighter-rouge">src/pkg/runtime</code>, mainly in <code class="language-plaintext highlighter-rouge">runtime.h</code>, <code class="language-plaintext highlighter-rouge">proc.c</code> and some Assembly files. The scheduler’s policy is easy to understand, because there are already many articles on this. I’m more interested in the details. I learned how to switch the current running goroutine, which is a little mystery for me before.</p>
 
 <h2 id="basic-structures">Basic Structures</h2>
 
@@ -4066,7 +4066,7 @@
   <li><code class="language-plaintext highlighter-rouge">P</code> as a context. Running under threads and control the goroutines.</li>
 </ul>
 
-<p>The number of <code class="language-plaintext highlighter-rouge">P</code> is setted by <code class="language-plaintext highlighter-rouge">GOMAXPROCS</code>.</p>
+<p>The number of <code class="language-plaintext highlighter-rouge">P</code> is set by <code class="language-plaintext highlighter-rouge">GOMAXPROCS</code>.</p>
 
 <p>Each <code class="language-plaintext highlighter-rouge">M</code> has a <code class="language-plaintext highlighter-rouge">G</code> called <code class="language-plaintext highlighter-rouge">g0</code> to do schedule jobs. (<code class="language-plaintext highlighter-rouge">mcall</code> will use <code class="language-plaintext highlighter-rouge">g0</code> to execute functions).</p>
 
@@ -4128,17 +4128,17 @@
 	RET
 </code></pre></div></div>
 
-<p>It init an <code class="language-plaintext highlighter-rouge">M</code>, and a <code class="language-plaintext highlighter-rouge">G</code> as this <code class="language-plaintext highlighter-rouge">M</code>’s <code class="language-plaintext highlighter-rouge">g0</code>.</p>
+<p>It inits an <code class="language-plaintext highlighter-rouge">M</code>, and a <code class="language-plaintext highlighter-rouge">G</code> as this <code class="language-plaintext highlighter-rouge">M</code>’s <code class="language-plaintext highlighter-rouge">g0</code>.</p>
 
-<p><code class="language-plaintext highlighter-rouge">runtime·schedinit</code> init the global scheduler, read <code class="language-plaintext highlighter-rouge">GOMAXPROCS</code> and start the <code class="language-plaintext highlighter-rouge">P</code>s.</p>
+<p><code class="language-plaintext highlighter-rouge">runtime·schedinit</code> inits the global scheduler, reads <code class="language-plaintext highlighter-rouge">GOMAXPROCS</code> and starts the <code class="language-plaintext highlighter-rouge">P</code>s.</p>
 
 <p><code class="language-plaintext highlighter-rouge">runtime.main</code> and <code class="language-plaintext highlighter-rouge">runtime.newproc</code> create and queue the main Goroutine.</p>
 
-<p><code class="language-plaintext highlighter-rouge">runtime.mstart</code> start this <code class="language-plaintext highlighter-rouge">M</code> at last.</p>
+<p><code class="language-plaintext highlighter-rouge">runtime.mstart</code> starts this <code class="language-plaintext highlighter-rouge">M</code> at last.</p>
 
 <p><code class="language-plaintext highlighter-rouge">runtime.mstart</code> will call <code class="language-plaintext highlighter-rouge">schedule</code>, <code class="language-plaintext highlighter-rouge">schedule</code> will find a runnable <code class="language-plaintext highlighter-rouge">G</code> and call <code class="language-plaintext highlighter-rouge">execute</code> on it, <code class="language-plaintext highlighter-rouge">execute</code> will call <code class="language-plaintext highlighter-rouge">runtime·gogo</code> which is defined in the Assembly files, set the program pointer and stack to run a <code class="language-plaintext highlighter-rouge">G</code>. Now the program starts running and will never return. This main goroutine is locked to the main OS thread.</p>
 
-<p>Here is what <code class="language-plaintext highlighter-rouge">runtime.gogo</code> do, for example in <code class="language-plaintext highlighter-rouge">asm_386.s</code>:</p>
+<p>Here is what <code class="language-plaintext highlighter-rouge">runtime.gogo</code> does, for example in <code class="language-plaintext highlighter-rouge">asm_386.s</code>:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// void gogo(Gobuf*)
 // restore state from Gobuf; longjmp
@@ -4160,7 +4160,7 @@ TEXT runtime·gogo(SB), NOSPLIT, $0-4
 
 <h2 id="the-start-of-the-other-goroutines">The Start of the Other Goroutines</h2>
 
-<p>When the program use the keyword <code class="language-plaintext highlighter-rouge">go</code>, it will start a new Goroutine. <code class="language-plaintext highlighter-rouge">runtime·proc</code> could start a <code class="language-plaintext highlighter-rouge">G</code> given the function. It put this new <code class="language-plaintext highlighter-rouge">G</code> in the current <code class="language-plaintext highlighter-rouge">P</code>’s run queue, then call <code class="language-plaintext highlighter-rouge">wakep</code> in order to call <code class="language-plaintext highlighter-rouge">startm</code>, which will get an idle <code class="language-plaintext highlighter-rouge">P</code> and run a <code class="language-plaintext highlighter-rouge">G</code> on it. If the <code class="language-plaintext highlighter-rouge">P</code> don’t have an <code class="language-plaintext highlighter-rouge">M</code> for now, it will call <code class="language-plaintext highlighter-rouge">newm</code> which will alloc an <code class="language-plaintext highlighter-rouge">M</code> using <code class="language-plaintext highlighter-rouge">startm</code> as its executing function. As we already known, <code class="language-plaintext highlighter-rouge">startm</code> will start this <code class="language-plaintext highlighter-rouge">M</code>, call scheduler to find a <code class="language-plaintext highlighter-rouge">G</code> to run.</p>
+<p>When the program uses the keyword <code class="language-plaintext highlighter-rouge">go</code>, it will start a new Goroutine. <code class="language-plaintext highlighter-rouge">runtime·proc</code> could start a <code class="language-plaintext highlighter-rouge">G</code> given the function. It puts this new <code class="language-plaintext highlighter-rouge">G</code> in the current <code class="language-plaintext highlighter-rouge">P</code>’s run queue, then call <code class="language-plaintext highlighter-rouge">wakep</code> in order to call <code class="language-plaintext highlighter-rouge">startm</code>, which will get an idle <code class="language-plaintext highlighter-rouge">P</code> and run a <code class="language-plaintext highlighter-rouge">G</code> on it. If the <code class="language-plaintext highlighter-rouge">P</code> doesn’t have an <code class="language-plaintext highlighter-rouge">M</code> for now, it will call <code class="language-plaintext highlighter-rouge">newm</code> which will allocate an <code class="language-plaintext highlighter-rouge">M</code> using <code class="language-plaintext highlighter-rouge">startm</code> as its executing function. As we already know, <code class="language-plaintext highlighter-rouge">startm</code> will start this <code class="language-plaintext highlighter-rouge">M</code>, call scheduler to find a <code class="language-plaintext highlighter-rouge">G</code> to run.</p>
 
 <p>How the <code class="language-plaintext highlighter-rouge">P</code> finds the executable <code class="language-plaintext highlighter-rouge">G</code> will be explained in the next section.</p>
 
@@ -4170,9 +4170,9 @@ TEXT runtime·gogo(SB), NOSPLIT, $0-4
 
 <p>We know when the <code class="language-plaintext highlighter-rouge">G</code> is executing, the code will never return. It means that the scheduler of Go is non-preemptive. So when to change the current running <code class="language-plaintext highlighter-rouge">G</code>?</p>
 
-<p>When the current Goroutine call a system call, it is the chance. It will call <code class="language-plaintext highlighter-rouge">handoffp</code>, which will release the current <code class="language-plaintext highlighter-rouge">P</code> (and set it’s state to idle), start a new <code class="language-plaintext highlighter-rouge">M</code> to run the system call <code class="language-plaintext highlighter-rouge">G</code>, and then call <code class="language-plaintext highlighter-rouge">startm</code>, which will find an idle <code class="language-plaintext highlighter-rouge">P</code> and run it.</p>
+<p>When the current Goroutine calls a system call, it is the chance. It will call <code class="language-plaintext highlighter-rouge">handoffp</code>, which will release the current <code class="language-plaintext highlighter-rouge">P</code> (and set its state to idle), start a new <code class="language-plaintext highlighter-rouge">M</code> to run the system call <code class="language-plaintext highlighter-rouge">G</code>, and then call <code class="language-plaintext highlighter-rouge">startm</code>, which will find an idle <code class="language-plaintext highlighter-rouge">P</code> and run it.</p>
 
-<p>From Go 1.2, it increases the chance to run the scheduler. For example, when the goroutine call a function, it will check the memory and deside whether to do a scheduling.</p>
+<p>From Go 1.2, it increases the chance to run the scheduler. For example, when the goroutine calls a function, it will check the memory and decide whether to do a scheduling.</p>
 
 <p>This could be verified by a piece of code:</p>
 
@@ -4220,7 +4220,7 @@ func main() {
 
 			/*
 			  loop2() is a dead end loop. So it will block other Goroutines to run.
-			  loop1() keeps call functions, so it give other Goroutines a chance to run.
+			  loop1() keeps calling functions, so it gives other Goroutines a chance to run.
 			  You can see what will happen when change it to loop1()
 			*/
 			loop2()
@@ -4238,11 +4238,11 @@ func main() {
 
 <h3 id="how-to-change">How to Change</h3>
 
-<p>We’ve know that the first Gorutine is run by the main program and never returns. So how to change the current Goroutine? The answer is it just change the current SP to the <code class="language-plaintext highlighter-rouge">g0</code> by the Assembly code. The current Goroutine’s context is saved in order to be swapped back in the future. <code class="language-plaintext highlighter-rouge">g0</code> will then call the scheduler to decide which Goroutine to run next.</p>
+<p>We’ve known that the first Goroutine is run by the main program and never returns. So how to change the current Goroutine? The answer is it just changes the current SP to the <code class="language-plaintext highlighter-rouge">g0</code> by the Assembly code. The current Goroutine’s context is saved in order to be swapped back in the future. <code class="language-plaintext highlighter-rouge">g0</code> will then call the scheduler to decide which Goroutine to run next.</p>
 
 <h3 id="which-one-to-change">Which One to Change</h3>
 
-<p>In the last section, we know that the new started <code class="language-plaintext highlighter-rouge">G</code> is just put under the <code class="language-plaintext highlighter-rouge">P</code> that calls the <code class="language-plaintext highlighter-rouge">go</code> keyword. So the queue don’t ensure fairness. However, while the <code class="language-plaintext highlighter-rouge">P</code> is able to run a new <code class="language-plaintext highlighter-rouge">G</code> but could not find any <code class="language-plaintext highlighter-rouge">G</code> in its queue, it will look up other <code class="language-plaintext highlighter-rouge">P</code>s and steal half of their <code class="language-plaintext highlighter-rouge">G</code>s if there are any. This is more effective that ensure the fairness while put <code class="language-plaintext highlighter-rouge">G</code> in the run queue since it need not lock all the scheduler to check all the <code class="language-plaintext highlighter-rouge">P</code>s run queue to ensure the fairness.</p>
+<p>In the last section, we know that the new started <code class="language-plaintext highlighter-rouge">G</code> is just put under the <code class="language-plaintext highlighter-rouge">P</code> that calls the <code class="language-plaintext highlighter-rouge">go</code> keyword. So the queue doesn’t ensure fairness. However, while the <code class="language-plaintext highlighter-rouge">P</code> is able to run a new <code class="language-plaintext highlighter-rouge">G</code> but could not find any <code class="language-plaintext highlighter-rouge">G</code> in its queue, it will look up other <code class="language-plaintext highlighter-rouge">P</code>s and steal half of their <code class="language-plaintext highlighter-rouge">G</code>s if there are any. This is more effective than ensuring the fairness while putting <code class="language-plaintext highlighter-rouge">G</code> in the run queue since it need not lock all the scheduler to check all the <code class="language-plaintext highlighter-rouge">P</code>s run queue to ensure the fairness.</p>
 
 <p>The code could be found in <code class="language-plaintext highlighter-rouge">findrunnable</code>.</p>
 

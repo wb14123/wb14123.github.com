@@ -2646,7 +2646,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2012-12-17-Beautiful-Math-with-MathJex.html">Beautiful Math with MathJex <span class="publish-year">(2012)</span></a>
+        <a href="/2012-12-17-Beautiful-Math-with-MathJex.html">Beautiful Math with MathJax <span class="publish-year">(2012)</span></a>
         
       
 
@@ -4063,19 +4063,19 @@
   <li>Update these objects in every frame.</li>
 </ul>
 
-<p>Why not do all the things in every frame? Because init objects need more time than change the states of an object in most cases. Init object need to allocate memory, read configuration, load assets, and so on.</p>
+<p>Why not do all the things in every frame? Because init objects need more time than change the states of an object in most cases. Init objects need to allocate memory, read configuration, load assets, and so on.</p>
 
-<p>Init part also need to specify the position of every objects, or the layout of the stage. I write lots of code to init the position of every object. It is annoying. For example, when the width is changed, I have to change its position to make it in the center or something like that. And the position specification is messed with the code. So it is better to make the position and layout data split from the code.</p>
+<p>The init part also needs to specify the position of every object, or the layout of the stage. I write lots of code to init the position of every object. It is annoying. For example, when the width is changed, I have to change its position to make it centered or something like that. And the position specification is messed with the code. So it is better to make the position and layout data split from the code.</p>
 
 <p>In web tech, here it is:</p>
 
 <ul>
   <li>HTML is what it has in the first place (init objects).</li>
   <li>CSS is the position and layout of the objects (data split from code).</li>
-  <li>JS update the objects when some events occurs (update objects).</li>
+  <li>JS updates the objects when some events occur (update objects).</li>
 </ul>
 
-<p>Everybody say and say that again. But I didn’t understand that until I really wrote an application that render graphics to the screen.</p>
+<p>Everybody says and says that again. But I didn’t understand that until I really wrote an application that render graphics to the screen.</p>
 
 <p>So code is better than talk.</p>
 

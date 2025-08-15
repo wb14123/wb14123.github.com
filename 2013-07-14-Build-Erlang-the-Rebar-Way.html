@@ -2646,7 +2646,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2012-12-17-Beautiful-Math-with-MathJex.html">Beautiful Math with MathJex <span class="publish-year">(2012)</span></a>
+        <a href="/2012-12-17-Beautiful-Math-with-MathJex.html">Beautiful Math with MathJax <span class="publish-year">(2012)</span></a>
         
       
 
@@ -4054,9 +4054,9 @@
     
   </header>
 
-  <p>These days I start learning erlang, and building a poker robot system. While I am learning it, I found the most difficult part is not the function style programming, nor the OTP system. The most difficult part is how to build and run erlang. Surely you can write an erlang module and run the functions from the erlang shell when you do exercises, but it is a little disturbing. And you surely don’t want to do that in the production environment. The erlang way and reltool is a little difficult for the newbies. Thanks to rebar, we can do it much easier now.</p>
+  <p>These days I started learning erlang, and building a poker robot system. While I am learning it, I found the most difficult part is not the function style programming, nor the OTP system. The most difficult part is how to build and run erlang. Surely you can write an erlang module and run the functions from the erlang shell when you do exercises, but it is a little disturbing. And you surely don’t want to do that in the production environment. The erlang way and reltool is a little difficult for the newbies. Thanks to rebar, we can do it much easier now.</p>
 
-<p><a href="https://github.com/basho/rebar">Rebar</a> is a very good tool to build and run erlang applications. It could automatic get dependencies, run it as a daemon, attach it and hot load code. I’m wonder why there is no book about erlang introduced it. Even the book <em>Learn You Some Erlang for Great Good</em>, which is published this year. The rebar official wiki is a little simple. I will record how am I using rebar to build erlang applications.</p>
+<p><a href="https://github.com/basho/rebar">Rebar</a> is a very good tool to build and run erlang applications. It could automatically get dependencies, run it as a daemon, attach it and hot load code. I wonder why there is no book about erlang that introduces it. Even the book <em>Learn You Some Erlang for Great Good</em>, which is published this year. The rebar official wiki is a little simple. I will record how I am using rebar to build erlang applications.</p>
 
 <h2 id="basic">Basic</h2>
 
@@ -4076,9 +4076,9 @@
   <li>ebin: place for erlang object files, such as <code class="language-plaintext highlighter-rouge">.beam</code> files, <code class="language-plaintext highlighter-rouge">.app</code> file also placed here.</li>
 </ul>
 
-<p>You usually need not to place any files in <code class="language-plaintext highlighter-rouge">ebin/</code> if you use rebar. All the object files, and <code class="language-plaintext highlighter-rouge">.app</code> files, could be compiled from sorce code. In a project, there may also have such two subdirectory: <code class="language-plaintext highlighter-rouge">deps</code> for dependencies and <code class="language-plaintext highlighter-rouge">test</code> for test files.</p>
+<p>You usually need not place any files in <code class="language-plaintext highlighter-rouge">ebin/</code> if you use rebar. All the object files, and <code class="language-plaintext highlighter-rouge">.app</code> files, could be compiled from source code. In a project, there may also be such two subdirectories: <code class="language-plaintext highlighter-rouge">deps</code> for dependencies and <code class="language-plaintext highlighter-rouge">test</code> for test files.</p>
 
-<p>After download rebar, this command could create an OTP application:</p>
+<p>After downloading rebar, this command could create an OTP application:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rebar create-app app-id=myapp
 </code></pre></div></div>
@@ -4108,35 +4108,35 @@
                          [raw]}]}
 </code></pre></div></div>
 
-<p>Use this command to automatic get dependencies:</p>
+<p>Use this command to automatically get dependencies:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rebar get-deps
 </code></pre></div></div>
 
 <h2 id="test-with-eunit">Test with Eunit</h2>
 
-<p>Rebar could also compile with test. I am just using eunit for now. I add these code in <code class="language-plaintext highlighter-rouge">rebar.config</code>:</p>
+<p>Rebar could also compile with test. I am just using eunit for now. I add this code in <code class="language-plaintext highlighter-rouge">rebar.config</code>:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{cover_enabled, true}.
 {eunit_opts, [verbose, {report, {eunit_surefire, [{dir, "./"}]}}]}.
 </code></pre></div></div>
 
-<p>You can put test codes in subdirectory <code class="language-plaintext highlighter-rouge">test</code>. While run <code class="language-plaintext highlighter-rouge">rebar test</code>, rebar compile test code, put the object files in <code class="language-plaintext highlighter-rouge">.eunit</code>. It will also show test coverage in a web page.</p>
+<p>You can put test codes in subdirectory <code class="language-plaintext highlighter-rouge">test</code>. When running <code class="language-plaintext highlighter-rouge">rebar test</code>, rebar compiles test code, puts the object files in <code class="language-plaintext highlighter-rouge">.eunit</code>. It will also show test coverage in a web page.</p>
 
 <h2 id="run-the-application">Run the Application</h2>
 
 <p>Here comes the most important part. We will build and run our application. The rebar official wiki has an article about how to handle release, but it doesn’t mention how to handle release with dependencies. I will introduce how I do it.</p>
 
-<p>We already know we could use <code class="language-plaintext highlighter-rouge">rebar compile</code> to compile the codes. But it only put object files in <code class="language-plaintext highlighter-rouge">ebin/</code>, we also need to run them in the shell manually if we want:</p>
+<p>We already know we could use <code class="language-plaintext highlighter-rouge">rebar compile</code> to compile the codes. But it only puts object files in <code class="language-plaintext highlighter-rouge">ebin/</code>, we also need to run them in the shell manually if we want:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>erl -pa ./ebin ./deps/*/ebin
 </code></pre></div></div>
 
 <p>This command will start the shell with compiled files, and you can run them in the shell.</p>
 
-<p>But it is absolutely not we want. We want a executable file, just run it to start. Even better, run as a daemon. Even more better, attach it when we want.</p>
+<p>But it is absolutely not what we want. We want a executable file, just run it to start. Even better, run as a daemon. Even better, attach it when we want.</p>
 
-<p>Rebar allows us to do all test things. It is a little complex, but much simpler than the origin way with erlang.</p>
+<p>Rebar allows us to do all these things. It is a little complex, but much simpler than the original way with erlang.</p>
 
 <p>First, make a new directory in the application directory, and using rebar to generate some files:</p>
 
@@ -4145,7 +4145,7 @@ cd rel
 rebar create-node nodeid=myapp
 </code></pre></div></div>
 
-<p>These command will create a subdirectory named <code class="language-plaintext highlighter-rouge">files</code> and a file named <code class="language-plaintext highlighter-rouge">reltool.config</code>. We need not to touch anything in the <code class="language-plaintext highlighter-rouge">files</code> directory. But we will modify something in <code class="language-plaintext highlighter-rouge">reltool.config</code>. I’m using erlang R16B01, and I do these things:</p>
+<p>These commands will create a subdirectory named <code class="language-plaintext highlighter-rouge">files</code> and a file named <code class="language-plaintext highlighter-rouge">reltool.config</code>. We need not to touch anything in the <code class="language-plaintext highlighter-rouge">files</code> directory. But we will modify something in <code class="language-plaintext highlighter-rouge">reltool.config</code>. I’m using erlang R16B01, and I do these things:</p>
 
 <ol>
   <li>Add <code class="language-plaintext highlighter-rouge">{lib_dirs, ["../deps"]},</code> in the <code class="language-plaintext highlighter-rouge">sys</code> config. This will include our dependencies.</li>
@@ -4165,7 +4165,7 @@ rebar create-node nodeid=myapp
 
 <p>Use <code class="language-plaintext highlighter-rouge">start</code> argument will start as a daemon, and using <code class="language-plaintext highlighter-rouge">attach</code> could come back to the erlang shell. You can see the usage with <code class="language-plaintext highlighter-rouge">help</code> argument.</p>
 
-<p>OK, enjoy your self!</p>
+<p>OK, enjoy yourself!</p>
 
 <h2 id="reference">Reference</h2>
 

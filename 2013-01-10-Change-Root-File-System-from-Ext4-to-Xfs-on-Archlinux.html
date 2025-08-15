@@ -2646,7 +2646,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2012-12-17-Beautiful-Math-with-MathJex.html">Beautiful Math with MathJex <span class="publish-year">(2012)</span></a>
+        <a href="/2012-12-17-Beautiful-Math-with-MathJex.html">Beautiful Math with MathJax <span class="publish-year">(2012)</span></a>
         
       
 
@@ -4042,7 +4042,7 @@
 
     <section id="page_content">
         <div id="content_table">
-  <h3>Table of Contents</h3><ol class="toc"><li><a href="#1-make-a-xfs-partation">1. Make a xfs partation</a></li><li><a href="#2-copy-files-with-tar">2. Copy files with tar</a></li><li><a href="#3-config-grub-and-modify-fstab">3. Config grub and modify fstab</a></li><li><a href="#4-modify-initramfs-to-include-xfs-support">4. Modify initramfs to include xfs support</a></li></ol>
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#1-make-a-xfs-partition">1. Make a xfs partition</a></li><li><a href="#2-copy-files-with-tar">2. Copy files with tar</a></li><li><a href="#3-config-grub-and-modify-fstab">3. Config grub and modify fstab</a></li><li><a href="#4-modify-initramfs-to-include-xfs-support">4. Modify initramfs to include xfs support</a></li></ol>
 </div>
 
 <div id="article_content" class="">
@@ -4056,35 +4056,35 @@
 
   <p><a href="http://xfs.org/">Xfs</a> is said a high performance file system. So I changed my root file system from ext4 to xfs today. There are some tricky things. This article is a simple HOWTO.</p>
 
-<h2 id="1-make-a-xfs-partation">1. Make a xfs partation</h2>
+<h2 id="1-make-a-xfs-partition">1. Make a xfs partition</h2>
 
-<p>Note: a xfs partation cannot be shrunk. And if you don’t have a splite boot partation, you should make one with <code class="language-plaintext highlighter-rouge">ext2</code> since grub don’t support xfs well.</p>
+<p>Note: a xfs partition cannot be shrunk. And if you don’t have a split boot partition, you should make one with <code class="language-plaintext highlighter-rouge">ext2</code> since grub doesn’t support xfs well.</p>
 
 <h2 id="2-copy-files-with-tar">2. Copy files with tar</h2>
 
-<p>Copy files from origin ext4 partation to the new xfs partation with <code class="language-plaintext highlighter-rouge">tar</code>. Be careful, <em>never</em> use <code class="language-plaintext highlighter-rouge">cp</code> to backup a file system since <code class="language-plaintext highlighter-rouge">cp</code> will change the setuid bit and follow hard links. Use <code class="language-plaintext highlighter-rouge">tar</code> instead, for example:</p>
+<p>Copy files from original ext4 partition to the new xfs partition with <code class="language-plaintext highlighter-rouge">tar</code>. Be careful, <em>never</em> use <code class="language-plaintext highlighter-rouge">cp</code> to backup a file system since <code class="language-plaintext highlighter-rouge">cp</code> will change the setuid bit and follow hard links. Use <code class="language-plaintext highlighter-rouge">tar</code> instead, for example:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tar --exclude=proc/ --exclude=sys/ -cf - / | ( cd &lt;xfs_mount_path&gt; ; tar -xpvf - )
 </code></pre></div></div>
 
-<p>I just exclude two directories for an example. You should exclude all mounted file systems (except root of cause). It is recommended to use a bootable CD or USB disk to boot your system, mount both ext4 and xfs partations, then use <code class="language-plaintext highlighter-rouge">tar</code> to copy files. In this way, you need not exclude any directory:</p>
+<p>I just exclude two directories for an example. You should exclude all mounted file systems (except root of course). It is recommended to use a bootable CD or USB disk to boot your system, mount both ext4 and xfs partitions, then use <code class="language-plaintext highlighter-rouge">tar</code> to copy files. In this way, you need not exclude any directory:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tar  -cf - &lt;ext4_mount_path&gt; | ( cd &lt;xfs_mount_path&gt; ; tar -xpvf - )
 </code></pre></div></div>
 
 <h2 id="3-config-grub-and-modify-fstab">3. Config grub and modify fstab</h2>
 
-<p>There is nothing special here. Just modify your <a href="https://wiki.archlinux.org/index.php/GRUB">grub config</a> and <a href="https://wiki.archlinux.org/index.php/fstab">fstab</a> in your xfs partation. Remember to make an entry for your old root file system while config the grub. Then you could try to reboot. If the system could not mount xfs partation, you may want to boot with the old ext4 root partation and modify initramfs for xfs support as bellow.</p>
+<p>There is nothing special here. Just modify your <a href="https://wiki.archlinux.org/index.php/GRUB">grub config</a> and <a href="https://wiki.archlinux.org/index.php/fstab">fstab</a> in your xfs partition. Remember to make an entry for your old root file system while configuring the grub. Then you could try to reboot. If the system could not mount xfs partition, you may want to boot with the old ext4 root partition and modify initramfs for xfs support as below.</p>
 
 <h2 id="4-modify-initramfs-to-include-xfs-support">4. Modify initramfs to include xfs support</h2>
 
-<p>In the boot process, kernel use initramfs as root first, then mount the real root file system. If your initramfs don’t include support for xfs, you may see these errors during booting:</p>
+<p>In the boot process, kernel uses initramfs as root first, then mounts the real root file system. If your initramfs doesn’t include support for xfs, you may see these errors during booting:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fsck.xfs: file not found
 mount: unknown filesystem type "xfs"
 </code></pre></div></div>
 
-<p>In this case,  you need boot into your old ext4 root partation and modify initramfs. In archlinux, you can do it with <a href="https://wiki.archlinux.org/index.php/mkinitcpio">mkinitcpio</a>.</p>
+<p>In this case, you need to boot into your old ext4 root partition and modify initramfs. In archlinux, you can do it with <a href="https://wiki.archlinux.org/index.php/mkinitcpio">mkinitcpio</a>.</p>
 
 <p>Just add <code class="language-plaintext highlighter-rouge">xfs</code> to kernel modules and <code class="language-plaintext highlighter-rouge">fsck.xfs</code> to binary files in <code class="language-plaintext highlighter-rouge">/etc/mkinitcpio.conf</code>:</p>
 
@@ -4092,9 +4092,9 @@ mount: unknown filesystem type "xfs"
 BINARIES="fsck.xfs"
 </code></pre></div></div>
 
-<p>Remember to copy it to your xfs partation, too.</p>
+<p>Remember to copy it to your xfs partition, too.</p>
 
-<p>Then make a initramfs:</p>
+<p>Then make an initramfs:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkinitcpio -p linux
 </code></pre></div></div>

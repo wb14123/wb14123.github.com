@@ -2646,7 +2646,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2012-12-17-Beautiful-Math-with-MathJex.html">Beautiful Math with MathJex <span class="publish-year">(2012)</span></a>
+        <a href="/2012-12-17-Beautiful-Math-with-MathJex.html">Beautiful Math with MathJax <span class="publish-year">(2012)</span></a>
         
       
 
@@ -4054,7 +4054,7 @@
     
   </header>
 
-  <p>When compile Linux kernel, we could output files to a split directory with “make O=”. The kernel’s way to do it is a little tricky. Since kernel’s Makefile is very big, we could have a simpler version to analyse:</p>
+  <p>When compiling Linux kernel, we could output files to a separate directory with “make O=”. The kernel’s way to do it is a little tricky. Since kernel’s Makefile is very big, we could have a simpler version to analyze:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ifeq ($(KBUILD_SRC),)
 ifeq ("$(origin O)", "command line")
@@ -4092,7 +4092,7 @@ endif
 
 <p>At the second time, <code class="language-plaintext highlighter-rouge">KBUILD_SRC</code> is defined so it will make the real targets.</p>
 
-<p>The thing to notice is, while you make the real <code class="language-plaintext highlighter-rouge">target1</code>, <strong>variables between <code class="language-plaintext highlighter-rouge">ifeq ($(KBUILD_SRC),)</code> is not defined</strong>. You could see the output:</p>
+<p>The thing to notice is, while you make the real <code class="language-plaintext highlighter-rouge">target1</code>, <strong>variables between <code class="language-plaintext highlighter-rouge">ifeq ($(KBUILD_SRC),)</code> are not defined</strong>. You could see the output:</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make -C ../build -f /home/wangbin/maketest/Makefile \
                 KBUILD_SRC=/home/wangbin/maketest \
