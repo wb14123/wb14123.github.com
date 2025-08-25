@@ -106,6 +106,10 @@ a:hover{
   padding-top: 20px;
 }
 
+.category-link {
+  font-size: 18px;
+}
+
 
 .books {
   max-width: 600px;
