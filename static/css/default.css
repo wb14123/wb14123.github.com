@@ -116,6 +116,10 @@ a:hover{
   margin: 0 auto;
 }
 
+.books h1 {
+  font-size: 28px;
+}
+
 .book_card {
   font-size: 18px;
   display: flex;
