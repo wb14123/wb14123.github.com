@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> 道诡异仙 |  Bin Wang - My Personal Blog</title>
+    <title> Download Message Images from Seesaw |  Bin Wang - My Personal Blog</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
     <link rel="stylesheet" href="/static/css/asciinema-player.css" type="text/css" />
 
@@ -2828,7 +2828,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2025-10-06-Download-Message-Images-from-Seesaw.html">Download Message Images from Seesaw <span class="publish-year">(2025)</span></a>
+        <div class="index-selected">Download Message Images from Seesaw <span class="publish-year">(2025)</span></div>
         
       
 
@@ -4125,26 +4125,69 @@
 
 
     <section id="page_content">
-        <div class="book_card">
-  <img class="book_cover" src="https://http-proxy.rssbrain.com/?link=https://img9.doubanio.com/view/subject/l/public/s35075164.jpg"/>
-  <div class="book_info">
-    <a class="book_title" href="https://book.douban.com/subject/37225730/" target="_blank">道诡异仙</a>
-    <div class="book_desc">
-        By
-        
-        狐尾的笔,&nbsp;
-        
-      published in 2025
-    </div>
-    <div class="book_date">Finished reading on 10 Nov 2024</div>
-  </div>
+        <div id="content_table">
+  
 </div>
 
-<div id="article_content">
-  <article id="post">
+<div id="article_content" class="">
+<article id="post">
+  <header>
+    <h1>Download Message Images from Seesaw</h1>
     
+      <p class="description">Posted on 06 Oct 2025, tagged <code>life</code><code>seesaw</code><code>javascript</code></p>
+    
+  </header>
 
-  </article>
+  <p><a href="https://seesaw.com/">Seesaw</a> is a learning experience platform for elementary education. My daughter’s daycare uses it for communication with us. They also took pictures of her and send them through Seesaw every day. When my daughter transfers to a new daycare, I want to download all the photos before my account is deactivated. However, with its message history download tool, it can only download the messages as a PDF, and only has the first image’s thumbnail if a message has multiple images. So I wrote a tool to download all the raw images. If anyone else needs it, <a href="https://github.com/wb14123/seesaw-message-images-downloader">here</a> is the repo, which has all the source code and documentation.</p>
+
+<p>The tool I wrote is just some Javascript code to run in the browser instead of an actual tool that takes some parameters and automatically downloads all the images. It’s supposed to be thrown away after this one-time usage so I didn’t put too much energy into making it clean and robust. Claude Code is good for writing things that don’t need much maintenance. But it still needs a lot of guidance in this case because of the messy HTML it needs to parse. I did several iterations to make it be able to find the URL of raw images.</p>
+
+<p>When running the code, it clicks on each message to open the image viewer, then clicks the next button to loop over the images to get the URL. I let it sleep 5 seconds after the clicks to wait for the elements to be fully loaded. So all the past photos are shown like slides when I run the code. It’s such a special feeling to watch it running. From the early photos where she always has watery eyes because of crying, to eating lunch by herself, playing on the playground, and making all kinds of arts. It’s hard to believe how much a toddler can grow in just more than half a year. And it’s not only the kid who is growing. It feels like I also re-experienced the feelings when I was a kid, and learned to conquer those feelings again, and grow with her in the process.</p>
+
+<p>Moving to a new place, my daughter goes to a new daycare, which has a pretty different principle and practice than the old one. Both she and I are adapting again. But I have more confidence because of the experience, and I believe she does, too.</p>
+
+
+</article>
+
+<footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2025-08-15-My-Workflow-to-Review-Articles-with-LLMs.html">Prev: My Workflow to Review Articles with LLMs</a></td>
+    
+    
+  </tr></table>
+</footer>
+
+<!--
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+-->
+
+
+
+<!-- MathJax -->
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
 </div>
 
     </section>
