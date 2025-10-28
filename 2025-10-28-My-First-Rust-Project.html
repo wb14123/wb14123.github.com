@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> 改革歷程 |  Bin Wang - My Personal Blog</title>
+    <title> My First Rust Project |  Bin Wang - My Personal Blog</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
     <link rel="stylesheet" href="/static/css/asciinema-player.css" type="text/css" />
 
@@ -1978,7 +1978,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2025-10-28-My-First-Rust-Project.html">My First Rust Project <span class="publish-year">(2025)</span></a>
+        <div class="index-selected">My First Rust Project <span class="publish-year">(2025)</span></div>
         
       
 
@@ -4175,26 +4175,149 @@
 
 
     <section id="page_content">
-        <div class="book_card">
-  <img class="book_cover" src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1335029242i/6715852.jpg"/>
-  <div class="book_info">
-    <a class="book_title" href="https://www.goodreads.com/book/show/6715852" target="_blank">改革歷程</a>
-    <div class="book_desc">
-        By
-        
-        趙紫陽,&nbsp;
-        
-      published in 2009
-    </div>
-    <div class="book_date">Finished reading on 27 May 2018</div>
-  </div>
+        <div id="content_table">
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#less-active-scala-community">Less Active Scala Community</a></li><li><a href="#the-failed-attempt-at-learning-rust">The Failed Attempt at Learning Rust</a></li><li><a href="#the-first-project">The First Project</a></li><li><a href="#learn-with-the-help-of-llm">Learn with the Help of LLM</a></li><li><a href="#the-beauty-and-ugly-of-rust">The Beauty and Ugly of Rust</a></li><li><a href="#different-pointer-types">Different Pointer Types</a></li><li><a href="#whats-next">What’s Next</a></li></ol>
 </div>
 
-<div id="article_content">
-  <article id="post">
+<div id="article_content" class="">
+<article id="post">
+  <header>
+    <h1>My First Rust Project</h1>
     
+      <p class="description">Posted on 28 Oct 2025, tagged <code>Rust</code><code>LLM</code><code>async</code></p>
+    
+  </header>
 
-  </article>
+  <h2 id="less-active-scala-community">Less Active Scala Community</h2>
+
+<p>Rust is getting more and more popular. It targets low level high performance programming because of zero cost abstraction. For example, it doesn’t have any runtime, thus no GC. I have learned C/C++ and used C for programming contests back in university, but in most of my professional career, I use higher level languages like Java, Scala, Python, Go, and so on. All of them have GC built in, so I rarely need to think about memory allocation. For side projects, I have a few criteria to consider when selecting a language:</p>
+
+<ul>
+  <li>The language itself: powerful and flexible syntax. Better to have a type system so more errors can be caught at compile time.</li>
+  <li>Good tools to debug and profile the program.</li>
+  <li>Mature libraries.</li>
+  <li>Active communities.</li>
+</ul>
+
+<p>JVM is a good platform that has wonderful tools and lots of libraries thanks to the popularity of Java. But I really don’t like Java the language itself. Thankfully, there are lots of other languages available on JVM, including the one I like most: Scala. Scala was popular when Spark was popular. However, it has been trending down for many years.</p>
+
+<p>With fewer and fewer users, the community is less and less active. It’s a negative feedback loop. Many widely used libraries are only maintained by a few people and are not very active anymore. The popular paradigm changed from actor mode with libraries like Akka to functional programming frameworks like Cats and ZIO. I like Cats a lot, but I must admit not everyone can catch the paradigm change. Even for Cats Effect itself, the migration from 2.x to 3.x changed lots of things, and even the most basic IO type doesn’t have documentation yet. Projects written in Scala can feel like completely different languages based on the paradigm and libraries they use. Divisions like this make the already small community even smaller, not to mention some drama between Cats and ZIO.</p>
+
+<p>So even though I still like the language, and I’ve written lots of my personal projects with it, I started to think twice when starting new projects. Sometimes I find the smaller community starts to hurt productivity when I run into something strange, and the complexity of the language makes it hard to read the library code in order to understand what’s going on internally. With the <a href="https://wiki.openjdk.org/display/loom/Main">Loom project</a>, I feel like I may write my own light wrappers around virtual threads with functional programming instead of using Cats Effect. But that’s another topic.</p>
+
+<p>The development of LLM makes the problem worse. With a less active community and fewer documents, LLM has less data to train on the language, which makes it less good at writing code with Scala compared to other languages. Even though I don’t think LLM can write code all by itself yet, it’s still a good tool, and it’s a disadvantage if it doesn’t work well.</p>
+
+<p>Nevertheless, I’ll still use Scala in my projects for the foreseeable future. But I want to learn and see something new.</p>
+
+<h2 id="the-failed-attempt-at-learning-rust">The Failed Attempt at Learning Rust</h2>
+
+<p>I was interested in Rust in its early days. I started to read the Rust book around 2016 and tried to write some Rust code in the following 2 years. Especially after I joined a database company. I wanted to write some database related things by myself. I want the performance to be as good as possible, so I want a language without GC. Rust felt like a natural choice at the time. So I attempted to implement an <a href="https://en.wikipedia.org/wiki/Log-structured_merge-tree">LSM tree</a> and started with a <a href="https://en.wikipedia.org/wiki/Skip_list">skip list</a>, which is a popular data structure to implement the memtable part of an LSM tree. It’s like a linked list but more complex. Oh boy, was I wrong to try that for my first Rust project. Rust’s pointers are really bad at self referencial structures if you don’t want to use <code class="language-plaintext highlighter-rouge">unsafe</code>. Writing a linked list with Rust remains to be a hard problem nowadays. It almost becomes a meme for Rust new learners, very much like the joke about how to exit Vim. So it’s not a surprise that I failed miserably and gave up at last. My interest in databases also transferred from high performance data structures to the correctness of distributed systems, so I didn’t look back at Rust for a long time. Until recently, I wanted to write some database related things again. With more concerns with Scala and with Rust being more and more popular, I decided I must learn it.</p>
+
+<h2 id="the-first-project">The First Project</h2>
+
+<p>Learning from the first failed try, my goal this time is to implement something easy enough that doesn’t need to handle low level memory structures. I just want to get a sense of how Rust feels when just writing some “regular” programs. In order to keep my interest, the project needs to be fun. After thinking through a few candidates, I ended up writing a program to talk with multiple customizable LLM bots at the same time: you can create the bot profile and add them to a chat room. When chatting, the LLM decides which bot replies next and then uses that bot’s profile to reply. The code is in my GitHub repo <a href="https://github.com/wb14123/v-world-cli">v-world-cli</a>.</p>
+
+<p>This projects meets all the requirements above. While being lots of fun, I can explore things like reading files, network requests, async programming, streaming and so on. If I want, I can continue to explore things like database integration and web server. I just implemented the minimal feature set. Lots of the features like saving the conversation history, room profile, agent memory and so on are not implemented, and probably never will be.</p>
+
+<h2 id="learn-with-the-help-of-llm">Learn with the Help of LLM</h2>
+
+<p>LLM coding agents make the learning process much faster, in mainly two ways. First, you can implement some non-important components of the projects with LLM to see the results faster and refine them later manually. This makes the feedback loop much shorter. It’s great to see some results when implementing something instead of waiting until every component fits together. For example, in my case, I don’t really care about the UI part, so I just let the LLM create the module based on the interface I’ve already defined. Similarly, after I defined the interface, I also let it write the code for integrating with OpenAI compatible APIs so that I don’t need to create all the API structures and look for the documentation. This way I can chat with the bots much earlier and be motivated by the result.</p>
+
+<p>The second is the more traditional usage of the LLM coding tool: letting it fix the problems in the code. Rust is notorious for the difficulty of ownership reasoning and many pointer types. With LLM’s help, I can come up the fix much faster. It doesn’t always come up with the best answer, but with it pointing a direction, I have a starting point to research instead of not knowing where to look. For example, there is a <code class="language-plaintext highlighter-rouge">Pin</code> type sometimes needed with async functions. Without LLM’s help, I think I would spend much longer time realizing I need to use it to fix some compile errors.</p>
+
+<h2 id="the-beauty-and-ugly-of-rust">The Beauty and Ugly of Rust</h2>
+
+<p>The beauty of Rust is that with the help of its type system, the language can feel like a GC language since you don’t need to explicitly free the memory. It binds the lifetime of the variables to a scope and provides different types to manage it when you want it to outlive the closure scope.</p>
+
+<p>The ugly of Rust also usually comes from it. Sometimes you just feel the types are just in your way of implementing something. You need to know too many implementation details in the libraries in order to fight the compile errors. The abstraction of the library is leaking. For example, sometimes you need to use the <code class="language-plaintext highlighter-rouge">Pin</code> type because of some implementation details of <code class="language-plaintext highlighter-rouge">async</code>.</p>
+
+<p>Other than the ownership system, some syntax of Rust feels ugly compared to languages like Scala. For example, in Scala, in operations like <code class="language-plaintext highlighter-rouge">map</code> and <code class="language-plaintext highlighter-rouge">filter</code>, if you only need the variables once, you can use <code class="language-plaintext highlighter-rouge">_</code> instead of defining the parameter list in the anonymous function, e.g.,</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">arr</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="k">_</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span> <span class="c1">// add 1 to all the elements</span>
+</code></pre></div></div>
+
+<p>With Rust, you need to write the parameters explicitly:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">arr</span><span class="nf">.map</span><span class="p">(|</span><span class="n">x</span><span class="p">|</span> <span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+</code></pre></div></div>
+<p>Or if the type doesn’t implement <code class="language-plaintext highlighter-rouge">map</code> and you need to use <code class="language-plaintext highlighter-rouge">iter</code>:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">arr</span><span class="nf">.iter</span><span class="p">()</span><span class="nf">.map</span><span class="p">(|</span><span class="n">x</span><span class="p">|</span> <span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="nf">.collect</span><span class="p">();</span>
+</code></pre></div></div>
+
+<p>This is more obvious with <code class="language-plaintext highlighter-rouge">match</code>. In Scala, you don’t need to use the <code class="language-plaintext highlighter-rouge">match</code> keyword all the time:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">results</span><span class="o">.</span><span class="py">map</span> <span class="o">{</span>
+  <span class="k">case</span> <span class="nc">Some</span><span class="o">(</span><span class="n">r</span><span class="o">)</span> <span class="k">=&gt;</span> <span class="s">"I have a result"</span>
+  <span class="k">case</span> <span class="nc">None</span> <span class="k">=&gt;</span> <span class="s">"empty result"</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>But with Rust:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">results</span><span class="nf">.map</span><span class="p">(|</span><span class="n">x</span><span class="p">|</span> <span class="k">match</span> <span class="n">x</span> <span class="p">{</span>
+  <span class="nf">Some</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="s">"I have a result"</span>
+  <span class="nb">None</span> <span class="k">=&gt;</span> <span class="s">"empty result"</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+<p>With that said, the syntax of Rust is already much better than lots of other languages, so it’s really not a big deal.</p>
+
+<h2 id="different-pointer-types">Different Pointer Types</h2>
+
+<p>I’m still learning the best practice of using different pointer types at the right time, but here are the ones I used in my first project:</p>
+
+<p><code class="language-plaintext highlighter-rouge">&amp;</code> for passing a reference without changing ownership. Use this when possible since it has the least overhead and is the simplest. <code class="language-plaintext highlighter-rouge">&amp;mut</code> is its mutable version.</p>
+
+<p>But sometimes the lifetime of the value will live outside of the current scope, especially when using <code class="language-plaintext highlighter-rouge">async</code> with <code class="language-plaintext highlighter-rouge">spawn</code>, which doesn’t guarantee the new process to be finished before the current scope is ended. In this case, <code class="language-plaintext highlighter-rouge">Arc</code> is very useful. This type tracks the reference count of the variable and frees it when the reference count is zero, very much like GC for other languages, but the overhead is much lower because it tracks and frees memory at the end of the scope instead of having a separate process to scan all the variables. The references are read only. If you need a writable structure, then use it with <code class="language-plaintext highlighter-rouge">RwLock</code> like <code class="language-plaintext highlighter-rouge">Arc&lt;RwLock&lt;T&gt;&gt;</code>.</p>
+
+<p>At last, <code class="language-plaintext highlighter-rouge">Box</code> for things that don’t know the size at compile time. For example, the most common use case is the error part in <code class="language-plaintext highlighter-rouge">Result</code>: <code class="language-plaintext highlighter-rouge">Result&lt;T, Box&lt;dyn Error&gt;&gt;</code>.</p>
+
+<h2 id="whats-next">What’s Next</h2>
+
+<p>I want to explore macros in Rust to see if I can implement an easy to use Raft library. Then maybe implement some toy distributed file system based on it.</p>
+
+</article>
+
+<footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2025-10-06-Download-Message-Images-from-Seesaw.html">Prev: Download Message Images from Seesaw</a></td>
+    
+    
+  </tr></table>
+</footer>
+
+<!--
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+-->
+
+
+
+<!-- MathJax -->
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
 </div>
 
     </section>
