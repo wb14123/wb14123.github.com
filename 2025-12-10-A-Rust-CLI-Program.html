@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> 幽灵舰队 |  Bin Wang - My Personal Blog</title>
+    <title> A Rust CLI Program, Use It with LLM and Convert It to Web UI |  Bin Wang - My Personal Blog</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
     <link rel="stylesheet" href="/static/css/asciinema-player.css" type="text/css" />
 
@@ -2006,7 +2006,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2025-12-10-A-Rust-CLI-Program.html">A Rust CLI Program, Use It with LLM and Convert It to Web UI <span class="publish-year">(2025)</span></a>
+        <div class="index-selected">A Rust CLI Program, Use It with LLM and Convert It to Web UI <span class="publish-year">(2025)</span></div>
         
       
 
@@ -4203,26 +4203,103 @@
 
 
     <section id="page_content">
-        <div class="book_card">
-  <img class="book_cover" src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1405016978i/22704960.jpg"/>
-  <div class="book_info">
-    <a class="book_title" href="https://www.goodreads.com/book/show/22704960" target="_blank">幽灵舰队</a>
-    <div class="book_desc">
-        By
-        
-        John Scalzi,&nbsp;
-        
-      published in 2006
-    </div>
-    <div class="book_date">Finished reading on 26 Jun 2018</div>
-  </div>
+        <div id="content_table">
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#a-cli-program-to-check-rhymes-for-chinese-poetry">A CLI Program to Check Rhymes for Chinese Poetry</a></li><li><a href="#use-the-cli-program-as-a-claude-skill">Use the CLI Program as a Claude Skill</a></li><li><a href="#convert-rust-cli-to-web-ui">Convert Rust CLI to Web UI</a></li></ol>
 </div>
 
-<div id="article_content">
-  <article id="post">
+<div id="article_content" class="">
+<article id="post">
+  <header>
+    <h1>A Rust CLI Program, Use It with LLM and Convert It to Web UI</h1>
     
+      <p class="description">Posted on 10 Dec 2025, tagged <code>Rust</code><code>web</code><code>CLI</code><code>WASM</code><code>LLM</code><code>AI</code><code>Claude</code></p>
+    
+  </header>
 
-  </article>
+  <p>In the <a href="/2025-10-28-My-First-Rust-Project.html">last blog post</a>, I talked about my first Rust project. Recently, I finished another Rust CLI project called <a href="https://github.com/wb14123/rhyme-checker">rhyme-checker</a> that I wanted to build a long time ago. I tried it as a Claude Skill and got really good results. I also built a project <a href="https://github.com/wb14123/clap-web-gen">clap-web-gen</a> to convert it (and be able to convert many other Rust CLI projects) to a web page running in the browser without any backend. This blog post is about the journey of both projects.</p>
+
+<h2 id="a-cli-program-to-check-rhymes-for-chinese-poetry">A CLI Program to Check Rhymes for Chinese Poetry</h2>
+
+<p>There is a special kind of traditional Chinese poetry called “词”. It literally means “word” or “lyrics”. It’s a kind of poetry that you need to follow strict rules. There are many titles. Each one has strict meter, rhyme schema and tonal patterns. The rule is strict because they actually came with music and you can sing them in ancient times. But unfortunately the music has been lost and all that’s left are the lyrics.</p>
+
+<p>I like to write such poetry because it’s really fun, and with the strict meters, it sounds beautiful by default. There are many of them on <a href="https://www.binwang.me/poetry">the poetry page</a>. But it’s hard to write because of the strict rules. I need to refer to the meters every time I write one. Sometimes there are just sentences coming out of my mind but I don’t know which title fits them the best. So many years ago, I tried to write a program to match the best title based on the text you give it. I wrote it in Javascript, and also partly because I didn’t understand the meter rules very well at the time, the project quickly became a disaster and I gave up at last. When I picked up Rust recently, I thought I could re-implement it with Rust as a CLI program. It’s almost pure algorithm without much IO, which could benefit from the performance of Rust.</p>
+
+<p>The algorithm of this program is quite challenging, since the rules of the poetry titles are complex. For example, here are some constraints:</p>
+
+<ul>
+  <li>A title has a fixed number of sentences and each sentence has a fixed number of characters.</li>
+  <li>Each Chinese character has a tone that can fall into two categories: 平 (Ping) or 仄 (Ze). In the meter rule, the character at each position must meet the requirement: it must be Ping, Ze, or either of them.</li>
+  <li>Some characters at the end of sentences have requirements about the rhyme:
+    <ul>
+      <li>The rhyme also has tones of Ping and Ze. Characters with different tones are in different rhymes but can be in the same “rhyme group”. And the rules have requirements about whether the rhymes need to be in the same rhyme group, or must not be in the same rhyme group.</li>
+      <li>There is not only one rhyme or rhyme group for a title: the rhyme and rhyme group can change from sentence to sentence.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>So when searching for the best matching poetry title, it needs to loop over all the possible rhymes based on the input text, and try to put each line into different positions in different titles and see which one matches the best. I ended up using algorithms like depth-first search and dynamic programming for the searching. It may be the first time I used dynamic programming again after the programming contests in university. It feels great to use a language that you know what the cost of each operation is, like whether to create a new object for a variable or just use the reference to avoid copy and memory allocation, and so on.</p>
+
+<p>The finished code is on <a href="https://github.com/wb14123/rhyme-checker">Github</a>. For a search with reasonably long input text, the time spent is consistently at about 80ms, and the memory usage peaked at about 5MB. I’m very happy with the result.</p>
+
+<h2 id="use-the-cli-program-as-a-claude-skill">Use the CLI Program as a Claude Skill</h2>
+
+<p>I tried to use AI for traditional Chinese literature a long time ago. I trained an RNN model about 10 years ago to <a href="https://ai.binwang.me/">write Chinese couplets</a> and it gained a lot of interest at the time. With every new language model starting from GPT 3, I tried to use them to write traditional Chinese poems. They were very bad at first, but getting better and better especially since Deepseek was released. But they still make lots of mistakes especially about meters and rhymes, which play a very very important part in traditional Chinese poetry. Even when letting the LLM review a poem, such mistakes happen all the time.</p>
+
+<p>I tried to train some LoRA with my own dataset. Also thought about using reinforcement learning with the meter matching as the score/cost. But because of the cost of training, I gave up both in the end.</p>
+
+<p>However, there is a much cheaper option: let the existing LLM use external tools and use its reasoning ability to figure everything out. With the CLI written, which can query tones, rhymes, title rules and matching scores, we have such a tool. Claude Skill makes such tool usage very simple: just a markdown file to describe the tool and how to use it, along with the binary and that’s all it needs. So I created <a href="https://github.com/wb14123/rhyme-checker/blob/master/.claude/skills/rhyme-checker/SKILL.md">a markdown file</a> and tried it with Claude Code, and the result was really good! It can check the poem it wrote and fix it until it passes the checker. Sometimes it needs more time and can consume lots of tokens, but most of the time it can finish with a perfect matching score, while maintaining reasonably good content. Later I found out the Claude web UI also lets you upload a zip to create a new skill, so I did that and now I can use it anywhere.</p>
+
+<p>The result makes me both excited and surprised. Traditional Chinese poetry is something that very few Chinese people can write nowadays. But maybe it’s just a lack of interest which is not a problem for LLMs. After I created the skill, when I finish a conversation with Claude, I sometimes let it write a poem to summarize the conversation, and it’s really entertaining.</p>
+
+<h2 id="convert-rust-cli-to-web-ui">Convert Rust CLI to Web UI</h2>
+
+<p>I really like the CLI program I wrote. But sometimes I need to run it on mobile phones. So I wrote a program to convert any Rust CLI program to web UI, given the program can be compiled to WASM and uses <a href="https://docs.rs/clap/latest/clap/">clap</a> for CLI args parsing. The code is also on <a href="https://github.com/wb14123/clap-web-gen">Github</a>. The usage is very simple: you just add the dependencies, put the main logic into a function that takes a clap structure as input, and add a macro onto it. Oh you also need to replace all the <code class="language-plaintext highlighter-rouge">print!</code> and <code class="language-plaintext highlighter-rouge">println!</code> since WASM cannot handle the stdout.</p>
+
+<p>This is a fairly complex program as well since it uses macros and also needs to parse the structure and map them into HTML elements. But the complexity is different from the CLI tool I wrote: for the CLI tool, it’s mostly the algorithm, but for this one, it’s just more tedious once the approach was figured out. So I used Claude Code heavily in this project. I can check the result very easily and it runs purely on the client side, so there is less concern about not writing all the code by myself. It saved me lots of time both in the prototype and the implementation.</p>
+
+<p>With my interest in Rust, I believe I will write more CLI programs and this tool will make it easier for me to run them everywhere and share them with other people. I’m looking forward to it!</p>
+
+</article>
+
+<footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2025-10-28-My-First-Rust-Project.html">Prev: My First Rust Project</a></td>
+    
+    
+  </tr></table>
+</footer>
+
+<!--
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+-->
+
+
+
+<!-- MathJax -->
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
 </div>
 
     </section>
