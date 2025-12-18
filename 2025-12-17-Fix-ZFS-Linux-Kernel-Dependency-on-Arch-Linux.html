@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> 苏东坡传 (林语堂文集) |  Bin Wang - My Personal Blog</title>
+    <title> Fix ZFS Linux Kernel Dependency on Arch Linux |  Bin Wang - My Personal Blog</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
     <link rel="stylesheet" href="/static/css/asciinema-player.css" type="text/css" />
 
@@ -1476,7 +1476,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2025-12-17-Fix-ZFS-Linux-Kernel-Dependency-on-Arch-Linux.html">Fix ZFS Linux Kernel Dependency on Arch Linux <span class="publish-year">(2025)</span></a>
+        <div class="index-selected">Fix ZFS Linux Kernel Dependency on Arch Linux <span class="publish-year">(2025)</span></div>
         
       
 
@@ -4231,26 +4231,95 @@
 
 
     <section id="page_content">
-        <div class="book_card">
-  <img class="book_cover" src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1386748233i/19371619.jpg"/>
-  <div class="book_info">
-    <a class="book_title" href="https://www.goodreads.com/book/show/19371619" target="_blank">苏东坡传 (林语堂文集)</a>
-    <div class="book_desc">
-        By
-        
-        Lin Yutang,&nbsp;
-        
-      published in 1947
-    </div>
-    <div class="book_date">Finished reading on 01 Jul 2015</div>
-  </div>
+        <div id="content_table">
+  
 </div>
 
-<div id="article_content">
-  <article id="post">
+<div id="article_content" class="">
+<article id="post">
+  <header>
+    <h1>Fix ZFS Linux Kernel Dependency on Arch Linux</h1>
     
+      <p class="description">Posted on 17 Dec 2025, tagged <code>Linux</code><code>ZFS</code><code>dependency</code></p>
+    
+  </header>
 
-  </article>
+  <p>When updating an Arch Linux system, if you have some third-party repos added, the packages in them sometimes depend on an older package that’s not available in the official repos anymore. In such cases, pacman cannot upgrade the system unless you exclude the impacted package.</p>
+
+<p>ZFS is an example of this. Since Arch Linux doesn’t ship ZFS packages in official repos, I added a third-party one <a href="https://github.com/archzfs/archzfs/wiki">archzfs</a>. However, the ZFS support doesn’t always catch up with the newest kernel. When this happens, the upgrade will break.</p>
+
+<p>There is another repo that’s supposed to host the matching kernel version. It can be added by the following section in <code class="language-plaintext highlighter-rouge">/etc/pacman.conf</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[zfs-linux]
+Server = http://kernels.archzfs.com/$repo/
+</code></pre></div></div>
+
+<p>However, it also often lags behind. See <a href="https://github.com/endreszabo/kernels.archzfs.com/issues/12">this Github issue</a> for the most recent example.</p>
+
+<p>Luckily, Arch Linux has archives for old packages. There are command line tools like <a href="https://github.com/archlinux-downgrade/downgrade">downgrade</a> to install the packages from archives instead of from the repo. So we can install the desired version of dependencies with <code class="language-plaintext highlighter-rouge">downgrade</code>.</p>
+
+<p>When installing a specific version with downgrade, if it breaks other packages, it will refuse to continue installing. You can resolve it by installing multiple packages at once in the dependency chain, for example:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>downgrade linux linux-headers zfs-linux
+</code></pre></div></div>
+
+<p>It will ask you version for each package.</p>
+
+<p>When you run <code class="language-plaintext highlighter-rouge">pacman -Syu</code> again, you will still get an error like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>error: failed to prepare transaction (could not satisfy dependencies)
+:: installing linux (6.18.1.arch1-2) breaks dependency 'linux=6.17.9.arch1-1' required by zfs-linux
+</code></pre></div></div>
+
+<p>But it’s safe to ignore the kernel related packages now by using the <code class="language-plaintext highlighter-rouge">--ignore</code> flag:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>pacman <span class="nt">-Syu</span> <span class="nt">--ignore</span> linux <span class="nt">--ignore</span> linux-headers
+</code></pre></div></div>
+
+<p><strong>Important</strong>: you may have noticed that we include the package <code class="language-plaintext highlighter-rouge">linux-headers</code> in the commands above, even though pacman doesn’t complain if we don’t do that. That’s because in Arch Linux, <code class="language-plaintext highlighter-rouge">linux-headers</code> doesn’t depend on a specific version of <code class="language-plaintext highlighter-rouge">linux</code>. However, if you have a version mismatch, it may break some dkms modules. So it’s better to always keep them in sync.</p>
+
+
+</article>
+
+<footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2025-12-10-A-Rust-CLI-Program.html">Prev: A Rust CLI Program, Use It with LLM and Convert It to Web UI</a></td>
+    
+    
+  </tr></table>
+</footer>
+
+<!--
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+-->
+
+
+
+<!-- MathJax -->
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
 </div>
 
     </section>
