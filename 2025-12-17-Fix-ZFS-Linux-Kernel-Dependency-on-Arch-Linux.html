@@ -4232,7 +4232,7 @@
 
     <section id="page_content">
         <div id="content_table">
-  
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#problem">Problem</a></li><li><a href="#manual-force-downgrade-packages">Manual Force Downgrade Packages</a></li><li><a href="#use-local-pacman-repo">Use Local Pacman Repo</a></li></ol>
 </div>
 
 <div id="article_content" class="">
@@ -4244,9 +4244,13 @@
     
   </header>
 
-  <p>When updating an Arch Linux system, if you have some third-party repos added, the packages in them sometimes depend on an older package that’s not available in the official repos anymore. In such cases, pacman cannot upgrade the system unless you exclude the impacted package.</p>
+  <p><em>Update 2025-12-20: add section about using local repo.</em></p>
 
-<p>ZFS is an example of this. Since Arch Linux doesn’t ship ZFS packages in official repos, I added a third-party one <a href="https://github.com/archzfs/archzfs/wiki">archzfs</a>. However, the ZFS support doesn’t always catch up with the newest kernel. When this happens, the upgrade will break.</p>
+<h2 id="problem">Problem</h2>
+
+<p>When updating an Arch Linux system, if you have some third-party repos added, the packages in them sometimes depend on an older package that’s not available in the official repos anymore. In such cases, pacman cannot upgrade the system unless you exclude the impacted package.</p>
+
+<p>ZFS is an example of this. Since Arch Linux doesn’t ship ZFS packages in official repos, I added a third-party one <a href="https://github.com/archzfs/archzfs/wiki">archzfs</a>. However, ZFS support doesn’t always catch up with the newest kernel. When this happens, the upgrade will break.</p>
 
 <p>There is another repo that’s supposed to host the matching kernel version. It can be added by the following section in <code class="language-plaintext highlighter-rouge">/etc/pacman.conf</code>:</p>
 
@@ -4256,14 +4260,20 @@ Server = http://kernels.archzfs.com/$repo/
 
 <p>However, it also often lags behind. See <a href="https://github.com/endreszabo/kernels.archzfs.com/issues/12">this Github issue</a> for the most recent example.</p>
 
-<p>Luckily, Arch Linux has archives for old packages. There are command line tools like <a href="https://github.com/archlinux-downgrade/downgrade">downgrade</a> to install the packages from archives instead of from the repo. So we can install the desired version of dependencies with <code class="language-plaintext highlighter-rouge">downgrade</code>.</p>
+<h2 id="manual-force-downgrade-packages">Manual Force Downgrade Packages</h2>
+
+<p>Arch Linux has archives for old packages. There are command line tools like <a href="https://github.com/archlinux-downgrade/downgrade">downgrade</a> to install the packages from archives instead of from the repo. So we can install the desired version of dependencies with <code class="language-plaintext highlighter-rouge">downgrade</code>.</p>
 
 <p>When installing a specific version with downgrade, if it breaks other packages, it will refuse to continue installing. You can resolve it by installing multiple packages at once in the dependency chain, for example:</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>downgrade linux linux-headers zfs-linux
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>downgrade linux linux-headers
 </code></pre></div></div>
 
 <p>It will ask you version for each package.</p>
+
+<p>However, it will fail to install since it will break the dependency of the current installed <code class="language-plaintext highlighter-rouge">zfs-linux</code> package. Even if you add <code class="language-plaintext highlighter-rouge">zfs-linux</code> to the downgrade list, it doesn’t check for the version that will be installed.</p>
+
+<p>One way to resolve it is by removing <code class="language-plaintext highlighter-rouge">zfs-linux</code> first, then run the command above to install desired version of linux packages, then install the newer of version of <code class="language-plaintext highlighter-rouge">zfs-linux</code> back.</p>
 
 <p>When you run <code class="language-plaintext highlighter-rouge">pacman -Syu</code> again, you will still get an error like this:</p>
 
@@ -4278,6 +4288,39 @@ Server = http://kernels.archzfs.com/$repo/
 
 <p><strong>Important</strong>: you may have noticed that we include the package <code class="language-plaintext highlighter-rouge">linux-headers</code> in the commands above, even though pacman doesn’t complain if we don’t do that. That’s because in Arch Linux, <code class="language-plaintext highlighter-rouge">linux-headers</code> doesn’t depend on a specific version of <code class="language-plaintext highlighter-rouge">linux</code>. However, if you have a version mismatch, it may break some dkms modules. So it’s better to always keep them in sync.</p>
 
+<h2 id="use-local-pacman-repo">Use Local Pacman Repo</h2>
+
+<p>The approach described above can resolve the dependency conflicts, however, it always feels very risky to manually remove an important package like <code class="language-plaintext highlighter-rouge">zfs-linux</code> even it’s just temporarily. If we want to rely on pacman to resolve the dependencies without error, we can use local pacman repo. Here is how to do that:</p>
+
+<p>First, still run the downgrade command above to select desired version of packages:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>downgrade linux linux-headers
+</code></pre></div></div>
+
+<p>It will download the packages to <code class="language-plaintext highlighter-rouge">/var/cache/pacman/pkg</code> even if it will not install the packages because of failed dependency check.</p>
+
+<p>Then we can copy the downloaded packages to another folder that will be used as a local pacman repo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo mkdir</span> /var/pacman-local-repo
+<span class="nb">sudo cp</span> /var/cache/pacman/pkg/&lt;packages&gt; /var/pacman-local-repo
+</code></pre></div></div>
+
+<p>Then make it a valid repo:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /var/pacman-local-repo
+<span class="nb">sudo </span>repo-add local-repo.db.tar.gz <span class="k">*</span>.pkg.tar.zst
+</code></pre></div></div>
+
+<p>At last add the local repo to <code class="language-plaintext highlighter-rouge">/etc/pacman.conf</code>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[local-repo]
+SigLevel = Optional TrustAll
+Server = file:///var/pacman-local-repo
+</code></pre></div></div>
+
+<p>Then just run <code class="language-plaintext highlighter-rouge">pacman -Syu</code> and it will find the matching dependency versions in <code class="language-plaintext highlighter-rouge">local-repo</code>.</p>
+
+<p>Remember to comment out the section after the upgrade is done, since you don’t want the old packages always in the config.</p>
 
 </article>
 
