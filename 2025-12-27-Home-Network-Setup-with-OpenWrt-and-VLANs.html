@@ -1,0 +1,4452 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Home Network Setup with OpenWrt and VLANs |  Bin Wang - My Personal Blog</title>
+    <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
+    <link rel="stylesheet" href="/static/css/asciinema-player.css" type="text/css" />
+
+		<!--
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-52904500-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+		-->
+
+		<!-- Matomo -->
+		<script>
+		  var _paq = window._paq = window._paq || [];
+		  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+		  _paq.push(['trackPageView']);
+		  _paq.push(['enableLinkTracking']);
+		  (function() {
+		    var u="//matomo.rssbrain.com/";
+		    _paq.push(['setTrackerUrl', u+'matomo.php']);
+		    _paq.push(['setSiteId', '2']);
+		    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+		    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+		  })();
+		</script>
+		<!-- End Matomo Code -->
+
+
+  </head>
+
+  <body>
+    
+    <div id="index_menu">
+      
+<!--
+<div class="index-entry index-index"><a href="/">Home</a></div>
+<div class="index-entry index-index"><a href="/snippets">Snippets</a></div>
+<div class="index-entry index-index"><a href="https://www.goodreads.com/review/list/103708630-bin?shelf=read" target="_blank">Read</a></div>
+<div class="index-entry index-index"><a href="/travel.html">Travel</a></div>
+<div class="index-entry index-index"><a href="/search.html">Search</a></div>
+<div class="index-entry index-index"><a href="/about.html">About</a></div>
+<div class="index-entry index-index"><a href="/feed.xml" target="_blank">RSS</a></div>
+-->
+
+
+
+
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Computer-Science">Computer Science</div>
+      
+
+    </div>
+
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Algorithm">Algorithm</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2011-05-28-compute.html">任意进制数的补码 <span class="publish-year">(2011)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2011-07-11-quick-sort.html">快排杀手 <span class="publish-year">(2011)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-10-18-How-to-Estimate-Max-TPS-from-TPM.html">How to Estimate Max TPS from TPM <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Data-Processing">Data Processing</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2015-04-29-Use-Docker-to-Submit-Spark-Jobs.html">Use Docker to Submit Spark Jobs <span class="publish-year">(2015)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2015-11-03-The-Proper-Way-to-Use-Spark-Checkpoint.html">The Proper Way to Use Spark Checkpoint <span class="publish-year">(2015)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2015-11-22-Use-Redis-Instead-of-Spark-Streaming-to-Count-Statistics.html">Use Redis Instead of Spark Streaming to Count Statistics <span class="publish-year">(2015)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Digital-Life">Digital Life</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-07-26-Move-from-Twitter-to-Mastodon.html">Move from Twitter to Mastodon <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong About Recommendation System <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-08-15-Use-RSS-and-Kindle-to-Read-News.html">Use RSS and Kindle to Read News <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-08-23-Build-An-Instant_Messaging-System-without-Censorship-Choose-the-right-technology.html">Matrix: A Self Hosted Instant Messaging Solution with End to End Encryption <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-08-29-Build-An-Instant_Messaging-System-without-Censorship-Choose-An-Overview-of-Chinese-Internet-Censorship-Strategy.html">An Overview of China's Internet Censorship Strategy <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-09-08-Build-An-Instant-Messaging-System-without-Censorship-Deployment-Options.html">Deploy Matrix for Users in China <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2024-06-03-Random-Video-Playlists-for-Self-Hosted-Videos.html">Random Playlists for Self Hosted Videos <span class="publish-year">(2024)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Distributed-System">Distributed System</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2018-07-29-A-Review-on-Spanner-and-Open-Source-Implementations.html">Spanner and Open Source Implementations <span class="publish-year">(2018)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2019-11-04-Great-Resources-for-Learning-Database-and-Distributed-System.html">Great Resources for Learning Database and Distributed System <span class="publish-year">(2019)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-09-16-Aurora-Database.html">Aurora Database <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-10-06-Understand-Liveness-and-Fairness-in-TLA.html">Understand Liveness and Fairness in TLA+ <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-11-02-Use-TLA+-to-Verify-Cache-Consistency.html">Use TLA+ to Verify Cache Consistency <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-11-29-Keep-Data-Consistency-During-Database-Migration.html">Keep Data Consistency During Database Migration <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-12-14-Redis-Implementation-for-Cache-and-Database-Consistency.html">Redis Implementation for Cache and Database Consistency <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2024-12-02-PostgreSQL-High-Availability-Solutions-Part-1.html">Jepsen Test on Patroni: A PostgreSQL High Availability Solution <span class="publish-year">(2024)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2025-08-13-Why-Consensus-Shortcuts-Fail.html">Why Consensus Shortcuts Fail in Distributed Systems <span class="publish-year">(2025)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Distributed-System-Infrastructure">Distributed System Infrastructure</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability <span class="publish-year">(2023)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-05-22-Upgrade-Kubernetes-from-1.23-to-1.24.html">Upgrade Kubernetes from 1.23 to 1.24 <span class="publish-year">(2023)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-11-04-How-to-Cleanup-Ceph-Filesystem-for-Deleted-Kubernetes-Persistent-Volume.html">How to Cleanup Ceph Filesystem for Deleted Kubernetes Persistent Volume <span class="publish-year">(2023)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-11-28-Introduce-K3s-CephFS-and-MetalLB-to-My-High-Avaliable-Cluster.html">Introduce K3s, CephFS and MetalLB to My High Available Cluster <span class="publish-year">(2023)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2025-02-01-Replace-A-Dead-Node-in-My-High-Avaliable-Cluster.html">Replace A Dead Node in My High Availability Cluster <span class="publish-year">(2025)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Machine-Learning">Machine Learning</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2015-01-17-Backpropagation-Algorithm.html">Backpropagation Algorithm <span class="publish-year">(2015)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2015-07-02-My-Recent-Work-About-Neural-Networks.html">My Recent Work About Neural Networks <span class="publish-year">(2015)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2015-11-08-Install-BLAS-Library-for-MXNet.html">Install BLAS Library for MXNet <span class="publish-year">(2015)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2016-05-14-How-to-Put-RNN-Layer-Into-Nueral-Network-Model.html">How to Put RNN Layers Into Neural Network Model <span class="publish-year">(2016)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2016-06-19-Build-A-Computer-for-Deep-Learning.html">Build A Computer for Deep Learning <span class="publish-year">(2016)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Machine-Learning-Application">Machine Learning Application</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2025-04-27-Use-OpenAPI-Instead-of-MCP-for-LLM-Tools.html">Use OpenAPI Instead of MCP for LLM Tools <span class="publish-year">(2025)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2025-08-15-My-Workflow-to-Review-Articles-with-LLMs.html">My Workflow to Review Articles with LLMs <span class="publish-year">(2025)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Network">Network</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <div class="index-selected">Home Network Setup with OpenWrt and VLANs <span class="publish-year">(2025)</span></div>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Operating-System">Operating System</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Android">Android</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2016-02-11-The-Permission-of-Android-Becomes-A-Bigger-Problem-When-It-Comes-to-Wearable-Devices-and-TV.html">The Permission Management of Android Becomes A Bigger Problem When It Comes to Wearable Devices and TV <span class="publish-year">(2016)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2018-11-18-Root-And-Optimize-MiBox-3S.html">Root And Optimize MiBox 3S <span class="publish-year">(2018)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Linux">Linux</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2011-07-12-port666.html">端口666：毁灭！ <span class="publish-year">(2011)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2012-03-12-chroot.html">Chroot 简介 <span class="publish-year">(2012)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2012-11-27-Compile-And-Install-Kernel.html">Compile And Install Kernel <span class="publish-year">(2012)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2012-12-05-Backup-My-Dotfiles.html">Backup My Dotfiles <span class="publish-year">(2012)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2012-12-28-Comparison-Between-Linux-Desktop-Environments.html">Comparison Between Linux Desktop Environments <span class="publish-year">(2012)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-01-21-How-Kernel's-Makefile-Specify-Output-Directory.html">How Kernel's Makefile Specify Output Directory <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-10-06-Xbmc-on-Raspberry-Pi-with-Archlinux.html">Xbmc on Raspberry Pi with Archlinux <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-02-12-Setup-SSH-Authentication-with-YubiKey.html">Setup SSH Authentication with YubiKey <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-03-08-In-Defence-of-Disabling-Swap.html">In Defence of Disabling Swap <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-09-01-Build-a-Linux-Virtual-Machine-for-Windows-Apps.html">Build a Linux Virtual Machine for Windows Apps <span class="publish-year">(2023)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-10-22-Full-Disk-Encryption-with-Yubikey.html">Linux Full Disk Encryption with Yubikey <span class="publish-year">(2023)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2024-07-12-A-Review-of-Linux-on-Surface-Pro-4.html">A Review of Linux on Surface Pro 4 <span class="publish-year">(2024)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2025-12-17-Fix-ZFS-Linux-Kernel-Dependency-on-Arch-Linux.html">Fix ZFS Linux Kernel Dependency on Arch Linux <span class="publish-year">(2025)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-MacOS">MacOS</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2024-08-07-My-MacOS-Essentials.html">My MacOS Essentials <span class="publish-year">(2024)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Tizen">Tizen</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2012-02-29-tizen.html">Tizen，加油 <span class="publish-year">(2012)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Windows">Windows</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2016-11-28-Config-Development-Environment-on-Windows.html">Build a Unix Like Environment on Windows <span class="publish-year">(2016)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-iOS">iOS</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-11-08-DNS-Resolving-Bug-in-iOS-14.html">DNS Resolving Bug in iOS 14 <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2022-08-20-Apple-In-App-Purchase-Server-to-Server-Notification-Handling-with-Scala-Java.html">Handle Apple In-App-Purchase Server Notification with Scala/Java <span class="publish-year">(2022)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Programming-Language">Programming Language</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-C++">C++</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2012-02-11-cplusplus.html">也谈C++ <span class="publish-year">(2012)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Erlang">Erlang</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-07-14-Build-Erlang-the-Rebar-Way.html">Build Erlang the Rebar Way <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-11-16-Fetch-Popular-Erlang-Modules-by-Coffee-Script.html">Fetch Popular Erlang Modules by Coffee Script <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2014-04-27-Why-I-Come-Back-to-Erlang.html">Why I Come Back to Erlang <span class="publish-year">(2014)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2014-05-16-Experiment-On-Combining-OOP-With-Erlang's-Actor-Model.html">Experiment On Combining OOP With Erlang's Actor Model <span class="publish-year">(2014)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Go">Go</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2014-09-01-Notes-On-Go-Scheduler.html">Notes On Go Scheduler <span class="publish-year">(2014)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Rust">Rust</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2025-10-28-My-First-Rust-Project.html">My First Rust Project <span class="publish-year">(2025)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2025-12-10-A-Rust-CLI-Program.html">A Rust CLI Program, Use It with LLM and Convert It to Web UI <span class="publish-year">(2025)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Scala">Scala</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2016-07-11-Config-sbt-to-Use-Both-Proxy-and-Self-Hosted-Repositories.html">Config sbt to Use Both Proxy and Self Hosted Repositories <span class="publish-year">(2016)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-08-27-Compare-Task-Processing-Approaches-in-Scala.html">Compare Task Processing Approaches in Scala <span class="publish-year">(2023)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-09-30-A-Boring-JVM-Memory-Profiling-Story.html">A Boring JVM Memory Profiling Story <span class="publish-year">(2023)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-12-29-Scala-Macro-Tutorial.html">Scala 2 Macro Tutorial <span class="publish-year">(2023)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2024-09-13-SBT-Task-to-Build-Frontend-Components.html">SBT Task to Build Frontend Components <span class="publish-year">(2024)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Scheme">Scheme</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2012-01-27-sicp30.html">SICP第三章总结（上）——可变量与环境 <span class="publish-year">(2012)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2012-03-14-sicp35.html">SICP第三章总结（下）——流编程 <span class="publish-year">(2012)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Type-System">Type System</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2014-08-02-RESTful-API-with-Type-System.html">RESTful API with Type System <span class="publish-year">(2014)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-07-11-Powerful-Type-System.html">Powerful Type System <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Software-Engineering">Software Engineering</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2012-12-18-Call-Program-Like-A-Function.html">Call Program Like A Function <span class="publish-year">(2012)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-04-02-More-About-Program-In-Shell-And-Function.html">More About Program In Shell And Function <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-11-05-Server-Logic-of-Level-Based-Games.html">Server Logic of Level Based Games <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-12-08-Languages-Should-Have-Database-Built-In.html">Languages Should Have Database Built In <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2015-04-26-How-About-Translate-IMAP-And-SMTP-Into-HTTP-API.html">How About Translate IMAP And SMTP Into HTTP API? <span class="publish-year">(2015)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2018-09-02-The-Things-You-Need-to-Know-When-Using-Apache-Sentry.html">The Things You Need to Know When Using Apache Sentry <span class="publish-year">(2018)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-02-21-Define-Infrastructure-as-Code.html">Define Infrastructure as Code <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-06-30-Why-Big-Companies-Need-to-Adopt-Open-Source.html">Why Big Companies Need to Adopt Open Source <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Storage">Storage</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-01-10-Change-Root-File-System-from-Ext4-to-Xfs-on-Archlinux.html">Change Root File System from Ext4 to Xfs on Archlinux <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-01-28-Migrate-Arch-Linux-to-Zfs.html">Migrate Arch Linux to ZFS <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-09-19-Personal-ZFS-Offsite-Online-Backup-Solution.html">Personal ZFS Offsite Backup Solution <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-12-14-ZFS-Profiling-on-Arch-Linux.html">ZFS Profiling on Arch Linux <span class="publish-year">(2023)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-UI">UI</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Flutter">Flutter</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2024-04-18-Make-Flutter-Web-App-More-Native-Like.html">Make Flutter Web Apps More Native Like <span class="publish-year">(2024)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Javascript">Javascript</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2012-12-17-Beautiful-Math-with-MathJex.html">Beautiful Math with MathJax <span class="publish-year">(2012)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2014-01-28-HTML-+-CSS-+-JS-is-Good.html">HTML + CSS + JS is Good <span class="publish-year">(2014)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2014-02-14-What-is-Wrong-about-HTML.html">What is Wrong about HTML and CSS <span class="publish-year">(2014)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2024-03-26-Prevent-HTMX-Lazy-Loaded-Content-From-Reload.html">Prevent htmx Lazy Loaded Content From Reloading <span class="publish-year">(2024)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2024-06-08-Create-a-Checkbox-That-Returns-Boolean-Value-for-htmx.html">Create a Checkbox That Returns Boolean Value for htmx <span class="publish-year">(2024)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2025-10-06-Download-Message-Images-from-Seesaw.html">Download Message Images from Seesaw <span class="publish-year">(2025)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Virtualization">Virtualization</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2012-12-16-Create-A-Virtual-Machine-Network.html">Create A Virtual Machine Network <span class="publish-year">(2012)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-01-15-Fedora-Virt-manager-Guest-Connect-to-Host.html">Fedora Virt-manager Guest Connect to Host <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2014-11-03-Docker-Is-the-One-Scaffolding-to-Rule-Them-All.html">Docker Is the One Scaffolding to Rule Them All <span class="publish-year">(2014)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Life">Life</div>
+      
+
+    </div>
+
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-03-04-Life-in-Guangzhou.html">Life in Guangzhou <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-05-15-Recent-Works.html">Recent Works <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2014-07-20-The-Travel-to-Tokyo.html">东京之旅 <span class="publish-year">(2014)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2018-01-02-The-Year-of-2017.html">My 2017 Year in Review <span class="publish-year">(2018)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-01-26-My-2020-in-Review.html">My 2020 in Review <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2022-04-04-%E5%8D%81%E4%B8%89%E5%B9%B4%E5%89%8D%E8%A2%AB%E9%9A%94%E7%A6%BB%E7%9A%84%E7%BB%8F%E5%8E%86.html">十三年前被隔离的经历 <span class="publish-year">(2022)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2022-04-24-A-Travel-to-Montreal.html">A Travel to Montreal <span class="publish-year">(2022)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-01-26-My-2022-in-Review.html">My 2022 in Review <span class="publish-year">(2023)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2024-03-19-Travel-Back-to-China.html">Travel Back to China <span class="publish-year">(2024)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2025-01-13-A-2-Year-Reflection.html">A 2-Year Reflection for 2023 and 2024 <span class="publish-year">(2025)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2025-02-28-Travel-Back-To-China-2025.html">Travel Back To China: 2025 Edition <span class="publish-year">(2025)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Projects">Projects</div>
+      
+
+    </div>
+
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Bard">Bard</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2014-12-16-The-Thoughts-Behind-Bard-Framework.html">The Thoughts Behind Bard Framework <span class="publish-year">(2014)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2014-12-28-Why-Use-Reflections-to-Write-A-Web-Framework.html">Why Use Reflections to Write A Web Framework <span class="publish-year">(2014)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Blog">Blog</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2012-11-19-my-new-blog.html">My New Blog Website <span class="publish-year">(2012)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2012-11-20-Comment-And-Search-Are-Available.html">Comment And Search Are Available <span class="publish-year">(2012)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2012-12-10-Remove-Categories.html">Remove Categories <span class="publish-year">(2012)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2021-10-31-Add-Index-to-My-Blog.html">Add Index to My Blog <span class="publish-year">(2021)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-09-24-Jekyll-Plugin-to-Load-Asciicast-Locally.html">Jekyll Plugin to Load Asciinema Recordings Locally <span class="publish-year">(2023)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-11-10-Index-Sidebar-on-My-Blog.html">Add Index Sidebar to My Blog <span class="publish-year">(2023)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2025-07-02-Improve-Books-Section-of-My-Blog.html">Improve Books Section of My Blog <span class="publish-year">(2025)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-RSS-Brain">RSS Brain</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2022-10-29-RSS-Brain-Yet-Another-RSS-Reader-With-More-Features.html">RSS Brain: Yet Another RSS Reader, With More Features <span class="publish-year">(2022)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2022-12-03-How-RSS-Brain-Shows-Related-Articles.html">How RSS Brain Shows Related Articles <span class="publish-year">(2022)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-11-14-Update-On-RSS-Brain-to-Find-Related-Articles-with-Machine-Learning.html">Update on RSS Brain to Find Related Articles with Machine Learning <span class="publish-year">(2023)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2024-07-27-Source-Code-of-RSS-Brain-Is-Available.html">Source Code of RSS Brain is Available <span class="publish-year">(2024)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Scala2grpc">Scala2grpc</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2022-05-02-A-Library-to-Make-It-Easier-to-Use-Scala-with-GRPC.html">A Library to Make It Easier to Use Scala with gRPC <span class="publish-year">(2022)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2023-09-23-Migrate-Scala2Grpc-to-Cats-Effect-3.html">Migrate Scala2grpc to Cats Effect 3 <span class="publish-year">(2023)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-03-29-Comment-Everywhere.html">Comment Everywhere <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-11-16-Fetch-Popular-Erlang-Modules-by-Coffee-Script.html">Fetch Popular Erlang Modules by Coffee Script <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Psychology">Psychology</div>
+      
+
+    </div>
+
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2012-03-10-xinlixue.html">耶鲁大学心理学导论 <span class="publish-year">(2012)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Thoughts">Thoughts</div>
+      
+
+    </div>
+
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-Chinese">Chinese</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2008-12-21-people-mind.html">关于人的思想 <span class="publish-year">(2008)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2008-12-22-people-mind2.html">关于人的思想（续） <span class="publish-year">(2008)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2011-05-31-china.html">览《中国文化要义》有感 <span class="publish-year">(2011)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2011-06-28-bad-guys.html">未来人们怎样对待坏人：读《理想国》杂想 <span class="publish-year">(2011)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2011-12-20-life-game.html">好玩的生命游戏 <span class="publish-year">(2011)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2012-05-19-tiandiyouyou.html">念天地之悠悠 <span class="publish-year">(2012)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2015-11-04-The-Life-of-Hermit-without-Materially.html">摒弃现代科技的隐士生活 <span class="publish-year">(2015)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2016-07-24-%E8%AF%BB-%E9%82%93%E5%B0%8F%E5%B9%B3%E6%97%B6%E4%BB%A3-%E6%9C%89%E6%84%9F.html">读《邓小平时代》有感 <span class="publish-year">(2016)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2019-08-15-%E7%94%B1-%E5%BA%9F%E9%9D%92-%E8%BF%99%E4%B8%AA%E7%A7%B0%E5%91%BC%E6%89%80%E6%83%B3%E5%88%B0%E7%9A%84.html">由“废青”这个称呼所想到的 <span class="publish-year">(2019)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-08-09-%E7%9B%9B%E5%94%90%E8%AF%97%E4%BA%BA%E5%92%8C%E8%BF%9C%E6%B8%B8.html">盛唐诗人和远游 <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-index">
+      
+      <div id="idx-English">English</div>
+      
+
+    </div>
+
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2013-08-30-Tired-of-Programming.html">Tired of Programming <span class="publish-year">(2013)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+  
+    <div class="index-intend">
+  
+    <div class="index-intend">
+  
+
+    <div class="index-entry index-post">
+      
+        
+        <a href="/2020-07-21-The-Tragic-Talented-Programmer.html">The Tragic Talented Programmer <span class="publish-year">(2020)</span></a>
+        
+      
+
+    </div>
+
+  
+    </div>
+  
+    </div>
+  
+
+
+
+
+
+<script>
+
+  const isIndexPage = false;
+
+  const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+  const indexMenu = document.getElementById('index_menu') || document.getElementById('index_menu_page');
+
+
+  document.addEventListener("DOMContentLoaded", function(event) {
+
+    if (isIndexPage) {
+      var targetHref = new URL(document.referrer).pathname;
+      console.log(targetHref);
+
+      document.querySelectorAll('a').forEach(function(anchorTag) {
+        // Check if the href attribute matches the targetHref
+        if (targetHref != "/" && anchorTag.getAttribute('href') === targetHref) {
+           var newDiv = document.createElement('div');
+           newDiv.classList.add('index-selected');
+           // Copy the content of the <a> tag to the new <div>
+           newDiv.innerHTML = anchorTag.innerHTML;
+           // Replace the <a> tag with the new <div> element
+           anchorTag.parentNode.replaceChild(newDiv, anchorTag);
+        }
+      });
+
+    }
+
+
+    var selected = document.getElementsByClassName("index-selected")[0];
+
+    if (!isIndexPage) {
+      var scrollpos = localStorage.getItem('menu-scroll-pos');
+      console.log(scrollpos);
+      if (scrollpos) indexMenu.scrollTo(0, scrollpos);
+    }
+
+    if (selected !== undefined) {
+      const topOffset = selected.getBoundingClientRect().top;
+      if (topOffset < 0 || topOffset > vh) {
+        if (isIndexPage) {
+          window.scrollBy({left: 0, top: topOffset - vh / 3.0, behavior: "smooth"});
+        } else {
+          indexMenu.scrollBy({left: 0, top: topOffset - vh / 3.0, behavior: "smooth"});
+        }
+      }
+    }
+
+  });
+
+  // Handle URL anchors after page load
+  window.addEventListener('load', function() {
+    if (window.location.hash) {
+      var anchor = window.location.hash.substring(1);
+      var targetElement = document.getElementById(anchor);
+      if (targetElement) {
+        setTimeout(function() {
+          targetElement.scrollIntoView({behavior: 'smooth'});
+        }, 100);
+      }
+    }
+  });
+
+  window.onbeforeunload = function(e) {
+    if (!isIndexPage) {
+      localStorage.setItem('menu-scroll-pos', indexMenu.scrollTop );
+    }
+  };
+
+</script>
+
+    </div>
+    
+
+    <div id="main_content">
+    <header id="page_header">
+      <div id="menu-button">
+          <a href="/index_page.html">&#9776;</a>
+      </div>
+      <nav id="page_nav">
+        <ul>
+             <li><a href="/">Home</a></li>
+             <li><a href="/poetry">Poetry</a></li>
+             <li><a href="/read">Read</a></li>
+             <li><a href="/snippets">Snippets</a></li>
+             <li><a href="/travel.html">Travel</a></li>
+             <li><a href="/search.html">Search</a></li>
+             <li><a href="/about.html">About</a></li>
+             <li><a href="/feed.xml">RSS</a></li>
+       </ul>
+      </nav>
+
+    </header>
+
+
+
+    <section id="page_content">
+        <div id="content_table">
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#1-terminal-devices">1. Terminal Devices</a></li><li><a href="#2-physical-space">2. Physical Space</a></li><li><a href="#3-network-hardware-and-software">3. Network Hardware and Software</a></li><li><a href="#4-network-topology-design">4. Network Topology Design</a></li><li><a href="#5-implement-the-network-topology-with-openwrt">5. Implement the Network Topology with OpenWrt</a></li><li><a href="#6-conclusion">6. Conclusion</a></li></ol>
+</div>
+
+<div id="article_content" class="">
+<article id="post">
+  <header>
+    <h1>Home Network Setup with OpenWrt and VLANs</h1>
+    
+      <p class="description">Posted on 27 Dec 2025, tagged <code>network</code><code>OpenWrt</code><code>Wifi</code><code>VLAN</code><code>security</code></p>
+    
+  </header>
+
+  <p>I moved to a new place recently. Using this as an opportunity, I re-configured the whole home network which I wanted to do long time ago. I put lots of thoughts into it. Even though I’m a software engineer for many years, I rarely touched the network layers below L3. So when researching and setting it up, I learned a lot on the way. This article shares the journey and the final setup I have.</p>
+
+<h2 id="1-terminal-devices">1. Terminal Devices</h2>
+
+<p>I basically have three categories of terminal devices in the network:</p>
+
+<p>The first group is a cluster for self-host services. I talked about it in a previous blog <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability</a>. The devices in this cluster are trusted since they are mostly running open source software with regular updates. It’s also hard to setup firewall inside this cluster because of the network complexity of Kubernetes. So I want the devices in this cluster be able to talk with each other without any limits. Regarding Internet, they should all have Internet access. I also want the users outside of my home network be able to access the self hosted services. Some of them are going through Cloudflare tunnels so I don’t need to expose them to the Internet. But there are some other more privacy service that I don’t even want Cloudflare to see the traffic, or services with large traffic volume like file and photo sharing services, so I still need to expose some ports to the Internet directly.</p>
+
+<p>The second group is the typical home user devices, like laptop, mobile phones, TV boxes, game consoles and so on. I want them to be able to connect to Internet, but better not be able to talk with or discover each other. They should also have access to the self hosted services in the first cluster.</p>
+
+<p>The third group is the devices that hold sensitive data and I don’t trust at all. For example, security cameras. So for those devices, I just want devices in other groups to be able to talk with them, but the devices shouldn’t have any access to other devices at all, including the Internet.</p>
+
+<p>Here is a diagram showing the three groups of the devices: the green arrow means access without limitation, and yellow arrow means limited access with firewall rules:</p>
+
+<p><img src="/static/images/2025-12-27-Home-Network-Setup-with-OpenWrt-and-VLANs/home-network-requirement.png" alt="home-network-requirement" /></p>
+
+<h2 id="2-physical-space">2. Physical Space</h2>
+
+<p>This section is pretty irrelevant about the technical side of network setup, but about the home renovation instead. So feel free to skip this section if you are not interested. I’m just recording it for my own benefit since it’s something I spent lots of time thought about and learned a lesson from it.</p>
+
+<p>I planned the network setup when doing basement finishing. I needed to figure out where everything goes so that I can know how to run the network cables. It’s easy to run the cables through the basement before the drywall is installed, and relatively easy to go to the first floor from basement. Luckily, most of my devices that needs wired connection will be at basement or the first floor. Second floor is mostly bedrooms which can be served through wifi from first floor. So the arrangement is pretty flexible.</p>
+
+<p>However, I noticed the flexibility pretty late. The physical location of devices and the network topology kept intertwined in my mind, and the physical location of devices also depends on the furniture arrangement. So there were too many things in my brain at the same time. It’s hard to work things out that way until I realized I should figure out the network topology and the physical locations separately, then figure out how to run the cables based on that.</p>
+
+<p>So here is the lesson, maybe obvious but important: plan every detail carefully before you start the renovation project. Because of the privacy reasons, I’ll leave the physical location of the devices out of this article.</p>
+
+<h2 id="3-network-hardware-and-software">3. Network Hardware and Software</h2>
+
+<h3 id="31-multiple-nics-vs-switch">3.1 Multiple NICs vs Switch</h3>
+
+<p>Routers, Switches and some PCs all have multiple Ethernet ports. But they are different. Most switches and consumer level routers have the ports connected to a single SoC. In this case, the ports are not physically separated: devices connected to different ports can talk to each other at layer 2 network using MAC addresses. The typical firewall like iptables cannot enforce traffic at such layer (even though there are things like ebtables can do it). Managed switches and some routers can configure VLANs that force packets in different VLANs go through the router/switches to enforce the firewall, which we will explore later.</p>
+
+<p>On the other hand, for some enterprise level routers and PCs with multiple network interface cards (NIC), every port is separated: you need the router to route the traffic through different NICs. It’s more secure but also needs more compute power. So the devices like this are much more expensive than a consumer level router.</p>
+
+<h3 id="32-hardware-selection-approach">3.2 Hardware Selection Approach</h3>
+
+<p>Currently all my terminal devices have 1Gbps Ethernet port at most. The incoming Internet is also 1Gbps. So I don’t feel the need to go crazy with 10Gbps routers since they are so much more expensive. 1Gbps port routers are good enough and 2.5Gbps ports are good to have. VLANs are also pretty mature so I don’t feel the need to buy devices with multiple NICs. At last, I want all the devices be able to run open source operating system, so I prefer routers with OpenWrt instead of managed switches.</p>
+
+<p>I also want to re-use my existing network devices as much as possible. I already have a wireless OpenWrt router and an unmanaged switch. I feel them powerful enough for my use cases so it would be great if I can still use them in the new network setup.</p>
+
+<p>Even though I only have 1Gbps ports, I still want Cat 6 cables since it’s pretty hard to change the cables in the wall in the future. And the price difference is also small enough to be accepted.</p>
+
+<h3 id="33-opnsensepfsense-vs-openwrt">3.3 OPNsense/pfSense vs OpenWrt</h3>
+
+<p>Lots of self-host communities mention pfSense and OPNsense a lot but I’ve never tried them. I have interests but the supported devices are pretty expensive. And with my 1Gbps devices, I don’t think I can justify the price.</p>
+
+<p>On the other hand, I’ve been using OpenWrt since I owned my first router 14 years ago. I’m pretty familiar with it even though I don’t use most of the advanced features. Even though it’s more popular for wireless routers, I find the feature set enough for my use case. Maybe I’ll try OPNsense in the future but I’m using OpenWrt this time.</p>
+
+<h2 id="4-network-topology-design">4. Network Topology Design</h2>
+
+<p>So based on the device group in section 1 and the discussion in section 3, here are the network devices needed for my setup:</p>
+
+<ul>
+  <li>TP-Link ER605 for the main router which acts as a gateway to the Internet. This is the only new device I need to buy.</li>
+  <li>TP-Link TL-SG105 unmanaged switch.</li>
+  <li>TP-Link Archer C7 v5 wireless router.</li>
+</ul>
+
+<p>Here is the network topology:</p>
+
+<p><img src="/static/images/2025-12-27-Home-Network-Setup-with-OpenWrt-and-VLANs/network-topology.png" alt="network-topology" /></p>
+
+<p>There is still an unused port on the main router which can be used for another Wifi access point, but I don’t really need it for now.</p>
+
+<h2 id="5-implement-the-network-topology-with-openwrt">5. Implement the Network Topology with OpenWrt</h2>
+
+<p>So we have the topology and all the hardware connected. How do we implement the isolation as discussed in section 1? In this section, I will document how to do it in OpenWrt.</p>
+
+<h3 id="51-vlan-configuration-for-wired-devices">5.1 VLAN Configuration for Wired Devices</h3>
+
+<p><em>Note: The OpenWrt version I’m using for this configuration is 24.10.4. I believe the interface for configuring VLAN has been changed a little bit: in v23.x, it’s in Network -&gt; Switch instead of the steps I’ll share below. But the logic should be very similar.</em></p>
+
+<p>In order to configure a different VLAN for a router’s port, go to Network -&gt; Interfaces -&gt; Devices. There should be a default bridge device called something like <code class="language-plaintext highlighter-rouge">br-lan</code>. Click “Configure”, enable VLAN filtering. If want to create a separate VLAN for a port, add a row and specify a different “VLAN ID”, make the target port “Untagged” and leave other ports blank. For example, in my configuration, I created a separate VLAN for each of the ports:</p>
+
+<p><img src="/static/images/2025-12-27-Home-Network-Setup-with-OpenWrt-and-VLANs/openwrt-vlan-config.png" alt="openwrt-vlan-config" /></p>
+
+<p>After saving this, the devices list should show something like <code class="language-plaintext highlighter-rouge">br-lan.20</code>, <code class="language-plaintext highlighter-rouge">br-lan.30</code> and so on. And the type for those devices would be “VLAN (802.1q)”.</p>
+
+<p>Now it’s time to create interfaces from the newly created VLAN devices. Go to Network -&gt; Interfaces, and click on “Add new interface”, and use a newly created VLAN device above as the device. Configure other fields as you want like the protocol and so on. Make sure to use different subnets and assign the interface with a (new) firewall zone, which we will talk more in the next section.</p>
+
+<p>At last, after verifying all the things are working, you can disable and optionally delete the <code class="language-plaintext highlighter-rouge">lan</code> interface (not the device) so that you can make sure the traffic is only going through the new VLAN interfaces.</p>
+
+<h3 id="52-firewall-configuration">5.2 Firewall Configuration</h3>
+
+<p>In order to create more firewall zones, go to Network -&gt; Firewall and create more zones there. I created a zone for each of the VLAN created above. For the untrusted devices that shouldn’t have the Internet access, don’t assign any zones in the forwards. For the devices that shouldn’t access other zones, just assign <code class="language-plaintext highlighter-rouge">wan</code> in the forwards. Note you can add more rules in “Traffic Rules” tab to override the default configuration here. The screenshot below is my configuration based on the access rule in section 1 and topology in section 4:</p>
+
+<p><img src="/static/images/2025-12-27-Home-Network-Setup-with-OpenWrt-and-VLANs/openwrt-firewall-zones.png" alt="openwrt-firewall-zones" /></p>
+
+<p>The wifi -&gt; wan forward is disabled by default with traffic rules added to access self host services.</p>
+
+<p>Be aware of “Intra zone forward”: based on our discussion in section 3.1, even if you reject the intra zone forward, the devices can still talk to each other if they are in the same VLAN, or connected to the same Wifi. So far, we’ve explored how to isolate the devices with wired connections. In the following sections, we will explore how to isolate the devices connected wirelessly.</p>
+
+<h3 id="53-wireless-clients-isolation">5.3 Wireless Clients Isolation</h3>
+
+<p><em>Note: from now on, all the OpenWrt configurations are based on version 23.05.0 since that’s what I’m using for the Wifi router.</em></p>
+
+<p>It’s easy to isolate the clients connected to the same Wifi. Go to Network -&gt; Wireless, edit the specific wireless, then click on the “Advanced Settings” in the “Interface Configuration” section and enable “Isolate Clients”. The clients connected to this Wifi shouldn’t be able to see each other now.</p>
+
+<p>However, if there are still devices connected to the same router wired, the wireless clients and the wired clients can still see each other. In the following section, we’ll see how to prevent that.</p>
+
+<h3 id="54-isolation-between-wired-and-wireless-clients">5.4 Isolation Between Wired and Wireless Clients</h3>
+
+<p>In order to isolate wired and wireless clients, we need to create a new interface with a separate firewall zone and assign it to the Wifi. Here is how to do it:</p>
+
+<p>First, go to Network -&gt; Interfaces -&gt; Devices, create a new device by clicking “Add device configuration…”, then create a device with type “Bridge device”. Do not need to assign any bridge ports to it since we are going to use it for Wifi. Name it something like <code class="language-plaintext highlighter-rouge">br-wlan</code>.</p>
+
+<p>Then in Network -&gt; Interfaces -&gt; Interfaces, create a new interface with the device we just created. Configure the protocol as desired and assign it to a new firewall zone. Then you can configure the firewall zones like in section 5.2 to isolate the clients in different zones.</p>
+
+<h2 id="6-conclusion">6. Conclusion</h2>
+
+<p>For a long time, I didn’t feel good enough about my network setup since it is more open than I wanted, e.g. the mobile devices, TV box and self-host devices can see each other. I needed to configure complex firewall rule to protect self-host services and it’s not even enough with that. Now with the new setup, I feel much better. I know there is no 100% secure setup, especially messing them up with myself, there must be some places that’s not optimal, but I’m glad I can explore the areas I normally don’t have much opportunity otherwise. I believe it makes me understand the software and OS better, and more importantly, it is fun to set things like this in a home lab!</p>
+
+</article>
+
+<footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2025-12-17-Fix-ZFS-Linux-Kernel-Dependency-on-Arch-Linux.html">Prev: Fix ZFS Linux Kernel Dependency on Arch Linux</a></td>
+    
+    
+  </tr></table>
+</footer>
+
+<!--
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+-->
+
+
+
+<!-- MathJax -->
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+</div>
+
+    </section>
+
+    <footer id="page_footer">
+      Copyright @ 2008 - 2025 Bin Wang
+      <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.
+    </footer>
+    </div>
+  </body>
+</html>

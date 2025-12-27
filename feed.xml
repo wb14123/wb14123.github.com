@@ -1,4 +1,114 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2025-12-20T23:28:29-05:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Fix ZFS Linux Kernel Dependency on Arch Linux</title><link href="https://www.binwang.me/2025-12-17-Fix-ZFS-Linux-Kernel-Dependency-on-Arch-Linux.html" rel="alternate" type="text/html" title="Fix ZFS Linux Kernel Dependency on Arch Linux" /><published>2025-12-17T00:00:00-05:00</published><updated>2025-12-17T00:00:00-05:00</updated><id>https://www.binwang.me/Fix-ZFS-Linux-Kernel-Dependency-on-Arch-Linux</id><content type="html" xml:base="https://www.binwang.me/2025-12-17-Fix-ZFS-Linux-Kernel-Dependency-on-Arch-Linux.html"><![CDATA[<p><em>Update 2025-12-20: add section about using local repo.</em></p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2025-12-27T15:39:43-05:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Home Network Setup with OpenWrt and VLANs</title><link href="https://www.binwang.me/2025-12-27-Home-Network-Setup-with-OpenWrt-and-VLANs.html" rel="alternate" type="text/html" title="Home Network Setup with OpenWrt and VLANs" /><published>2025-12-27T00:00:00-05:00</published><updated>2025-12-27T00:00:00-05:00</updated><id>https://www.binwang.me/Home-Network-Setup-with-OpenWrt-and-VLANs</id><content type="html" xml:base="https://www.binwang.me/2025-12-27-Home-Network-Setup-with-OpenWrt-and-VLANs.html"><![CDATA[<p>I moved to a new place recently. Using this as an opportunity, I re-configured the whole home network which I wanted to do long time ago. I put lots of thoughts into it. Even though I’m a software engineer for many years, I rarely touched the network layers below L3. So when researching and setting it up, I learned a lot on the way. This article shares the journey and the final setup I have.</p>
+
+<h2 id="1-terminal-devices">1. Terminal Devices</h2>
+
+<p>I basically have three categories of terminal devices in the network:</p>
+
+<p>The first group is a cluster for self-host services. I talked about it in a previous blog <a href="/2023-03-13-Infrastructure-Setup-for-High-Availability.html">Infrastructure Setup for High Availability</a>. The devices in this cluster are trusted since they are mostly running open source software with regular updates. It’s also hard to setup firewall inside this cluster because of the network complexity of Kubernetes. So I want the devices in this cluster be able to talk with each other without any limits. Regarding Internet, they should all have Internet access. I also want the users outside of my home network be able to access the self hosted services. Some of them are going through Cloudflare tunnels so I don’t need to expose them to the Internet. But there are some other more privacy service that I don’t even want Cloudflare to see the traffic, or services with large traffic volume like file and photo sharing services, so I still need to expose some ports to the Internet directly.</p>
+
+<p>The second group is the typical home user devices, like laptop, mobile phones, TV boxes, game consoles and so on. I want them to be able to connect to Internet, but better not be able to talk with or discover each other. They should also have access to the self hosted services in the first cluster.</p>
+
+<p>The third group is the devices that hold sensitive data and I don’t trust at all. For example, security cameras. So for those devices, I just want devices in other groups to be able to talk with them, but the devices shouldn’t have any access to other devices at all, including the Internet.</p>
+
+<p>Here is a diagram showing the three groups of the devices: the green arrow means access without limitation, and yellow arrow means limited access with firewall rules:</p>
+
+<p><img src="/static/images/2025-12-27-Home-Network-Setup-with-OpenWrt-and-VLANs/home-network-requirement.png" alt="home-network-requirement" /></p>
+
+<h2 id="2-physical-space">2. Physical Space</h2>
+
+<p>This section is pretty irrelevant about the technical side of network setup, but about the home renovation instead. So feel free to skip this section if you are not interested. I’m just recording it for my own benefit since it’s something I spent lots of time thought about and learned a lesson from it.</p>
+
+<p>I planned the network setup when doing basement finishing. I needed to figure out where everything goes so that I can know how to run the network cables. It’s easy to run the cables through the basement before the drywall is installed, and relatively easy to go to the first floor from basement. Luckily, most of my devices that needs wired connection will be at basement or the first floor. Second floor is mostly bedrooms which can be served through wifi from first floor. So the arrangement is pretty flexible.</p>
+
+<p>However, I noticed the flexibility pretty late. The physical location of devices and the network topology kept intertwined in my mind, and the physical location of devices also depends on the furniture arrangement. So there were too many things in my brain at the same time. It’s hard to work things out that way until I realized I should figure out the network topology and the physical locations separately, then figure out how to run the cables based on that.</p>
+
+<p>So here is the lesson, maybe obvious but important: plan every detail carefully before you start the renovation project. Because of the privacy reasons, I’ll leave the physical location of the devices out of this article.</p>
+
+<h2 id="3-network-hardware-and-software">3. Network Hardware and Software</h2>
+
+<h3 id="31-multiple-nics-vs-switch">3.1 Multiple NICs vs Switch</h3>
+
+<p>Routers, Switches and some PCs all have multiple Ethernet ports. But they are different. Most switches and consumer level routers have the ports connected to a single SoC. In this case, the ports are not physically separated: devices connected to different ports can talk to each other at layer 2 network using MAC addresses. The typical firewall like iptables cannot enforce traffic at such layer (even though there are things like ebtables can do it). Managed switches and some routers can configure VLANs that force packets in different VLANs go through the router/switches to enforce the firewall, which we will explore later.</p>
+
+<p>On the other hand, for some enterprise level routers and PCs with multiple network interface cards (NIC), every port is separated: you need the router to route the traffic through different NICs. It’s more secure but also needs more compute power. So the devices like this are much more expensive than a consumer level router.</p>
+
+<h3 id="32-hardware-selection-approach">3.2 Hardware Selection Approach</h3>
+
+<p>Currently all my terminal devices have 1Gbps Ethernet port at most. The incoming Internet is also 1Gbps. So I don’t feel the need to go crazy with 10Gbps routers since they are so much more expensive. 1Gbps port routers are good enough and 2.5Gbps ports are good to have. VLANs are also pretty mature so I don’t feel the need to buy devices with multiple NICs. At last, I want all the devices be able to run open source operating system, so I prefer routers with OpenWrt instead of managed switches.</p>
+
+<p>I also want to re-use my existing network devices as much as possible. I already have a wireless OpenWrt router and an unmanaged switch. I feel them powerful enough for my use cases so it would be great if I can still use them in the new network setup.</p>
+
+<p>Even though I only have 1Gbps ports, I still want Cat 6 cables since it’s pretty hard to change the cables in the wall in the future. And the price difference is also small enough to be accepted.</p>
+
+<h3 id="33-opnsensepfsense-vs-openwrt">3.3 OPNsense/pfSense vs OpenWrt</h3>
+
+<p>Lots of self-host communities mention pfSense and OPNsense a lot but I’ve never tried them. I have interests but the supported devices are pretty expensive. And with my 1Gbps devices, I don’t think I can justify the price.</p>
+
+<p>On the other hand, I’ve been using OpenWrt since I owned my first router 14 years ago. I’m pretty familiar with it even though I don’t use most of the advanced features. Even though it’s more popular for wireless routers, I find the feature set enough for my use case. Maybe I’ll try OPNsense in the future but I’m using OpenWrt this time.</p>
+
+<h2 id="4-network-topology-design">4. Network Topology Design</h2>
+
+<p>So based on the device group in section 1 and the discussion in section 3, here are the network devices needed for my setup:</p>
+
+<ul>
+  <li>TP-Link ER605 for the main router which acts as a gateway to the Internet. This is the only new device I need to buy.</li>
+  <li>TP-Link TL-SG105 unmanaged switch.</li>
+  <li>TP-Link Archer C7 v5 wireless router.</li>
+</ul>
+
+<p>Here is the network topology:</p>
+
+<p><img src="/static/images/2025-12-27-Home-Network-Setup-with-OpenWrt-and-VLANs/network-topology.png" alt="network-topology" /></p>
+
+<p>There is still an unused port on the main router which can be used for another Wifi access point, but I don’t really need it for now.</p>
+
+<h2 id="5-implement-the-network-topology-with-openwrt">5. Implement the Network Topology with OpenWrt</h2>
+
+<p>So we have the topology and all the hardware connected. How do we implement the isolation as discussed in section 1? In this section, I will document how to do it in OpenWrt.</p>
+
+<h3 id="51-vlan-configuration-for-wired-devices">5.1 VLAN Configuration for Wired Devices</h3>
+
+<p><em>Note: The OpenWrt version I’m using for this configuration is 24.10.4. I believe the interface for configuring VLAN has been changed a little bit: in v23.x, it’s in Network -&gt; Switch instead of the steps I’ll share below. But the logic should be very similar.</em></p>
+
+<p>In order to configure a different VLAN for a router’s port, go to Network -&gt; Interfaces -&gt; Devices. There should be a default bridge device called something like <code class="language-plaintext highlighter-rouge">br-lan</code>. Click “Configure”, enable VLAN filtering. If want to create a separate VLAN for a port, add a row and specify a different “VLAN ID”, make the target port “Untagged” and leave other ports blank. For example, in my configuration, I created a separate VLAN for each of the ports:</p>
+
+<p><img src="/static/images/2025-12-27-Home-Network-Setup-with-OpenWrt-and-VLANs/openwrt-vlan-config.png" alt="openwrt-vlan-config" /></p>
+
+<p>After saving this, the devices list should show something like <code class="language-plaintext highlighter-rouge">br-lan.20</code>, <code class="language-plaintext highlighter-rouge">br-lan.30</code> and so on. And the type for those devices would be “VLAN (802.1q)”.</p>
+
+<p>Now it’s time to create interfaces from the newly created VLAN devices. Go to Network -&gt; Interfaces, and click on “Add new interface”, and use a newly created VLAN device above as the device. Configure other fields as you want like the protocol and so on. Make sure to use different subnets and assign the interface with a (new) firewall zone, which we will talk more in the next section.</p>
+
+<p>At last, after verifying all the things are working, you can disable and optionally delete the <code class="language-plaintext highlighter-rouge">lan</code> interface (not the device) so that you can make sure the traffic is only going through the new VLAN interfaces.</p>
+
+<h3 id="52-firewall-configuration">5.2 Firewall Configuration</h3>
+
+<p>In order to create more firewall zones, go to Network -&gt; Firewall and create more zones there. I created a zone for each of the VLAN created above. For the untrusted devices that shouldn’t have the Internet access, don’t assign any zones in the forwards. For the devices that shouldn’t access other zones, just assign <code class="language-plaintext highlighter-rouge">wan</code> in the forwards. Note you can add more rules in “Traffic Rules” tab to override the default configuration here. The screenshot below is my configuration based on the access rule in section 1 and topology in section 4:</p>
+
+<p><img src="/static/images/2025-12-27-Home-Network-Setup-with-OpenWrt-and-VLANs/openwrt-firewall-zones.png" alt="openwrt-firewall-zones" /></p>
+
+<p>The wifi -&gt; wan forward is disabled by default with traffic rules added to access self host services.</p>
+
+<p>Be aware of “Intra zone forward”: based on our discussion in section 3.1, even if you reject the intra zone forward, the devices can still talk to each other if they are in the same VLAN, or connected to the same Wifi. So far, we’ve explored how to isolate the devices with wired connections. In the following sections, we will explore how to isolate the devices connected wirelessly.</p>
+
+<h3 id="53-wireless-clients-isolation">5.3 Wireless Clients Isolation</h3>
+
+<p><em>Note: from now on, all the OpenWrt configurations are based on version 23.05.0 since that’s what I’m using for the Wifi router.</em></p>
+
+<p>It’s easy to isolate the clients connected to the same Wifi. Go to Network -&gt; Wireless, edit the specific wireless, then click on the “Advanced Settings” in the “Interface Configuration” section and enable “Isolate Clients”. The clients connected to this Wifi shouldn’t be able to see each other now.</p>
+
+<p>However, if there are still devices connected to the same router wired, the wireless clients and the wired clients can still see each other. In the following section, we’ll see how to prevent that.</p>
+
+<h3 id="54-isolation-between-wired-and-wireless-clients">5.4 Isolation Between Wired and Wireless Clients</h3>
+
+<p>In order to isolate wired and wireless clients, we need to create a new interface with a separate firewall zone and assign it to the Wifi. Here is how to do it:</p>
+
+<p>First, go to Network -&gt; Interfaces -&gt; Devices, create a new device by clicking “Add device configuration…”, then create a device with type “Bridge device”. Do not need to assign any bridge ports to it since we are going to use it for Wifi. Name it something like <code class="language-plaintext highlighter-rouge">br-wlan</code>.</p>
+
+<p>Then in Network -&gt; Interfaces -&gt; Interfaces, create a new interface with the device we just created. Configure the protocol as desired and assign it to a new firewall zone. Then you can configure the firewall zones like in section 5.2 to isolate the clients in different zones.</p>
+
+<h2 id="6-conclusion">6. Conclusion</h2>
+
+<p>For a long time, I didn’t feel good enough about my network setup since it is more open than I wanted, e.g. the mobile devices, TV box and self-host devices can see each other. I needed to configure complex firewall rule to protect self-host services and it’s not even enough with that. Now with the new setup, I feel much better. I know there is no 100% secure setup, especially messing them up with myself, there must be some places that’s not optimal, but I’m glad I can explore the areas I normally don’t have much opportunity otherwise. I believe it makes me understand the software and OS better, and more importantly, it is fun to set things like this in a home lab!</p>]]></content><author><name></name></author><category term="network" /><category term="OpenWrt" /><category term="Wifi" /><category term="VLAN" /><category term="security" /><summary type="html"><![CDATA[I moved to a new place recently. Using this as an opportunity, I re-configured the whole home network which I wanted to do long time ago. I put lots of thoughts into it. Even though I’m a software engineer for many years, I rarely touched the network layers below L3. So when researching and setting it up, I learned a lot on the way. This article shares the journey and the final setup I have.]]></summary></entry><entry><title type="html">Fix ZFS Linux Kernel Dependency on Arch Linux</title><link href="https://www.binwang.me/2025-12-17-Fix-ZFS-Linux-Kernel-Dependency-on-Arch-Linux.html" rel="alternate" type="text/html" title="Fix ZFS Linux Kernel Dependency on Arch Linux" /><published>2025-12-17T00:00:00-05:00</published><updated>2025-12-17T00:00:00-05:00</updated><id>https://www.binwang.me/Fix-ZFS-Linux-Kernel-Dependency-on-Arch-Linux</id><content type="html" xml:base="https://www.binwang.me/2025-12-17-Fix-ZFS-Linux-Kernel-Dependency-on-Arch-Linux.html"><![CDATA[<p><em>Update 2025-12-20: add section about using local repo.</em></p>
 
 <h2 id="problem">Problem</h2>
 
@@ -2086,79 +2196,4 @@ max_connections: 500
 
 <h2 id="conclusion">Conclusion</h2>
 
-<p>The idea behind Flutter is great. I hope the web support can be better and better so that I can finally come back to it one day. But for now, I cannot wait for it and need to take another route. Stay tuned for more updates about that journey.</p>]]></content><author><name></name></author><category term="Flutter" /><category term="web" /><category term="UI" /><category term="Dart" /><summary type="html"><![CDATA[Background]]></summary></entry><entry><title type="html">Prevent htmx Lazy Loaded Content From Reloading</title><link href="https://www.binwang.me/2024-03-26-Prevent-HTMX-Lazy-Loaded-Content-From-Reload.html" rel="alternate" type="text/html" title="Prevent htmx Lazy Loaded Content From Reloading" /><published>2024-03-26T00:00:00-04:00</published><updated>2024-03-26T00:00:00-04:00</updated><id>https://www.binwang.me/Prevent-HTMX-Lazy-Loaded-Content-From-Reload</id><content type="html" xml:base="https://www.binwang.me/2024-03-26-Prevent-HTMX-Lazy-Loaded-Content-From-Reload.html"><![CDATA[<p>This is a short article about some tricks in <a href="https://htmx.org">htmx</a>. I have more to say about htmx but I’ll save that to another blog. In this one, I will skip the basics about htmx and assume you already know that.</p>
-
-<h2 id="1-problem">1. Problem</h2>
-
-<p>I’ll briefly introduce two features of htmx in order to explain the problem. You can go to official website for more details about the features.</p>
-
-<h3 id="11-browser-history">1.1. Browser History</h3>
-
-<p>htmx has <a href="https://htmx.org/docs/#history">a feature to interact with browser history</a>. Here is an example in the official document:</p>
-
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">hx-get=</span><span class="s">"/blog"</span> <span class="na">hx-push-url=</span><span class="s">"true"</span><span class="nt">&gt;</span>Blog<span class="nt">&lt;/a&gt;</span>
-</code></pre></div></div>
-
-<p>This will change the url in browser to <code class="language-plaintext highlighter-rouge">/blog</code> when you click the link and save a snapshot of current page into local storage. When you click the back button in browser, htmx will try to find the cache in local storage, and swap it out so you don’t need to reload the whole page.</p>
-
-<h3 id="12-lazy-load">1.2. Lazy Load</h3>
-
-<p>htmx sends requests when an event is triggered on an element. The rule is defined by <a href="https://htmx.org/attributes/hx-trigger/">hx-trigger</a> attribute. There are some special events that can be used for lazy loading:</p>
-
-<ul>
-  <li>load - triggered on load (useful for lazy-loading something).</li>
-  <li>revealed - triggered when an element is scrolled into the viewport (also useful for lazy-loading).</li>
-  <li>intersect - fires once when an element first intersects the viewport.</li>
-</ul>
-
-<p>However, when combining this with history support, the lazy loaded elements will be requested again when the pages are navigated in history. Here is an example:</p>
-
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">hx-get=</span><span class="s">"/page1"</span> <span class="na">hx-push-url=</span><span class="s">"true"</span> <span class="na">hx-target=</span><span class="s">"#content"</span><span class="nt">&gt;</span>page1<span class="nt">&lt;/a&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"content"</span> <span class="na">hx-get=</span><span class="s">"/content"</span> <span class="na">hx-trigger=</span><span class="s">"load"</span><span class="nt">&gt;&lt;/div&gt;</span>
-</code></pre></div></div>
-
-<p>When you click on <code class="language-plaintext highlighter-rouge">page1</code>, it will replace <code class="language-plaintext highlighter-rouge">#content</code> with the response from <code class="language-plaintext highlighter-rouge">/page1</code> and change the URL. However, when you click the back button in browser, htmx will send a request to <code class="language-plaintext highlighter-rouge">/content</code> again even though it’s already in history cache, because technically, <code class="language-plaintext highlighter-rouge">#content</code> <strong>is</strong> loaded again so <code class="language-plaintext highlighter-rouge">hx-get</code> is triggered based on the <code class="language-plaintext highlighter-rouge">hx-trigger</code> rule. This results in a waste of resources and can sometimes make the webpage lose its previous scroll position.</p>
-
-<p>In this article, I’ll show some tricks to prevent this. They are very simple once you know them but sometimes it’s just hard to get when you are new to the framework.</p>
-
-<h2 id="2-best-solution-swap-outer-html-instead-of-inner-html">2. Best Solution: Swap Outer HTML instead of Inner HTML</h2>
-
-<p>I think this is the best solution. It’s so simple that I don’t know why I didn’t get it earlier. Anyway, that’s why I write this blog so that it can help more people like me.</p>
-
-<p>By default, htmx swaps the inner HTML of the element. So the <code class="language-plaintext highlighter-rouge">hx-trigger="load"</code> attribute is still there after the content is loaded and will be triggered again when loading from history. The solution is to just let htmx swap the outer HTML instead. Using the same example, the code will be changed to this:</p>
-
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">hx-get=</span><span class="s">"/page1"</span> <span class="na">hx-push-url=</span><span class="s">"true"</span> <span class="na">hx-target=</span><span class="s">"#content"</span><span class="nt">&gt;</span>page1<span class="nt">&lt;/a&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"content"</span> <span class="na">hx-get=</span><span class="s">"/content"</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">hx-get=</span><span class="s">"/content"</span> <span class="na">hx-trigger=</span><span class="s">"load"</span> <span class="na">hx-target=</span><span class="s">"this"</span> <span class="na">hx-swap=</span><span class="s">"outerHTML"</span><span class="nt">&gt;&lt;/div&gt;</span>
-<span class="nt">&lt;/div&gt;</span>
-</code></pre></div></div>
-
-<p>In the new implementation, we have another <code class="language-plaintext highlighter-rouge">div</code> tag inside <code class="language-plaintext highlighter-rouge">#content</code> to do the lazy load. After the response is loaded, it will swap out the whole <code class="language-plaintext highlighter-rouge">div</code> element so <code class="language-plaintext highlighter-rouge">hx-get</code> and <code class="language-plaintext highlighter-rouge">hx-trigger</code> are not there anymore when the snapshot is taken and loaded from history.</p>
-
-<p>As I said, this is the best solution in my mind and I think it fits all the cases. So if you only care about the solution, you can stop reading here. I record the following solutions simply because I figured them out earlier than this one.</p>
-
-<h2 id="3-solution-b-dont-snapshot-the-whole-body">3. Solution B: Don’t Snapshot the Whole Body</h2>
-
-<p>The solution above removes the htmx attributes. The solution in this section tackles the problem in another direction: it prevents the element from loading again when going back in history.</p>
-
-<p>By default, htmx will take the snapshot of <code class="language-plaintext highlighter-rouge">body</code> and put it into history cache. That’s why when going back in history, the <code class="language-plaintext highlighter-rouge">load</code> event of the element is triggered again. To prevent it, we can let htmx only snapshot children of <code class="language-plaintext highlighter-rouge">#content</code>. <a href="https://htmx.org/docs/#specifying-history-snapshot-element">Here</a> is the official doc about how to do it. Using the same example, the code will be changed into:</p>
-
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">hx-get=</span><span class="s">"/page1"</span> <span class="na">hx-push-url=</span><span class="s">"true"</span> <span class="na">hx-target=</span><span class="s">"#content"</span><span class="nt">&gt;</span>page1<span class="nt">&lt;/a&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"content-load"</span> <span class="na">hx-get=</span><span class="s">"/content"</span> <span class="na">hx-trigger=</span><span class="s">"load"</span> <span class="na">hx-target=</span><span class="s">"#content"</span><span class="nt">&gt;&lt;/div&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"content"</span> <span class="na">hx-history-elt</span><span class="nt">&gt;&lt;/div&gt;</span>
-</code></pre></div></div>
-
-<p>Here we load the content with <code class="language-plaintext highlighter-rouge">#content-load</code> element. htmx will only swap out <code class="language-plaintext highlighter-rouge">#content</code> when we go forward or back in browser history since we added <code class="language-plaintext highlighter-rouge">hx-history-elt</code> on <code class="language-plaintext highlighter-rouge">#content</code>. This prevents <code class="language-plaintext highlighter-rouge">load</code> event from being triggered on <code class="language-plaintext highlighter-rouge">#content-load</code> so it will not send a new request.</p>
-
-<p>But this solution has great limitations: you need to change the snapshot element which is not always possible.</p>
-
-<h2 id="4-solution-c-remove-htmx-action-attributes-before-taking-snapshot">4. Solution C: Remove htmx Action Attributes Before Taking Snapshot</h2>
-
-<p>This is a solution that could work in theory but I didn’t test it, because I came up with the best solution when thinking about it.</p>
-
-<p>The idea is similar: we don’t want htmx action attributes like <code class="language-plaintext highlighter-rouge">hx-get</code> when we load the history. Other than swapping the whole outerHTML, there is a htmx event you can catch in Javascript to remove the attribute before taking a snapshot:</p>
-
-<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">htmx</span><span class="p">.</span><span class="nf">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">htmx:beforeHistorySave</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nb">document</span><span class="p">.</span><span class="nf">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">#content</span><span class="dl">'</span><span class="p">).</span><span class="nf">removeAttribute</span><span class="p">(</span><span class="dl">"</span><span class="s2">hx-get</span><span class="dl">"</span><span class="p">)</span>
-<span class="p">})</span>
-</code></pre></div></div>]]></content><author><name></name></author><category term="htmx" /><category term="web" /><category term="UI" /><category term="Javascript" /><summary type="html"><![CDATA[This is a short article about some tricks in htmx. I have more to say about htmx but I’ll save that to another blog. In this one, I will skip the basics about htmx and assume you already know that.]]></summary></entry></feed>
+<p>The idea behind Flutter is great. I hope the web support can be better and better so that I can finally come back to it one day. But for now, I cannot wait for it and need to take another route. Stay tuned for more updates about that journey.</p>]]></content><author><name></name></author><category term="Flutter" /><category term="web" /><category term="UI" /><category term="Dart" /><summary type="html"><![CDATA[Background]]></summary></entry></feed>

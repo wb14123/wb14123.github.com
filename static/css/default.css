@@ -327,8 +327,7 @@ blockquote {
 }
 
 #article_content img {
-  width: 800px;
-  max-width: 100%;
+  max-width: min(800px, 100%);
   display: block;
   margin-left: auto;
   margin-right: auto
