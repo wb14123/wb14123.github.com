@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> 黑暗精灵三部曲 |  Bin Wang - My Personal Blog</title>
+    <title> Music Video Generation with AI |  Bin Wang - My Personal Blog</title>
     <link rel="stylesheet" href="/static/css/default.css" type="text/css" />
     <link rel="stylesheet" href="/static/css/asciinema-player.css" type="text/css" />
 
@@ -1020,7 +1020,7 @@
     <div class="index-entry index-post">
       
         
-        <a href="/2026-01-02-Music-Video-Generation-with-AI.html">Music Video Generation with AI <span class="publish-year">(2026)</span></a>
+        <div class="index-selected">Music Video Generation with AI <span class="publish-year">(2026)</span></div>
         
       
 
@@ -4297,26 +4297,155 @@
 
 
     <section id="page_content">
-        <div class="book_card">
-  <img class="book_cover" src="/static/book-covers/黑暗精灵三部曲.jpg"/>
-  <div class="book_info">
-    <a class="book_title" href="https://book.douban.com/subject/1232186/" target="_blank">黑暗精灵三部曲</a>
-    <div class="book_desc">
-        By
-        
-        [美] R.A. 萨尔瓦多,&nbsp;
-        
-      published in 2001
-    </div>
-    <div class="book_date">Finished reading on 01 Jan 2011</div>
-  </div>
+        <div id="content_table">
+  <h3>Table of Contents</h3><ol class="toc"><li><a href="#how-it-started">How It Started</a></li><li><a href="#music-generation-with-suno">Music Generation with Suno</a></li><li><a href="#generate-longer-videos">Generate Longer Videos</a></li><li><a href="#video-generation-models">Video Generation Models</a></li><li><a href="#video-generation-tools">Video Generation Tools</a></li><li><a href="#gpu-platforms">GPU Platforms</a></li><li><a href="#commercial-video-generation-products">Commercial Video Generation Products</a></li><li><a href="#overall-workflow">Overall Workflow</a></li><li><a href="#results">Results</a></li></ol>
 </div>
 
-<div id="article_content">
-  <article id="post">
+<div id="article_content" class="">
+<article id="post">
+  <header>
+    <h1>Music Video Generation with AI</h1>
     
+      <p class="description">Posted on 02 Jan 2026, tagged <code>AI</code><code>GenAI</code><code>Suno</code><code>ComfyUI</code><code>Wan</code></p>
+    
+  </header>
 
-  </article>
+  <p>I did some music video generation experiments in November. Though lots of people are doing similar things nowadays and I’m not really doing anything unique, I got lots of joy and was kind of addicted to it for a few weeks. So I thought I’d record the experiments just to complete the missing piece of my blog posts in 2025, before I write the year end review blog.</p>
+
+<h2 id="how-it-started">How It Started</h2>
+
+<p>It started when there were some AI generated music videos that became popular on a Chinese video platform Bilibili. The videos use characters in a popular classic Chinese novel <a href="https://en.wikipedia.org/wiki/Journey_to_the_West">Journey to the West (西游记)</a>, and make them sing songs in a recording studio. The results are very impressive. <a href="https://www.bilibili.com/video/BV1tVsHznELh">Here</a> is an example of using Wukong (孙悟空) as the character.</p>
+
+<p>That made me think: I like to write things. I write traditional Chinese <a href="/poetry">poems</a> but it’s hard to consume for average people and feels pedantic. I had always thought I could also write good lyrics, but they are useless without music. With examples of AI being so advanced to create really good music videos, I thought I’d give it a try. So this article is about the experiments I did, including the tools, models, GPU platforms and commercial products I explored. The end results are three music videos. Two of them I wrote the lyrics myself and one of them with ChatGPT generated lyrics. None of them got many views tho.</p>
+
+<h2 id="music-generation-with-suno">Music Generation with Suno</h2>
+
+<p><a href="https://suno.com/">Suno</a> is probably the most popular music generation platform at the moment. I tried it when it first came out a few years ago. It was already very impressive back then, but I found it was not so good at pronouncing Chinese words (even though its ability to generate Chinese songs surprised me). I played with the free credits and stopped after I spent all of them. With the new wave of music videos on the Internet and from the comments under the videos, seems like its new V5 model is much better than older models. So I gave it another try. With the free credits ran out pretty quick, I subscribed for one month.</p>
+
+<p>The model is much better at Chinese pronunciation, even though still far from perfect: it often reads some pretty common words wrong: about 90% of the songs it generated had at least one incorrect pronunciation. But it’s useable and seems can be mitigated by using some other words/characters with the same pronunciation, which I never bothered to try.</p>
+
+<p>You can control the song by adding some prompts in lyrics, enclosed by <code class="language-plaintext highlighter-rouge">[]</code>. Like the emotion, genre, instruments and so on. It needs a little bit prompt engineering, very much like image generation models in the early days. What I found really helpful is to use LLMs generate the prompts: I tell the LLM I want to generate music using Suno. I give it the lyrics and the goal I want. Then it can come up with some prompts with professional music terminologies. Then I try it in Suno, and if some parts are off, I come back and ask LLM again to change specific sections of the prompts. This feels like how people use the image generation models back in the day. I believe like those models, there will be more advanced music generation models with more natural prompting, like Nano Banana models nowadays.</p>
+
+<p>Another thing I found helpful is to tune up the “Weirdness” in the advanced options, which can make the generated music less boring.</p>
+
+<p>Even with all the tricks above, the quality of generated music is still like gambling. A slight change in prompts, lyrics or options can create very different result. I don’t need the music to be really good since what I care more is the lyrics, but I still want it to express in the way I imagined while writing the lyrics. In order to achieve that, it needs lots of attempts. It’s both frustration and addictive at the same time, which is also very much like gambling I guess. It’s the most time consuming part (regarding human involvement) in the process.</p>
+
+<p>If it’s just for writing lyrics, music only is good enough for me. However, it’s pretty boring to just share an audio to the Internet. I also wanted to explore the capability of video generation models nowadays. So my journey continued.</p>
+
+<h2 id="generate-longer-videos">Generate Longer Videos</h2>
+
+<p>Nearly all the models nowadays can only generate short videos less than 1 minute, and the quality tends to be worse the longer the video is. But a song is at least 2-3 minutes. So the trick is to combine short videos into longer ones.</p>
+
+<p>One way to do that is to first create some images for key frames. Then prompt the model to start with a key frame and end at another one. Then combine the videos through editing. The results from this method can be a hit or miss: sometimes the content in the clips doesn’t always match and it need more capable models and more attempts to get a good result.</p>
+
+<p>This is where I found the cleverness in the videos I shared in the first section: the author generated the videos in a mostly static environment: a recording studio. So that it can avoid the situation of conflicting content in the clips. The whole video can be generated from only a single image, then merge the clips with some transition effect to smooth them out.</p>
+
+<h2 id="video-generation-models">Video Generation Models</h2>
+
+<p>From my research, <a href="https://wan.video/research-and-open-source">Wan</a> based models seems to be the most popular open source model family. 2.1 and 2.2 seems to be very mature and lots of tools support them, while 2.5 is the newest version that supposed to have better result.</p>
+
+<p>There is a model <a href="https://github.com/MeiGen-AI/InfiniteTalk">InfiniteTalk</a>. I believe it’s based on Wan2.1 from the dependency models. It supports input of an image and a clip of audio, which is perfect for the music video use case when the character is mainly just singing in a recording studio.</p>
+
+<h2 id="video-generation-tools">Video Generation Tools</h2>
+
+<p>While we have the models, they are mostly not user friendly to use, not to mention some of them just have model files. We need tools to run them.</p>
+
+<p>The most popular one may be <a href="https://github.com/comfyanonymous/ComfyUI">ComfyUI</a>. Surprisingly, there is no official Docker image for it. There are a few third party ones but I don’t really trust those, so I write <a href="https://github.com/wb14123/comfy-docker">a wrapper</a> myself. The UI is very similar to the node editors in 3D software, which lets you edit the workflow pipeline by dragging the nodes and connecting them by arrows. It may looks familiar enough for people work more closely with graphic, 3D models or video editing, but I find this approach really hard to use. I’d rather write a few lines of Python code instead of dragging the nodes to if-else branches and for-loops. More importantly, it doesn’t have a good dependency system: after importing a workspace and try to run it, there is not a good way to download all the models the workspace depends on, so it’s hard to reproduce the workflow other people shared. So I just tried with some official work flow with Wan 2.2 model, which uses the Comfy Cloud service to run the model. The result is fine but the price is too expensive. Because my dislike of the UI, I gave it up at last.</p>
+
+<p>The next tool I found is <a href="https://github.com/deepbeepmeep/Wan2GP">Wan2GP</a>. It has lots of built in models and workflows including Wan 2.2 and InfiniteTalk. It’s much easier to use and requires less resource to run. The InfiniteTalk model it uses can theoretically generate infinite length videos by the method I talked in “Generate Longer Videos” above: it automatically use the last frames of the last clip to generate the next clip. But in order to generate longer videos, you need to tune the config in json file so that it allows you to generate longer clips on the UI.</p>
+
+<h2 id="gpu-platforms">GPU Platforms</h2>
+
+<p>I have a GPU locally but the whole story is kind of sad: I built the current machine <a href="/2016-06-19-Build-A-Computer-for-Deep-Learning.html">back in 2016</a> in the hope of doing some machine learning projects. And I did <a href="https://github.com/wb14123/seq2seq-couplet">train a model</a> to play Chinese couplets which got some attention at the time. When I came to Canada, because of the incompatible power plugs, I bought a cheap adapter from Amazon. Unfortunately, the moment I plugged in my machine, there were sparks coming from the adapter and the machine was dead. After some debugging, I found the most expensive part of the machine, the GPU was dead. Since there was lots of other things to do after moving to Canada, I didn’t feel the need to buy a replacement with a Nvidia 1050 at hand. Until pandemic hits and I wanted to do some machine learning projects again, and found GPU prices skyrocketed. After waiting and didn’t see the hope of price dropping down, I bought a 3080Ti at a very high price in 2021, only to wait for ChatGPT and following open source models to release, and found out 3080Ti doesn’t have enough memory to run a large enough model that is useful.</p>
+
+<p>On the image generation side, it can run stable diffusion model with lower resolution. However, it’s far from enough for video generation. I tried it with Wan2GP which already uses less resource than other tools, but it makes my whole machine freeze. So I need to find a cloud GPU platform.</p>
+
+<p><a href="https://www.runpod.io/">Runpod</a> is a popular platform from my research, so I gave it a try. I did get Wan2PG to run on it but the product has lots of rough edges. Sometimes the remote SSH ports doesn’t work. Sometimes the pods doesn’t start successfully with a custom image because of stuck on Docker image downloading, and worse, it charges money when this happens. It’s also not that cheap: ~$0.59/hour for a RTX 4090 pod. Wan2GP needs 1-2 hours to generate a 10-20 seconds video. So a music video can cost a few dollars.</p>
+
+<p>I found some Chinese GPU platform cheaper in comparison. For example, <a href="https://www.xiangongyun.com/">xiangongyun.com</a> provides RTX 4090 and RTX 4090D GPUs. Yes you heard it right: 4090D is a Nvidia GPU only targeted to Chinese market because of US government’s ban on GPUs like 4090 in China. Ironically, the 4090D seems to be a better GPU for AI related tasks: it’s less powerful but also cheaper and drains less power with the same amount of memory. There are even modded versions which doubled the memory from 24G to 48G. The price on Xiangongyun is like:</p>
+
+<ul>
+  <li>¥1.89/h (~$0.27) for 4090 24G</li>
+  <li>¥1.59/h (~$0.22) for 4090D 24G</li>
+  <li>¥2.59/h (~$0.37) for 4090D 48G</li>
+</ul>
+
+<p>It’s much cheaper than Runpod. But it doesn’t support Docker images. Instead, it seems to target wider audience without software engineer background: it has a desktop environment like GUI, which lets you operation the pod and create custom images through that. Because of it’s locating in China, you also need ways to resolve the problems caused by <a href="https://en.wikipedia.org/wiki/Great_Firewall">GFW</a>. For example, setting up HuggingFace proxy with something like <code class="language-plaintext highlighter-rouge">export HF_ENDPOINT=http://hf.x-gpu.com </code>. Unfortunately, I failed to install Wan2PG on it because of some shared Nvidia library issue: it seems it mounts some Nvidia library through Docker and I cannot change it or install another version. There are lots of third party images including ComfyUI with many models pre-installed, but I didn’t feel it was trustworthy enough to run so I gave up at last.</p>
+
+<p>Speaking of the GPU platform, I actually have built such a platform for a freelancer project around 2017. It uses Kubernetes under the hood, can create pods and allocate GPUs for the pods, supports custom Docker images and mounting file system for datasets, be able to view logs. It can also export service ports so that you can use things like Jupyter Notebook. From the experience of using the services above, I think the product I built back then was pretty advanced and I’m proud of it. Hopefully they can take good use of it.</p>
+
+<h2 id="commercial-video-generation-products">Commercial Video Generation Products</h2>
+
+<p>As noted above, the self hosted video generation with rented GPU is pretty expensive for generating a song: about a few dollars per song. So I also looked into some commercial providers. Lots of the providers say they have a free trail, but almost none of them can generate a video successfully without paying, including the official one from Wan. At last I found a Chinese provider. It’s called <a href="https://jimeng.jianying.com/">Jimeng (即梦)</a>, which is created by ByteDance, the company behind TikTok. If not considering the new user promotion, the price is not attractive, basically comparable to renting a GPU. The new user promotion is less than one dollar for the first month subscription. It comes with some credits when first subscribed, then free credits everyday for a month. For the initial credits, you can create videos for about 2/3 song. Then about 1/3 song for the free credits everyday. That’s at least a good price I can actually try to finish a music video, so I settled to it at last. It seems ironic that I settled with a commercial provider after so much efforts, but I’m glad I explored the possibilities.</p>
+
+<h2 id="overall-workflow">Overall Workflow</h2>
+
+<p>So summarizing the overall workflow to generate a music video with AI:</p>
+
+<ul>
+  <li>Write Lyrics.</li>
+  <li>Put it into Suno to try. Optional use LLM to write prompts for Suno. Try until satisfied.</li>
+  <li>Break the songs into clips whose length can be supported by the video generation model. Make sure the cut point is nature, for example, not in the middle of the singing.</li>
+  <li>Create an image for the video generate input. I use ChatGPT or Nano Banana for this.</li>
+  <li>Input audio clips and the image to the video generation model to generate multiple video clips.</li>
+  <li>Merge the generated videos and add transition effect in between. I use Kdenlive for editing the videos.</li>
+  <li>Sometimes the videos generated is longer than the input audio with some blank part at the beginning and end. Use video editing software to sync the audio and video.</li>
+</ul>
+
+<h2 id="results">Results</h2>
+
+<p>As stated above, the results are 3 Chinese music videos: <a href="https://www.bilibili.com/video/BV1xp2uBHEP8">1</a>, <a href="https://www.bilibili.com/video/BV1DekSBhEAU">2</a> and <a href="https://www.bilibili.com/video/BV1XBCtBGEgG">3</a>. I think the results are good in general, other than some small things which I didn’t bother to fix because of the cost:</p>
+
+<ul>
+  <li>The model still cannot handle the hands properly. Sometimes there are 3 hands, some times there are 6 figures.</li>
+  <li>The model still try to sync the lip even when there is only background music at the time.</li>
+</ul>
+
+<p>I had lots of fun creating them. I don’t know why but it was really addictive like video games. However, I couldn’t justify the costs after the new user promotion was over so I gave up after that.</p>
+
+<p>During my research, I also find the video and image generation communities are really similar to the early day video gaming and modding communities. Lots of people may not be professional programmers, but learn to use the models and tools with passion, and maybe learned some level of programming on the way. There is no things like Git for proper sharing and version tracking, just binary files and model files everywhere, shared through some sketchy cloud drive providers. The tutorials are everywhere: on video platforms like Youtube, in forums like Reddit and so on. It’s a mess but so much fun.</p>
+
+</article>
+
+<footer id="post_footer">
+  <table><tr>
+    
+      <td id="prev"><a href="/2025-12-27-Home-Network-Setup-with-OpenWrt-and-VLANs.html">Prev: Home Network Setup with OpenWrt and VLANs</a></td>
+    
+    
+  </tr></table>
+</footer>
+
+<!--
+<section id="comment">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'crazy-hot-ice'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+-->
+
+
+
+<!-- MathJax -->
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
 </div>
 
     </section>
