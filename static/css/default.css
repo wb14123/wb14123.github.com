@@ -301,10 +301,10 @@ footer#page_footer{
   font-size: 17px;
   padding-top: 30px;
 }
-#post_footer td#prev{
+#post_footer td.prev{
   text-align: left;
 }
-#post_footer td#next{
+#post_footer td.next{
   text-align: right;
 }
 
