@@ -1,4 +1,62 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2026-04-11T21:54:43-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">My 2025 in Review</title><link href="https://www.binwang.me/2026-01-12-My-2025-in-Review.html" rel="alternate" type="text/html" title="My 2025 in Review" /><published>2026-01-12T00:00:00-05:00</published><updated>2026-01-12T00:00:00-05:00</updated><id>https://www.binwang.me/My-2025-in-Review</id><content type="html" xml:base="https://www.binwang.me/2026-01-12-My-2025-in-Review.html"><![CDATA[<p>Here we are. The year of 2026!</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2026-04-12T22:08:57-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">TCode: An AI Coding Agent Leverages Neovim and Tmux</title><link href="https://www.binwang.me/2026-04-12-TCode-An-AI-Coding-Agent-Leverages-Neovim-and-Tmux.html" rel="alternate" type="text/html" title="TCode: An AI Coding Agent Leverages Neovim and Tmux" /><published>2026-04-12T00:00:00-04:00</published><updated>2026-04-12T00:00:00-04:00</updated><id>https://www.binwang.me/TCode:-An-AI-Coding-Agent-Leverages-Neovim-and-Tmux</id><content type="html" xml:base="https://www.binwang.me/2026-04-12-TCode-An-AI-Coding-Agent-Leverages-Neovim-and-Tmux.html"><![CDATA[<blockquote>
+  <p>If I have seen further, it is by standing on the shoulders of giants.</p>
+
+  <p>– Isaac Newton</p>
+</blockquote>
+
+<p>In the last <a href="/2026-01-12-My-2025-in-Review.html">year end review post</a>, I mentioned I want to try coding agents other than Claude Code, since I want to avoid vendor lock-in for such an important tool in the age of AI coding. I said I would try some open source implementations like Open Code and migrate to them. The plan has been executed much better than I thought: just in the beginning of the new year, I implemented my own coding agent called <a href="https://github.com/wb14123/tcode">TCode</a>, and it’s much more powerful than the tools like Claude Code and Open Code.</p>
+
+<h2 id="problems-of-existing-tools">Problems of Existing Tools</h2>
+
+<p>Other than the vendor lock-in problem, the existing coding agents also have other problems.</p>
+
+<p>Since those tools are TUI based, I expect to use them in a familiar way with vim like keybindings. In this aspect, Claude Code is actually much better than Open Code, since it doesn’t clean up the <strong>main</strong> conversation history in the output (main conversation means messages not including tool calls or subagent details), so that I can navigate the history with tmux. (But I find Claude Code seems to start cleaning up the conversation history in the output too sometimes, not sure if it’s a bug or a feature). For Open Code, since it manages its own output and buffer, I must use its keybindings for basic operations like navigation through conversation, which doesn’t support vim like keybindings and is very hard to use (at least for me).</p>
+
+<p>Other than the keybindings, there is a trade off about how much detail to show about things like thinking tokens, tool calls, subagents, permissions and so on: showing too much, it’s noisy; showing too little, the user doesn’t know what is actually happening. Claude Code has some shortcuts like ctrl + o to expand some of the details, but I never find it easy to use. And even with that, the details are not enough and Claude Code is continuously showing less and less information saying it’s a distraction for the user, which many users disagree with.</p>
+
+<p>The last problem is transparency. Closed source projects make it hard to understand what has been changed. Even a simple prompt change can make a big difference for the result. Recently there are many reports of Claude Code performance degradation or cost increasing, and many of them are not because of the LLM model, but about the client changing its behavior. Also the quality of Claude Code doesn’t seem to be very good: there are always small issues here and there, which are not deal breakers but annoying, and they are hard to fix because it’s closed source.</p>
+
+<p>With the problems existing in even open source tools, I decided to write my own tool, so that not only it fits my workflow, but I can also have a deeper understanding about how the LLM works. Luckily, I don’t think it’s too hard to implement one. In contrast, even though I think IDEs are important too, I wouldn’t write one like IntelliJ IDEA, because it’s just not worth the effort.</p>
+
+<h2 id="how-tcode-resolves-the-problems">How TCode Resolves the Problems</h2>
+
+<p>The last problem listed above can mostly be resolved by open sourcing, which I ended up doing for TCode. For the first two problems, TCode resolves them by leveraging existing tools: <a href="https://neovim.io/">Neovim</a> and <a href="https://github.com/tmux/tmux">tmux</a>.</p>
+
+<p>Let me give a brief introduction of these two dependencies first even though they are already very popular, just for the people who are not very familiar with them. Neovim is a drop in vim replacement with better defaults and easier plugin creation (critical to be used as a dependency). I never used it much before. But because of writing and using TCode, I started to use it and find it very pleasant, especially with projects like <a href="https://www.lazyvim.org/">LazyVim</a> to give a good start on configuration.</p>
+
+<p>Tmux is a “terminal multiplexer”, which I still don’t (bother to) know the exact meaning even after more than 10 years of using it. I’d like to think of it as a tiling window manager, but just for terminals: you can divide the terminal window vertically and horizontally, to whatever many levels you want. You can also create new tabs and sessions. All being able to navigation using convenient keybindings. It’s the core tool of my terminal workflow. I cannot live without it: for example, it’s one of the reasons I can tolerate MacOS.</p>
+
+<p>Before I start with TCode itself, let me show a screenshot of it, so it’s easier to understand what I’m talking.</p>
+
+<p><img src="https://raw.githubusercontent.com/wb14123/tcode/refs/heads/master/assets/demo.gif" alt="demo" /></p>
+
+<h3 id="writing-and-showing-messages-with-neovim">Writing and Showing Messages with Neovim</h3>
+
+<p>How does TCode leverage those 2 tools to resolve the problems above? Let’s first talk about keybindings, focusing on the keybindings of message writing and showing first. The AI coding agent’s interface is very similar to a chat application, but with much more complexity. For showing messages, it usually needs to navigate through the conversation, because the conversation messages can often be too long to fit in a single screen, and often have markdown styles and code in them. For editing messages, a good editor makes it easier to write better prompts: things like code snippet, more structured thoughts and so on.</p>
+
+<p>Both problems can be resolved very well by vim, or Neovim in this case: vim supports so many highlight styles, convenient keybindings under normal mode to navigate, and itself is one of the most powerful editors. And better: it can all use the user’s existing customization. So when adopting TCode, the user doesn’t need to get used to the new style, new color scheme and keybindings, they can just use the existing ones.</p>
+
+<p>So, TCode uses Neovim for showing and writing messages, which are the two panels on the left of the screenshot above.</p>
+
+<p>In addition to it, Neovim is also used to preview diff, file writes and bash commands.</p>
+
+<h3 id="use-tmux-to-manage-details">Use Tmux to Manage Details</h3>
+
+<p>From the screenshot, you can see there are a few panels including the writing and showing messages ones we just talked about. All of them are in tmux, so you can just use keybindings to navigate through them. You can also customize the layout.</p>
+
+<p>But even more powerful is how it resolves the problem of balancing the level of details: by default, the main conversation panel just shows the overview of the messages. For tool calls and subagents, it just shows a line to describe it and collapsed input. But if you want to see what is really happening in it, you can open the detailed view in a new tmux tab. For example, for the subagent, it has all the things like the main conversation: you can even interrupt it and send new messages to it. Those details are all available without making the main conversation’s UI noisy, all thanks to the powerful tmux.</p>
+
+<h2 id="other-improvements">Other Improvements</h2>
+
+<p>Other than the main features I talked about above involving Neovim and tmux, I also made lots of tweaks in TCode, because I can write it exactly as I want. Like improvement of the bash tool, shortcuts like <code class="language-plaintext highlighter-rouge">/plan</code>, <code class="language-plaintext highlighter-rouge">/review</code> that expand to detailed prompts in Neovim editing window, using a local Chrome browser so that it’s able to use all the exiting accounts, and so on. There are just so many of them that I cannot list them all here. Read the <a href="https://github.com/wb14123/tcode/tree/master/docs">user docs</a> if you are interested.</p>
+
+<h2 id="implementation-details">Implementation Details</h2>
+
+<p>I also want to briefly talk about how I implemented it. Of course I implemented it using coding agents, Claude Code at the beginning, and TCode itself after the core features has been implemented. But for the core, I wrote the initial version of the llm-rs library by hand, which manages the conversation and events. This way I keep the core logic clean, and it shapes the whole architecture to what I want instead of complex prompting.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>So here it is, the coding agent I wrote, already one of my core tools that I use every day. I’m very happy I finished it to avoid vendor lock-in and be able to control the LLM behaviour more precisely. Hopefully other people will find it useful too. And hopefully there is a day in the near future that local LLMs can be powerful enough so that I can control the backend of it precisely as well.</p>]]></content><author><name></name></author><category term="tcode" /><category term="LLM" /><category term="vim" /><category term="tmux" /><category term="linux" /><category term="TUI" /><category term="machine learning" /><category term="AI" /><summary type="html"><![CDATA[If I have seen further, it is by standing on the shoulders of giants. – Isaac Newton]]></summary></entry><entry><title type="html">My 2025 in Review</title><link href="https://www.binwang.me/2026-01-12-My-2025-in-Review.html" rel="alternate" type="text/html" title="My 2025 in Review" /><published>2026-01-12T00:00:00-05:00</published><updated>2026-01-12T00:00:00-05:00</updated><id>https://www.binwang.me/My-2025-in-Review</id><content type="html" xml:base="https://www.binwang.me/2026-01-12-My-2025-in-Review.html"><![CDATA[<p>Here we are. The year of 2026!</p>
 
 <h2 id="moved-to-a-new-place">Moved to A New Place</h2>
 
@@ -2085,231 +2143,4 @@ max_connections: 500
   <li>Drawboard PDF for PDF reading.</li>
 </ul>
 
-<p>It’s pretty disappointing that this device cannot be used with Linux properly. But using Windows is still better to just let the device sitting there doing nothing. Maybe I will re-evaluate it after Windows 10 is end of life next year.</p>]]></content><author><name></name></author><category term="Linux" /><category term="Surface" /><category term="Microsoft" /><category term="Operating system" /><category term="tech" /><summary type="html"><![CDATA[Background]]></summary></entry><entry><title type="html">Create a Checkbox That Returns Boolean Value for htmx</title><link href="https://www.binwang.me/2024-06-08-Create-a-Checkbox-That-Returns-Boolean-Value-for-htmx.html" rel="alternate" type="text/html" title="Create a Checkbox That Returns Boolean Value for htmx" /><published>2024-06-08T00:00:00-04:00</published><updated>2024-06-08T00:00:00-04:00</updated><id>https://www.binwang.me/Create-a-Checkbox-That-Returns-Boolean-Value-for-htmx</id><content type="html" xml:base="https://www.binwang.me/2024-06-08-Create-a-Checkbox-That-Returns-Boolean-Value-for-htmx.html"><![CDATA[<h2 id="the-problem-of-checkbox">The Problem of Checkbox</h2>
-
-<p><a href="https://htmx.org/">htmx</a> is a lightweight Javascript framework. We all know in native HTML, a <code class="language-plaintext highlighter-rouge">form</code> element can send a HTTP request to a server with the values of <code class="language-plaintext highlighter-rouge">input</code> elements. In htmx, this feature is made more powerful and flexible: you can include the value of any element, and with the help with htmx extensions like <a href="https://htmx.org/extensions/json-enc/">json-enc</a>, it can also post JSON data.</p>
-
-<p>However, there is one thing that htmx inherited from the native HTML form behavior: for checkboxes, it only includes its value when the checkbox is checked. And the default value for checkbox is <code class="language-plaintext highlighter-rouge">"on"</code> instead of <code class="language-plaintext highlighter-rouge">true</code> (even though you can change it to another value). I understand this decision because it wants to keep the same behavior so there is no surprise, but it also makes the backend parsing very inconvenient. The checkbox field needs some special treatment at the backend: you need to know there is a checkbox field so that you can set it to false when it’s not submitted with the request, and set it to true otherwise.</p>
-
-<p>In this article, we will explore how to define a custom checkbox element so that it has a boolean value and will always be submitted with the HTTP request. We first explore the implementation for htmx and then for native HTML.</p>
-
-<h2 id="how-htmx-submits-the-checkbox-value">How htmx Submits the Checkbox Value</h2>
-
-<p>In order to make it work with htmx, we first need to know how htmx does the HTTP request with parameters. The document doesn’t have a lot of details but we can always check the source code. The code that processes input values is in the function <a href="https://github.com/bigskysoftware/htmx/blob/d6afc5b8dbd7213037d0bc4213aa0b7b469bcd62/src/htmx.js#L2549"><code class="language-plaintext highlighter-rouge">processInputValue</code></a>:</p>
-
-<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">processInputValue</span><span class="p">(</span><span class="nx">processed</span><span class="p">,</span> <span class="nx">values</span><span class="p">,</span> <span class="nx">errors</span><span class="p">,</span> <span class="nx">elt</span><span class="p">,</span> <span class="nx">validate</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if </span><span class="p">(</span><span class="nx">elt</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="nf">haveSeenNode</span><span class="p">(</span><span class="nx">processed</span><span class="p">,</span> <span class="nx">elt</span><span class="p">))</span> <span class="p">{</span>
-        <span class="k">return</span><span class="p">;</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="nx">processed</span><span class="p">.</span><span class="nf">push</span><span class="p">(</span><span class="nx">elt</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">if </span><span class="p">(</span><span class="nf">shouldInclude</span><span class="p">(</span><span class="nx">elt</span><span class="p">))</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">name</span> <span class="o">=</span> <span class="nf">getRawAttribute</span><span class="p">(</span><span class="nx">elt</span><span class="p">,</span><span class="dl">"</span><span class="s2">name</span><span class="dl">"</span><span class="p">);</span>
-        <span class="kd">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">elt</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
-        <span class="k">if </span><span class="p">(</span><span class="nx">elt</span><span class="p">.</span><span class="nx">multiple</span> <span class="o">&amp;&amp;</span> <span class="nx">elt</span><span class="p">.</span><span class="nx">tagName</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">SELECT</span><span class="dl">"</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">value</span> <span class="o">=</span> <span class="nf">toArray</span><span class="p">(</span><span class="nx">elt</span><span class="p">.</span><span class="nf">querySelectorAll</span><span class="p">(</span><span class="dl">"</span><span class="s2">option:checked</span><span class="dl">"</span><span class="p">)).</span><span class="nf">map</span><span class="p">(</span><span class="nf">function </span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">e</span><span class="p">.</span><span class="nx">value</span> <span class="p">});</span>
-        <span class="p">}</span>
-        <span class="c1">// include file inputs</span>
-        <span class="k">if </span><span class="p">(</span><span class="nx">elt</span><span class="p">.</span><span class="nx">files</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">value</span> <span class="o">=</span> <span class="nf">toArray</span><span class="p">(</span><span class="nx">elt</span><span class="p">.</span><span class="nx">files</span><span class="p">);</span>
-        <span class="p">}</span>
-        <span class="nf">addValueToValues</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">values</span><span class="p">);</span>
-        <span class="k">if </span><span class="p">(</span><span class="nx">validate</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nf">validateElement</span><span class="p">(</span><span class="nx">elt</span><span class="p">,</span> <span class="nx">errors</span><span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">if </span><span class="p">(</span><span class="nf">matches</span><span class="p">(</span><span class="nx">elt</span><span class="p">,</span> <span class="dl">'</span><span class="s1">form</span><span class="dl">'</span><span class="p">))</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">inputs</span> <span class="o">=</span> <span class="nx">elt</span><span class="p">.</span><span class="nx">elements</span><span class="p">;</span>
-        <span class="nf">forEach</span><span class="p">(</span><span class="nx">inputs</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">input</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nf">processInputValue</span><span class="p">(</span><span class="nx">processed</span><span class="p">,</span> <span class="nx">values</span><span class="p">,</span> <span class="nx">errors</span><span class="p">,</span> <span class="nx">input</span><span class="p">,</span> <span class="nx">validate</span><span class="p">);</span>
-        <span class="p">});</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-<p>So it checks whether the element should be included through function <code class="language-plaintext highlighter-rouge">shouldInclude(elt)</code> and gets its value if so (some additional logic for <code class="language-plaintext highlighter-rouge">select</code> and <code class="language-plaintext highlighter-rouge">file</code> but it’s not a concern here). In <a href="https://github.com/bigskysoftware/htmx/blob/d6afc5b8dbd7213037d0bc4213aa0b7b469bcd62/src/htmx.js#L2512"><code class="language-plaintext highlighter-rouge">shouldInclude</code></a>, it will only include a checkbox if it’s checked:</p>
-
-<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nf">shouldInclude</span><span class="p">(</span><span class="nx">elt</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span><span class="p">(</span><span class="nx">elt</span><span class="p">.</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">""</span> <span class="o">||</span> <span class="nx">elt</span><span class="p">.</span><span class="nx">name</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="nx">elt</span><span class="p">.</span><span class="nx">disabled</span> <span class="o">||</span> <span class="nf">closest</span><span class="p">(</span><span class="nx">elt</span><span class="p">,</span> <span class="dl">"</span><span class="s2">fieldset[disabled]</span><span class="dl">"</span><span class="p">))</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="c1">// ignore "submitter" types (see jQuery src/serialize.js)</span>
-    <span class="k">if </span><span class="p">(</span><span class="nx">elt</span><span class="p">.</span><span class="nx">type</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">button</span><span class="dl">"</span> <span class="o">||</span> <span class="nx">elt</span><span class="p">.</span><span class="nx">type</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">submit</span><span class="dl">"</span> <span class="o">||</span> <span class="nx">elt</span><span class="p">.</span><span class="nx">tagName</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">image</span><span class="dl">"</span> <span class="o">||</span> <span class="nx">elt</span><span class="p">.</span><span class="nx">tagName</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">reset</span><span class="dl">"</span> <span class="o">||</span> <span class="nx">elt</span><span class="p">.</span><span class="nx">tagName</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">file</span><span class="dl">"</span> <span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">if </span><span class="p">(</span><span class="nx">elt</span><span class="p">.</span><span class="nx">type</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">checkbox</span><span class="dl">"</span> <span class="o">||</span> <span class="nx">elt</span><span class="p">.</span><span class="nx">type</span> <span class="o">===</span> <span class="dl">"</span><span class="s2">radio</span><span class="dl">"</span> <span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">elt</span><span class="p">.</span><span class="nx">checked</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-<h2 id="create-a-custom-checkbox-element-with-web-component">Create a Custom Checkbox Element with Web Component</h2>
-
-<p>I tried to find or write an extension for htmx to include checkbox elements with boolean values, but from what I learned in <a href="https://htmx.org/extensions/">the htmx extension doc</a>, there is no good way to do that. So I decided to create a custom HTML element that extends <code class="language-plaintext highlighter-rouge">input</code> to return boolean values for htmx to get.</p>
-
-<p>With <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_components#attributechangedcallback">web component</a>, we can create a HTML tag that can be used just like any other built-in HTML tags. The <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements">MDN guide</a> does a good job to explain how to do it so I will not repeat it here. I’ll just put my implementation of the customized checkbox here:</p>
-
-<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">BooleanCheckbox</span> <span class="kd">extends</span> <span class="nc">HTMLInputElement</span> <span class="p">{</span>
-    <span class="nf">constructor</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">super</span><span class="p">();</span>
-    <span class="p">}</span>
-
-    <span class="kd">get</span> <span class="nf">checked</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="p">}</span>
-
-    <span class="kd">get</span> <span class="nf">value</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">if </span><span class="p">(</span><span class="k">super</span><span class="p">.</span><span class="nx">checked</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="nx">customElements</span><span class="p">.</span><span class="nf">define</span><span class="p">(</span><span class="dl">"</span><span class="s2">boolean-checkbox</span><span class="dl">"</span><span class="p">,</span> <span class="nx">BooleanCheckbox</span><span class="p">,</span> <span class="p">{</span> <span class="na">extends</span><span class="p">:</span> <span class="dl">"</span><span class="s2">input</span><span class="dl">"</span> <span class="p">});</span>
-</code></pre></div></div>
-
-<p>You can see it’s very simple. It extends the <code class="language-plaintext highlighter-rouge">input</code> element. It overwrites <code class="language-plaintext highlighter-rouge">checked</code> to always return <code class="language-plaintext highlighter-rouge">true</code> so that htmx will always include it in the request. And for <code class="language-plaintext highlighter-rouge">value</code>, it returns a boolean depending on <code class="language-plaintext highlighter-rouge">super.checked</code>. At last it registers the customized element as a tag named <code class="language-plaintext highlighter-rouge">boolean-checkbox</code>, so that we can just use it like this in HTML:</p>
-
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"checkbox"</span> <span class="na">is=</span><span class="s">"boolean-checkbox"</span> <span class="nt">/&gt;</span>Boolean checkbox
-</code></pre></div></div>
-
-<p>The <code class="language-plaintext highlighter-rouge">is="boolean-checkbox"</code> part tells the browser that this is a customized input element.</p>
-
-<p>Here is a complete example:</p>
-
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
-<span class="nt">&lt;html&gt;</span>
-  <span class="nt">&lt;head&gt;</span>
-    <span class="nt">&lt;title&gt;</span>htmx boolean checkbox example<span class="nt">&lt;/title&gt;</span>
-    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://unpkg.com/htmx.org@1.9.12"</span><span class="nt">&gt;&lt;/script&gt;</span>
-    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://unpkg.com/htmx.org@1.9.12/dist/ext/json-enc.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
-    <span class="nt">&lt;script&gt;</span>
-      <span class="kd">class</span> <span class="nc">BooleanCheckbox</span> <span class="kd">extends</span> <span class="nc">HTMLInputElement</span> <span class="p">{</span>
-          <span class="nf">constructor</span><span class="p">()</span> <span class="p">{</span>
-              <span class="k">super</span><span class="p">();</span>
-          <span class="p">}</span>
-
-          <span class="kd">get</span> <span class="nf">checked</span><span class="p">()</span> <span class="p">{</span>
-              <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-          <span class="p">}</span>
-
-          <span class="kd">get</span> <span class="nf">value</span><span class="p">()</span> <span class="p">{</span>
-              <span class="k">if </span><span class="p">(</span><span class="k">super</span><span class="p">.</span><span class="nx">checked</span><span class="p">)</span> <span class="p">{</span>
-                  <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-              <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                  <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-              <span class="p">}</span>
-          <span class="p">}</span>
-      <span class="p">}</span>
-      <span class="nx">customElements</span><span class="p">.</span><span class="nf">define</span><span class="p">(</span><span class="dl">"</span><span class="s2">boolean-checkbox</span><span class="dl">"</span><span class="p">,</span> <span class="nx">BooleanCheckbox</span><span class="p">,</span> <span class="p">{</span> <span class="na">extends</span><span class="p">:</span> <span class="dl">"</span><span class="s2">input</span><span class="dl">"</span> <span class="p">});</span>
-    <span class="nt">&lt;/script&gt;</span>
-  <span class="nt">&lt;/head&gt;</span>
-
-  <span class="nt">&lt;body&gt;</span>
-    <span class="nt">&lt;form&gt;</span>
-      <span class="nt">&lt;div&gt;&lt;input</span> <span class="na">type=</span><span class="s">"checkbox"</span> <span class="na">name=</span><span class="s">"default-checkbox"</span> <span class="nt">/&gt;</span>Default checkbox<span class="nt">&lt;/div&gt;</span>
-      <span class="nt">&lt;div&gt;&lt;input</span> <span class="na">type=</span><span class="s">"checkbox"</span> <span class="na">is=</span><span class="s">"boolean-checkbox"</span> <span class="na">name=</span><span class="s">"boolean-checkbox"</span> <span class="nt">/&gt;</span>Boolean checkbox<span class="nt">&lt;/div&gt;</span>
-      <span class="nt">&lt;button</span> <span class="na">hx-post=</span><span class="s">"test-post"</span> <span class="na">hx-ext=</span><span class="s">"json-enc"</span><span class="nt">&gt;</span>Submit<span class="nt">&lt;/button&gt;</span>
-    <span class="nt">&lt;/form&gt;</span>
-  <span class="nt">&lt;/body&gt;</span>
-<span class="nt">&lt;/html&gt;</span>
-</code></pre></div></div>
-
-<p>It defines two checkboxes: a native one and a customized one. We use the <code class="language-plaintext highlighter-rouge">json-enc</code> extension so it will post JSON as request body. When clicking the submit button, if both of them are unchecked, the post body looks like this:</p>
-
-<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="nl">"boolean-checkbox"</span><span class="p">:</span><span class="kc">false</span><span class="p">}</span><span class="w">
-</span></code></pre></div></div>
-
-<p>And if both are selected, here is the post body:</p>
-
-<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="nl">"default-checkbox"</span><span class="p">:</span><span class="s2">"on"</span><span class="p">,</span><span class="nl">"boolean-checkbox"</span><span class="p">:</span><span class="kc">true</span><span class="p">}</span><span class="w">
-</span></code></pre></div></div>
-
-<h2 id="what-about-the-native-html-form-action">What About the Native HTML Form Action</h2>
-
-<p>The custom element <code class="language-plaintext highlighter-rouge">boolean-checkbox</code> only works with htmx to post boolean values. If you use native form action like this:</p>
-
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">"test-call"</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;input</span> <span class="na">is=</span><span class="s">"boolean-checkbox"</span> <span class="na">type=</span><span class="s">"checkbox"</span> <span class="na">name=</span><span class="s">"boolean-checkbox"</span><span class="nt">&gt;</span>Boolean Checkbox<span class="nt">&lt;/input&gt;</span>
-  <span class="nt">&lt;button&gt;</span>Submit<span class="nt">&lt;/button&gt;</span>
-<span class="nt">&lt;/form&gt;</span>
-</code></pre></div></div>
-
-<p>The behavior is still like the native checkbox, which only posts value “on” when it’s checked.</p>
-
-<p>Even though I don’t use the native form action, it still makes me wonder if I can support it. (Disclaimer: all the code below are experiments and I don’t recommend anyone uses it on production without careful tests.)</p>
-
-<p>In fact, there is a way to set form value in web component through <a href="https://developer.mozilla.org/en-US/docs/Web/API/ElementInternals/setFormValue"><code class="language-plaintext highlighter-rouge">ElementInternals.setFormValue</code></a>:</p>
-
-<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">this</span><span class="p">.</span><span class="nx">internals</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nf">attachInternals</span><span class="p">();</span>
-<span class="k">this</span><span class="p">.</span><span class="nx">internals</span><span class="p">.</span><span class="nf">setFormValue</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
-</code></pre></div></div>
-
-<p>However, in HTML standard, <code class="language-plaintext highlighter-rouge">ElementInternals</code> is not supported if the custom element is extending a built-in input element. Actually there is a <a href="https://github.com/whatwg/html/issues/5166">Github issue</a> asking for this feature, and the response to not support it doesn’t make sense to me:</p>
-
-<blockquote>
-  <p>Since Apple’s WebKit team’s position is that customized builtins shouldn’t exist in the first place, we don’t support this proposal.</p>
-</blockquote>
-
-<p>Anyway, it is what it is. So I need to work around it. The solution I came up with is to include another checkbox element as a child instead of inheriting it. Here is the code:</p>
-
-<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">BooleanCheckbox</span> <span class="kd">extends</span> <span class="nc">HTMLElement</span> <span class="p">{</span>
-
-    <span class="kd">static</span> <span class="nx">formAssociated</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-
-    <span class="nf">constructor</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">super</span><span class="p">();</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">internals</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nf">attachInternals</span><span class="p">();</span>
-    <span class="p">}</span>
-
-    <span class="nf">connectedCallback</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">shadow</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nf">attachShadow</span><span class="p">({</span><span class="na">mode</span><span class="p">:</span> <span class="dl">"</span><span class="s2">open</span><span class="dl">"</span><span class="p">});</span>
-        <span class="kd">const</span> <span class="nx">internalCheckbox</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">createElement</span><span class="p">(</span><span class="dl">"</span><span class="s2">input</span><span class="dl">"</span><span class="p">);</span>
-        <span class="nx">internalCheckbox</span><span class="p">.</span><span class="nf">setAttribute</span><span class="p">(</span><span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">checkbox</span><span class="dl">"</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nf">getAttributeNames</span><span class="p">().</span><span class="nf">forEach</span><span class="p">((</span><span class="nx">name</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-            <span class="nx">internalCheckbox</span><span class="p">.</span><span class="nf">setAttribute</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nf">getAttribute</span><span class="p">(</span><span class="nx">name</span><span class="p">));</span>
-        <span class="p">});</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">shadow</span><span class="p">.</span><span class="nf">appendChild</span><span class="p">(</span><span class="nx">internalCheckbox</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">internals</span><span class="p">.</span><span class="nf">setFormValue</span><span class="p">(</span><span class="nx">internalCheckbox</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
-        <span class="nx">internalCheckbox</span><span class="p">.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">change</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">internals</span><span class="p">.</span><span class="nf">setFormValue</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
-        <span class="p">});</span>
-    <span class="p">}</span>
-
-    <span class="kd">get</span> <span class="nf">checkbox</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">shadow</span><span class="p">.</span><span class="nf">querySelector</span><span class="p">(</span><span class="dl">"</span><span class="s2">input[type=checkbox]</span><span class="dl">"</span><span class="p">);</span>
-    <span class="p">}</span>
-
-
-    <span class="kd">get</span> <span class="nf">checked</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-    <span class="p">}</span>
-
-    <span class="kd">get</span> <span class="nf">value</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">if </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">checkbox</span><span class="p">.</span><span class="nx">checked</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-
-<span class="p">}</span>
-
-<span class="nx">customElements</span><span class="p">.</span><span class="nf">define</span><span class="p">(</span><span class="dl">"</span><span class="s2">boolean-checkbox</span><span class="dl">"</span><span class="p">,</span> <span class="nx">BooleanCheckbox</span><span class="p">);</span>
-</code></pre></div></div>
-
-<p>It listens to the <code class="language-plaintext highlighter-rouge">checked</code> attribute on the child checkbox and updates the form value based on it. <code class="language-plaintext highlighter-rouge">static formAssociated = true;</code> is needed so that we can set form values.</p>
-
-<p>Then in HTML, we can use it like this:</p>
-
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">"/test-call"</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;div&gt;&lt;input</span> <span class="na">type=</span><span class="s">"checkbox"</span> <span class="na">name=</span><span class="s">"default-checkbox"</span> <span class="nt">/&gt;</span>Default Checkbox<span class="nt">&lt;/div&gt;</span>
-  <span class="nt">&lt;div&gt;&lt;boolean-checkbox</span> <span class="na">name=</span><span class="s">"boolean-checkbox"</span><span class="nt">&gt;&lt;/boolean-checkbox&gt;</span>Boolean Checkbox<span class="nt">&lt;/div&gt;</span>
-  <span class="nt">&lt;div&gt;&lt;button&gt;</span>Submit<span class="nt">&lt;/button&gt;&lt;/div&gt;</span>
-<span class="nt">&lt;/form&gt;</span>
-</code></pre></div></div>
-
-<p>When clicking the submit button, it calls <code class="language-plaintext highlighter-rouge">/test-call?boolean-checkbox=false</code> if both checkboxes are unchecked and <code class="language-plaintext highlighter-rouge">/test-call?default-checkbox=on&amp;boolean-checkbox=true</code> if both are checked.</p>]]></content><author><name></name></author><category term="HTML" /><category term="htmx" /><category term="Javascript" /><category term="frontend" /><category term="tech" /><summary type="html"><![CDATA[The Problem of Checkbox]]></summary></entry></feed>
+<p>It’s pretty disappointing that this device cannot be used with Linux properly. But using Windows is still better to just let the device sitting there doing nothing. Maybe I will re-evaluate it after Windows 10 is end of life next year.</p>]]></content><author><name></name></author><category term="Linux" /><category term="Surface" /><category term="Microsoft" /><category term="Operating system" /><category term="tech" /><summary type="html"><![CDATA[Background]]></summary></entry></feed>
