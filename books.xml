@@ -3,11 +3,47 @@
   <generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator>
   <link href="https://www.binwang.me/books.xml" rel="self" type="application/atom+xml" />
   <link href="https://www.binwang.me/read.html" rel="alternate" type="text/html" />
-  <updated>2026-06-19T17:52:20-04:00</updated>
+  <updated>2026-07-09T11:22:18-04:00</updated>
   <id>https://www.binwang.me/books.xml</id>
   <title type="html">Bin Wang - My Personal Blog — Books</title>
   <subtitle>Books I've read, with notes</subtitle>
   
+  
+  <entry>
+    <title type="html">The Rise and Fall of Ancient Egypt</title>
+    <link href="https://www.binwang.me/books/the-rise-and-fall-of-ancient-egypt" rel="alternate" type="text/html" title="The Rise and Fall of Ancient Egypt" />
+    <published>2026-07-09T00:00:00-04:00</published>
+    <updated>2026-07-09T00:00:00-04:00</updated>
+    <id>https://www.binwang.me/books/the-rise-and-fall-of-ancient-egypt</id>
+    <content type="html" xml:base="https://www.binwang.me/books/the-rise-and-fall-of-ancient-egypt">
+      <![CDATA[
+        <p>By Toby Wilkinson, published in 2011</p>
+        <p><img src="https://www.binwang.me/static/book-covers/the-rise-and-fall-of-ancient-egypt.jpg" alt="The Rise and Fall of Ancient Egypt" /></p>
+        
+        
+        <p>This is the third book on my ancient history reading list (<a href="/books/a-history-of-the-ancient-near-east-ca-3000-323-bc">1</a>, <a href="/books/the-bible-unearthed-archaeologys-new-vision-of-ancient-israel-and-the-origin-of-its-sacred-texts">2</a>). It’s about ancient Egypt, one of the earliest civilizations.</p>
+
+<p>When I first learned that ancient Egypt lasted more than 3000 years, I was so fascinated by it. The span is comparable to the length of recorded Chinese history, from its earlies written records to this day. I thought, to the ancient Egyptians, the country and the civilization must have been there forever from the earliest time. It’s hard to imagine a system that lasted so long that it seemed to be frozen in time.</p>
+
+<p>However, reading this book gave me more detailed knowledge about ancient Egypt and made me realize it was not a static system. Even though the core ideas of the civilization were similar across its long history, lots of things happened and changed. It’s like ancient Chinese history: it must seem long and static to those who are not familiar with it. But when you know more, there were so many different things happening all the time: conflicts, drama, hero, suffering, poetry, art, and so on. As a Chinese person, I know about those events in ancient China, and I’m often moved by them. I suspect it must be the same for the ancient Egyptians. And to people of the future, if accelerated technological advancement brings dramatic changes, our long history up to this day may seem like just a static period to them.</p>
+
+<p>This book doesn’t focus only on kings and glory, it also talks about the lives of ordinary people who were ruled by the kings. Whether or not there was glory for the kings, ordinary people often suffered. I think this is a valuable point that is often forgotten when admiring the grand achievements of ancient Egypt.</p>
+
+<p>But because of the nature of ancient Egypt, it’s unavoidable that the main focus is still on kings and regimes. The book does a good job of going through the events across such a long history, and it gives me a much better understanding of what happened. For example, I didn’t know the largest pyramids were built so early in Eghyptian history.</p>
+
+<p>It can be confusing sometimes when there are so many long and unfamiliar names: people, gods, places, and so on, especially during unstable times when regimes were changing hands very often. It doesn’t help that there are also many people with the same name. For example, there are two people named Ahmose at the same time: one is a pharaoh while the other is a military officer. It made me so confused at first while reading that part. And some gods were combined into one, like Amun and Ra. As an expert on the topic, the author may sometimes assume a little bit too much background knowledge for a newcomer to the topic. To be fair, it’s a hard job: when I teach people programming, it’s really hard to know where to start, since some of the very basics may be very alien to a person who doesn’t have any coding experience.</p>
+
+<p>I feel the book could also talk more about the cultural perspective besides historical events. Some chapters about the Middle Kingdom and the Ptolemies talk about it, and I find it fascinating. Maybe this is limited by the length of the book. I found that another book I read before, <em>Cultural Atlas of Ancient Egypt</em>, does a good job with this part because it has many maps and pictures, which can be a good supplement to this book.</p>
+
+<p>While reading this book, I often had a strange feeling that the past may be the future: if things like AI could concentrate resources so much in a single person’s hands, the future might look like ancient Egypt, with a god like king and vast numbers of miserable people. Ancient Egypt needed people for work. In an absolute dictatorship with AI doing the work, would ordinary people still have the means to exist? I think the answer is yes, not for work anymore, but for the entertainment of the ruler: he would need real people to have a real taste of power. Otherwise, what’s the difference between that and playing a video game? Ancient Egypt first broke out of the absolute dictatorship of the Old Kingdom because of the accumulated power of local provinces, and then because of outside rivals after the Middle Kingdom. That chaos, in some people’s eyes, kept Egypt from being a boring and static absolute dictatorship forever. So as long as people exist, there is still hope in the future.</p>
+
+        
+      ]]>
+    </content>
+    <summary type="html">
+      <![CDATA[By Toby Wilkinson, published in 2011. My Notes: &lt;p&gt;This is the third book on my ancient history reading list (&lt;a href=&quot;/books/a-history-of-the-ancient-near-east-ca-3000-323-bc&quot;&gt;1&lt;/a&gt;, &lt;a href=&quot;/books/the-bible-unearthed-archaeologys-new-vision-of-ancient-israel-and-the-origin-of-its-sacred-texts&quot;&gt;2&lt;/a&gt;). It’s about ancient Egypt, one of the earliest civilizations.&lt;/p&gt; &lt;p&gt;When I first learned that ancient Egypt lasted more than 3000 years, I was so fascinated by it. The span is comparable to the length of...]]>
+    </summary>
+  </entry>
   
   <entry>
     <title type="html">The Stranger</title>
@@ -561,25 +597,6 @@
     </content>
     <summary type="html">
       <![CDATA[By Ai Qianshui de Wuzei, 爱潜水的乌贼, published in 2020.]]>
-    </summary>
-  </entry>
-  
-  <entry>
-    <title type="html">道诡异仙</title>
-    <link href="https://www.binwang.me/books/%E9%81%93%E8%AF%A1%E5%BC%82%E4%BB%99" rel="alternate" type="text/html" title="道诡异仙" />
-    <published>2024-11-10T00:00:00-05:00</published>
-    <updated>2024-11-10T00:00:00-05:00</updated>
-    <id>https://www.binwang.me/books/%E9%81%93%E8%AF%A1%E5%BC%82%E4%BB%99</id>
-    <content type="html" xml:base="https://www.binwang.me/books/%E9%81%93%E8%AF%A1%E5%BC%82%E4%BB%99">
-      <![CDATA[
-        <p>By 狐尾的笔, published in 2025</p>
-        <p><img src="https://www.binwang.me/static/book-covers/道诡异仙.jpg" alt="道诡异仙" /></p>
-        
-        
-      ]]>
-    </content>
-    <summary type="html">
-      <![CDATA[By 狐尾的笔, published in 2025.]]>
     </summary>
   </entry>
   
