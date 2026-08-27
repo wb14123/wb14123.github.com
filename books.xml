@@ -3,11 +3,38 @@
   <generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator>
   <link href="https://www.binwang.me/books.xml" rel="self" type="application/atom+xml" />
   <link href="https://www.binwang.me/read.html" rel="alternate" type="text/html" />
-  <updated>2026-07-09T11:22:18-04:00</updated>
+  <updated>2026-08-26T22:07:45-04:00</updated>
   <id>https://www.binwang.me/books.xml</id>
   <title type="html">Bin Wang - My Personal Blog — Books</title>
   <subtitle>Books I've read, with notes</subtitle>
   
+  
+  <entry>
+    <title type="html">The Odyssey</title>
+    <link href="https://www.binwang.me/books/the-odyssey" rel="alternate" type="text/html" title="The Odyssey" />
+    <published>2026-08-26T00:00:00-04:00</published>
+    <updated>2026-08-26T00:00:00-04:00</updated>
+    <id>https://www.binwang.me/books/the-odyssey</id>
+    <content type="html" xml:base="https://www.binwang.me/books/the-odyssey">
+      <![CDATA[
+        <p>By Homer, Emily Wilson</p>
+        <p><img src="https://www.binwang.me/static/book-covers/the-odyssey.jpg" alt="The Odyssey" /></p>
+        
+        
+        <p>This is a classic I should have read much earlier. There is a new movie adaptation of The Odyssey, so I thought I would read the book first, just in case I want to watch the movie. I’m also in the middle of reading early Mediterranen history, so it’s a perfect time to read some literature from that culture.</p>
+
+<p>The idea that art and literature can sometimes be more efficient at communicating ideas is something I have been thinking about recently: in the past, I always thought narrative text was the best tool for communication: it can use better logic to cover all the ground. But if we treat the brain as a model with inputs, narrative text is not the only input. Maybe some image input, or text input like literature, can mutate the model (the brain) more efficiently. There are some similar ideas in ancient China: Taoism says the Tao is so profound that no words can explain it. Zen Buddhism discourages communicating Zen ideas through text. I didn’t really understand or agree with that in the past, but I do understand some of it now: maybe the input that is best at mutating the brain model in a particular way is not narrative text, but literature and arts.</p>
+
+<p>Anyway, let’s get back to the topic of The Odyssey. After reading this, I suddenly understand where some elements of Western culture come from: the praise of adventure, valuing a short heroic life more than a long, peaceful but uneventful one, the tension with destiny and gods, and so on. Even though many more philosophical ideas developed later in ancient Greek times, this seems to be their underlying character. I’ve been playing Baldur’s Gate 3 while reading the book. And the core of the game is just like The Odyssey: adventure, the tension with destiny and gods. Literature from a few thousand years ago still impacts the art and ideas of today. Compared to China, before the first boom in philosophical ideas, the foundation of Chinese idealism was the rules defined by the Zhou Dynasty. It was the idea that each person has his own role and place. And if everyone follows it, society will work perfectly like a clock. Even as cultures diverge and develop, their source is one of the most important factors shaping them.</p>
+
+
+        
+      ]]>
+    </content>
+    <summary type="html">
+      <![CDATA[By Homer, Emily Wilson. My Notes: &lt;p&gt;This is a classic I should have read much earlier. There is a new movie adaptation of The Odyssey, so I thought I would read the book first, just in case I want to watch the movie. I’m also in the middle of reading early Mediterranen history, so it’s a...]]>
+    </summary>
+  </entry>
   
   <entry>
     <title type="html">The Rise and Fall of Ancient Egypt</title>
@@ -578,25 +605,6 @@
     </content>
     <summary type="html">
       <![CDATA[By Peter Hessler, published in 2024. My Notes: &lt;p&gt;This book is a little bit different to me compared to other books of Peter Hessler: for the other books, they talk about eras when I was too young to be familiar with. So there is a feeling of distance and more like things in the history. But I witnessed,...]]>
-    </summary>
-  </entry>
-  
-  <entry>
-    <title type="html">诡秘之主</title>
-    <link href="https://www.binwang.me/books/%E8%AF%A1%E7%A7%98%E4%B9%8B%E4%B8%BB" rel="alternate" type="text/html" title="诡秘之主" />
-    <published>2024-11-26T00:00:00-05:00</published>
-    <updated>2024-11-26T00:00:00-05:00</updated>
-    <id>https://www.binwang.me/books/%E8%AF%A1%E7%A7%98%E4%B9%8B%E4%B8%BB</id>
-    <content type="html" xml:base="https://www.binwang.me/books/%E8%AF%A1%E7%A7%98%E4%B9%8B%E4%B8%BB">
-      <![CDATA[
-        <p>By Ai Qianshui de Wuzei, 爱潜水的乌贼, published in 2020</p>
-        <p><img src="https://www.binwang.me/static/book-covers/诡秘之主.jpg" alt="诡秘之主" /></p>
-        
-        
-      ]]>
-    </content>
-    <summary type="html">
-      <![CDATA[By Ai Qianshui de Wuzei, 爱潜水的乌贼, published in 2020.]]>
     </summary>
   </entry>
   
