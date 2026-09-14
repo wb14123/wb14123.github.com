@@ -1,4 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2026-08-26T22:09:07-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Travel Back to China: 2026 Edition</title><link href="https://www.binwang.me/2026-06-19-Travel-Back-to-China-2026-Edition.html" rel="alternate" type="text/html" title="Travel Back to China: 2026 Edition" /><published>2026-06-19T00:00:00-04:00</published><updated>2026-06-19T00:00:00-04:00</updated><id>https://www.binwang.me/Travel-Back-to-China-2026-Edition</id><content type="html" xml:base="https://www.binwang.me/2026-06-19-Travel-Back-to-China-2026-Edition.html"><![CDATA[<p>Here is the 2026 version of my travel back to China blog. In the <a href="/2025-02-28-Travel-Back-To-China-2025.html">last blog of the series</a>, I said I would try my best to continue it. While this year’s blog is a little bit late (we already passed mid-year of 2026!), it’s still better than nothing. If I can give myself an excuse, I’ve been busy since I came back, with both work and <a href="/2026-04-12-TCode-An-AI-Coding-Agent-Leverages-Neovim-and-Tmux.html">my side project</a>. It doesn’t help that we went back later than before this time, during Chinese New Year instead of the Christmas season.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="https://www.binwang.me/feed.xml" rel="self" type="application/atom+xml" /><link href="https://www.binwang.me/" rel="alternate" type="text/html" /><updated>2026-09-14T00:17:32-04:00</updated><id>https://www.binwang.me/feed.xml</id><title type="html">Bin Wang - My Personal Blog</title><subtitle>This is my personal blog about computer science, technology and my life.</subtitle><entry><title type="html">Remove Microphone from MOVA P10 Pro Ultra Gen 2</title><link href="https://www.binwang.me/2026-09-13-Remove-Microphone-from-MOVA-P10-Pro-Ultra-Gen-2.html" rel="alternate" type="text/html" title="Remove Microphone from MOVA P10 Pro Ultra Gen 2" /><published>2026-09-13T00:00:00-04:00</published><updated>2026-09-13T00:00:00-04:00</updated><id>https://www.binwang.me/Remove-Microphone-from-MOVA-P10-Pro-Ultra-Gen-2</id><content type="html" xml:base="https://www.binwang.me/2026-09-13-Remove-Microphone-from-MOVA-P10-Pro-Ultra-Gen-2.html"><![CDATA[<p>Recently I’ve bought a cleaning robot, MOVA P10 Pro Ultra Gen 2. At first, I wanted to buy a cleaning robot that supports <a href="https://valetudo.cloud/">Valetudo</a>, an open source firmware, so that there is less privacy concern. But it doesn’t really support multi floor mapping. And MOVA P10 Pro Ultra Gen 2 doesn’t come with a camera, only with laser and LiDAR navigation. I think it’s acceptable trade off to let it know the floor map for the convenience, so I bought this one that is not supported by Valetudo yet.</p>
+
+<p>However, after I got it, I found it has a microphone, which theoretically can listen to the conversations all the time. That is something I definitely cannot accept. So I tried to remove the audio input. At first by covering the microphone holes, but without success. So it has to be done physically, by removing the microphone. There is no resource online yet about how to do that, since this is a relatively new model. So I figured it out myself and thought it would be helpful to share here: it is really simple once you know how to do it.</p>
+
+<p>First, as shown in the user manual, here is where the microphone is (it’s inside the LDS cover):</p>
+
+<p><img src="/static/images/2026-09-13-Remove-Microphone-from-MOVA-P10-Pro-Ultra-Gen-2/robot-structure.png" alt="robot-structure" /></p>
+
+<p>The LDS cover is fixed to the body with 4 screws. The first 2 screws are under the lid that flips open:</p>
+
+<p><img src="/static/images/2026-09-13-Remove-Microphone-from-MOVA-P10-Pro-Ultra-Gen-2/robot-cover.png" alt="robot-cover" /></p>
+
+<p>The other 2 screws are hidden under the other piece of the top cover. Pry it off with a pry tool or your fingers, and you will see the other 2 screws, marked by the squared circles in the photo below (ignore the other circles, they are from <a href="https://valetudo.cloud/pages/installation/dreame/#fastboot">Valetudo’s guide</a>):</p>
+
+<p><img src="/static/images/2026-09-13-Remove-Microphone-from-MOVA-P10-Pro-Ultra-Gen-2/robot-cover-other.jpg" alt="robot-cover-other" /></p>
+
+<p>Once all 4 screws are out, twist the LDS cover a little to lift it off, so you can get to its bottom. The bottom has another 4 screws and a cable connected into it. We need to open it to get to that cable:</p>
+
+<p><img src="/static/images/2026-09-13-Remove-Microphone-from-MOVA-P10-Pro-Ultra-Gen-2/LDS-cover-bottom.jpeg" alt="LDS-cover-bottom" /></p>
+
+<p>Once you unscrew those 4 screws, you can open the LDS cover and the microphone PCB is there. Disconnect the microphone PCB’s cable and it is all done:</p>
+
+<p><img src="/static/images/2026-09-13-Remove-Microphone-from-MOVA-P10-Pro-Ultra-Gen-2/microphone.jpeg" alt="microphone" /></p>]]></content><author><name></name></author><category term="privacy" /><category term="cleaning robot" /><category term="voice assistant" /><summary type="html"><![CDATA[Recently I’ve bought a cleaning robot, MOVA P10 Pro Ultra Gen 2. At first, I wanted to buy a cleaning robot that supports Valetudo, an open source firmware, so that there is less privacy concern. But it doesn’t really support multi floor mapping. And MOVA P10 Pro Ultra Gen 2 doesn’t come with a camera, only with laser and LiDAR navigation. I think it’s acceptable trade off to let it know the floor map for the convenience, so I bought this one that is not supported by Valetudo yet.]]></summary></entry><entry><title type="html">Travel Back to China: 2026 Edition</title><link href="https://www.binwang.me/2026-06-19-Travel-Back-to-China-2026-Edition.html" rel="alternate" type="text/html" title="Travel Back to China: 2026 Edition" /><published>2026-06-19T00:00:00-04:00</published><updated>2026-06-19T00:00:00-04:00</updated><id>https://www.binwang.me/Travel-Back-to-China-2026-Edition</id><content type="html" xml:base="https://www.binwang.me/2026-06-19-Travel-Back-to-China-2026-Edition.html"><![CDATA[<p>Here is the 2026 version of my travel back to China blog. In the <a href="/2025-02-28-Travel-Back-To-China-2025.html">last blog of the series</a>, I said I would try my best to continue it. While this year’s blog is a little bit late (we already passed mid-year of 2026!), it’s still better than nothing. If I can give myself an excuse, I’ve been busy since I came back, with both work and <a href="/2026-04-12-TCode-An-AI-Coding-Agent-Leverages-Neovim-and-Tmux.html">my side project</a>. It doesn’t help that we went back later than before this time, during Chinese New Year instead of the Christmas season.</p>
 
 <h2 id="electric-vehicles-robots-and-high-speed-trains">Electric Vehicles, Robots and High Speed Trains</h2>
 
@@ -2077,69 +2099,4 @@ max_connections: 500
 
 <p>First, <a href="https://github.com/tombonez/noTunes">noTunes</a>. It bans the start of Apple Music. I find it’s very annoying that when I accidentally pressed some button or touched my Airpods, the Apple Music popped up. I don’t even know what triggered it. So this software solves this problem perfectly.</p>
 
-<p>The second one is <a href="https://karabiner-elements.pqrs.org/">Karabiner-Elements</a>. This is a very powerful custom key mapping software. But I mainly use it to support two keyboards at the same time. That is a very very niche personal need: I use two same keyboards as split keyboard. I can write more on that in the future blogs. But the point is, MacOS doesn’t support two keyboards at the same time very well and this software solves that.</p>]]></content><author><name></name></author><category term="MacOS" /><category term="tools" /><category term="software" /><category term="desktop environment" /><summary type="html"><![CDATA[As a long time Linux and KDE user, I’m pretty uncomfortable with the workflow of MacOS even though I have used MacOS fairly long as well. A lot of companies don’t support Linux to be used on the development laptop. Even for some companies that do support Linux, the hardware for Linux is usually far worse than Macbooks. So MacOS is often the best or even the only choice for work. This is still the case for my new job. I think it’s a good opportunity to write a blog about my MacOS setup. This can be a note for myself when I need to setup a fresh MacOS again in the future.]]></summary></entry><entry><title type="html">Source Code of RSS Brain is Available</title><link href="https://www.binwang.me/2024-07-27-Source-Code-of-RSS-Brain-Is-Available.html" rel="alternate" type="text/html" title="Source Code of RSS Brain is Available" /><published>2024-07-27T00:00:00-04:00</published><updated>2024-07-27T00:00:00-04:00</updated><id>https://www.binwang.me/Source-Code-of-RSS-Brain-Is-Available</id><content type="html" xml:base="https://www.binwang.me/2024-07-27-Source-Code-of-RSS-Brain-Is-Available.html"><![CDATA[<p><em>This article is also posted at <a href="https://news.rssbrain.com/news/2024/07/26/Source-Code-Released">RSS Brain blog</a>.</em></p>
-
-<p>When I first published <a href="https://www.rssbrain.com/">RSS Brain</a>, I promised the source code will be released (well, I actually said “open source”, but more on that later). After I rewrote the whole Flutter frontend with Javascript, most code is put into a single source repo. I feel comfortable to release it. So here it is on <a href="https://github.com/wb14123/rss_brain_release">Github</a>.</p>
-
-<p>There are two things you may notice from the source code:</p>
-
-<ul>
-  <li>The commit history is mostly missing.</li>
-  <li>The code license is not an open source license.</li>
-</ul>
-
-<p>I’ll talk about the most important one first: the code license.</p>
-
-<h2 id="code-license">Code License</h2>
-
-<p>RSS Brain’s source code is released under <a href="https://github.com/wb14123/rss_brain_release?tab=License-1-ov-file#readme">SSPL</a>, Server Side Public License. I don’t want to use “open source” as a market point for RSS Brain so I must make this clear first: technically, RSS Brain is a <a href="https://en.wikipedia.org/wiki/Source-available_software">source available software</a>, not an open source one, since SSPL is not recognized as an open source license.</p>
-
-<p>SSPL is mostly the same as <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">AGPL v3</a>, but with a key difference: it requires the user to release the source code of the whole stack if the project is used commercially. If you want to run the code on your own server and use RSS Brain freely, it’s all good. You can even share your server with family and friends. But as long as you start to charge money for that service, you need to release the source code of everything you use for the service, including things like OS, CI/CD, web server and so on. So it basically makes it impractical to use the source code commercially. I chose that feature on purpose.</p>
-
-<h2 id="the-purpose">The Purpose</h2>
-
-<p>Before I explain why I chose this license, I must explain the reasons of making RSS Brain’s source code available.</p>
-
-<h3 id="transparent-algorithm">Transparent Algorithm</h3>
-
-<p>In a past blog post <a href="https://www.binwang.me/2020-08-02-What-Is-Wrong-abount-Recommendation-System.html">What Is Wrong about Recommendation System</a>, I mentioned I don’t want to be manipulated by recommendation systems. And that’s one of the main motivations for me to start writing my own RSS reader. While there are still ranking and recommendation algorithms in RSS Brain, it tries to provide better information instead of making the user more addicted to the product. In order to prove that, the algorithm needs to be available so that the users can inspect it and decide whether it’s the right one for them.</p>
-
-<p>Be aware even the source code is available, it still needs some level of trust since the code running on my server <a href="https://app.rssbrain.com">app.rssbrain.com</a> can theoretically be different from what is being released. But it’s good enough for most people. However, if you want absolute control, you can always run it on your own server with the source code available.</p>
-
-<h3 id="no-vendor-lock-in">No Vendor Lock-in</h3>
-
-<p>Another important benefit is the user can expect the software to last. Even if I don’t host the service anymore, there is always a way to continue using it since the code is available. Yes it’s not commercial friendly, but if the software turned out to be really useful and attracted enthusiasts, I believe someone else will continue to maintain it for free. I think this property is critical for any product that needs to be used every day and becomes an important part of the digital life.</p>
-
-<h3 id="no-free-commercial-usage">No Free Commercial Usage</h3>
-
-<p>The next benefit is not for the user, but for myself. I want the <strong>users</strong> be able to self host the service for free, but I don’t want other people take my source code for free and earn money from it. I think that’s reasonable, especially considering I also provide paid hosted solution at <a href="https://app.rssbrain.com">app.rssbrain.com</a>.</p>
-
-<h3 id="considerations-of-contributors">Considerations of Contributors</h3>
-
-<p>One big advantage of open source project is it can attract contributors to make the software better. And it can sometimes justify the free commercial usage because all the competitors are contributing to the software. But because this is a software I am and will use daily, I want to have 100% control of its roadmap. Not only the product aspect, but also technology aspect. It’s just easier to write all the things by myself, at least for now. So I’m fine to choose a non open source license even with less potential contributors.</p>
-
-<h2 id="release-process">Release Process</h2>
-
-<p>You may notice the source code has very few commit history. The release process will be only one commit for each release. The release cycle will be one release every few weeks, depends on how much progress I make. The regular releases will mostly on the weekend. If there is a bug or a security risk, the release may be more frequent.</p>
-
-<p>The version number is in the format of <code class="language-plaintext highlighter-rouge">X.Y.Z</code>. Where Y will be increased for every feature release and Z will be increased for every bug fix. X will only be increased for breaking changes or really major update.</p>
-
-<p>I’ll make my hosted version at <a href="https://app.rssbrain.com">app.rssbrain.com</a> the same as the source code. Which means at each release, I’ll update the app first, and release the source code just after it. I’ll add a section in the app’s setting page to indicate the current version.</p>
-
-<p>The reason I chose this release mode is the same reason as I released it under SSPL. I only want the source code be available to users, but I don’t really care about whether there will be contributions from other people. So hiding the commit history between releases just makes my life easier since I don’t need to care too much about keep my commit messages clean.</p>
-
-<h2 id="roadmap">Roadmap</h2>
-
-<p>With this source code released, everyone can inspect the algorithm to decide if this is the right product for them. However, for self-host, even if you can do it right now, it requires some undocumented configuration. So I’ll do the following things to make it easier:</p>
-
-<ul>
-  <li>Add documents for self-host.</li>
-  <li>Add documents for admin operations like create admin users.</li>
-  <li>Disable some components by default. To name a few:
-    <ul>
-      <li>There is an machine learning server mentioned in <a href="https://www.binwang.me/2023-11-14-Update-On-RSS-Brain-to-Find-Related-Articles-with-Machine-Learning.html">this blog</a>. I will likely disable it by default since I’m thinking about redo this part in the short future.</li>
-      <li>Payment is not needed for self-hosted instances so I’ll disable it by default.</li>
-      <li>There is an image proxy that I’ll likely to disable as well, just to make it easier to deploy.</li>
-    </ul>
-  </li>
-</ul>]]></content><author><name></name></author><category term="RSS Brain" /><category term="open source" /><category term="source available" /><category term="project" /><category term="software engineer" /><summary type="html"><![CDATA[This article is also posted at RSS Brain blog.]]></summary></entry></feed>
+<p>The second one is <a href="https://karabiner-elements.pqrs.org/">Karabiner-Elements</a>. This is a very powerful custom key mapping software. But I mainly use it to support two keyboards at the same time. That is a very very niche personal need: I use two same keyboards as split keyboard. I can write more on that in the future blogs. But the point is, MacOS doesn’t support two keyboards at the same time very well and this software solves that.</p>]]></content><author><name></name></author><category term="MacOS" /><category term="tools" /><category term="software" /><category term="desktop environment" /><summary type="html"><![CDATA[As a long time Linux and KDE user, I’m pretty uncomfortable with the workflow of MacOS even though I have used MacOS fairly long as well. A lot of companies don’t support Linux to be used on the development laptop. Even for some companies that do support Linux, the hardware for Linux is usually far worse than Macbooks. So MacOS is often the best or even the only choice for work. This is still the case for my new job. I think it’s a good opportunity to write a blog about my MacOS setup. This can be a note for myself when I need to setup a fresh MacOS again in the future.]]></summary></entry></feed>
